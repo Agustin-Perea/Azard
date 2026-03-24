@@ -1,6 +1,6 @@
 extends StaticBody3D
 class_name StaticBodyTable
-# Medidas que me pasaste
+
 const SIZE_X = 0.668
 const SIZE_Z = 1.626
 const COLUMNAS = 3
@@ -40,19 +40,17 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 		
 		# 6. Número final 1-36
 		var numero_celda = (fila * 3) + col
-		
+		print(numero_celda)
 		# 7. Solo emitir/cambiar si es una celda nueva (para no saturar)
 		if numero_celda != last_field_entered:
 			if last_field_entered >= 0 and last_field_entered < 36:
-				table_fields.reset_equals_field(last_field_entered)
-				#last_field_entered = -1
+				table_fields.reset_equals_field(last_field_entered+1)
 			last_field_entered = numero_celda
-			#print("Spot detectado: ", numero_celda)
-			table_fields.highlight_equals_field(numero_celda)
+			table_fields.highlight_equals_field(numero_celda+1)
 		
 func _on_mouse_exited() -> void:
 	if last_field_entered > -1 and last_field_entered < 36:
-		table_fields.reset_equals_field(last_field_entered)
+		table_fields.reset_equals_field(last_field_entered+1)
 		last_field_entered = -1
 
 func calcular_indice_desde_posicion(global_pos: Vector3) -> int:
@@ -105,7 +103,7 @@ func calcular_centro_desde_indice(indice: int) -> Vector3:
 	return to_global(punto_local)
 	
 func update_field(index : int)->void:
-	table_fields.update_field_visual(index)
+	table_fields.update_field_visual(index+1)
 
 
 #se deberia desactivar junto a las clickablesares, incluso el collision

@@ -12,10 +12,18 @@ class_name TableFields
 @export var offset_z: float = 0.135
 
 @export_group("Datos de Control")
-@export var tabla_instancias: Array = []
+@export var table_instances: Array = []
+
+@onready var mesh_groups : Node3D =  $"../Table_Groups"
+@export var table_instances_groups: Array = [MeshInstance3D]
 
 @onready var number_labels : Array[Label3D]
 @onready var labels : Node3D =  $"../Labels"
+
+@export var group_labels : Array[Label3D]
+
+
+
 
 func _ready() -> void:
 
@@ -26,7 +34,13 @@ func _ready() -> void:
 	for child in children:
 		if child is Label3D:
 			number_labels.append(child)
+		
+	var mesh_children = mesh_groups.get_children()
 	
+	for child in mesh_children:
+		if child is MeshInstance3D:
+			table_instances_groups.append(child)
+
 	#ordenar por si acaso
 	number_labels.sort_custom(func(a, b): return a.get_index() < b.get_index())
 	setup_multimesh()
@@ -43,13 +57,13 @@ func setup_multimesh():
 	var total = columnas * filas
 	
 	multimesh.instance_count = total
-	tabla_instancias.clear()
+	table_instances.clear()
 	
 	for f in range(filas):
 		var fila_actual = []
 		for c in range(columnas):
 			var i = (f * columnas) + c
-			tabla_instancias.append(i)
+			table_instances.append(i)
 			
 			# 1. Posicionamiento XZ
 			var t = Transform3D()
@@ -63,7 +77,7 @@ func setup_multimesh():
 			# Enviamos el dato a la instancia 'i'
 			multimesh.set_instance_color(i, Color(valor_uv, 0, 0, 1))
 		
-		#tabla_instancias.append(fila_actual)
+		#table_instances.append(fila_actual)
 	
 	notify_property_list_changed()
 
@@ -72,52 +86,96 @@ func set_table_state_betfields()->void:
 	
 	
 func _on_table_ready()-> void:
-	for i in tabla_instancias.size():
-		update_field_visual(i)
+	for i in table_instances.size():
+		update_field_visual(i+1)
 #on field changed(id) este deberia reasignar color al cambiado, en uievents
 
 func update_field_visual(index :int)->void:
-	var field := GameState.get_bet_field_model(index+1)
-	#print(str(index))
+	var field := GameState.get_bet_field_model(index)#cuidado con el
+	print(str(index))
 	#print(str(field.number))
 	#print(str(field.color))
 	#print(number_labels[index].text)
-	number_labels[index].text = str(field.number)
-	#print(number_labels[index].text)
-	if field.color == Constants.BET_FIELD_COLOR.RED:
-		multimesh.set_instance_color(index, Color(0.0, 0, 0, 1))
-		number_labels[index].modulate = Color("000000ff")
-	elif field.color == Constants.BET_FIELD_COLOR.BLACK:
-		multimesh.set_instance_color(index, Color(0.25, 0, 0, 1))
-		number_labels[index].modulate = Color("ffffffff")
-	else:
-		multimesh.set_instance_color(index, Color(-0.25, 0, 0, 1))
-		number_labels[index].modulate = Color("ffffffff")
+	
+	if index > 0 and index <= 37:
+		number_labels[index-1].text = str(field.number)
+		#print(number_labels[index].text)
+		if field.color == Constants.BET_FIELD_COLOR.RED:
+			multimesh.set_instance_color(index-1, Color(0.0, 0, 0, 1))
+			number_labels[index-1].modulate = Color("000000ff")
+		elif field.color == Constants.BET_FIELD_COLOR.BLACK:
+			multimesh.set_instance_color(index-1, Color(0.25, 0, 0, 1))
+			number_labels[index-1].modulate = Color("ffffffff")
+		else:
+			multimesh.set_instance_color(index-1, Color(-0.25, 0, 0, 1))
+			number_labels[index-1].modulate = Color("ffffffff")
+	elif index > 36:
+		pass
+	elif index == 0:
+		pass
 
 func highlight_field(id : int)->void:
-	if id >=0 and id < number_labels.size():  
-		var field_color_data = multimesh.get_instance_color(id)
+	if id > 0 and id < 37:
+		var field_color_data = multimesh.get_instance_color(id-1)
 		field_color_data.g = 1
-		multimesh.set_instance_color(id, field_color_data)
+		multimesh.set_instance_color(id-1, field_color_data)
+	elif id > 36:
+		var group_index = id - 36
+		if group_index < table_instances_groups.size():
+			var mesh_instance = table_instances_groups[group_index]
+			var shader_mat = mesh_instance.get_surface_override_material(0)
+			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
+	elif id == 0:
+		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
+		var shader_mat = mesh_instance.get_surface_override_material(0)
+		
+		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
 	
 func reset_field(id : int)->void:
-	if id >=0 and id < number_labels.size(): 
-		var field_color_data = multimesh.get_instance_color(id)
+	if id > 0 and id < 37:
+		var field_color_data = multimesh.get_instance_color(id-1)
 		field_color_data.g = 0
-		multimesh.set_instance_color(id, field_color_data)
+		multimesh.set_instance_color(id-1, field_color_data)
+	elif id > 36:
+		var group_index = id - 36
+		if group_index < table_instances_groups.size():
+			var mesh_instance = table_instances_groups[group_index]
+			var shader_mat = mesh_instance.get_surface_override_material(0)
+			
+			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
+	elif id == 0:
+		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
+		var shader_mat = mesh_instance.get_surface_override_material(0)
+		
+		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
 		
 func highlight_equals_field(id : int)->void:
-	var number := GameState.bet_field_models[id+1].number
-	var color := GameState.bet_field_models[id+1].color 
-	if id >=0 and id < number_labels.size(): 
+	var number := GameState.bet_field_models[id].number
+	var color := GameState.bet_field_models[id].color 
+
+	if id > 0 and id < 37:
 		for i in GameState.bet_field_models.size():
 			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
-				highlight_field(i-1)
+				highlight_field(i)
+	elif id > 36:
+		for i in GameState.bet_field_models.size()-12:
+			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
+				highlight_field(i)
+	elif id == 0:
+		highlight_field(id)
+
 
 func reset_equals_field(id : int)->void:
-	var number := GameState.bet_field_models[id+1].number
-	var color := GameState.bet_field_models[id+1].color
-	if id >=0 and id < number_labels.size(): 
+	var number := GameState.bet_field_models[id].number
+	var color := GameState.bet_field_models[id].color
+	
+	if id >0 and id < 37:
 		for i in GameState.bet_field_models.size():
 			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
-				reset_field(i-1)
+				reset_field(i)
+	elif id > 36:
+		for i in GameState.bet_field_models.size()-12:
+			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
+				reset_field(i)
+	elif id == 0:
+		reset_field(id)
