@@ -1,0 +1,35 @@
+[gd_resource type="ArrayMesh" format=4 uid="uid://dhhhjyuftnbv7"]
+
+[ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material.tres" id="1_a1ewp"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_kyddd"]
+_surfaces = [{
+"aabb": AABB(0.09265649, 0.019528829, -1.9732032, 0.6762351, 1e-05, 0.1284374),
+"format": 34896613377,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAgADAAAAAgAEAAMAAAAFAAEAAQAFAAYAAQAGAAcABgAIAAcABgAJAAgACQAKAAgACQALAAoA"),
+"name": "Ficha",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("Hq0AAP//AABvqQAAAAAAAB6tAAAAAAAA//8AAP//AAC68wAAKkEAAG+pAAD//wAAj1YAAP7/AACPVgAAAAAAAOBSAAAAAAAA4FIAAP7/AABEDAAAKkEAAAAAAAD+/wAA")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "tabla_no_bets_Plane_087"
+_surfaces = [{
+"aabb": AABB(0.09265649, 0.019528829, -1.9732032, 0.6762351, 1e-05, 0.1284374),
+"attribute_data": PackedByteArray("pBCZDKQQmQykEJkMpBCZDKQQmQykEJkMpBCZDKQQmQykEJkMpBCZDKQQmQykEJkM"),
+"format": 34896613399,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAgADAAAAAgAEAAMAAAAFAAEAAQAFAAYAAQAGAAcABgAIAAcABgAJAAgACQAKAAgACQALAAoA"),
+"material": ExtResource("1_a1ewp"),
+"name": "Ficha",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("Hq0AAP///79vqQAAAAD/vx6tAAAAAP+///8AAP///7+68wAAKkH/v2+pAAD///+/j1YAAP7//7+PVgAAAAD/v+BSAAAAAP+/4FIAAP7//79EDAAAKkH/vwAAAAD+//+/////f////3////9/////f////3////9/////f////3////9/////f////3////9/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_kyddd")

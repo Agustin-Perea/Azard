@@ -1,0 +1,35 @@
+[gd_resource type="ArrayMesh" format=3 uid="uid://bdrm3f32cqhy6"]
+
+[ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material.tres" id="1_gsuq5"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_gsuq5"]
+_surfaces = [{
+"aabb": AABB(0.1019529, 0.019528829, -1.8382196, 0.21291208, 1e-05, 0.12843728),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"name": "Ficha",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0)
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "tabla_no_bets_Plane_088"
+_surfaces = [{
+"aabb": AABB(0.1019529, 0.019528829, -1.8382196, 0.21291208, 1e-05, 0.12843728),
+"attribute_data": PackedByteArray(143, 74, 37, 12, 143, 74, 37, 12, 143, 74, 37, 12, 143, 74, 37, 12),
+"format": 34896613399,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
+"material": ExtResource("1_gsuq5"),
+"name": "Ficha",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(255, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_gsuq5")

@@ -12,7 +12,12 @@ config_version=5
 
 config/name="Azard"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://buwcryw1eujb2"
+
+[autoload]
+
+Constants="*uid://c4e7ccrn2c5n7"
+GameState="*uid://b62r1g1ijxyjc"
 
 [display]
 
@@ -46,6 +51,7 @@ textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 textures/default_filters/anisotropic_filtering_level=0
 environment/ssao/quality=0
 environment/ssil/quality=0
