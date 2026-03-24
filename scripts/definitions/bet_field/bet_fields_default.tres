@@ -127,6 +127,7 @@ metadata/_custom_type_script = "uid://4pdksbd8xnr6"
 script = ExtResource("1_xqw4t")
 number = 9
 ConditionStrategy = SubResource("Resource_g3cwx")
+parity = 1
 column = 2
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 

@@ -30,7 +30,7 @@ void fragment() {
 	
 	// Mezclamos el color base con Blanco Puro (vec3(1.0))
 	// 0.0 = Color normal | 1.0 = Blanco total
-	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.7); // 0.7 para que no sea tan cegador
+	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.5); // 0.5 para que no sea tan cegador
 	
 	ALBEDO = final_color;
 }

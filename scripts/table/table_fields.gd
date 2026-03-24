@@ -158,6 +158,7 @@ func highlight_equals_field(id : int)->void:
 			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
 				highlight_field(i)
 	elif id > 36:
+		highlight_field(id)
 		for i in GameState.bet_field_models.size()-12:
 			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
 				highlight_field(i)
@@ -170,10 +171,11 @@ func reset_equals_field(id : int)->void:
 	var color := GameState.bet_field_models[id].color
 	
 	if id >0 and id < 37:
-		for i in GameState.bet_field_models.size():
+		for i in GameState.bet_field_models.size()-12:
 			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
 				reset_field(i)
 	elif id > 36:
+		reset_field(id)
 		for i in GameState.bet_field_models.size()-12:
 			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
 				reset_field(i)
