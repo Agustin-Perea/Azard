@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends MultiMeshInstance3D
 class_name RouletteFields
 @export_group("Configuración de Rejilla")
@@ -11,10 +11,12 @@ class_name RouletteFields
 @export var offset_x: float = 0.222
 @export var offset_z: float = 0.135
 
-@export_group("Datos de Control")
-@export var tabla_instancias: Array = []
 
-@onready var number_labels : Array[Label3D]
+var tabla_instancias: Array = []
+
+
+@export_group("Datos de Control")
+var number_labels : Array[Label3D]
 @onready var labels : Node3D =  $"../Labels"
 
 var radio_inicial : Vector3 = Vector3(-0.174, 0, 0)

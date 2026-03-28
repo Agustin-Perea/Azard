@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ChipsDefinition" format=3 uid="uid://dyqgr3musm1xg"]
+
+[ext_resource type="Script" uid="uid://e7ndm73jhkab" path="res://scripts/chips/chip_model.gd" id="1_lfiqk"]
+[ext_resource type="Script" uid="uid://cwsk0qj7gscg8" path="res://scripts/chips/chips_definition.gd" id="2_xh5ae"]
+
+[sub_resource type="Resource" id="Resource_lfiqk"]
+script = ExtResource("1_lfiqk")
+metadata/_custom_type_script = "uid://e7ndm73jhkab"
+
+[sub_resource type="Resource" id="Resource_xh5ae"]
+script = ExtResource("1_lfiqk")
+chipID = 1
+metadata/_custom_type_script = "uid://e7ndm73jhkab"
+
+[sub_resource type="Resource" id="Resource_n3d21"]
+script = ExtResource("1_lfiqk")
+metadata/_custom_type_script = "uid://e7ndm73jhkab"
+
+[resource]
+script = ExtResource("2_xh5ae")
+fields = Array[ExtResource("1_lfiqk")]([SubResource("Resource_lfiqk"), SubResource("Resource_xh5ae"), SubResource("Resource_n3d21")])
+metadata/_custom_type_script = "uid://cwsk0qj7gscg8"

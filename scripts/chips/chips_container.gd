@@ -1,25 +1,22 @@
 extends Node3D
 class_name ChipContainer
-@export var table_state : TableState = Table_State
+
 @export var chip_scene: PackedScene
-@onready var chip_origin: ClickableArea = $ChipsOrigin
-@export var offset_z: float = 0.05 # Espacio entre fichas sobre el eje z
-@export var chip_scale: float = 0.07
+@onready var chip_origin: StaticBody3D = $ChipsOrigin
+@export var offset_z: float = 0.2 # Espacio entre fichas sobre el eje z
+@export var chip_scale: float = 1
 
 
 var chip_elements_in_container : Array[ChipElement]
+
 func _ready() -> void:
-	if table_state == null:
-		##tiene que estar en el grupo
-		table_state = Table_State#get_tree().get_first_node_in_group("table_state")
-		
-	spawn_chips(table_state.chips)
+	
+	spawn_chips(GameState.chips)
 
 func spawn_chips(chips: Array[ChipModel]):
 	for i in range(chips.size()):
 		var new_chip = chip_scene.instantiate() as ChipElement
 		# Configuramos la ficha con su data
-		new_chip.assignTableState(table_state)
 		new_chip.assignChipId(i)
 		
 		chip_origin.add_child(new_chip)#son los child

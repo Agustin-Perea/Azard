@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends MultiMeshInstance3D
 class_name TableFields
 @export_group("Configuración de Rejilla")
@@ -11,13 +11,15 @@ class_name TableFields
 @export var offset_x: float = 0.222
 @export var offset_z: float = 0.135
 
-@export_group("Datos de Control")
-@export var table_instances: Array = []
+
+var table_instances: Array = []
 
 @onready var mesh_groups : Node3D =  $"../Table_Groups"
+
+@export_group("Datos de Control")
 @export var table_instances_groups: Array = [MeshInstance3D]
 
-@onready var number_labels : Array[Label3D]
+var number_labels : Array[Label3D]
 @onready var labels : Node3D =  $"../Labels"
 
 @export var group_labels : Array[Label3D]
@@ -26,7 +28,7 @@ class_name TableFields
 
 
 func _ready() -> void:
-
+	
 	#Table_State.table_ready.connect(_on_table_ready)
 	
 	var children = labels.get_children()

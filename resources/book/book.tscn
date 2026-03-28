@@ -10,8 +10,9 @@
 [ext_resource type="Script" uid="uid://ba76xjsrofmpb" path="res://scripts/roulette/roulette_fields.gd" id="4_uxei4"]
 [ext_resource type="ArrayMesh" uid="uid://bm8fb0twxbnj4" path="res://resources/roulette/roulette_field.tres" id="4_xrtgd"]
 [ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="7_jx2r3"]
+[ext_resource type="Script" uid="uid://bf5703dikg6xm" path="res://scripts/chips/chips_container.gd" id="11_mpnxt"]
 [ext_resource type="ArrayMesh" uid="uid://bdrm3f32cqhy6" path="res://resources/book/model/bet_field.tres" id="11_wal6i"]
-[ext_resource type="ArrayMesh" uid="uid://jwo6xispnapa" path="res://resources/book/model/bet_chip.tres" id="12_h1i5i"]
+[ext_resource type="PackedScene" uid="uid://pwvj2b7jvycd" path="res://scripts/chips/bet_chip.tscn" id="12_mpnxt"]
 [ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://scripts/table/table_fields.gd" id="12_ve5xc"]
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://scripts/table/static_body_table_.gd" id="13_mpnxt"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
@@ -36,9 +37,6 @@ albedo_color = Color(0.71160364, 0.36466023, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h1i5i"]
 size = Vector3(0.3583716, 0.051433593, 1.9744599)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_451by"]
-radius = 0.09132065
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d1tnm"]
 size = Vector3(0.668, 0.1, 1.626)
@@ -533,7 +531,6 @@ mesh = ExtResource("3_uxei4")
 [node name="MultiMesh_Fields" type="MultiMeshInstance3D" parent="left_cover/Roulette" unique_id=607524826]
 multimesh = SubResource("MultiMesh_uxei4")
 script = ExtResource("4_uxei4")
-tabla_instancias = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
 pos_inicial_label_0 = Vector3(0.016, 0, -0.174)
 
 [node name="Labels" type="Node3D" parent="left_cover/Roulette" unique_id=962734100]
@@ -741,27 +738,26 @@ mesh = ExtResource("2_vb2ae")
 mesh = ExtResource("3_btjf8")
 
 [node name="ChipsContainer" type="Node3D" parent="right_cover" unique_id=432522641]
+script = ExtResource("11_mpnxt")
+chip_scene = ExtResource("12_mpnxt")
 
 [node name="ChipsOrigin" type="StaticBody3D" parent="right_cover/ChipsContainer" unique_id=1088954111]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.599906, 0, -0.782281)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.515851, 0, -2.0992792)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="right_cover/ChipsContainer/ChipsOrigin" unique_id=966366993]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0633142, -0.018716797, -0.28126997)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03156209, -0.018716797, 1.0090482)
 shape = SubResource("BoxShape3D_h1i5i")
 
-[node name="Bet_Chip" type="StaticBody3D" parent="right_cover/ChipsContainer" unique_id=260899914]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5229952, 0, -1.7975613)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="right_cover/ChipsContainer/Bet_Chip" unique_id=1874020902]
-mesh = ExtResource("12_h1i5i")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="right_cover/ChipsContainer/Bet_Chip" unique_id=1361733896]
-shape = SubResource("SphereShape3D_451by")
+[node name="Bet_Chip" parent="right_cover/ChipsContainer" unique_id=1124240835 instance=ExtResource("12_mpnxt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.911988, 0, -1.8687185)
+visible = false
 
 [node name="BetTable" type="Node3D" parent="right_cover" unique_id=804408280]
 
-[node name="SBTable" type="StaticBody3D" parent="right_cover/BetTable" unique_id=1556320188]
+[node name="SBTable" type="StaticBody3D" parent="right_cover/BetTable" unique_id=1556320188 groups=["table_container"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555, 0, -0.037)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("13_mpnxt")
 first_index = 1
 
@@ -811,12 +807,10 @@ rows = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.433, 0, -1.91)
 shape = SubResource("BoxShape3D_khsg3")
 
-[node name="Bet_Fields" type="MultiMeshInstance3D" parent="right_cover/BetTable" unique_id=1314643407 node_paths=PackedStringArray("group_labels")]
+[node name="Bet_Fields" type="MultiMeshInstance3D" parent="right_cover/BetTable" unique_id=1314643407]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555, 0, -0.037)
 multimesh = SubResource("MultiMesh_ib2bx")
 script = ExtResource("12_ve5xc")
-table_instances = null
-group_labels = [NodePath("../GroupLabels/0"), NodePath("../GroupLabels/1-18"), NodePath("../GroupLabels/even"), NodePath("../GroupLabels/odd"), NodePath("../GroupLabels/19-36"), NodePath("../GroupLabels/1st12"), NodePath("../GroupLabels/2nd12"), NodePath("../GroupLabels/3rd12"), NodePath("../GroupLabels/2to11"), NodePath("../GroupLabels/2to11"), NodePath("../GroupLabels/2to13")]
 
 [node name="Labels" type="Node3D" parent="right_cover/BetTable" unique_id=320377223]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.021, 0)

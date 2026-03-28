@@ -65,6 +65,7 @@ var _angle_rad: float = 0.0
 var _original_parent: Node
 
 func _ready() -> void:
+
 	assert(roulette, "Falta asignar la ruleta")
 	assert(ball, "Falta asignar la bola")
 

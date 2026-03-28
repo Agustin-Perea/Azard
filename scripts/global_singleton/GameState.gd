@@ -2,15 +2,15 @@ extends Node
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
-#@export var chipDefinition: ChipsDefinition
+
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
 
 
 #heuristica de campos iguales
 
-
-#var chips: Array[ChipModel] = []
+var chipDefinition: ChipsDefinition
+var chips: Array[ChipModel] = []
 
 #pasivos en posesion
 #var passiveItems: Array[PassiveItemModel] = []
@@ -37,7 +37,7 @@ signal bet_updated(field_id: int, chip_stack: Array)
 func _ready():
 #	CombatEventBus.reload.connect(reload)
 	bet_field_definition = preload("res://scripts/definitions/bet_field/bet_fields_default.tres")	
-#	chipDefinition = preload("res://Scripts/BetTable/Chips/ChipsDefault.tres")	
+	chipDefinition = preload("res://scripts/chips/ChipsDefault.tres")
 #	ballsDefinition = preload("res://Scripts/BetTable/Balls/BallsDefault.tres")
 	reload()
 
@@ -68,10 +68,10 @@ func load_from_definition():
 		bet_field_models.append(f.duplicate(true)) # deep copy
 	
 	
-	#for f in chipDefinition.fields:
-	#	chips.append(f.duplicate(true)) # deep copy
+	for f in chipDefinition.fields:
+		chips.append(f.duplicate(true)) # deep copy
 	#fields = definition.fields.duplicate(true)
-	#chips = chipDefinition.fields.duplicate(true)
+	chips = chipDefinition.fields.duplicate(true)
 	
 	# 1. Duplicamos el contenedor principal
 	#balls = ballsDefinition.duplicate() 
@@ -111,8 +111,8 @@ func load_from_definition():
 func get_bet_field_model(id: int) -> BetFieldModel:
 	return bet_field_models[id]
 	
-#func get_chip(id: int) -> ChipModel:
-	#return chips[id]
+func get_chip(id: int) -> ChipModel:
+	return chips[id]
 
 
 func get_Bets() -> Dictionary[int, Array]:
