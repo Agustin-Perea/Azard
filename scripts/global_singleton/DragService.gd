@@ -3,7 +3,7 @@ extends Node
 ##el objeto es dado en startDrag, stopdrag decide a donde llevar al objeto
 
 
-@export var drag_height := 0.5
+@export var drag_height := 0.2
 @export var lerp_speed := 10.0
 @export var max_offset := 5.0
 
@@ -139,39 +139,6 @@ func _physics_process(delta: float) -> void:
 	if pending_drop:
 		pending_drop = false
 		stop_drag()
-#por cuestiones de arquitectura dragged padre tiene un ChipView y ContainerMouse un Betfield
-func _get_container_under_mouse() -> Area3D:
-	var viewport := get_tree().root
-	var cam := viewport.get_camera_3d()
-
-	#print("Viewport:", get_tree().root)
-	#print("In cam:", cam)
-	#print("In world:", cam.get_world_3d())
-	#print("DirectSPS:", cam.get_world_3d().direct_space_state)
-	var mouse_pos := viewport.get_mouse_position()
-	var from := cam.project_ray_origin(mouse_pos)
-	var to := from + cam.project_ray_normal(mouse_pos) * 1000.0
-
-	var params := PhysicsRayQueryParameters3D.create(from, to)
-	params.collision_mask = 1 << 1 # layer 2
-	params.collide_with_areas = true
-
-	var result := cam.get_world_3d().direct_space_state.intersect_ray(params)
-
-	# 1. Verificamos si hubo choque
-	if result.is_empty():
-		return null
-
-	# 2. Obtenemos el collider
-	var hit_collider = result.collider as Area3D
-	
-	
-	# 3. Verificamos si el objeto está en el grupo "container"
-	if hit_collider:
-		return hit_collider
-	
-	# Si chocó con algo de la Layer 2 pero NO es del grupo, retornamos null
-	return null
 
 func _get_field_under_mouse() -> Dictionary:
 	var viewport := get_tree().root

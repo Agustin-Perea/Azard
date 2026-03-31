@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cdracx5srv0l"]
+
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://Fonts/FuzzyBubbles-Regular.ttf" id="1_15nkx"]
+[ext_resource type="Script" uid="uid://dmp1a2243ropc" path="res://resources/pop up/pop_up_text.gd" id="1_s7e0e"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_15nkx"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eev62"]
+transparency = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+albedo_color = Color(0.6784314, 0.27058825, 0.5019608, 0.92941177)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_001lf"]
+size = Vector2(0.3, 0.3)
+
+[node name="PopUpText" type="Node3D" unique_id=877394085]
+physics_interpolation_mode = 2
+script = ExtResource("1_s7e0e")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1233370291]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+pixel_size = 0.003
+texture = SubResource("ViewportTexture_15nkx")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=421984376]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(128, 128)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SubViewport" unique_id=1093526414]
+texture_filter = 2
+clip_contents = false
+offset_right = 127.99997
+offset_bottom = 128.0
+pivot_offset = Vector2(64, 64)
+theme_override_colors/default_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 24
+theme_override_constants/outline_size = 12
+theme_override_fonts/normal_font = ExtResource("1_15nkx")
+theme_override_font_sizes/normal_font_size = 46
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]+3.0[/wave]"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackgroundMesh" type="MeshInstance3D" parent="." unique_id=1165261161]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, -0.0012284815, 0)
+material_override = SubResource("StandardMaterial3D_eev62")
+mesh = SubResource("PlaneMesh_001lf")

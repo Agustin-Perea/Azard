@@ -19,6 +19,7 @@ config/icon="uid://buwcryw1eujb2"
 Constants="*uid://c4e7ccrn2c5n7"
 GameState="*uid://b62r1g1ijxyjc"
 DragService="*uid://m2jbm3o7s6bf"
+EventManager="*uid://dbw18b0bf5ody"
 
 [display]
 

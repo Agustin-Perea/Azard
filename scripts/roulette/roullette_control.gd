@@ -74,12 +74,12 @@ func _ready() -> void:
 	_initialize_geometry()
 	_initialize_physics()
 	_calculate_target()
-	spin()
+	#spin()
 
 
-func spin() -> void:
-	if choosed_field >= 0 and choosed_field < FIELD_COUNT:
-		set_target_field(choosed_field)
+func spin(number_winner : int) -> void:
+	if number_winner >= 0 and number_winner < FIELD_COUNT:
+		set_target_field(number_winner)
 	reset_simulation()
 
 

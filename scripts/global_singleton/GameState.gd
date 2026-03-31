@@ -25,7 +25,7 @@ var chips: Array[ChipModel] = []
 # chip_id -> field_id
 var field_by_chip: Dictionary[int, int] = {}
 
-var max_rerroll : int = 3
+var max_reroll : int = 3
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)

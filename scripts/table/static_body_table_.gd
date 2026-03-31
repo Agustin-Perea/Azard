@@ -12,24 +12,32 @@ var size_z_collider = 1.626
 
 
 var last_field_entered : int = -1
-func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 
+func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
+	# Solo procesamos si el mouse está entrando o moviéndose DENTRO
 	if event is InputEventMouseMotion or (event is InputEventMouseButton and event.pressed):
-		
-		# 6. Número final 1-36
 		var numero_celda = calcular_indice_desde_posicion(event_position)
 		
-		# 7. Solo emitir/cambiar si es una celda nueva (para no saturar)
 		if numero_celda != last_field_entered:
-			if last_field_entered >= 0:
-				table_fields.reset_equals_field(last_field_entered)
-				#last_field_entered = -1
+			_limpiar_highlight() # Limpiamos el anterior antes de marcar el nuevo
 			last_field_entered = numero_celda
-			#print("Spot detectado: ", numero_celda)
 			table_fields.highlight_equals_field(numero_celda)
-		
+
+# Esta función detecta eventos en CUALQUIER parte de la pantalla
+func _input(event: InputEvent) -> void:
+	# Si el usuario suelta el click izquierdo en cualquier lugar del juego
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			_limpiar_highlight()
+
 func _on_mouse_exited() -> void:
-	if last_field_entered > -1 :
+	# Si salimos del área pero NO estamos presionando el click, limpiamos.
+	# Si estamos presionando el click, el _input general se encargará cuando suelte.
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_limpiar_highlight()
+
+func _limpiar_highlight() -> void:
+	if last_field_entered != -1:
 		table_fields.reset_equals_field(last_field_entered)
 		last_field_entered = -1
 
@@ -62,6 +70,8 @@ func calcular_indice_desde_posicion(global_pos: Vector3) -> int:
 func calcular_centro_desde_indice(indice: int) -> Vector3:
 	var col_node = $CollisionShape3D
 	var shape = col_node.shape as BoxShape3D
+	indice -= first_index
+
 	
 	# Validamos que el índice no se pase del total (columnas * filas)
 	if not shape or indice < 0 or indice >= (columns * rows): 
@@ -86,7 +96,7 @@ func calcular_centro_desde_indice(indice: int) -> Vector3:
 	# 4. Sumamos el offset del CollisionShape y elevamos un poco en Y (+.1)
 	var punto_local = Vector3(
 		x_local + centro_local_caja.x, 
-		centro_local_caja.y + 0.1, 
+		centro_local_caja.y+.02, 
 		z_local + centro_local_caja.z
 	)
 	
@@ -99,15 +109,15 @@ func update_field(index : int)->void:
 #se deberia desactivar junto a las clickablesares, incluso el collision
 func call_mult_anim(index : int)->void:
 	pass
-	#var multiplicator_indicator = CombatEventBus.multiplicator_indicator
-	#print("Referencia del objeto: ", multiplicator_indicator)
-	#
-	#if multiplicator_indicator != null:
-		#var pos := calcular_centro_desde_indice(index-1)
-		#pos.y += 0.1
-		#multiplicator_indicator.animate_in_pos(pos,"+"+str(int(Table_State.fields[index-1].multiplier)),true)
-	#else:
-		#print("EL OBJETO multiplicator_indicator ES NULO")
+	var multiplicator_indicator = $"../../../Temp/PopUpText"
+	print("Referencia del objeto: ", multiplicator_indicator)
+	
+	if multiplicator_indicator != null:
+		var pos := calcular_centro_desde_indice(index)
+		pos.y += 0.1
+		multiplicator_indicator.animate_in_pos(pos,"+"+str(int(GameState.bet_field_models[index-1].multiplier)),true)
+	else:
+		print("EL OBJETO multiplicator_indicator ES NULO")
 
 
 func _on_mouse_entered() -> void:
