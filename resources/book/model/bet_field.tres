@@ -1,14 +1,8 @@
-[gd_resource type="ArrayMesh" format=3 uid="uid://bdrm3f32cqhy6"]
+[gd_resource type="ArrayMesh" format=3 uid="uid://d1lqjlfn3aqk1"]
 
-[ext_resource type="Shader" uid="uid://b3een36to8yj4" path="res://resources/materials/shaders/bet_field_shader_material.gdshader" id="1_8w0xi"]
-[ext_resource type="Texture2D" uid="uid://dujnpd6skf4qg" path="res://resources/book/model/roulette_book_PaletaColoresRuleta.png" id="2_r7q72"]
+[ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material.tres" id="1_gsuq5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8w0xi"]
-render_priority = 0
-shader = ExtResource("1_8w0xi")
-shader_parameter/tex_palette = ExtResource("2_r7q72")
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_gsuq5"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_8w0xi"]
 _surfaces = [{
 "aabb": AABB(0.1019529, 0.019528829, -1.8382196, 0.21291208, 1e-05, 0.12843728),
 "format": 34896613377,
@@ -30,7 +24,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 6,
 "index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0),
-"material": SubResource("ShaderMaterial_8w0xi"),
+"material": ExtResource("1_gsuq5"),
 "name": "Ficha",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -38,4 +32,4 @@ _surfaces = [{
 "vertex_data": PackedByteArray(255, 255, 0, 0, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 255, 191, 255, 255, 0, 0, 0, 0, 255, 191, 0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127)
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_gsuq5")
+shadow_mesh = SubResource("ArrayMesh_8w0xi")

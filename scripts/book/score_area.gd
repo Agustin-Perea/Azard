@@ -29,24 +29,18 @@ func _ready() -> void:
 	for label in Labels:
 		# Guardamos la posición local original de cada label
 		posiciones_iniciales[label] = label.position
-	#PlayerUiEvents.spin_started.connect(number_disappear)
-	#PlayerUiEvents.spin_finished.connect(number_appear)
+	BookEventBus.spin_started.connect(number_disappear)
+	BookEventBus.spin_finished.connect(number_appear)
 	
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
 	rerolls_count = GameState.max_reroll
 	
-	call_deferred("_assign_spots")
-	
-
-func _assign_spots()->void:
-	#CombatEventBus.multiplicator_indicator.base_spot = damage.global_position
-	#CombatEventBus.multiplicator_indicator.mult_spot = multiplicator.global_position
-	pass
 
 func _on_change_base() -> void:
 	base_damage.text = str(int(round(roulette_controller.base)))
+	
 #esto deberia tener anim
 func _on_change_mult() -> void:
 	multiplicator.text = str(int(round(roulette_controller.multiplier)))
@@ -78,12 +72,12 @@ func _process(delta: float) -> void:
 	for label in Labels:
 		if posiciones_iniciales.has(label):
 			# Calculamos el desfase basado en su posición global para que la onda fluya
-			var desfase = label.global_position.x * 2.0
+			var desfase = label.global_position.x * 2
 			var movimiento = sin((tiempo * velocidad) + desfase) * amplitud
 			
 			# IMPORTANTE: Sumamos el movimiento a la posición original
 			# en lugar de reemplazarla por completo
-			label.position.y = posiciones_iniciales[label].y + movimiento
+			label.position.z = posiciones_iniciales[label].z + movimiento
 
 var tween : Tween
 func number_appear()->void:

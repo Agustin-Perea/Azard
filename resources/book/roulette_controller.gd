@@ -30,7 +30,7 @@ func _ready() -> void:
 
 	#rng.seed = ObjectPoolsDataBase.master_seed
 	rng.randomize()
-	spin()
+	#spin()
 	#CombatEventBus.update_base_score.connect(update_base_score)
 	#
 	#CombatEventBus.add_multiplier.connect(add_multiplier)
@@ -65,7 +65,7 @@ func spin() -> void:
 	#aca sucede el reroll?	
 	#CombatEventBus.changeToState.emit("RouletteState")
 	#CombatEventBus.disableClickableAreas()
-	#PlayerUiEvents.spin_started.emit()
+	BookEventBus.spin_started.emit()
 	## Elegimos un field ganador al azar
 	var field_ids := GameState.bet_field_models
 	if field_ids.is_empty():
@@ -88,7 +88,7 @@ func spin() -> void:
 	
 	#espera que el spin de la ruleta termine
 	await roulette_control.spin_finished
-	##PlayerUiEvents.spin_finished.emit()
+	BookEventBus.spin_finished.emit()
 
 	#cambia de estado, ahora pasa el estado de muestra de cambios
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -100,7 +100,7 @@ func spin() -> void:
 	}))
 	#como no espera aun :v
 	##table_meshes.table_fields.highlight_equals_field(result_field_id-1)
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(.5).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
 	var delta_score := _resolve_bets(result_field_id)

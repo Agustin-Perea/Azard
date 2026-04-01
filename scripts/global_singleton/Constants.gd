@@ -37,21 +37,25 @@ enum BET_FIELD_COLOR {
 }
 enum BET_FIELD_PARITY {
 	EVEN,
-	ODD
+	ODD,
+	NONE
 }
 enum BET_FIELD_HALF_TABLE {
 	LESS_18,
-	GREATER_19
+	GREATER_19,
+	NONE
 }
 enum BET_FIELD_COLUMN {
 	COLUMN_1ST,
 	COLUMN_2ND,
-	COLUMN_3RD
+	COLUMN_3RD,
+	NONE
 }
 enum BET_FIELD_ROW {
 	ROW_1ST,
 	ROW_2ND,
-	ROW_3RD
+	ROW_3RD,
+	NONE
 }
 #scene routes
 const TEST_SCENE = "res://RouletteCombat.tscn"

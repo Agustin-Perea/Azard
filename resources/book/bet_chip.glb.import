@@ -38,6 +38,13 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={
+"materials": {
+"Ficha": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://resources/materials/bet_field_shader_material.tres",
+"use_external/path": "uid://yers7tswll0g"
+}
+},
 "meshes": {
 "bet_chip_Circle_006": {
 "generate/lightmap_uv": 0,

@@ -24,6 +24,10 @@ metadata/_custom_type_script = "uid://4pdksbd8xnr6"
 script = ExtResource("1_xqw4t")
 ConditionStrategy = SubResource("Resource_605dc")
 color = 0
+parity = 2
+half_table = 2
+column = 3
+row = 3
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
 [sub_resource type="Resource" id="Resource_fc66s"]

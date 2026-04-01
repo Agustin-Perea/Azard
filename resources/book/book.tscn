@@ -487,8 +487,11 @@ choosed_field = 15
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8492213, -0.041860536, -1.6421878)
 mesh = ExtResource("2_ykbav")
 
-[node name="Score Area" type="Node3D" parent="left_cover" unique_id=1858201168]
+[node name="Score Area" type="Node3D" parent="left_cover" unique_id=1858201168 node_paths=PackedStringArray("Labels")]
 script = ExtResource("4_001lf")
+Labels = [NodePath("BaseLabel"), NodePath("XLabel"), NodePath("MultLabel"), NodePath("TotalLabel"), NodePath("NumberLabel"), NodePath("RerollCount"), NodePath("TrunCount")]
+amplitud = 0.01
+velocidad = 2.0
 
 [node name="RerollLabel" type="Label3D" parent="left_cover/Score Area" unique_id=26818016]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.385322, 0, -1.8504446)
@@ -519,14 +522,17 @@ font_size = 20
 
 [node name="BaseLabel" type="Label3D" parent="left_cover/Score Area" unique_id=1758804665]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.0016531, 0.0038767457, -0.9705792)
+modulate = Color(0.9884754, 0.99183387, 0.94533116, 1)
 text = "1"
 
 [node name="MultLabel" type="Label3D" parent="left_cover/Score Area" unique_id=2120168629]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.7210264, 0.0038767457, -0.9705792)
+modulate = Color(0.9882353, 0.99215686, 0.94509804, 1)
 text = "1"
 
 [node name="XLabel" type="Label3D" parent="left_cover/Score Area" unique_id=935635680]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.8526306, 0.0038767457, -0.9705792)
+modulate = Color(0.9882353, 0.99215686, 0.94509804, 1)
 text = "x"
 
 [node name="TotalLabel" type="Label3D" parent="left_cover/Score Area" unique_id=362840143]
@@ -1188,7 +1194,7 @@ transform = Transform3D(1, 0, 0, 0, 0.028759047, 0.9995864, 0, -0.9995864, 0.028
 fov = 30.0
 
 [node name="PopUpText" parent="Temp" unique_id=877394085 instance=ExtResource("21_eev62")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.59668744, 0.027824014, -0.99949163)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1364547, 0.027824014, -0.99232846)
 
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]
