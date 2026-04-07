@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://b2bgfaxsxf4kq"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_2the2"]
+[ext_resource type="Script" uid="uid://c0htc8c8ym6vl" path="res://features/balls/effects/ball_effect.gd" id="1_xrgg3"]
+
+[sub_resource type="Resource" id="Resource_bptg0"]
+script = ExtResource("1_xrgg3")
+name = "nada"
+description = "we"
+metadata/_custom_type_script = "uid://c0htc8c8ym6vl"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2the2"]
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+
+[resource]
+script = ExtResource("1_2the2")
+base_damage = 1
+ball_material = SubResource("StandardMaterial3D_2the2")
+ball_effect = SubResource("Resource_bptg0")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

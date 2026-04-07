@@ -14,28 +14,18 @@
 [ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="7_jx2r3"]
 [ext_resource type="Script" uid="uid://bf5703dikg6xm" path="res://features/book/chips/views/chips_container.gd" id="11_mpnxt"]
 [ext_resource type="ArrayMesh" uid="uid://buumidd3pf0wc" path="res://resources/book/model/button.tres" id="11_nq47p"]
-[ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="11_vvjhm"]
 [ext_resource type="ArrayMesh" uid="uid://d1lqjlfn3aqk1" path="res://resources/book/model/bet_field.tres" id="11_wal6i"]
 [ext_resource type="PackedScene" uid="uid://pwvj2b7jvycd" path="res://features/book/chips/views/bet_chip.tscn" id="12_mpnxt"]
 [ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://features/book/table/view/table_fields.gd" id="12_ve5xc"]
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="13_mpnxt"]
-[ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="14_liidn"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
-[ext_resource type="Resource" uid="uid://b885mdt0hfykj" path="res://features/balls/runtime/double_ball.tres" id="15_q6jwi"]
-[ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="16_sui7l"]
-[ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="16_ugj2k"]
 [ext_resource type="Script" uid="uid://bqt412pv6i4lk" path="res://features/book/table/view/table_fields_controller.gd" id="17_6tqyr"]
 [ext_resource type="ArrayMesh" uid="uid://o2ott3v2yxl6" path="res://resources/book/model/bet_field_zero.tres" id="17_h1llp"]
 [ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material.tres" id="17_mpnxt"]
-[ext_resource type="ArrayMesh" uid="uid://dm6vvl2d0pept" path="res://resources/3d_UI/info_canvas.tres" id="18_ugj2k"]
 [ext_resource type="ArrayMesh" uid="uid://baeoiakx8vtop" path="res://resources/book/model/outline.tres" id="19_5lkav"]
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="19_khsg3"]
-[ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="19_o2ihi"]
 [ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="27_344oo"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_liidn"]
-radius = 0.34764636
 
 [sub_resource type="MultiMesh" id="MultiMesh_uxei4"]
 transform_format = 1
@@ -53,22 +43,39 @@ disable_fog = true
 disable_specular_occlusion = true
 albedo_color = Color(0.71160364, 0.36466023, 1, 1)
 
+[sub_resource type="GDScript" id="GDScript_6tqyr"]
+script/source = "extends StaticBody3D
+class_name Button_3D
+
+static var global_input_enabled = true
+signal entered
+signal exited
+signal pressed
+signal released
+
+func _on_mouse_entered():
+	if not global_input_enabled:
+		return
+	entered.emit()
+
+func _on_mouse_exited():
+	if not global_input_enabled:
+		return
+	exited.emit()
+
+
+func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if not global_input_enabled:
+		return
+	if event is InputEventMouseButton and event.pressed:
+		pressed.emit()
+		
+	if event is InputEventMouseButton and event.is_released():
+		released.emit()
+"
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_nq47p"]
 size = Vector3(0.33395386, 0.08807373, 0.22705078)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
-radius = 0.115460515
-
-[sub_resource type="Resource" id="Resource_o2ihi"]
-script = ExtResource("16_sui7l")
-ball_definition = ExtResource("16_ugj2k")
-metadata/_custom_type_script = "uid://vou3yvmfswvf"
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ugj2k"]
-size = Vector3(0.7416992, 0.10809326, 0.30444336)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_o2ihi"]
-size = Vector3(0.2831421, 0.10668945, 0.28125)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h1i5i"]
 size = Vector3(0.3583716, 0.051433593, 1.9744599)
@@ -492,14 +499,6 @@ shadow_mesh = SubResource("ArrayMesh_aledu")
 [node name="Book" type="Node3D" unique_id=1676174387]
 script = ExtResource("1_q6njx")
 
-[node name="roulette_collision" type="StaticBody3D" parent="." unique_id=957894952 groups=["roulette_collision"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84832156, 0, -1.6401474)
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="roulette_collision" unique_id=154327095]
-shape = SubResource("SphereShape3D_liidn")
-
 [node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9604645e-08, -1.4305115e-06, 0.0018132329)
 mesh = ExtResource("1_hgj57")
@@ -521,9 +520,10 @@ mesh = ExtResource("2_ykbav")
 
 [node name="Score Area" type="Node3D" parent="left_cover" unique_id=1858201168 node_paths=PackedStringArray("Labels")]
 script = ExtResource("4_001lf")
-Labels = [NodePath("RerollCount"), NodePath("TrunCount"), NodePath("BaseLabel"), NodePath("XLabel"), NodePath("MultLabel"), NodePath("TotalLabel"), NodePath("NumberLabel")]
+Labels = [NodePath("BaseLabel"), NodePath("XLabel"), NodePath("MultLabel"), NodePath("TotalLabel"), NodePath("NumberLabel"), NodePath("RerollCount"), NodePath("TrunCount")]
 amplitud = 0.01
 velocidad = 2.0
+rerolls_count = null
 
 [node name="RerollLabel" type="Label3D" parent="left_cover/Score Area" unique_id=26818016]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.385322, 0, -1.8504446)
@@ -789,7 +789,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1497431, -0.038038604, -1.
 
 [node name="RerollButton" type="StaticBody3D" parent="left_cover" unique_id=1854103727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3852596, 0, -1.3056993)
-script = ExtResource("11_vvjhm")
+script = SubResource("GDScript_6tqyr")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/RerollButton" unique_id=100792153]
 mesh = ExtResource("11_nq47p")
@@ -804,97 +804,6 @@ shape = SubResource("BoxShape3D_nq47p")
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=305352410]
 mesh = ExtResource("2_vb2ae")
-
-[node name="Ball_Spot" type="StaticBody3D" parent="bottom_cover" unique_id=1017338246]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.843952)
-collision_mask = 0
-script = ExtResource("14_liidn")
-ball_data = ExtResource("15_q6jwi")
-offset_description_canvas = Vector3(0.631, 0.092, 0.802)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/Ball_Spot" unique_id=66065651]
-shape = SubResource("SphereShape3D_q6jwi")
-
-[node name="ball_mesh" type="MeshInstance3D" parent="bottom_cover/Ball_Spot" unique_id=323605778]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-mesh = ExtResource("7_jx2r3")
-
-[node name="Ball_Spot2" type="StaticBody3D" parent="bottom_cover" unique_id=755748486]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.5123482)
-collision_mask = 0
-script = ExtResource("14_liidn")
-ball_data = SubResource("Resource_o2ihi")
-offset_description_canvas = Vector3(0.631, 0.092, 0.802)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/Ball_Spot2" unique_id=1953884824]
-shape = SubResource("SphereShape3D_q6jwi")
-
-[node name="ball_mesh" type="MeshInstance3D" parent="bottom_cover/Ball_Spot2" unique_id=1395317964]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-mesh = ExtResource("7_jx2r3")
-
-[node name="BallDescription" type="MeshInstance3D" parent="bottom_cover" unique_id=436197672 node_paths=PackedStringArray("ball_element")]
-physics_interpolation_mode = 2
-transform = Transform3D(0.575, 0, 0, 0, 0.575, 0, 0, 0, 0.575, 0.6313158, 0.1811561, -1.042273)
-visible = false
-mesh = ExtResource("18_ugj2k")
-script = ExtResource("19_o2ihi")
-ball_element = NodePath("../Ball_Spot")
-spin = true
-
-[node name="Name" type="Label3D" parent="bottom_cover/BallDescription" unique_id=943136384]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.68044186, 0.009922445, -1.392862)
-modulate = Color(0.0885599, 0.0885599, 0.0885599, 1)
-text = "Name"
-horizontal_alignment = 0
-
-[node name="X" type="Label3D" parent="bottom_cover/BallDescription" unique_id=2061763075]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.54613304, 0.05353841, -1.3354394)
-text = "X"
-
-[node name="Spin" type="Label3D" parent="bottom_cover/BallDescription" unique_id=757622999]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.051970333, -0.29050338)
-text = "Spin
-"
-font_size = 28
-
-[node name="Description" type="Label3D" parent="bottom_cover/BallDescription" unique_id=1137244951]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.6436844, 0.009922445, -0.9250393)
-modulate = Color(0.09019608, 0.09019608, 0.09019608, 1)
-text = "-Descriptions           -
--
--"
-font_size = 24
-horizontal_alignment = 0
-vertical_alignment = 0
-autowrap_mode = 3
-width = 280.0
-
-[node name="BaseDamage" type="Label3D" parent="bottom_cover/BallDescription" unique_id=1940505999]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.01568818, 0.009922445, -1.0819768)
-modulate = Color(0.74509805, 0.2509804, 1, 1)
-text = "Base"
-font_size = 47
-
-[node name="Spin_Button3D" type="StaticBody3D" parent="bottom_cover/BallDescription" unique_id=203813897]
-physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.30014002)
-script = ExtResource("11_vvjhm")
-metadata/_custom_type_script = "uid://b82ivoeru5iay"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/BallDescription/Spin_Button3D" unique_id=620458006]
-shape = SubResource("BoxShape3D_ugj2k")
-disabled = true
-
-[node name="X_Button3D" type="StaticBody3D" parent="bottom_cover/BallDescription" unique_id=1523103738]
-physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5387856, 0, -1.3674377)
-script = ExtResource("11_vvjhm")
-metadata/_custom_type_script = "uid://b82ivoeru5iay"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/BallDescription/X_Button3D" unique_id=210214604]
-shape = SubResource("BoxShape3D_o2ihi")
-disabled = true
 
 [node name="right_cover" type="MeshInstance3D" parent="." unique_id=21736364]
 mesh = ExtResource("3_btjf8")
@@ -1345,22 +1254,6 @@ vertical_alignment = 1
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_exited"]
-[connection signal="entered" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_entered"]
-[connection signal="exited" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_exited"]
-[connection signal="input_event" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_input_event"]
-[connection signal="mouse_entered" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_exited"]
-[connection signal="entered" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_entered"]
-[connection signal="exited" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_exited"]
-[connection signal="input_event" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_input_event"]
-[connection signal="mouse_entered" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_exited"]
-[connection signal="input_event" from="bottom_cover/BallDescription/Spin_Button3D" to="bottom_cover/BallDescription/Spin_Button3D" method="_on_input_event"]
-[connection signal="mouse_entered" from="bottom_cover/BallDescription/Spin_Button3D" to="bottom_cover/BallDescription/Spin_Button3D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="bottom_cover/BallDescription/Spin_Button3D" to="bottom_cover/BallDescription/Spin_Button3D" method="_on_mouse_exited"]
-[connection signal="input_event" from="bottom_cover/BallDescription/X_Button3D" to="bottom_cover/BallDescription/X_Button3D" method="_on_input_event"]
-[connection signal="mouse_entered" from="bottom_cover/BallDescription/X_Button3D" to="bottom_cover/BallDescription/X_Button3D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="bottom_cover/BallDescription/X_Button3D" to="bottom_cover/BallDescription/X_Button3D" method="_on_mouse_exited"]
 [connection signal="input_event" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_mouse_exited"]

@@ -21,6 +21,7 @@ GameState="*uid://b62r1g1ijxyjc"
 DragService="*uid://m2jbm3o7s6bf"
 EventManager="*uid://dbw18b0bf5ody"
 BookEventBus="*uid://b2hortd7cvbwd"
+UiEventBus="*uid://clqbq1cyir7sx"
 
 [display]
 

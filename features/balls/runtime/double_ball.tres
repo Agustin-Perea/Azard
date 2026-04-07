@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BallRuntimeState" format=3 uid="uid://b885mdt0hfykj"]
+
+[ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="1_phq3u"]
+[ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_yrlvc"]
+
+[resource]
+script = ExtResource("1_yrlvc")
+ball_definition = ExtResource("1_phq3u")
+metadata/_custom_type_script = "uid://vou3yvmfswvf"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BallsDatabase" format=3 uid="uid://4sxv0ka6b3w1"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_im5jw"]
+[ext_resource type="Script" uid="uid://cvuh12b4ukh7w" path="res://features/balls/database/balls_database.gd" id="2_04sma"]
+[ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="2_refb4"]
+
+[resource]
+script = ExtResource("2_04sma")
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_refb4")])
+metadata/_custom_type_script = "uid://cvuh12b4ukh7w"
