@@ -11,26 +11,36 @@ varying float is_highlighted;
 
 void vertex() {
 	// Lógica para detectar si es MultiMesh o MeshInstance normal
-	if (COLOR.rgb == vec3(1.0)) {
-		final_offset_r = chip_data.x;
-		is_highlighted = chip_data.y; // Usamos el segundo valor del vec3
-	} else {
+	if (COLOR.r < 0.6) {
+		// MultiMesh
 		final_offset_r = COLOR.r;
-		is_highlighted = COLOR.g; // En MultiMesh usamos el canal Verde
+		is_highlighted = COLOR.g;
+	} else {
+		// MeshInstance normal
+		final_offset_r = 0.0;
+		is_highlighted = 0.0;
 	}
 }
 
 void fragment() {
 	vec2 offset = vec2(final_offset_r, 0.0);
+
+	// Color base desde la paleta
 	vec3 color_base = texture(tex_palette, UV + offset).rgb;
-	
-	// Animación de pulso: va de 0.0 a 1.0 suavemente
-	// Multiplicamos por is_highlighted para que si es 0, el pulso sea siempre 0
-	float pulse = (sin(TIME * 6.0) * 0.5 + 0.5) * is_highlighted;
-	
-	// Mezclamos el color base con Blanco Puro (vec3(1.0))
-	// 0.0 = Color normal | 1.0 = Blanco total
-	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.5); // 0.5 para que no sea tan cegador
-	
+
+	// Pulso estable (sin sin)
+	float t = fract(TIME * 0.5);
+	float pulse = t * (1.0 - t) * 4.0;
+	pulse = clamp(pulse, 0.0, 1.0);
+
+	// ✅ FIX: convertir highlight a 0 o 1 real (evita bugs en mobile)
+	float highlight_flag = (is_highlighted > 0.5) ? 1.0 : 0.0;
+
+	// Aplicar pulso solo si está highlighted
+	pulse *= highlight_flag;
+
+	// Mezcla final (controlada)
+	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.4);
+
 	ALBEDO = final_color;
 }

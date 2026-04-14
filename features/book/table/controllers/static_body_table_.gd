@@ -118,12 +118,12 @@ func update_field(index : int)->void:
 func call_mult_anim(index : int)->void:
 	#esto es una negrada
 	var multiplicator_indicator = $"../../../Temp/PopUpText"
-	print("Referencia del objeto: ", multiplicator_indicator)
+	#print("Referencia del objeto: ", multiplicator_indicator)
 	
 	if multiplicator_indicator != null:
 		var pos := calcular_centro_desde_indice(index)
 		pos.y += 0.1
-		multiplicator_indicator.animate_in_pos(pos,"+"+str(int(GameState.bet_field_models[index-1].multiplier)),true)
+		multiplicator_indicator.animate_in_pos(pos,"+"+str(int(GameState.bet_field_models[index].multiplier)),true)
 	else:
 		print("EL OBJETO multiplicator_indicator ES NULO")
 
