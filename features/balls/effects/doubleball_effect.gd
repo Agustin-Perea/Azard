@@ -10,4 +10,4 @@ func on_bet_resolved()->void:
 	pass
 func on_post_resolved(roullette_controller: RouletteController)->void:
 	print("postresolve")
-	roullette_controller.add_multiplier(2)
+	roullette_controller.multiply_mult_score(2)

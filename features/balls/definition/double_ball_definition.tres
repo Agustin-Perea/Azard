@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_4qobm"]
 script = ExtResource("1_4qobm")
-name = "DoubleBall"
+name = "Duball"
 description = "Multiplica x2 el score al final del calculo"
 metadata/_custom_type_script = "uid://djvnfrnpiw6md"
 

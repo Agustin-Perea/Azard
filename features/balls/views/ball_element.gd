@@ -169,10 +169,6 @@ func use_ball()->void:
 	deactivate_ball_desctiption()
 
 
-func _on_entered() -> void:
+func _on_mouse_entered():
 	if DragService.dragged == null:
 		activate_ball_desctiption()
-
-
-func _on_exited() -> void:
-	pass # Replace with function body.
