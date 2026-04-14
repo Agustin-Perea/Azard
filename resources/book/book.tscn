@@ -3,6 +3,7 @@
 [ext_resource type="ArrayMesh" uid="uid://323q4eoxjwhq" path="res://resources/book/model/roulette_left_cover.tres" id="1_hgj57"]
 [ext_resource type="Script" uid="uid://byumyfhwocryi" path="res://features/book/roullette/controllers/roulette_controller.gd" id="1_q6njx"]
 [ext_resource type="Script" uid="uid://bd84gpfd6vb46" path="res://features/book/roullette/controllers/roullette_control.gd" id="2_d1tnm"]
+[ext_resource type="Material" uid="uid://b14nsmnlvse02" path="res://resources/book/materials/book_material.tres" id="2_padf7"]
 [ext_resource type="ArrayMesh" uid="uid://cfppbxhyjqwu1" path="res://resources/book/model/roulette_bottom_cover.res" id="2_vb2ae"]
 [ext_resource type="ArrayMesh" uid="uid://utco6w38i0km" path="res://resources/roulette/roulette_base.tres" id="2_ykbav"]
 [ext_resource type="ArrayMesh" uid="uid://6coywopv7iqn" path="res://resources/book/model/roulette_right_cover.res" id="3_btjf8"]
@@ -33,6 +34,10 @@
 [ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="19_o2ihi"]
 [ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="27_344oo"]
+[ext_resource type="Script" uid="uid://boor88jdqe04t" path="res://features/items/passive_items/views/passive_item_element.gd" id="35_hnjqa"]
+[ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
+[ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="38_f2bku"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_liidn"]
 radius = 0.34764636
@@ -489,6 +494,17 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_aledu")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_padf7"]
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.84705883, 0.85882354, 0.68235296, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hnjqa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w3wlc"]
+size = Vector3(0.28585815, 0.124938965, 0.17980957)
+
 [node name="Book" type="Node3D" unique_id=1676174387]
 script = ExtResource("1_q6njx")
 
@@ -502,6 +518,7 @@ shape = SubResource("SphereShape3D_liidn")
 
 [node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9604645e-08, -1.4305115e-06, 0.0018132329)
+material_override = ExtResource("2_padf7")
 mesh = ExtResource("1_hgj57")
 script = ExtResource("2_d1tnm")
 roulette = NodePath("Roulette")
@@ -897,6 +914,7 @@ shape = SubResource("BoxShape3D_o2ihi")
 disabled = true
 
 [node name="right_cover" type="MeshInstance3D" parent="." unique_id=21736364]
+material_override = ExtResource("2_padf7")
 mesh = ExtResource("3_btjf8")
 
 [node name="ChipsContainer" type="Node3D" parent="right_cover" unique_id=432522641]
@@ -1342,16 +1360,61 @@ text = "FPS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Node3D" type="StaticBody3D" parent="Temp" unique_id=365811749 node_paths=PackedStringArray("add_collision", "item_collision")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0808461)
+script = ExtResource("35_hnjqa")
+passive_item_data = ExtResource("36_n0767")
+add_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
+item_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
+
+[node name="PassiveItemDescription" type="MeshInstance3D" parent="Temp/Node3D" unique_id=422495397]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.15121174, 0)
+material_override = SubResource("StandardMaterial3D_padf7")
+mesh = SubResource("QuadMesh_hnjqa")
+script = ExtResource("36_w3wlc")
+
+[node name="ItemName" type="Label3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=961391753]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45020282, 0.4436127, 0.0025392473)
+modulate = Color(0, 0, 0, 1)
+text = "Name"
+font_size = 16
+horizontal_alignment = 0
+vertical_alignment = 0
+
+[node name="Description" type="Label3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=1361476025]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002363205, 0.020713568, 0.0025392175)
+modulate = Color(0, 0, 0, 1)
+text = "description"
+font_size = 16
+vertical_alignment = 0
+autowrap_mode = 3
+width = 200.0
+
+[node name="SB_Button3D" type="StaticBody3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=488367436]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.40345514, 0.025100127)
+script = ExtResource("11_vvjhm")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Temp/Node3D/PassiveItemDescription/SB_Button3D" unique_id=338846584]
+shape = SubResource("BoxShape3D_w3wlc")
+
+[node name="Add" type="Label3D" parent="Temp/Node3D/PassiveItemDescription/SB_Button3D" unique_id=1298210309]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+modulate = Color(0.36234, 0.61, 0.25620002, 1)
+text = "Add"
+font_size = 21
+
+[node name="Sprite3D" type="Sprite3D" parent="Temp/Node3D" unique_id=23593940]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.007839918, 0.15605372, -0.16048932)
+pixel_size = 0.001
+texture = ExtResource("38_f2bku")
+
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_exited"]
-[connection signal="entered" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_entered"]
-[connection signal="exited" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_exited"]
 [connection signal="input_event" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_input_event"]
 [connection signal="mouse_entered" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_exited"]
-[connection signal="entered" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_entered"]
-[connection signal="exited" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_exited"]
 [connection signal="input_event" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_input_event"]
 [connection signal="mouse_entered" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_exited"]
@@ -1376,3 +1439,6 @@ vertical_alignment = 1
 [connection signal="input_event" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_mouse_exited"]
+[connection signal="input_event" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_mouse_exited"]
