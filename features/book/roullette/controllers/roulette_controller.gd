@@ -56,9 +56,9 @@ func multiply_mult_score(add_mult : float)->void:
 		"paralel": false,
 		"action": func():
 			multiplier *= add_mult
-			multiplicatorChanged.emit(add_mult)
 			return true
 	}))
+	multiplicatorChanged.emit(add_mult)
 
 func on_start_spin(ball : BallRuntimeState) -> void:
 	BookEventBus.spin_started.emit()
@@ -103,8 +103,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 			##CombatEventBus.changeToState.emit("BetResolveState")
 			return true#Deberia esperar el tween, osea el finish del spin
 	}))
-	#como no espera aun :v
-	##table_meshes.table_fields.highlight_equals_field(result_field_id-1)
+
 	await get_tree().create_timer(1).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
@@ -112,7 +111,6 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	score = delta_score#bad
 	
 	#eventos finales post resolve, bolas y pasivos
-	##CombatEventBus.bet_resolved.emit()
 	ball.ball_definition.ball_effect.on_post_resolved(self)
 	
 	#cambio de score
@@ -222,16 +220,14 @@ func _resolve_bets(result_field_id: int) -> float:
 	#mmmm
 	winner_model.activateHighlight.emit()
 	#table_meshes.table_fields.highlight_field(result_field_id-1)
-	
+	BookEventBus.bet_pre_resolve.emit(self)
 	var count : int = 0
 	for field_id in active_bets:
 		var field := GameState.get_bet_field_model(field_id) as BetFieldModel
 		var chip_stack: Array = active_bets[field_id]
 		# Verificamos si este campo cumple la condición ganadora
 		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
-
 			for i in range(0, chip_stack.size()):
-
 				EventManager.add_event(EventManager.QueueType.GAME, 
 				GameEvent.new({
 					"paralel": false,
@@ -246,25 +242,15 @@ func _resolve_bets(result_field_id: int) -> float:
 			
 			if count > 0:
 				pass
-			##CombatEventBus.betfield_resolved.emit()
+			
+			BookEventBus.bet_resolved.emit(self)
+			
 			count+=1#tambien deberia aumentar la velocidad de enimacion
 			delta = multiplier
-
-	#mmmmm
-	var ev = GameEvent.new({
-		"paralel": false,
-		"action": func():
-			deactivateHL(winner_model)
-			##table_meshes.table_fields.reset_equals_field(result_field_id-1)
-			return true
-	})
-	EventManager.add_event(EventManager.QueueType.GAME, ev)
+	
+	BookEventBus.bet_post_resolved.emit(self)
+	#m
 	return delta
-
-#esto no deberia estar aqui
-func deactivateHL(field: BetFieldModel)->void:
-	field.desactivateHighlight.emit()	#desactivar
-
 
 func add_multiplier(mult: float)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
