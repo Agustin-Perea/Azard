@@ -5,15 +5,13 @@ var bet_field_models: Array[BetFieldModel] = []
 
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
-
-
 #heuristica de campos iguales
 
 var chipDefinition: ChipsDefinition
 var chips: Array[ChipModel] = []
 
 #pasivos en posesion
-#var passiveItems: Array[PassiveItemModel] = []
+@export var passiveItems: Array[PassiveItemRuntimeState] = []
 
 #items usables, actualmente es solo el betfieldmodel, pero en realidad deberian haber mas
 #var usableItems: Array[BetFieldModel] = []
@@ -158,22 +156,24 @@ func remove_bet(chip_id: int) -> void:
 
 	field_by_chip.erase(chip_id)
 
-#func add_passive_item(new_passive : PassiveItemModel)->void:
-	#var existing_item = null
-	#
-	#for item in passiveItems:
-		#if (item.itemId == new_passive.itemId) and(item.name == new_passive.name): 
-			#existing_item = item
-			#break
-	#
-	#if existing_item:
-		#existing_item.quantity += 1
-		#existing_item.animate.emit()
-		##existing_item.on_item_added() 
-	#else:
-		#new_passive.quantity = 1
-		#passiveItems.append(new_passive)
-		#new_passive.on_item_added()
+func add_passive_item(new_passive : PassiveItemDefinition)->void:
+	var existing_item = null
+	
+	for item in passiveItems:
+		if (item.passive_item_definition == new_passive): 
+			existing_item = item
+			break
+	
+	if existing_item:
+		existing_item.quantity += 1
+		existing_item.animate.emit()
+		#existing_item.on_item_added() 
+	else:
+		existing_item = PassiveItemRuntimeState.new()
+		existing_item.passive_item_definition = new_passive
+		existing_item.quantity = 1
+		passiveItems.append(existing_item)
+		existing_item.on_item_added()
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
-		#new_passive.animate.emit()
-		##agregar el panel al control
+		#existing_item.animate.emit()
+		#agregar el panel al control
