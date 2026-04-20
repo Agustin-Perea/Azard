@@ -1,7 +1,26 @@
 [gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dnqvv3rfamunk"]
 
 [ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_gi8hr"]
+[ext_resource type="Script" uid="uid://iqkt0t3ht5y1" path="res://features/balls/effects/catalog/uncommon/ball_09_bounce_ball_effect.gd" id="1_rkutj"]
+
+[sub_resource type="Resource" id="Resource_k26xi"]
+script = ExtResource("1_rkutj")
+name = "BounceBall"
+description = "Bola de limpieza de sala. Reparte impactos en enemigos aleatorios. "
+metadata/_custom_type_script = "uid://iqkt0t3ht5y1"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3l08j"]
+shading_mode = 0
+albedo_color = Color(0.71790653, 0.6535493, 0.4308528, 1)
 
 [resource]
 script = ExtResource("1_gi8hr")
+ball_id = 9
+display_name = "BounceBall"
+rarity = "uncommon"
+pool_weight = 90
+base_damage = 2
+level_1_damage = 2
+ball_material = SubResource("StandardMaterial3D_3l08j")
+ball_effect = SubResource("Resource_k26xi")
 metadata/_custom_type_script = "uid://da1j3m3u31rvp"

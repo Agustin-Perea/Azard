@@ -1,7 +1,26 @@
 [gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://cmga7cebtu23v"]
 
-[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_2rlrw"]
+[ext_resource type="Script" uid="uid://y1dtrf5xwj6l" path="res://features/balls/effects/catalog/rare/ball_18_crystal_ball_effect.gd" id="1_6raei"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_plq66"]
+
+[sub_resource type="Resource" id="Resource_x2gba"]
+script = ExtResource("1_6raei")
+name = "CrystalBall"
+description = "Bola de control suave. No manipula directamente la ruleta, pero permite “corregir” el resultado tomando la mejor casilla cercana para sus sinergias. "
+metadata/_custom_type_script = "uid://y1dtrf5xwj6l"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ge0om"]
+shading_mode = 0
+albedo_color = Color(0.36078432, 1, 1, 1)
 
 [resource]
-script = ExtResource("1_2rlrw")
+script = ExtResource("2_plq66")
+ball_id = 18
+display_name = "CrystalBall"
+rarity = "rare"
+pool_weight = 45
+base_damage = 3
+level_1_damage = 3
+ball_material = SubResource("StandardMaterial3D_ge0om")
+ball_effect = SubResource("Resource_x2gba")
 metadata/_custom_type_script = "uid://da1j3m3u31rvp"

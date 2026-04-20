@@ -18,6 +18,7 @@ script = ExtResource("2_88r41")
 ball_id = 6
 display_name = " ShieldBall"
 pool_weight = 125
+category = " support"
 base_damage = 1
 level_1_damage = 1
 ball_material = SubResource("StandardMaterial3D_8mj2g")
