@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://6oo5r2u7bl4s"]
+
+[ext_resource type="Script" uid="uid://dvlkvfka6ny0y" path="res://features/balls/effects/catalog/common/ball_05_poison_ball_effect.gd" id="1_mr711"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_me7ty"]
+
+[sub_resource type="Resource" id="Resource_xr25t"]
+script = ExtResource("1_mr711")
+name = "PoisonBall"
+description = "Bola de daño prolongado. Aplica veneno al objetivo; el enemigo recibe ese daño al inicio de sus turnos y consume"
+metadata/_custom_type_script = "uid://dvlkvfka6ny0y"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8wibs"]
+shading_mode = 0
+albedo_color = Color(0.19341749, 0.24681231, 0.063265875, 1)
+
+[resource]
+script = ExtResource("2_me7ty")
+ball_id = 5
+display_name = "PoisonBall"
+pool_weight = 125
+attack_profile = "uni-target,dot"
+base_damage = 2
+level_1_damage = 2
+ball_material = SubResource("StandardMaterial3D_8wibs")
+ball_effect = SubResource("Resource_xr25t")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

@@ -31,6 +31,8 @@ signal bet_updated(field_id: int, chip_stack: Array)
 #playerStats
 @export var current_healt : int = 100# % de vida
 @export var max_healt : int = 100
+@export var run_gold: int = 0
+@export var run_shield: int = 0
 
 func _ready():
 #	CombatEventBus.reload.connect(reload)
@@ -45,6 +47,8 @@ func reload():
 	#playerStats
 	max_healt = 100
 	current_healt = max_healt
+	run_gold = 0
+	run_shield = 0
 	
 	#limpieza de apuestas
 	Bets.clear()
@@ -177,3 +181,29 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control
+
+func heal_player(amount: int) -> void:
+	if amount <= 0:
+		return
+	current_healt = min(max_healt, current_healt + amount)
+
+func apply_self_damage(amount: int) -> void:
+	if amount <= 0:
+		return
+	var pending: int = amount
+	if run_shield > 0:
+		var absorbed: int = mini(run_shield, pending)
+		run_shield -= absorbed
+		pending -= absorbed
+	if pending > 0:
+		current_healt = max(0, current_healt - pending)
+
+func add_run_gold(amount: int) -> void:
+	if amount <= 0:
+		return
+	run_gold += amount
+
+func add_run_shield(amount: int) -> void:
+	if amount <= 0:
+		return
+	run_shield += amount

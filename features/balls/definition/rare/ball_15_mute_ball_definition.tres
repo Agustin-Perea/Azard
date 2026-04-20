@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dk4vi3du4x6mq"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_h07bf"]
+
+[resource]
+script = ExtResource("1_h07bf")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

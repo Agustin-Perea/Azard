@@ -64,7 +64,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	BookEventBus.spin_started.emit()
 	
 	#agregar el base de la bola
-	add_base(ball.ball_definition.base_damage)
+	var resolved_damage := ball.ball_definition.get_damage_for_level(ball.level_upgrade)
+	add_base(resolved_damage)
 	#cambiar el material de la bola de la ruleta
 	ball_mesh.material_override = ball.ball_definition.ball_material
 	#desactivar colisiones
@@ -111,6 +112,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	score = delta_score#bad
 	
 	#eventos finales post resolve, bolas y pasivos
+	ball.ball_definition.ball_effect.set_meta("runtime_level", ball.level_upgrade)
+	ball.ball_definition.ball_effect.set_meta("runtime_ball_id", ball.ball_definition.ball_id)
 	ball.ball_definition.ball_effect.on_post_resolved(self)
 	
 	#cambio de score

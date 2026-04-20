@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="13_mpnxt"]
 [ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="14_liidn"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
-[ext_resource type="Resource" uid="uid://b885mdt0hfykj" path="res://features/balls/runtime/double_ball.tres" id="15_q6jwi"]
+[ext_resource type="Resource" uid="uid://b12r0cdcqgp4q" path="res://features/balls/runtime/3.tres" id="16_f2bku"]
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="16_sui7l"]
 [ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="16_ugj2k"]
 [ext_resource type="Script" uid="uid://bqt412pv6i4lk" path="res://features/book/table/view/table_fields_controller.gd" id="17_6tqyr"]
@@ -826,7 +826,7 @@ mesh = ExtResource("2_vb2ae")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.843952)
 collision_mask = 0
 script = ExtResource("14_liidn")
-ball_data = ExtResource("15_q6jwi")
+ball_data = ExtResource("16_f2bku")
 offset_description_canvas = Vector3(0.631, 0.092, 0.802)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/Ball_Spot" unique_id=66065651]
