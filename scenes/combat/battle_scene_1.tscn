@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://ljs75i2re1r6"]
+
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_b6bnk"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="2_isoin"]
+[ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="4_b6bnk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_8ibt7")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_njiuf"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+reflected_light_source = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isoin"]
+albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
+size = Vector2(100, 100)
+
+[node name="BattleScene1" type="Node3D" unique_id=536595362]
+
+[node name="Environment" type="Node" parent="." unique_id=1416635751]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1431979176]
+environment = SubResource("Environment_njiuf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
+transform = Transform3D(-0.99355346, 0.013545167, -0.112552665, -0.03760549, 0.8972399, 0.43993914, 0.10694579, 0.44133568, -0.8909464, 0, 5.866068, 0)
+light_color = Color(0.58431375, 0.58431375, 0.58431375, 1)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment" unique_id=1950242176]
+visible = false
+material_override = SubResource("StandardMaterial3D_isoin")
+mesh = SubResource("PlaneMesh_b6bnk")
+
+[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_b6bnk")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
+
+[node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407]
+
+[node name="VirtualCamera" type="Camera3D" parent="CameraContainer" unique_id=1107707823]
+transform = Transform3D(-0.95731944, 0, -0.2890319, 0, 1, 0, 0.2890319, 0, -0.95731944, -1.5797986, 1.6798961, -1.6191579)
+fov = 45.0
+
+[node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
+
+[node name="Extra" type="Node" parent="." unique_id=1603717315]
+
+[node name="BattleManager" type="Node" parent="." unique_id=669596202]
+
+[node name="CombatGroups" type="Node" parent="BattleManager" unique_id=370919649]
+
+[node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
+
+[node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("2_isoin")]
+
+[node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
+
+[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=389923164 instance=ExtResource("4_b6bnk")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=287020783]
