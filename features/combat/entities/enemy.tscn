@@ -47,7 +47,6 @@ graph_offset = Vector2(16, 28)
 
 [node name="StatsComponent" type="Node" parent="." unique_id=1847357195]
 script = ExtResource("1_m88l1")
-current_healt = 100
 
 [node name="StatusViewComponent" type="Node" parent="." unique_id=1302820884]
 script = ExtResource("2_fldkf")
@@ -59,11 +58,10 @@ script = ExtResource("2_fldkf")
 [node name="bat" parent="ModelVisualComponent" unique_id=151119345 instance=ExtResource("1_3ar4h")]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
-[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=589395905]
-transform = Transform3D(1.0214071, 0, 0, 0, 0.9657486, 0, 0, 0, 1, 0, 1.9014155, 0)
-"blend_shapes/Key 1" = 0.6465162
+[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=1565459209]
+transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
 
-[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=1510423416]
+[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=841536236]
 libraries/bat_animations = ExtResource("4_iy404")
 
 [node name="StatsView" type="Node3D" parent="ModelVisualComponent" unique_id=403448201]
@@ -79,7 +77,7 @@ offset_right = 30.0
 offset_bottom = 2.0
 theme_override_styles/background = SubResource("StyleBoxFlat_fldkf")
 theme_override_styles/fill = SubResource("StyleBoxFlat_4l2kj")
-value = 50.0
+value = 51.9
 show_percentage = false
 
 [node name="LifeView" type="Sprite3D" parent="ModelVisualComponent/StatsView" unique_id=1532637649]
@@ -105,6 +103,16 @@ visible = false
 billboard = 1
 double_sided = false
 texture = SubResource("ViewportTexture_4l2kj")
+
+[node name="shieldText" type="Label3D" parent="ModelVisualComponent/StatsView" unique_id=1236496763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17188734, 2.4691556, 0)
+pixel_size = 0.0015
+billboard = 1
+double_sided = false
+fixed_size = true
+modulate = Color(0.38279998, 0.58, 0.5767133, 1)
+text = "0
+"
 
 [node name="DamageSubViewport" type="SubViewport" parent="ModelVisualComponent/StatsView" unique_id=728267348]
 transparent_bg = true

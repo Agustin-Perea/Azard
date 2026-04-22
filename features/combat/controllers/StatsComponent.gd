@@ -14,6 +14,7 @@ signal health_changed
 
 func _ready() -> void:
 	setup()
+	
 
 func setup()->void:
 	current_healt = max_healt #esto cambia cuando estamos ingame

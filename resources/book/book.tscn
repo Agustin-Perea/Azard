@@ -64,6 +64,8 @@ size = Vector3(0.33395386, 0.08807373, 0.22705078)
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2bku"]
+
 [sub_resource type="Resource" id="Resource_o2ihi"]
 script = ExtResource("16_sui7l")
 ball_definition = ExtResource("16_ugj2k")
@@ -607,7 +609,6 @@ collision_mask = 3
 shape = SubResource("SphereShape3D_liidn")
 
 [node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9604645e-08, -1.4305115e-06, 0.0018132329)
 material_override = ExtResource("2_padf7")
 mesh = ExtResource("1_hgj57")
 script = ExtResource("2_d1tnm")
@@ -924,6 +925,7 @@ shape = SubResource("SphereShape3D_q6jwi")
 
 [node name="ball_mesh" type="MeshInstance3D" parent="bottom_cover/Ball_Spot" unique_id=323605778]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_f2bku")
 mesh = ExtResource("7_jx2r3")
 
 [node name="Ball_Spot2" type="StaticBody3D" parent="bottom_cover" unique_id=755748486]

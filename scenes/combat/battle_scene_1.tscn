@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_b6bnk"]
 [ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="2_isoin"]
+[ext_resource type="PackedScene" uid="uid://ckjjsqq6r5ljr" path="res://resources/book/book.tscn" id="3_b6bnk"]
 [ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="4_b6bnk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
@@ -27,6 +28,12 @@ albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
 size = Vector2(100, 100)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_b6bnk"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_02vyu"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
 [node name="Environment" type="Node" parent="." unique_id=1416635751]
@@ -49,7 +56,7 @@ material_override = SubResource("StandardMaterial3D_isoin")
 mesh = SubResource("PlaneMesh_b6bnk")
 
 [node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_b6bnk")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.1361115, 8.76)
 
 [node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407]
 
@@ -69,9 +76,93 @@ fov = 45.0
 
 [node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("2_isoin")]
 
+[node name="LifeView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="1" unique_id=1436878656]
+texture = SubResource("ViewportTexture_b6bnk")
+
+[node name="DamageView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="3" unique_id=2027840614]
+texture = SubResource("ViewportTexture_02vyu")
+
+[node name="Skeleton3D" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig" parent_id_path=PackedInt32Array(136977887, 963417428, 1742944873) index="0" unique_id=1160924859]
+bones/0/position = Vector3(0.121124156, 0.7422869, 0.07323456)
+bones/0/rotation = Quaternion(-0.011406741, 0.044248644, 0.99889153, -0.011303348)
+bones/2/position = Vector3(-0.0069571408, 0.8793057, 0.061962347)
+bones/2/rotation = Quaternion(0.049756486, -0.13939959, 0.0013008968, 0.9889846)
+bones/3/rotation = Quaternion(-0.018046888, 7.6413285e-09, 4.345655e-09, 0.99983716)
+bones/4/rotation = Quaternion(-0.036214508, 0.019412633, 0.0077299965, 0.99912566)
+bones/5/rotation = Quaternion(-0.072444014, 0.06471496, 0.010593781, 0.99521446)
+bones/6/position = Vector3(0.037929762, 0.15042987, 0.030401103)
+bones/6/rotation = Quaternion(-0.57257396, -0.40626746, -0.437012, 0.5622512)
+bones/7/rotation = Quaternion(-0.4100706, 0.60182047, -0.50762606, 0.46040207)
+bones/8/position = Vector3(-1.0826666e-08, 0.25736415, 2.3366937e-08)
+bones/8/rotation = Quaternion(0.08110645, -0.00043177712, 3.509314e-05, 0.9967054)
+bones/9/position = Vector3(3.0375737e-09, 0.25647002, 3.394696e-09)
+bones/9/rotation = Quaternion(-0.027314452, 0.00094212865, 0.0024087888, 0.9996236)
+bones/10/position = Vector3(-0.0004997272, 0.0906765, 0.036388494)
+bones/10/rotation = Quaternion(-0.017172229, 0.7269746, -0.012373072, 0.6863381)
+bones/11/rotation = Quaternion(0.0023569278, 0.00010069911, -4.787689e-07, 0.99999726)
+bones/12/rotation = Quaternion(0.0033523499, -0.0002071012, -3.094335e-07, 0.9999944)
+bones/19/position = Vector3(-0.0027187448, 0.08697871, -0.011640191)
+bones/19/rotation = Quaternion(-0.017153215, 0.7270386, -0.01239353, 0.6862704)
+bones/20/rotation = Quaternion(0.0023301248, 7.954664e-06, -8.6681564e-07, 0.99999726)
+bones/21/rotation = Quaternion(0.0032462415, -8.068576e-06, 1.0621117e-06, 0.9999948)
+bones/22/position = Vector3(0.012657707, 0.022167046, 0.017135125)
+bones/22/rotation = Quaternion(0.11230209, 0.9491348, 0.29267967, -0.02949488)
+bones/23/rotation = Quaternion(0.16022632, 5.2142423e-06, 1.4301986e-06, 0.98708034)
+bones/24/rotation = Quaternion(-0.0006802829, -1.5201513e-06, -9.0340643e-07, 0.99999976)
+bones/25/position = Vector3(-0.037929717, 0.15042976, 0.03040111)
+bones/25/rotation = Quaternion(-0.5695648, 0.41703096, 0.42898065, 0.56361043)
+bones/26/rotation = Quaternion(0.3781296, 0.6470937, -0.4524165, -0.4833293)
+bones/27/position = Vector3(3.2557274e-08, 0.24770457, 3.3759626e-09)
+bones/27/rotation = Quaternion(0.70899916, 0.028753681, -0.02895685, 0.7040278)
+bones/28/position = Vector3(3.144714e-08, 0.24628751, 9.6033126e-08)
+bones/28/rotation = Quaternion(0.13611798, 0.7610385, -0.1362303, 0.6194624)
+bones/29/position = Vector3(0.0004995577, 0.09067649, 0.036388576)
+bones/29/rotation = Quaternion(-0.017171588, -0.7269747, 0.012373101, 0.686338)
+bones/30/rotation = Quaternion(0.0023573379, -0.00010048153, 7.578336e-07, 0.99999726)
+bones/31/rotation = Quaternion(0.003351143, 0.00020716529, 1.7598495e-07, 0.9999944)
+bones/32/position = Vector3(0.0050197635, 0.09128243, 0.013297638)
+bones/33/rotation = Quaternion(-0.0021382573, -5.1314364e-06, -4.884161e-07, 0.9999978)
+bones/34/rotation = Quaternion(0.056613207, 4.0954046e-06, -1.9903553e-07, 0.9983962)
+bones/38/position = Vector3(0.002718849, 0.08697886, -0.0116400905)
+bones/38/rotation = Quaternion(-0.01715334, -0.72703856, 0.012392976, 0.6862704)
+bones/39/rotation = Quaternion(0.0023304368, -7.87994e-06, 1.0955146e-06, 0.9999973)
+bones/40/rotation = Quaternion(0.0032459951, 8.162145e-06, -1.2215884e-06, 0.9999948)
+bones/41/position = Vector3(-0.012657689, 0.022166988, 0.017135112)
+bones/41/rotation = Quaternion(-0.6976952, 0.703881, 0.07862685, -0.10766041)
+bones/42/rotation = Quaternion(0.16022612, -5.2219257e-06, -1.2309974e-06, 0.98708034)
+bones/43/rotation = Quaternion(-0.00068030023, 1.5569385e-06, 8.037633e-07, 0.99999976)
+bones/44/rotation = Quaternion(0.17396535, -0.042598933, -0.00460917, 0.98381925)
+bones/45/rotation = Quaternion(-0.11433156, 0.07435184, -0.008581372, 0.99061924)
+bones/46/rotation = Quaternion(0.090347454, 0.033120815, -0.0032408852, 0.99535424)
+bones/47/rotation = Quaternion(0.97065634, 0.036639653, -0.1913813, 0.140915)
+bones/48/position = Vector3(4.1515268e-08, 0.39567122, -2.5262114e-08)
+bones/48/rotation = Quaternion(0.16879481, 0.003628994, -0.0006214814, 0.9856444)
+bones/49/position = Vector3(-1.169974e-08, 0.43147734, -5.820766e-11)
+bones/49/rotation = Quaternion(-0.5062473, -0.26438642, -0.0935429, 0.81551415)
+bones/50/rotation = Quaternion(-2.992092e-07, 0.95680606, -0.29072693, -7.548806e-07)
+bones/51/rotation = Quaternion(0.97583896, -0.03167171, 0.1915451, 0.10022896)
+bones/52/position = Vector3(-4.0570702e-09, 0.395842, 6.4028427e-10)
+bones/52/rotation = Quaternion(0.15148735, -0.0035913447, 0.0005503987, 0.98845255)
+bones/52/scale = Vector3(1, 1.000002, 0.999998)
+bones/53/position = Vector3(1.502313e-08, 0.432618, -6.9852604e-09)
+bones/53/rotation = Quaternion(-0.54893976, 0.018227559, -0.031204505, 0.8350804)
+bones/54/rotation = Quaternion(-9.370335e-05, 0.95680594, -0.2907274, -0.00030872508)
+
+[node name="Book" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=1676174387 instance=ExtResource("3_b6bnk")]
+transform = Transform3D(-0.18651523, 0, 0.07219469, 0, 0.2, 0, -0.07219469, 0, -0.18651523, -0.34728062, 1.1757308, 0.24286717)
+
+[node name="left_cover" parent="BattleManager/CombatGroups/PlayerGroup/Book" index="1" unique_id=1440093180]
+inner_radius = 0.035
+finish_radius = 0.025
+finish_y_level = 1.158
+
 [node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
 
 [node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=389923164 instance=ExtResource("4_b6bnk")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0, 4.5207515)
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=287020783]
+
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Book"]
