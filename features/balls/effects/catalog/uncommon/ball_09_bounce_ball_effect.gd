@@ -2,4 +2,4 @@
 class_name BounceBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_set_flag("bounce_ball_hits", _scale_int(3, 4, 5))
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.BOUNCE_HITS, _scale_int(3, 4, 5))

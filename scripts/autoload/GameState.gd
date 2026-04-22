@@ -24,6 +24,10 @@ var chips: Array[ChipModel] = []
 var field_by_chip: Dictionary[int, int] = {}
 
 var max_reroll : int = 3
+var run_luck: int = 0
+var extra_chip_slots: int = 0
+var extra_ball_slots: int = 0
+var extra_trinket_slots: int = 0
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -49,6 +53,10 @@ func reload():
 	current_healt = max_healt
 	run_gold = 0
 	run_shield = 0
+	run_luck = 0
+	extra_chip_slots = 0
+	extra_ball_slots = 0
+	extra_trinket_slots = 0
 	
 	#limpieza de apuestas
 	Bets.clear()
@@ -63,7 +71,7 @@ func reload():
 
 func load_from_definition():
 	bet_field_models.clear()
-	#chips.clear()
+	chips.clear()
 	#passiveItems.clear()
 	#balls = null
 	for f in bet_field_definition.fields:
@@ -72,8 +80,6 @@ func load_from_definition():
 	
 	for f in chipDefinition.fields:
 		chips.append(f.duplicate(true)) # deep copy
-	#fields = definition.fields.duplicate(true)
-	chips = chipDefinition.fields.duplicate(true)
 	
 	# 1. Duplicamos el contenedor principal
 	#balls = ballsDefinition.duplicate() 
@@ -120,6 +126,16 @@ func get_chip(id: int) -> ChipModel:
 func get_Bets() -> Dictionary[int, Array]:
 	return Bets
 
+func get_unplaced_chip_count() -> int:
+	var missing := 0
+	for chip_id in range(chips.size()):
+		if not field_by_chip.has(chip_id):
+			missing += 1
+	return missing
+
+func are_all_chips_placed() -> bool:
+	return chips.size() > 0 and get_unplaced_chip_count() == 0
+
 func _internal_add_to_stack(f_id: int, c_id: int):
 	if not Bets.has(f_id):
 		Bets[f_id] = []
@@ -161,17 +177,21 @@ func remove_bet(chip_id: int) -> void:
 	field_by_chip.erase(chip_id)
 
 func add_passive_item(new_passive : PassiveItemDefinition)->void:
+	if new_passive == null:
+		return
 	var existing_item = null
 	
 	for item in passiveItems:
-		if (item.passive_item_definition == new_passive): 
+		if item.passive_item_definition == new_passive or item.passive_item_definition.item_id == new_passive.item_id:
 			existing_item = item
 			break
 	
 	if existing_item:
-		existing_item.quantity += 1
-		existing_item.animate.emit()
-		#existing_item.on_item_added() 
+		if new_passive.is_stackable():
+			existing_item.quantity += 1
+			if existing_item.passive_item_definition.passive_item_effect != null:
+				existing_item.passive_item_definition.passive_item_effect.animate.emit()
+				existing_item.passive_item_definition.passive_item_effect.on_item_added()
 	else:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
@@ -192,7 +212,7 @@ func apply_self_damage(amount: int) -> void:
 		return
 	var pending: int = amount
 	if run_shield > 0:
-		var absorbed: int = mini(run_shield, pending)
+		var absorbed: int = min(run_shield, pending)
 		run_shield -= absorbed
 		pending -= absorbed
 	if pending > 0:
@@ -207,3 +227,8 @@ func add_run_shield(amount: int) -> void:
 	if amount <= 0:
 		return
 	run_shield += amount
+
+func add_run_luck(amount: int) -> void:
+	if amount <= 0:
+		return
+	run_luck += amount

@@ -2,4 +2,4 @@
 class_name RiskBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_self_damage(_scale_int(3, 4, 5))
+	GameState.apply_self_damage(_scale_int(3, 4, 5))

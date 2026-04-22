@@ -55,5 +55,5 @@ func get_random_ball() -> BallRuntimeState:
 	var runtime_balls := _normalized_runtime_balls()
 	if runtime_balls.is_empty():
 		return null
-	return runtime_balls.pick_random()
+	return runtime_balls[get_rng().randi_range(0, runtime_balls.size() - 1)]
 	

@@ -149,7 +149,13 @@ func _on_chip_dropped():
 	#
 	##falta que si vuelve al container se elimine la bet y se  ordene
 
-func use_ball()->void:
+func use_ball()->bool:
+	if not GameState.are_all_chips_placed():
+		_show_missing_chips_warning()
+		return false
+	if ball_data == null:
+		return false
+
 	#agrega eventos de la bola
 	BookEventBus.start_spin.emit(ball_data)
 	#roulette spin with, this ball
@@ -167,6 +173,16 @@ func use_ball()->void:
 	ball_description_canvas.visible = false
 	description_active = false
 	deactivate_ball_desctiption()
+	return true
+
+func _show_missing_chips_warning() -> void:
+	var missing := GameState.get_unplaced_chip_count()
+	var text := "Apuesta todas las fichas"
+	if missing == 1:
+		text = "Falta 1 ficha"
+	elif missing > 1:
+		text = "Faltan %d fichas" % missing
+	BookEventBus.popuptext.emit(global_position, text)
 
 
 func _on_mouse_entered():

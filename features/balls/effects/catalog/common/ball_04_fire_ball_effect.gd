@@ -2,4 +2,4 @@
 class_name FireBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_set_flag("fire_ball_splash_pct", _scale_float(0.5, 0.75, 1.0))
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.FIRE_SPLASH_PCT, _scale_float(0.5, 0.75, 1.0))

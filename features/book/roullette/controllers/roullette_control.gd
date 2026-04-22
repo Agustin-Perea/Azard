@@ -58,6 +58,7 @@ var _roulette_initial_rotation: float
 
 var angle_diff: float = 0.0
 var _angle_rad: float = 0.0
+var _spin_finish_emitted := false
 
 @export var finish_y_level: float = -0.09
 
@@ -201,18 +202,15 @@ func _process_adjust(delta: float) -> void:
 	var angle_reached = (abs(angle_diff) < deg_to_rad(5) or abs(angle_diff - TAU) < deg_to_rad(5))
 
 	if finish_radius_reached and angle_reached:
-		spin_finished.emit()
-		print("Han finalizado")
-		_transition_to(Phase.FINISHED)
+		_complete_spin()
+		return
 
 	if _phase_time > 0.5:
-		spin_finished.emit()
 		var finish_pos = get_position_from_angle(target_ball_angle, finish_radius, roulette.global_position)
 		ball.global_position.x = finish_pos.x
 		ball.global_position.z = finish_pos.z
 		ball.global_position.y = finish_y_level
-		print("Han finalizado")
-		_transition_to(Phase.FINISHED)
+		_complete_spin()
 
 
 @warning_ignore("shadowed_variable")
@@ -247,10 +245,16 @@ func _transition_to(new_phase: Phase) -> void:
 	_current_phase = new_phase
 	_phase_time = 0.0
 
-	if new_phase == Phase.DROPPING:
-		print("Iniciando fase de encaje en campo: ", choosed_field)
-	elif new_phase == Phase.FINISHED:
+	if new_phase == Phase.FINISHED:
 		_finish_movement()
+
+
+func _complete_spin() -> void:
+	if _spin_finish_emitted:
+		return
+	_spin_finish_emitted = true
+	spin_finished.emit()
+	_transition_to(Phase.FINISHED)
 
 
 func _finish_movement() -> void:
@@ -267,6 +271,7 @@ func reset_simulation() -> void:
 	_time = 0.0
 	_phase_time = 0.0
 	_current_phase = Phase.INITIAL_SPEED
+	_spin_finish_emitted = false
 	_omega_current = _omega_initial
 	_current_radius = _initial_radius
 

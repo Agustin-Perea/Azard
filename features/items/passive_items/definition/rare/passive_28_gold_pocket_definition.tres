@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://cnw01rag2yse2"]
+
+[ext_resource type="Script" uid="uid://b2u3hjbg5j2b6" path="res://features/items/passive_items/effects/catalog/rare/passive_28_gold_pocket_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "GoldPocket"
+description = "Cada vez que se activa una ficha, tiene 15% de chance de dar +4 Gold."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 28
+display_name = "GoldPocket"
+description = "Cada vez que se activa una ficha, tiene 15% de chance de dar +4 Gold."
+rarity_type = 3
+pool_weight = 36
+trigger_types = Array[int]([4])
+design_notes = "Acompana runs de mult sin convertir economia en infinito temprano."
+effect_key = "gold_pocket"
+metadata = {
+"chance": 0.15,
+"gold": 4
+}
+passive_item_effect = SubResource("Resource_effect")

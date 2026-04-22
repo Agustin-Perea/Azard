@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://b0c3t6aair6vh"]
+
+[ext_resource type="Script" uid="uid://dwovlxjhl7f1l" path="res://features/items/passive_items/effects/catalog/uncommon/passive_19_vision_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "Vision"
+description = "Por cada ficha propia ganadora que se active en un campo distinto durante una misma resolucion, gana +0.25 mult."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 19
+display_name = "Vision"
+description = "Por cada ficha propia ganadora que se active en un campo distinto durante una misma resolucion, gana +0.25 mult."
+stackable = false
+rarity_type = 2
+pool_weight = 80
+trigger_types = Array[int]([3])
+status_type = 1
+design_notes = "Pasivo de variedad. Reemplaza el texto viejo de x1.5 para no explotar el multiplicador."
+effect_key = "vision"
+metadata = {
+"mult_per_distinct_winning_field": 0.25
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

@@ -42,8 +42,8 @@ func on_enter() -> void:
 	#mostrar datos
 	#update base_score
 	if DragService.dragged == null or DragService.dragged == self:
-		description_canvas.description.text = passive_item_data.passive_item_effect.description
-		description_canvas.name_label.text = passive_item_data.passive_item_effect.name
+		description_canvas.description.text = passive_item_data.get_description()
+		description_canvas.name_label.text = passive_item_data.get_display_name()
 
 		
 
@@ -73,8 +73,8 @@ func activate()->void:
 	
 	item_collision.disabled = true
 	add_collision.disabled = false
-	description_canvas.description.text = passive_item_data.passive_item_effect.description
-	description_canvas.name_label.text = passive_item_data.passive_item_effect.name
+	description_canvas.description.text = passive_item_data.get_description()
+	description_canvas.name_label.text = passive_item_data.get_display_name()
 	description_canvas.visible = true
 	
 

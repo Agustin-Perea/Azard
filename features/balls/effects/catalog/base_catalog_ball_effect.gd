@@ -4,12 +4,20 @@ class_name BaseCatalogBallEffect
 func _level() -> int:
 	return int(get_meta("runtime_level", 1))
 
-func _scale_int(v1: int, _v2: int, _v3: int) -> int:
-	# Temporarily locked to level 1 while upgrades are disabled.
+func _scale_int(v1: int, v2: int, v3: int) -> int:
+	var level := _level()
+	if level >= 3:
+		return v3
+	if level == 2:
+		return v2
 	return v1
 
-func _scale_float(v1: float, _v2: float, _v3: float) -> float:
-	# Temporarily locked to level 1 while upgrades are disabled.
+func _scale_float(v1: float, v2: float, v3: float) -> float:
+	var level := _level()
+	if level >= 3:
+		return v3
+	if level == 2:
+		return v2
 	return v1
 
 func _winner(controller: RouletteController) -> BetFieldModel:
@@ -42,36 +50,3 @@ func _is_zero_family(controller: RouletteController) -> bool:
 	if winner == null:
 		return false
 	return winner.number == 0 or winner.number == 37
-
-func _add_base(controller: RouletteController, amount: float) -> void:
-	if amount == 0.0:
-		return
-	controller.add_base(amount)
-
-func _add_mult(controller: RouletteController, amount: float) -> void:
-	if amount == 0.0:
-		return
-	controller.add_multiplier(amount)
-
-func _multiply_mult(controller: RouletteController, amount: float) -> void:
-	if amount == 1.0:
-		return
-	controller.multiply_mult_score(amount)
-
-func _heal(amount: int) -> void:
-	GameState.heal_player(amount)
-
-func _shield(amount: int) -> void:
-	GameState.add_run_shield(amount)
-
-func _gold(amount: int) -> void:
-	GameState.add_run_gold(amount)
-
-func _self_damage(amount: int) -> void:
-	GameState.apply_self_damage(amount)
-
-func _set_flag(key: StringName, value: Variant) -> void:
-	GameState.set_meta(key, value)
-
-func _get_flag(key: StringName, fallback: Variant = null) -> Variant:
-	return GameState.get_meta(key, fallback)

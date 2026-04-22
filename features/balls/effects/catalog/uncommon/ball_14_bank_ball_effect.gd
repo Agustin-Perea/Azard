@@ -2,4 +2,4 @@
 class_name BankBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_gold(_scale_int(6, 9, 12))
+	GameState.add_run_gold(_scale_int(6, 9, 12))

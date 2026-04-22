@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://colfq7i43ewsh"]
+
+[ext_resource type="Script" uid="uid://dvnio0u5gay6y" path="res://features/items/passive_items/effects/catalog/rare/passive_29_grave_wax_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "GraveWax"
+description = "Si matas a un enemigo con dano excedente, ganas +2 base en la siguiente resolucion del combate."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 29
+display_name = "GraveWax"
+description = "Si matas a un enemigo con dano excedente, ganas +2 base en la siguiente resolucion del combate."
+rarity_type = 3
+pool_weight = 36
+trigger_types = Array[int]([6, 1])
+design_notes = "Queda abierta la alternativa de guardar overkill como dano para el siguiente turno."
+effect_key = "grave_wax"
+metadata = {
+"next_resolution_base": 2,
+"requires_overkill": true
+}
+passive_item_effect = SubResource("Resource_effect")

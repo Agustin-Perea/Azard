@@ -6,10 +6,10 @@ func on_post_resolved(roulette_controller: RouletteController) -> void:
 	var rng := roulette_controller.rng
 	var roll := rng.randi_range(0, 3)
 	if roll == 0:
-		_add_base(roulette_controller, value)
+		roulette_controller.add_base(value)
 	elif roll == 1:
-		_heal(value)
+		GameState.heal_player(value)
 	elif roll == 2:
-		_shield(value)
+		GameState.add_run_shield(value)
 	else:
-		_add_mult(roulette_controller, _scale_float(0.75, 1.0, 1.25))
+		roulette_controller.add_multiplier(_scale_float(0.75, 1.0, 1.25))

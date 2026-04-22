@@ -1,7 +1,7 @@
 extends PassiveItemEffect
 class_name SpiralItemEffect
 
-func on_item_use(roulette_controller : RouletteController)->void:
+func on_item_use(roulette_controller)->void:
 	animate.emit()
 	roulette_controller.multiply_mult_score(1.5)
 

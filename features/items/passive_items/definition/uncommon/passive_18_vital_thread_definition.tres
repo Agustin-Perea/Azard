@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://d3gxlprpjrnw2"]
+
+[ext_resource type="Script" uid="uid://c6rp8bxr2nxvv" path="res://features/items/passive_items/effects/catalog/uncommon/passive_18_vital_thread_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "VitalThread"
+description = "Por cada 2 fichas propias ganadoras en una resolucion, curas 1 HP."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 18
+display_name = "VitalThread"
+description = "Por cada 2 fichas propias ganadoras en una resolucion, curas 1 HP."
+rarity_type = 2
+pool_weight = 72
+trigger_types = Array[int]([3])
+design_notes = "Version sana de curar por cada ficha activada."
+effect_key = "vital_thread"
+metadata = {
+"heal": 1,
+"winning_chips_per_heal": 2
+}
+passive_item_effect = SubResource("Resource_effect")

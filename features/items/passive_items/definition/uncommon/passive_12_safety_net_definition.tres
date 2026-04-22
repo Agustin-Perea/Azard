@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://bdqdlkqwi2pig"]
+
+[ext_resource type="Script" uid="uid://cj6ncjayrmxe7" path="res://features/items/passive_items/effects/catalog/uncommon/passive_12_safety_net_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "SafetyNet"
+description = "Despues de usar un reroll, ganas 4 shield antes de resolver."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 12
+display_name = "SafetyNet"
+description = "Despues de usar un reroll, ganas 4 shield antes de resolver."
+rarity_type = 2
+pool_weight = 80
+trigger_types = Array[int]([1, 2])
+design_notes = "Recompensa rerollear sin hacer que rerollear sea gratis."
+effect_key = "safety_net"
+metadata = {
+"shield": 4
+}
+passive_item_effect = SubResource("Resource_effect")

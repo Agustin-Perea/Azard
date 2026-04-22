@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://yl2eypirgggw"]
+
+[ext_resource type="Script" uid="uid://c4u51psc6o8t" path="res://features/items/passive_items/effects/catalog/epic/passive_44_fortune_idol_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "FortuneIdol"
+description = "Otorga +7 Suerte. Incrementa fuertemente la calidad promedio de recompensas."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 44
+display_name = "FortuneIdol"
+description = "Otorga +7 Suerte. Incrementa fuertemente la calidad promedio de recompensas."
+rarity_type = 4
+pool_weight = 20
+trigger_types = Array[int]([9, 10, 11, 12])
+design_notes = "Ya deberia sentirse en tiendas y cofres; no da poder de combate directo."
+effect_key = "fortune_idol"
+metadata = {
+"luck": 7
+}
+passive_item_effect = SubResource("Resource_effect")

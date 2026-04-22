@@ -2,4 +2,4 @@
 class_name RigBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_set_flag("rig_ball_correction_range", _scale_int(1, 2, 3))
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.RIG_CORRECTION_RANGE, _scale_int(1, 2, 3))

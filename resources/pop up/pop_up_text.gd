@@ -3,6 +3,7 @@ extends Node3D
 #debe llevar un count reseteable a final de turno, cada count aumenta la velocidad hasta un x2
 @onready var background_mesh : MeshInstance3D = $BackgroundMesh
 @onready var sprite_viewport : Sprite3D = $Sprite3D
+@onready var viewport : SubViewport = $SubViewport
 @onready var label_text : RichTextLabel = $SubViewport/RichTextLabel
 
 @export var duracion_animacion : float = .5
@@ -14,6 +15,12 @@ var finished : bool = false
 
 @export var base_spot : Vector3 = Vector3(-1.34,0.0,-1.278)
 @export var mult_spot : Vector3 = Vector3(-0.822,0.0,-1.278)
+@export var base_viewport_size := Vector2i(128, 128)
+@export var long_viewport_size := Vector2i(320, 160)
+@export var base_plane_size := Vector2(0.3, 0.3)
+@export var long_plane_size := Vector2(0.72, 0.36)
+@export var base_font_size := 46
+@export var long_font_size := 36
 
 func _ready():
 	reset_state()
@@ -58,6 +65,7 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 				self.position = spot_global_postion
 			
 			label_text.bbcode_enabled = true
+			_apply_text_layout(text)
 			label_text.text = "[wave amp=50 freq=5]" + text + "[/wave]"
 
 			#Nueva Animación
@@ -101,3 +109,19 @@ func kill_tween()->void:
 		active_tween.kill()
 	active_tween = null
 	finished = true
+
+func _apply_text_layout(text: String) -> void:
+	var is_long := text.length() > 6
+	var viewport_size := long_viewport_size if is_long else base_viewport_size
+	var plane_size := long_plane_size if is_long else base_plane_size
+	var font_size := long_font_size if is_long else base_font_size
+
+	viewport.size = viewport_size
+	label_text.size = Vector2(viewport_size)
+	label_text.position = Vector2.ZERO
+	label_text.pivot_offset = Vector2(viewport_size) * 0.5
+	label_text.add_theme_font_size_override("normal_font_size", font_size)
+
+	var plane := background_mesh.mesh as PlaneMesh
+	if plane != null:
+		plane.size = plane_size

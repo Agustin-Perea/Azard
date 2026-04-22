@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://3eh8k8fy5dgw"]
+
+[ext_resource type="Script" uid="uid://bae3akmqe6375" path="res://features/items/passive_items/effects/catalog/uncommon/passive_14_echo_pin_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "EchoPin"
+description = "La segunda ficha ganadora de cada resolucion obtiene +2 base."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 14
+display_name = "EchoPin"
+description = "La segunda ficha ganadora de cada resolucion obtiene +2 base."
+rarity_type = 2
+pool_weight = 80
+trigger_types = Array[int]([3])
+design_notes = "La variante de arrancar ataques con 10% del dano total anterior queda pendiente de definir con rerolls."
+effect_key = "echo_pin"
+metadata = {
+"base": 2,
+"winning_chip_index": 2
+}
+passive_item_effect = SubResource("Resource_effect")

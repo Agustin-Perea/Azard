@@ -2,4 +2,4 @@
 class_name CrystalBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_set_flag("crystal_ball_correction_range", _scale_int(1, 2, 2))
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.CRYSTAL_CORRECTION_RANGE, _scale_int(1, 2, 2))

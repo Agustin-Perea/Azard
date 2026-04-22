@@ -34,9 +34,10 @@ func update_labels()->void:
 	button.collision_shape.disabled = false
 	deactivate_button.collision_shape.disabled = false
 	
-	ball_name.text = ball_element.ball_data.ball_definition.ball_effect.name
-	base_damage_text.text = str(ball_element.ball_data.ball_definition.base_damage)
-	description.text = ball_element.ball_data.ball_definition.ball_effect.description
+	var definition := ball_element.ball_data.ball_definition
+	ball_name.text = definition.get_display_name()
+	base_damage_text.text = str(definition.get_damage_for_level(ball_element.ball_data.level_upgrade))
+	description.text = definition.get_description()
 
 #@warning_ignore("unused_parameter")
 #func add_ball(area : Area3D)->void:
@@ -47,8 +48,8 @@ func update_labels()->void:
 @warning_ignore("unused_parameter")
 func spin_with_ball()->void:
 	#enviar esta bola al book con spin
-	ball_element.use_ball()
-	deactivate()
+	if ball_element != null and ball_element.use_ball():
+		deactivate()
 
 func deactivate()->void:
 	deactivate_canvas.emit()

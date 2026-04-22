@@ -94,7 +94,6 @@ func _on_table_ready()-> void:
 
 func update_field_visual(index :int)->void:
 	var field := GameState.get_bet_field_model(index)#cuidado con el
-	print(str(index))
 	#print(str(field.number))
 	#print(str(field.color))
 	#print(number_labels[index].text)

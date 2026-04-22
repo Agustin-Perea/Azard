@@ -1,9 +1,9 @@
 extends Resource 
 class_name BallEffect
 
-@export var name: String
+@export_storage var name: String
 
-@export var description: String
+@export_storage var description: String
 
 #estas son callbacks propias
 func on_ball_added()->void:

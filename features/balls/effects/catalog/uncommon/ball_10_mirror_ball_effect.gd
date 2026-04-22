@@ -2,4 +2,4 @@
 class_name MirrorBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	_set_flag("mirror_ball_copy_power", _scale_float(0.70, 1.0, 1.30))
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.MIRROR_COPY_POWER, _scale_float(0.70, 1.0, 1.30))

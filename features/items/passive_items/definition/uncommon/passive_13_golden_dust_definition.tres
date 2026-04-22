@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://c4ndqk7ua8ars"]
+
+[ext_resource type="Script" uid="uid://d2jg8cidc5466" path="res://features/items/passive_items/effects/catalog/uncommon/passive_13_golden_dust_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "GoldenDust"
+description = "Cada casilla dorada activada otorga +0.35 mult y +3 Gold."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 13
+display_name = "GoldenDust"
+description = "Cada casilla dorada activada otorga +0.35 mult y +3 Gold."
+rarity_type = 2
+pool_weight = 75
+trigger_types = Array[int]([3])
+design_notes = "Puente entre economia y tablero; evitar duplicar valor de casillas doradas salvo intencion explicita."
+effect_key = "golden_dust"
+metadata = {
+"board_tag": "golden",
+"gold": 3,
+"mult": 0.35
+}
+passive_item_effect = SubResource("Resource_effect")

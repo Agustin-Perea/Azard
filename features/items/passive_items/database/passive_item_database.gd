@@ -7,13 +7,23 @@ class_name PassiveItemDatabase
 var total_weight: int
 var rng: RandomNumberGenerator
 
+func _ensure_ready() -> void:
+	if rng == null:
+		rng = RandomNumberGenerator.new()
+		if pool_seed != 0:
+			rng.seed = hash(pool_seed)
+		else:
+			rng.randomize()
+	if total_weight <= 0:
+		calculate_total_weight()
+
 func calculate_total_weight()->void:
 	total_weight = 0
 	for item in all_items:
 		if item is PassiveItemDefinition: # Validación de tipo en tiempo de ejecución
-			total_weight += item.weight
+			total_weight += item.get_pool_weight()
 		else:
-			print("Error: Un elemento en all_items no es DataModel o es null" + item.to_string())
+			push_error("Invalid passive item database entry: " + str(item))
 
 func set_seed(master_seed : int)->void:
 	pool_seed = master_seed
@@ -22,6 +32,7 @@ func set_seed(master_seed : int)->void:
 	calculate_total_weight()
 
 func get_random_item() -> PassiveItemDefinition:
+	_ensure_ready()
 	if all_items.is_empty() or total_weight <= 0:
 		return null
 	
@@ -29,8 +40,8 @@ func get_random_item() -> PassiveItemDefinition:
 	var current_sum = 0
 	
 	for item in all_items:
-		current_sum += item.weight
+		current_sum += item.get_pool_weight()
 		if roll < current_sum:
 			return item.duplicate(true)
 				
-	return all_items.back() # Fallback por si acaso
+	return all_items.back().duplicate(true) # Fallback por si acaso

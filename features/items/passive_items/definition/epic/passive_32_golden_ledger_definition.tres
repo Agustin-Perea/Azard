@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://da4ffpk5jrekv"]
+
+[ext_resource type="Script" uid="uid://uv4ixndicrcd" path="res://features/items/passive_items/effects/catalog/epic/passive_32_golden_ledger_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "GoldenLedger"
+description = "Si en una misma resolucion activas 3 o mas condiciones especiales, ganas +1 mult y +6 Gold."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 32
+display_name = "GoldenLedger"
+description = "Si en una misma resolucion activas 3 o mas condiciones especiales, ganas +1 mult y +6 Gold."
+stackable = false
+rarity_type = 4
+pool_weight = 18
+trigger_types = Array[int]([4])
+design_notes = "Pasivo de high roll que pide build."
+effect_key = "golden_ledger"
+metadata = {
+"gold": 6,
+"mult": 1.0,
+"special_conditions_required": 3
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

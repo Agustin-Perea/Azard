@@ -2,7 +2,7 @@
 class_name AscendBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
-	var used_types: Array = _get_flag("combat_used_ball_types", [])
+	var used_types: Array = GameState.get_meta(Constants.BALL_EFFECT_FLAG.COMBAT_USED_BALL_TYPES, [])
 	var count := used_types.size()
 	var scale := _scale_float(0.20, 0.25, 0.30)
-	_add_mult(roulette_controller, float(count) * scale)
+	roulette_controller.add_multiplier(float(count) * scale)

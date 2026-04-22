@@ -53,23 +53,3 @@ func stop_drag()->void:
 		#desactivacion
 	else:
 		DragService._return_to_origin()
-
-
-func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if not global_input_enabled:
-		return
-	if event is InputEventMouseButton and event.pressed:
-		pressed.emit()
-		on_press()
-	if event is InputEventMouseButton and event.is_released():
-		released.emit()
-		
-func _on_mouse_entered():
-	if not global_input_enabled:
-		return
-	entered.emit()
-
-func _on_mouse_exited():
-	if not global_input_enabled:
-		return
-	exited.emit()

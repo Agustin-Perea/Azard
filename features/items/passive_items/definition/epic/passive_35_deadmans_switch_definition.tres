@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://dekkeoj3to3fg"]
+
+[ext_resource type="Script" uid="uid://cal6rmolbqxwj" path="res://features/items/passive_items/effects/catalog/epic/passive_35_deadmans_switch_effect.gd" id="1_effect"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "DeadmansSwitch"
+description = "Si ganas el combate por debajo de 20% HP, el Gold variable de ese combate se duplica."
+
+[resource]
+script = ExtResource("2_def")
+item_id = 35
+display_name = "DeadmansSwitch"
+description = "Si ganas el combate por debajo de 20% HP, el Gold variable de ese combate se duplica."
+stackable = false
+rarity_type = 4
+pool_weight = 16
+trigger_types = Array[int]([5])
+design_notes = "Muy fuerte, pero depende de una condicion peligrosa."
+effect_key = "deadmans_switch"
+metadata = {
+"gold_multiplier": 2.0,
+"max_hp_pct": 0.2
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

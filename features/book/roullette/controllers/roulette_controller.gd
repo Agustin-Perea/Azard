@@ -194,21 +194,6 @@ func _max_result_field_id() -> int:
 	if count <= 0:
 		return 36
 	return count - 1
-	
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##CombatEventBus.enableClickableAreas()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##PlayerUiEvents.bet_procesed.emit()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
 		
 
 func changeScore()->void:

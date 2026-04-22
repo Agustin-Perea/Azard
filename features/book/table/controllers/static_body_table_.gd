@@ -124,8 +124,6 @@ func call_mult_anim(index : int)->void:
 		var pos := calcular_centro_desde_indice(index)
 		pos.y += 0.1
 		multiplicator_indicator.animate_in_pos(pos,"+"+str(int(GameState.bet_field_models[index].multiplier)),true)
-	else:
-		print("EL OBJETO multiplicator_indicator ES NULO")
 
 
 func _on_mouse_entered() -> void:
