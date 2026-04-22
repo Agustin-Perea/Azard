@@ -617,11 +617,12 @@ ball = NodePath("roulette_ball")
 ball_origin_transform = NodePath("roulette_ball_origin")
 angular_speed_deg = 1000.0
 deceleration_time = 2.0
-final_speed_deg = 120.0
+final_speed_deg = 100.0
 drop_duration = 1.0
-inner_radius = 0.173
-finish_radius = 0.125
+inner_radius = 0.18
+finish_radius = 0.135
 choosed_field = 15
+finish_y_level = -0.1
 
 [node name="base_mesh" type="MeshInstance3D" parent="left_cover" unique_id=1442219343]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8492213, -0.041860536, -1.6421878)
