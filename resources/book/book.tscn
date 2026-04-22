@@ -607,7 +607,6 @@ collision_mask = 3
 shape = SubResource("SphereShape3D_liidn")
 
 [node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9604645e-08, -1.4305115e-06, 0.0018132329)
 material_override = ExtResource("2_padf7")
 mesh = ExtResource("1_hgj57")
 script = ExtResource("2_d1tnm")
@@ -616,11 +615,12 @@ ball = NodePath("roulette_ball")
 ball_origin_transform = NodePath("roulette_ball_origin")
 angular_speed_deg = 1000.0
 deceleration_time = 2.0
-final_speed_deg = 120.0
+final_speed_deg = 100.0
 drop_duration = 1.0
-inner_radius = 0.173
-finish_radius = 0.125
+inner_radius = 0.18
+finish_radius = 0.135
 choosed_field = 15
+finish_y_level = -0.1
 
 [node name="base_mesh" type="MeshInstance3D" parent="left_cover" unique_id=1442219343]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8492213, -0.041860536, -1.6421878)

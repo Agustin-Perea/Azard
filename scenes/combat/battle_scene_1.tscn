@@ -57,6 +57,11 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(-0.95731944, 0, -0.2890319, 0, 1, 0, 0.2890319, 0, -0.95731944, -1.5797986, 1.6798961, -1.6191579)
 fov = 45.0
 
+[node name="VirtualCamera2" type="Camera3D" parent="CameraContainer" unique_id=233727052]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.57823, 0.32839847)
+current = true
+fov = 45.0
+
 [node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
 
 [node name="Extra" type="Node" parent="." unique_id=1603717315]
