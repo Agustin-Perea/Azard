@@ -34,7 +34,10 @@ func _normalized_runtime_balls() -> Array[BallRuntimeState]:
 	
 func shuffle_balls() -> void:
 	var runtime_balls := _normalized_runtime_balls()
-	all_balls = runtime_balls
+	var normalized_resources: Array[Resource] = []
+	for ball in runtime_balls:
+		normalized_resources.append(ball)
+	all_balls = normalized_resources
 	for ball in runtime_balls:
 		ball.used = false
 	for i in range(runtime_balls.size() - 1, -1, -1):

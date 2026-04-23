@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_316_soft_replacement_effect.gd" id="1_nfow7"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_gk3d2"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_ya4d7"]
+
+[sub_resource type="Resource" id="Resource_itykv"]
+script = ExtResource("1_nfow7")
+
+[resource]
+script = ExtResource("3_ya4d7")
+board_upgrade_id = 316
+display_name = "Soft Replacement"
+description = "Reemplaza 1 numero poco sinergico por otro numero normal ya existente en la rueda, duplicandolo solo a efectos de sinergias."
+stackable = false
+rarity_type = 2
+pool_weight = 70
+upgrade_type = 7
+design_notes = "No cambia fisicamente toda la ruleta, pero si su valor de tags. Mejor dejarlo no acumulable por claridad."
+effect_key = "soft_replacement"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_soft_replacement_number": 1
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_itykv")
+cumulative = false

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_331_crimson_sweep_effect.gd" id="1_mf882"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_4hlgh"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_uu4ho"]
+
+[sub_resource type="Resource" id="Resource_yg28q"]
+script = ExtResource("1_mf882")
+
+[resource]
+script = ExtResource("3_uu4ho")
+board_upgrade_id = 331
+display_name = "Crimson Sweep"
+description = "Todos los numeros de un color elegido ganan +0.10 mult permanente al activarse."
+stackable = false
+rarity_type = 4
+pool_weight = 16
+upgrade_type = 12
+design_notes = "Mejora global fuerte, pero no absurda."
+effect_key = "crimson_sweep"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_color_global_mult": 0.1,
+"board_bonus_sector_mult": 0.1
+},
+"count": 99,
+"filter": "red"
+}]
+}
+board_upgrade_effect = SubResource("Resource_yg28q")
+cumulative = false

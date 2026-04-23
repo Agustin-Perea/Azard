@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_313_gilded_edge_effect.gd" id="1_jv1hv"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_od3xk"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_lybdd"]
+
+[sub_resource type="Resource" id="Resource_c8m3u"]
+script = ExtResource("1_jv1hv")
+
+[resource]
+script = ExtResource("3_lybdd")
+board_upgrade_id = 313
+display_name = "Gilded Edge"
+description = "Un numero dorado elegido tambien gana el tag lucky."
+rarity_type = 2
+pool_weight = 75
+upgrade_type = 4
+design_notes = "Buena sinergia de tablero sin ser todavia una locura."
+effect_key = "gilded_edge"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_lucky_mult": 0.25
+},
+"count": 1,
+"filter": "golden",
+"set_meta": {
+"board_tag_lucky": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_c8m3u")

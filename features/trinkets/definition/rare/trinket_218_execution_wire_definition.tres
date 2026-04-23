@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://3bc1rqdd8aeb"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_1t66g"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/rare/trinket_218_execution_wire_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 218
+display_name = "Execution Wire"
+description = "Si un enemigo muere con dano excedente, la siguiente resolucion del combate obtiene +1 mult."
+rarity_type = 3
+pool_weight = 45
+trigger_types = Array[int]([6, 1])
+design_notes = "Buen soporte para remates y GraveBall."
+effect_key = "execution_wire"
+metadata = {
+"next_mult": 1.0
+}
+trinket_effect = SubResource("Resource_effect")

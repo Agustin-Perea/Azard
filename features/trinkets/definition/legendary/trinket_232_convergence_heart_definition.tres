@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://btjrh5mej5ykk"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_61qvu"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/legendary/trinket_232_convergence_heart_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 232
+display_name = "Convergence Heart"
+description = "Si una misma resolucion activa 3 o mas condiciones especiales, duplica solo los bonuses del campo y no el resto del calculo."
+stackable = false
+rarity_type = 5
+pool_weight = 5
+trigger_types = Array[int]([4])
+design_notes = "High roll extremo, pero controlado porque no duplica base, trinkets ni pasivos globales."
+effect_key = "convergence_heart"
+metadata = {
+"field_bonus_multiplier": 2.0,
+"required_conditions": 3
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

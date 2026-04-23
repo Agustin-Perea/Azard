@@ -12,6 +12,8 @@ metadata/_custom_type_script = "uid://djvnfrnpiw6md"
 
 [resource]
 script = ExtResource("3_ncdes")
+display_name = "Duball"
+description = "Multiplica x2 el score al final del calculo"
 base_damage = 2
 ball_material = ExtResource("2_4qobm")
 ball_effect = SubResource("Resource_4qobm")

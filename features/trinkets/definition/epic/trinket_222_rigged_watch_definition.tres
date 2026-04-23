@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://500oqgyhv4tx"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_222_rigged_watch_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_qxoxs"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 222
+display_name = "Rigged Watch"
+description = "Una vez por combate, si una ficha cae a 1 casilla del numero marcado, el resultado se corrige hacia ese numero."
+stackable = false
+rarity_type = 4
+pool_weight = 24
+trigger_types = Array[int]([3])
+design_notes = "Control fuerte de ruleta. Muy potente, por eso epico y limitado."
+effect_key = "rigged_watch"
+metadata = {
+"correction_range": 1,
+"uses_per_combat": 1
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

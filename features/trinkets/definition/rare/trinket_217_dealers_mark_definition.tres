@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://bh78un5uhsobl"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/rare/trinket_217_dealers_mark_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_mwq2i"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 217
+display_name = "Dealer's Mark"
+description = "La primera coincidencia exacta del combate duplica el bonus del campo activado, pero no duplica dano base ni otros trinkets."
+stackable = false
+rarity_type = 3
+pool_weight = 45
+trigger_types = Array[int]([3])
+design_notes = "Precision poderosa sin duplicar todo el sistema."
+effect_key = "dealers_mark"
+metadata = {
+"field_bonus_multiplier": 2.0
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

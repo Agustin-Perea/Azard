@@ -142,6 +142,8 @@ func _physics_process(delta: float) -> void:
 func _get_field_under_mouse() -> Dictionary:
 	var viewport := get_tree().root
 	var cam := viewport.get_camera_3d()
+	if cam == null:
+		return {}
 
 	#print("Viewport:", get_tree().root)
 	#print("In cam:", cam)

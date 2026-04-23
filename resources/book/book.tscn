@@ -34,9 +34,9 @@
 [ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="19_o2ihi"]
 [ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="27_344oo"]
-[ext_resource type="Script" uid="uid://boor88jdqe04t" path="res://features/items/passive_items/views/passive_item_element.gd" id="35_hnjqa"]
-[ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
-[ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
+[ext_resource type="Script" path="res://features/passive_items/views/passive_item_element.gd" id="35_hnjqa"]
+[ext_resource type="Resource" path="res://features/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
+[ext_resource type="Script" path="res://features/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
 [ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="38_f2bku"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_liidn"]

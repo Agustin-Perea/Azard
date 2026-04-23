@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://6qby1mxh3v1k"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/common/trinket_203_prime_lens_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_hecea"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 203
+display_name = "Prime Lens"
+description = "Cada ficha ganadora en numero primo gana +1 base y +0.10 mult."
+pool_weight = 120
+trigger_types = Array[int]([3])
+design_notes = "Hace utiles los primos desde temprano sin volverse opresivo."
+effect_key = "prime_lens"
+metadata = {
+"base": 1,
+"mult": 0.1
+}
+trinket_effect = SubResource("Resource_effect")

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://d3xhisofyhmql"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/legendary/passive_38_crown_of_odds_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 38
+display_name = "CrownOfOdds"
+description = "Por cada tipo de bola distinto usado en el combate, ganas +0.20 mult. Si usaste 6 o mas tipos, ademas ganas +10 Gold al final."
+stackable = false
+rarity_type = 5
+pool_weight = 6
+trigger_types = Array[int]([4, 5])
+design_notes = "Legendario de variedad, ideal con AscendBall y mazos flexibles."
+effect_key = "crown_of_odds"
+metadata = {
+"gold": 10,
+"gold_ball_types_required": 6,
+"mult_per_ball_type": 0.2
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

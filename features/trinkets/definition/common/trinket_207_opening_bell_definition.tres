@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://d274epi8pwlcj"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/common/trinket_207_opening_bell_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_ld1kj"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 207
+display_name = "Opening Bell"
+description = "La primera ficha ganadora de cada combate obtiene +0.40 mult."
+stackable = false
+pool_weight = 115
+trigger_types = Array[int]([0, 3])
+design_notes = "Comun universal, solido y facil de balancear."
+effect_key = "opening_bell"
+metadata = {
+"mult": 0.4
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

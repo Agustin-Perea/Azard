@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_327_royal_sector_effect.gd" id="1_r2jsk"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_a7k68"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_47m42"]
+
+[sub_resource type="Resource" id="Resource_oh484"]
+script = ExtResource("1_r2jsk")
+
+[resource]
+script = ExtResource("3_47m42")
+board_upgrade_id = 327
+display_name = "Royal Sector"
+description = "Elige un sector de 3 numeros consecutivos. Todo ese sector cuenta como dorado."
+rarity_type = 4
+pool_weight = 18
+upgrade_type = 3
+design_notes = "Epic ideal para builds de GoldBall y tablero modificado."
+effect_key = "royal_sector"
+metadata = {
+"operations": [{
+"count": 3,
+"filter": "wheel_sector",
+"set_meta": {
+"board_tag_golden": true
+},
+"start": 0
+}]
+}
+board_upgrade_effect = SubResource("Resource_oh484")

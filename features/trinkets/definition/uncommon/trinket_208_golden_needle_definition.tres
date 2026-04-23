@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://y40ienssaijg"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_788dl"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/uncommon/trinket_208_golden_needle_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 208
+display_name = "Golden Needle"
+description = "Cada ficha ganadora en casilla dorada otorga +0.35 mult y +2 Gold."
+rarity_type = 2
+pool_weight = 85
+trigger_types = Array[int]([3])
+design_notes = "Une economia y tablero. Muy tematico para Azard."
+effect_key = "golden_needle"
+metadata = {
+"gold": 2,
+"mult": 0.35
+}
+trinket_effect = SubResource("Resource_effect")

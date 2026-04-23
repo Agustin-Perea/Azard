@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_315_precision_ink_effect.gd" id="1_jupbb"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_cxhtx"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_k6vt7"]
+
+[sub_resource type="Resource" id="Resource_0x7f7"]
+script = ExtResource("1_jupbb")
+
+[resource]
+script = ExtResource("3_k6vt7")
+board_upgrade_id = 315
+display_name = "Precision Ink"
+description = "Elige 1 numero. Si una build o efecto estaba buscandolo exactamente, al caer ahi gana +0.50 mult extra."
+rarity_type = 2
+pool_weight = 75
+upgrade_type = 6
+design_notes = "Buena con RigBall, CrystalBall y efectos de marcado."
+effect_key = "precision_ink"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_precision_mult": 0.5
+},
+"count": 1,
+"filter": "normal"
+}]
+}
+board_upgrade_effect = SubResource("Resource_0x7f7")

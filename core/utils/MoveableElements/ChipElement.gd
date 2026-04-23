@@ -42,6 +42,9 @@ func stop_drag()->void:
 	elif !container2.is_empty() and container2.get("collider").is_in_group("table_container"):
 		var static_body_table = container2.get("collider") as StaticBodyTable_
 		var index : int = static_body_table.calcular_indice_desde_posicion(container2.get("position"))
+		if GameState.get_bet_field_model(index) == null:
+			DragService._return_to_origin()
+			return
 		data.last_position = static_body_table.calcular_centro_desde_indice(index)
 		chip_moved.emit(self)
 		GameState.place_bet(

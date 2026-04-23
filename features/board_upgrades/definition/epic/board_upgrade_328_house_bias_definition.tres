@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_328_house_bias_effect.gd" id="1_705q6"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_1hak2"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_oapiq"]
+
+[sub_resource type="Resource" id="Resource_3l500"]
+script = ExtResource("1_705q6")
+
+[resource]
+script = ExtResource("3_oapiq")
+board_upgrade_id = 328
+display_name = "House Bias"
+description = "Elige un numero objetivo. Los efectos de correccion o seleccion de resultado lo consideran como si estuviera 1 casilla mas cerca."
+stackable = false
+rarity_type = 4
+pool_weight = 16
+upgrade_type = 6
+design_notes = "Mejora de soporte perfecta para RigBall, FateBall y similares."
+effect_key = "house_bias"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_house_bias": 1
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_3l500")
+cumulative = false

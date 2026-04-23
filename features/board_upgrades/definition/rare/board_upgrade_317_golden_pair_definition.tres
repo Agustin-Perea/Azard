@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/rare/board_upgrade_317_golden_pair_effect.gd" id="1_bokcj"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_uf1xh"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_ldf3e"]
+
+[sub_resource type="Resource" id="Resource_t6fd3"]
+script = ExtResource("1_bokcj")
+
+[resource]
+script = ExtResource("3_ldf3e")
+board_upgrade_id = 317
+display_name = "Golden Pair"
+description = "Convierte 2 numeros en dorados y ambos ganan +0.20 mult al activarse."
+rarity_type = 3
+pool_weight = 55
+design_notes = "Ya define bastante mejor una build de dorados."
+effect_key = "golden_pair"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_golden_pair_mult": 0.2
+},
+"count": 2,
+"filter": "normal",
+"set_meta": {
+"board_tag_golden": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_t6fd3")

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_311_prime_cluster_effect.gd" id="1_3txa0"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_cwd4f"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_52wf8"]
+
+[sub_resource type="Resource" id="Resource_1eeol"]
+script = ExtResource("1_3txa0")
+
+[resource]
+script = ExtResource("3_52wf8")
+board_upgrade_id = 311
+display_name = "Prime Cluster"
+description = "Convierte 2 numeros no primos en primos a efectos de sinergias."
+rarity_type = 2
+pool_weight = 78
+design_notes = "Mas fuerte que Prime Mark, pero todavia controlado."
+effect_key = "prime_cluster"
+metadata = {
+"operations": [{
+"count": 2,
+"filter": "non_prime",
+"set_meta": {
+"board_tag_prime_override": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_1eeol")

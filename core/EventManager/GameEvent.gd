@@ -16,9 +16,8 @@ var timer: float = 0.0
 var action: Callable # Aquí guardamos la función 
 
 func _init(config: Dictionary):
-	#si no encuentra la key en el diccionario devuelve true
 	blocking = config.get("blocking", true)
-	paralel = config.get("paralel", true)
+	paralel = config.get("paralel", false)
 
 	#delay = config.get("delay", 0.0)
 	action = config.get("action", func(): return true)

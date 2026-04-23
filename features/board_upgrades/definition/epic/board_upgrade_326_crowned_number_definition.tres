@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_326_crowned_number_effect.gd" id="1_jo6ex"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_pndjy"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_oejbk"]
+
+[sub_resource type="Resource" id="Resource_00v81"]
+script = ExtResource("1_jo6ex")
+
+[resource]
+script = ExtResource("3_oejbk")
+board_upgrade_id = 326
+display_name = "Crowned Number"
+description = "Convierte 1 numero en dorado + primo + lucky al mismo tiempo."
+rarity_type = 4
+pool_weight = 18
+upgrade_type = 4
+design_notes = "Casilla premium de alto valor. Muy fuerte para builds de precision."
+effect_key = "crowned_number"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_lucky_mult": 0.25
+},
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_golden": true,
+"board_tag_lucky": true,
+"board_tag_prime_override": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_00v81")

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://11po7ghhqc8c"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_224_high_roller_crest_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_f7cy2"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 224
+display_name = "High Roller Crest"
+description = "Si una resolucion activa 3 o mas condiciones especiales distintas, gana +1.5 mult y +8 Gold."
+stackable = false
+rarity_type = 4
+pool_weight = 20
+trigger_types = Array[int]([4])
+design_notes = "Trinket de high roll puro; fuerte, pero pide build."
+effect_key = "high_roller_crest"
+metadata = {
+"gold": 8,
+"mult": 1.5,
+"required_conditions": 3
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

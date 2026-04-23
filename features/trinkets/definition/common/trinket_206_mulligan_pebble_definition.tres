@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://dkv25u8xi3jsu"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/common/trinket_206_mulligan_pebble_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_qh0bp"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 206
+display_name = "Mulligan Pebble"
+description = "Despues de usar un reroll, la siguiente ficha ganadora obtiene +2 base."
+stackable = false
+pool_weight = 115
+trigger_types = Array[int]([2, 3])
+design_notes = "Recompensa usar reroll sin romper el combate."
+effect_key = "mulligan_pebble"
+metadata = {
+"base": 2
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

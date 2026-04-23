@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_312_color_link_effect.gd" id="1_p856u"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_v6oct"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_bqqgh"]
+
+[sub_resource type="Resource" id="Resource_0oprb"]
+script = ExtResource("1_p856u")
+
+[resource]
+script = ExtResource("3_bqqgh")
+board_upgrade_id = 312
+display_name = "Color Link"
+description = "Elige 2 numeros y unifica su color (ambos pasan a rojo o ambos a negro)."
+rarity_type = 2
+pool_weight = 80
+design_notes = "Mas eficiente para builds de color."
+effect_key = "color_link"
+metadata = {
+"operations": [{
+"color": 1,
+"count": 2,
+"filter": "any"
+}]
+}
+board_upgrade_effect = SubResource("Resource_0oprb")

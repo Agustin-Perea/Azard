@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://1estaayqcb0j"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/legendary/trinket_229_fate_loop_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_sla6n"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 229
+display_name = "Fate Loop"
+description = "Una vez por combate, una resolucion puede tirar 2 resultados extra y quedarse con el mejor para sus condiciones."
+stackable = false
+rarity_type = 5
+pool_weight = 7
+trigger_types = Array[int]([1])
+design_notes = "Control muy fuerte del azar. Perfecto para jackpot, exactos y dorados."
+effect_key = "fate_loop"
+metadata = {
+"extra_results": 2,
+"uses_per_combat": 1
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

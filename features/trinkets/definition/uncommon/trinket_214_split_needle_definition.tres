@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://dvt7mishkc8tq"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_1jwxy"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/uncommon/trinket_214_split_needle_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 214
+display_name = "Split Needle"
+description = "Si dos fichas ganan en campos distintos en la misma resolucion, ganas +0.25 mult por esa resolucion."
+rarity_type = 2
+pool_weight = 75
+trigger_types = Array[int]([3])
+design_notes = "Parecido a Vision, pero mas chico y mas general."
+effect_key = "split_needle"
+metadata = {
+"distinct_fields": 2,
+"mult": 0.25
+}
+trinket_effect = SubResource("Resource_effect")

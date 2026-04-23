@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_305_safe_number_effect.gd" id="1_4pm73"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_6iw3o"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_lvjjc"]
+
+[sub_resource type="Resource" id="Resource_8w6jn"]
+script = ExtResource("1_4pm73")
+
+[resource]
+script = ExtResource("3_lvjjc")
+board_upgrade_id = 305
+display_name = "Safe Number"
+description = "Marca 1 numero como defensivo. Cuando cae ahi, el jugador gana 2 shield."
+pool_weight = 120
+design_notes = "Common defensivo de tablero."
+effect_key = "safe_number"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_bonus_safe_shield": 2,
+"board_tag_safe": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_8w6jn")

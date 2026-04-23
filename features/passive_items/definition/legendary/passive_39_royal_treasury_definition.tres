@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://cv8qdlu8jq02"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/legendary/passive_39_royal_treasury_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 39
+display_name = "RoyalTreasury"
+description = "Cada vez que una resolucion supera x10 mult, ganas +15 Gold y +1 reroll para el proximo combate."
+stackable = false
+rarity_type = 5
+pool_weight = 5
+trigger_types = Array[int]([4, 5])
+design_notes = "Muy fuerte, pero aparece en runs que ya llegan a techos altos."
+effect_key = "royal_treasury"
+metadata = {
+"gold": 15,
+"mult_threshold": 10.0,
+"next_combat_rerolls": 1
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

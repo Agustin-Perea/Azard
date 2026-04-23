@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_329_split_jackpot_effect.gd" id="1_4lt17"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_1hg7a"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_rspf4"]
+
+[sub_resource type="Resource" id="Resource_gudk7"]
+script = ExtResource("1_4lt17")
+
+[resource]
+script = ExtResource("3_rspf4")
+board_upgrade_id = 329
+display_name = "Split Jackpot"
+description = "Agrega una segunda casilla de jackpot menor al tablero."
+stackable = false
+rarity_type = 4
+pool_weight = 16
+upgrade_type = 8
+design_notes = "Muy peligrosa de balancear; no acumulable."
+effect_key = "split_jackpot"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_jackpot_secondary": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_gudk7")
+cumulative = false

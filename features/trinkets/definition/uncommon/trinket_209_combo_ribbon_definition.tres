@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://c4cmivlphtguy"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_8uf5w"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/uncommon/trinket_209_combo_ribbon_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 209
+display_name = "Combo Ribbon"
+description = "Si una resolucion activa 2 condiciones especiales distintas (ej. rojo + primo), gana +0.40 mult extra."
+rarity_type = 2
+pool_weight = 80
+trigger_types = Array[int]([4])
+design_notes = "Premio a builds de sinergia y lectura del tablero."
+effect_key = "combo_ribbon"
+metadata = {
+"mult": 0.4,
+"required_conditions": 2
+}
+trinket_effect = SubResource("Resource_effect")

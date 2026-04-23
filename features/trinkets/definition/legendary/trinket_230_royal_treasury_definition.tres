@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://cle832x5jaycd"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/legendary/trinket_230_royal_treasury_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_rhfrx"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 230
+display_name = "Royal Treasury"
+description = "Cada vez que una resolucion supera x10 mult, ganas +15 Gold y obtenes +1 reroll para el proximo combate."
+stackable = false
+rarity_type = 5
+pool_weight = 6
+trigger_types = Array[int]([4, 5])
+design_notes = "Legendario economico de runs rotas. No da dano directo, pero escala durisimo la run."
+effect_key = "royal_treasury"
+metadata = {
+"gold": 15,
+"next_combat_rerolls": 1,
+"required_mult": 10.0
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

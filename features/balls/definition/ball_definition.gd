@@ -28,15 +28,11 @@ var attack_type: int = Constants.BALL_TARGET.TARGET_SINGLE
 func get_display_name() -> String:
 	if not display_name.is_empty():
 		return display_name
-	if ball_effect != null and not ball_effect.name.is_empty():
-		return ball_effect.name
 	return "Ball"
 
 func get_description() -> String:
 	if not description.is_empty():
 		return description
-	if ball_effect != null:
-		return ball_effect.description
 	return ""
 
 func get_rarity_id() -> int:

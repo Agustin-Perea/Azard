@@ -16,6 +16,7 @@ var multiplier: float = 1
 var number_winner: int 
 var winner_betfield_model : BetFieldModel
 var result_field_id : int = 0
+var last_winning_bet_entries: Array[Dictionary] = []
 #signal spin_resolved(result_field_id: int, delta_score: float, total_score: folat)
 
 @onready var roulette_control : RouletteControl = $left_cover
@@ -40,24 +41,11 @@ func _ready() -> void:
 	#CombatEventBus.reset_score.connect(reset_score)
 
 func update_base_score(new_base : int)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			base = new_base
-			baseChanged.emit()
-			return true
-	}))
+	base = new_base
+	baseChanged.emit()
 
 func multiply_mult_score(add_mult : float)->void:
-	#agrega un evento que multiplica el mult
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			multiplier *= add_mult
-			return true
-	}))
+	multiplier *= add_mult
 	multiplicatorChanged.emit(add_mult)
 
 func on_start_spin(ball : BallRuntimeState) -> void:
@@ -77,10 +65,14 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	
 	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, _max_result_field_id())
+	result_field_id = _random_result_field_id()
 
 	# 2. Obtenemos el BetFieldModel ganador
-	winner_betfield_model = GameState.bet_field_models[result_field_id]
+	winner_betfield_model = GameState.get_bet_field_model(result_field_id)
+	if winner_betfield_model == null:
+		push_error("Could not resolve roulette result field: " + str(result_field_id))
+		UiEventBus.change_collision_detection.emit(false)
+		return
 	number_winner = winner_betfield_model.number
 	
 	
@@ -112,8 +104,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	await get_tree().create_timer(1).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
-	score = delta_score#bad
+	_resolve_bets(result_field_id)
 	
 	#eventos finales post resolve, bolas y pasivos
 	if ball.ball_definition.ball_effect != null:
@@ -148,10 +139,13 @@ func spin() -> void:
 	#CombatEventBus.disableClickableAreas()
 	BookEventBus.spin_started.emit()
 	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, _max_result_field_id())
+	result_field_id = _random_result_field_id()
 
 	# 2. Obtenemos el BetFieldModel ganador
-	winner_betfield_model = GameState.bet_field_models[result_field_id]
+	winner_betfield_model = GameState.get_bet_field_model(result_field_id)
+	if winner_betfield_model == null:
+		push_error("Could not resolve roulette result field: " + str(result_field_id))
+		return
 	number_winner = winner_betfield_model.number
 	roulette_control.spin(number_winner)
 	#Este mesnsaje hara que la ruleta gire
@@ -180,8 +174,7 @@ func spin() -> void:
 	await get_tree().create_timer(.5).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
-	score = delta_score#bad
+	_resolve_bets(result_field_id)
 	
 	#eventos finales post resolve, bolas y pasivos
 	##CombatEventBus.bet_resolved.emit()
@@ -190,29 +183,39 @@ func spin() -> void:
 	changeScore()
 
 func _max_result_field_id() -> int:
-	var count := GameState.bet_field_models.size()
-	if count <= 0:
+	var result_ids := _result_field_ids()
+	if result_ids.is_empty():
 		return 36
-	return count - 1
+	return int(result_ids.back())
+
+func _random_result_field_id() -> int:
+	var result_ids := _result_field_ids()
+	if result_ids.is_empty():
+		return rng.randi_range(0, 36)
+	return int(result_ids[rng.randi_range(0, result_ids.size() - 1)])
+
+func _result_field_ids() -> Array[int]:
+	var ids: Array[int] = []
+	for field_id in range(GameState.bet_field_models.size()):
+		var field := GameState.get_bet_field_model(field_id)
+		if field != null and field.ConditionStrategy is StraightUpCondition:
+			ids.append(field_id)
+	return ids
 		
 
 func changeScore()->void:
-	#agrega un evento de cambio de score
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
-			totalChanged.emit() 
-			return true
-	}))
+	score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
+	totalChanged.emit() 
 
 @warning_ignore("shadowed_variable")
 func _resolve_bets(result_field_id: int) -> float:
 	# Obtenemos el BetFieldModel ganador
-	var winner_model = GameState.bet_field_models[result_field_id] as BetFieldModel
+	var winner_model = GameState.get_bet_field_model(result_field_id) as BetFieldModel
+	if winner_model == null:
+		push_error("Cannot resolve bets for invalid result field: " + str(result_field_id))
+		return multiplier
 	
-	var delta := 0.0
+	last_winning_bet_entries.clear()
 	##CombatEventBus.pre_resolve.emit()
 	var active_bets = GameState.get_Bets() as Dictionary[int, Array]
 
@@ -223,21 +226,24 @@ func _resolve_bets(result_field_id: int) -> float:
 	var count : int = 0
 	for field_id in active_bets:
 		var field := GameState.get_bet_field_model(field_id) as BetFieldModel
+		if field == null or field.ConditionStrategy == null:
+			continue
 		var chip_stack: Array = active_bets[field_id]
 		# Verificamos si este campo cumple la condición ganadora
 		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
 			for i in range(0, chip_stack.size()):
-				EventManager.add_event(EventManager.QueueType.GAME, 
-				GameEvent.new({
-					"paralel": false,
-					"action": func():
-						multiplier += field.multiplier
-						multiplicatorChanged.emit(0)#esto modifica globalmente el mult
-						return true
-				}))
+				multiplier += field.multiplier
+				multiplicatorChanged.emit(field.multiplier)#esto modifica globalmente el mult
 				table_meshes.call_mult_anim(field_id)
 				field.call_betfield_animation.emit() #eso especificamente pone una anim en el campo
 				#aca se llama muchas veces sin razon
+			
+			last_winning_bet_entries.append({
+				"field_id": field_id,
+				"field": field,
+				"chip_count": chip_stack.size(),
+				"field_multiplier": field.multiplier,
+			})
 			
 			if count > 0:
 				pass
@@ -245,30 +251,17 @@ func _resolve_bets(result_field_id: int) -> float:
 			BookEventBus.bet_resolved.emit(self)
 			
 			count+=1#tambien deberia aumentar la velocidad de enimacion
-			delta = multiplier
 	
 	BookEventBus.bet_post_resolved.emit(self)
 	#m
-	return delta
+	return multiplier
 
 func add_multiplier(mult: float)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			multiplier += mult
-			multiplicatorChanged.emit(mult)#esto modifica globalmente el mult
-			return true
-	}))
+	multiplier += mult
+	multiplicatorChanged.emit(mult)#esto modifica globalmente el mult
 func add_base(base_added: float)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			base += base_added
-			baseChanged.emit()#esto modifica globalmente el mult
-			return true
-	}))
+	base += base_added
+	baseChanged.emit()#esto modifica globalmente el mult
 
 #reset_score
 func reset_score()->void:
@@ -282,6 +275,9 @@ func reset_score()->void:
 #reroll
 func reroll()->void:
 	##CombatEventBus.reroll.emit(self)
+	if not GameState.consume_reroll():
+		return
+	BookEventBus.reroll_used.emit(self)
 	##base = CombatEventBus.last_ball_data_used.base_damage
 	multiplier = 1
 	score = 0

@@ -1,5 +1,8 @@
 extends Node
 
+const TrinketRuntimeStateResource := preload("res://features/trinkets/runtime/trinket_runtime.gd")
+const BoardUpgradeRuntimeStateResource := preload("res://features/board_upgrades/runtime/board_upgrade_runtime.gd")
+
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
 
@@ -12,6 +15,8 @@ var chips: Array[ChipModel] = []
 
 #pasivos en posesion
 @export var passiveItems: Array[PassiveItemRuntimeState] = []
+@export var trinkets: Array[Resource] = []
+@export var board_upgrades: Array[Resource] = []
 
 #items usables, actualmente es solo el betfieldmodel, pero en realidad deberian haber mas
 #var usableItems: Array[BetFieldModel] = []
@@ -24,6 +29,7 @@ var chips: Array[ChipModel] = []
 var field_by_chip: Dictionary[int, int] = {}
 
 var max_reroll : int = 3
+var current_reroll: int = 3
 var run_luck: int = 0
 var extra_chip_slots: int = 0
 var extra_ball_slots: int = 0
@@ -31,6 +37,7 @@ var extra_trinket_slots: int = 0
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
+signal rerolls_changed(current_reroll: int, max_reroll: int)
 
 #playerStats
 @export var current_healt : int = 100# % de vida
@@ -57,6 +64,7 @@ func reload():
 	extra_chip_slots = 0
 	extra_ball_slots = 0
 	extra_trinket_slots = 0
+	current_reroll = max_reroll
 	
 	#limpieza de apuestas
 	Bets.clear()
@@ -67,6 +75,7 @@ func reload():
 	
 	#balls.shuffle_balls()
 	initialized.emit()
+	rerolls_changed.emit(current_reroll, max_reroll)
 	table_ready.emit()
 
 func load_from_definition():
@@ -89,7 +98,7 @@ func load_from_definition():
 	#for ball_original in ballsDefinition.all_balls:
 	#	print(ball_original)
 	#	if ball_original:
-			# Esto crea una copia única de la bola con sus propios datos
+			# Esto crea una copia Ãºnica de la bola con sus propios datos
 	#		var ball_copy = ball_original.duplicate() as BallModel
 	#		new_balls.append(ball_copy)
 
@@ -117,9 +126,15 @@ func load_from_definition():
 	#return copy_list
 
 func get_bet_field_model(id: int) -> BetFieldModel:
+	if id < 0 or id >= bet_field_models.size():
+		push_warning("Invalid bet field id: " + str(id))
+		return null
 	return bet_field_models[id]
 	
 func get_chip(id: int) -> ChipModel:
+	if id < 0 or id >= chips.size():
+		push_warning("Invalid chip id: " + str(id))
+		return null
 	return chips[id]
 
 
@@ -142,10 +157,12 @@ func _internal_add_to_stack(f_id: int, c_id: int):
 	
 	Bets[f_id].append(c_id)
 	
-	# Emitimos señal para que la UI o los materiales se actualicen
+	# Emitimos seÃ±al para que la UI o los materiales se actualicen
 	bet_updated.emit(f_id, Bets[f_id])
 
 func place_bet(field_id: int, chip_id: int) -> void:
+	if get_bet_field_model(field_id) == null or get_chip(chip_id) == null:
+		return
 	# Si el chip ya estaba apostado, lo sacamos primero
 	remove_bet(chip_id)
 
@@ -153,7 +170,7 @@ func place_bet(field_id: int, chip_id: int) -> void:
 	if not Bets.has(field_id):
 		Bets[field_id] = []
 
-	# Registramos la relación
+	# Registramos la relaciÃ³n
 	Bets[field_id].append(chip_id)
 	field_by_chip[chip_id] = field_id
 
@@ -161,6 +178,8 @@ func place_bet(field_id: int, chip_id: int) -> void:
 	bet_updated.emit(field_id, Bets[field_id])
 			
 func remove_bet(chip_id: int) -> void:
+	if get_chip(chip_id) == null:
+		return
 	if not field_by_chip.has(chip_id):
 		return
 
@@ -202,6 +221,48 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		#existing_item.animate.emit()
 		#agregar el panel al control
 
+func add_trinket(new_trinket: Resource) -> void:
+	if new_trinket == null:
+		return
+	var existing_trinket = null
+	for trinket in trinkets:
+		if trinket.trinket_definition == new_trinket or trinket.trinket_definition.trinket_id == new_trinket.trinket_id:
+			existing_trinket = trinket
+			break
+	if existing_trinket:
+		if new_trinket.is_stackable():
+			existing_trinket.quantity += 1
+			if existing_trinket.trinket_definition.trinket_effect != null:
+				existing_trinket.trinket_definition.trinket_effect.animate.emit()
+				existing_trinket.on_item_added()
+	else:
+		existing_trinket = TrinketRuntimeStateResource.new()
+		existing_trinket.trinket_definition = new_trinket
+		existing_trinket.quantity = 1
+		trinkets.append(existing_trinket)
+		existing_trinket.on_item_added()
+
+func add_board_upgrade(new_board_upgrade: Resource) -> void:
+	if new_board_upgrade == null:
+		return
+	var existing_upgrade = null
+	for upgrade in board_upgrades:
+		if upgrade.board_upgrade_definition == new_board_upgrade or upgrade.board_upgrade_definition.board_upgrade_id == new_board_upgrade.board_upgrade_id:
+			existing_upgrade = upgrade
+			break
+	if existing_upgrade:
+		if new_board_upgrade.is_stackable():
+			existing_upgrade.quantity += 1
+			if existing_upgrade.board_upgrade_definition.board_upgrade_effect != null:
+				existing_upgrade.board_upgrade_definition.board_upgrade_effect.animate.emit()
+				existing_upgrade.board_upgrade_definition.board_upgrade_effect.on_item_added()
+	else:
+		existing_upgrade = BoardUpgradeRuntimeStateResource.new()
+		existing_upgrade.board_upgrade_definition = new_board_upgrade
+		existing_upgrade.quantity = 1
+		board_upgrades.append(existing_upgrade)
+		existing_upgrade.on_item_added()
+
 func heal_player(amount: int) -> void:
 	if amount <= 0:
 		return
@@ -232,3 +293,22 @@ func add_run_luck(amount: int) -> void:
 	if amount <= 0:
 		return
 	run_luck += amount
+
+func set_max_reroll(value: int, refill: bool = false) -> void:
+	max_reroll = max(0, value)
+	if refill:
+		current_reroll = max_reroll
+	else:
+		current_reroll = min(current_reroll, max_reroll)
+	rerolls_changed.emit(current_reroll, max_reroll)
+
+func consume_reroll() -> bool:
+	if current_reroll <= 0:
+		return false
+	current_reroll -= 1
+	rerolls_changed.emit(current_reroll, max_reroll)
+	return true
+
+func reset_rerolls() -> void:
+	current_reroll = max_reroll
+	rerolls_changed.emit(current_reroll, max_reroll)

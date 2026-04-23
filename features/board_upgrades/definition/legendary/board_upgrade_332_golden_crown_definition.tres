@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/legendary/board_upgrade_332_golden_crown_effect.gd" id="1_mwncc"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_ubllk"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_wsxt5"]
+
+[sub_resource type="Resource" id="Resource_8tdkh"]
+script = ExtResource("1_mwncc")
+
+[resource]
+script = ExtResource("3_wsxt5")
+board_upgrade_id = 332
+display_name = "Golden Crown"
+description = "Todos los numeros dorados tambien cuentan como lucky y ganan +0.25 mult adicional."
+stackable = false
+rarity_type = 5
+pool_weight = 8
+upgrade_type = 11
+design_notes = "Hace que una run de dorados se convierta en el eje completo de la partida."
+effect_key = "golden_crown"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_golden_crown_mult": 0.25
+},
+"count": 99,
+"filter": "golden",
+"set_meta": {
+"board_tag_lucky": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_8tdkh")
+cumulative = false

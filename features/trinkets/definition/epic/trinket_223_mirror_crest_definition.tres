@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://m1aibwsrtwau"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_223_mirror_crest_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_kik0w"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 223
+display_name = "Mirror Crest"
+description = "Los efectos de copia o repeticion (MirrorBall, EchoBall, ChronoBall) ganan +25% de efectividad."
+stackable = false
+rarity_type = 4
+pool_weight = 22
+trigger_types = Array[int]([4])
+design_notes = "Build-around claro para mazos de copy/combo."
+effect_key = "mirror_crest"
+metadata = {
+"copy_effectiveness_bonus": 0.25
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

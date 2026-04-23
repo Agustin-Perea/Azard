@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://cv03o6sc58moj"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/uncommon/passive_16_chain_coil_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 16
+display_name = "ChainCoil"
+description = "Los efectos de rebote o cadena golpean a 1 objetivo adicional."
+stackable = false
+rarity_type = 2
+pool_weight = 70
+trigger_types = Array[int]([3])
+design_notes = "Fuerte en salas con muchos enemigos; no acumulable para no romper Bounce/Storm."
+effect_key = "chain_coil"
+metadata = {
+"extra_chain_targets": 1
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

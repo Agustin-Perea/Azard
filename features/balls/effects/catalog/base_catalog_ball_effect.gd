@@ -25,16 +25,18 @@ func _winner(controller: RouletteController) -> BetFieldModel:
 
 func _is_red(controller: RouletteController) -> bool:
 	var winner := _winner(controller)
-	return winner != null and winner.color == Constants.BET_FIELD_COLOR.RED
+	return winner != null and (winner.color == Constants.BET_FIELD_COLOR.RED or bool(winner.get_meta(Constants.BOARD_TAG.BOTH_COLORS, false)))
 
 func _is_black(controller: RouletteController) -> bool:
 	var winner := _winner(controller)
-	return winner != null and winner.color == Constants.BET_FIELD_COLOR.BLACK
+	return winner != null and (winner.color == Constants.BET_FIELD_COLOR.BLACK or bool(winner.get_meta(Constants.BOARD_TAG.BOTH_COLORS, false)))
 
 func _is_prime(controller: RouletteController) -> bool:
 	var winner := _winner(controller)
 	if winner == null:
 		return false
+	if bool(winner.get_meta(Constants.BOARD_TAG.PRIME_OVERRIDE, false)):
+		return true
 	var n := winner.number
 	if n < 2:
 		return false
@@ -49,4 +51,4 @@ func _is_zero_family(controller: RouletteController) -> bool:
 	var winner := _winner(controller)
 	if winner == null:
 		return false
-	return winner.number == 0 or winner.number == 37
+	return winner.number == 0 or winner.number == 37 or bool(winner.get_meta(Constants.BOARD_TAG.JACKPOT, false)) or bool(winner.get_meta(Constants.BOARD_TAG.JACKPOT_SECONDARY, false)) or bool(winner.get_meta(Constants.BOARD_TAG.SOFT_37, false)) or bool(winner.get_meta(Constants.BOARD_TAG.ROYAL_37, false))

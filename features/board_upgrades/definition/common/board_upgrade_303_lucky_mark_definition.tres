@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_303_lucky_mark_effect.gd" id="1_fd58c"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_og531"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_47221"]
+
+[sub_resource type="Resource" id="Resource_r1itg"]
+script = ExtResource("1_fd58c")
+
+[resource]
+script = ExtResource("3_47221")
+board_upgrade_id = 303
+display_name = "Lucky Mark"
+description = "Marca 1 numero como lucky. Cuando cae ahi, la resolucion gana +0.25 mult."
+pool_weight = 120
+design_notes = "Comun de bajo impacto pero muy flexible."
+effect_key = "lucky_mark"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_lucky_mult": 0.25
+},
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_lucky": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_r1itg")

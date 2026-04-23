@@ -35,7 +35,8 @@ func _ready() -> void:
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
-	rerolls_count = GameState.max_reroll
+	GameState.rerolls_changed.connect(_on_rerolls_changed)
+	_on_rerolls_changed(GameState.current_reroll, GameState.max_reroll)
 	
 
 func _on_change_base() -> void:
@@ -67,6 +68,10 @@ func _on_bet_completed() -> void:
 func _on_bet_resolved() -> void:
 	multiplicator.text = str(1)
 	total_damage.text = str(0)
+
+func _on_rerolls_changed(current_reroll: int, max_reroll: int) -> void:
+	rerolls_count = current_reroll
+	rerolls_count_label.text = str(current_reroll) + "/" + str(max_reroll)
 	
 	
 #animacion de las labels
@@ -153,10 +158,5 @@ func number_disappear()->void:
 	 
 
 func _on_reroll_pressed()->void:
-
-	if rerolls_count > 0:
-		rerolls_count-=1
-		rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
-		
-		roulette_controller.reroll()
+	roulette_controller.reroll()
 	
