@@ -155,7 +155,7 @@ func number_disappear()->void:
 func _on_reroll_pressed()->void:
 
 	if rerolls_count > 0:
-		rerolls_count-=1
+		rerolls_count -= 1
 		rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 		
 		roulette_controller.reroll()

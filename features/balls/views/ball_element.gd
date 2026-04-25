@@ -118,11 +118,13 @@ func deactivate_ball_desctiption()->void:
 		
 	
 func on_enter() -> void:
+	super()
 	if DragService.dragged == null:
 		activate_ball_desctiption()
 
 
 func on_exit() -> void:
+	super()
 	pass
 
 	
@@ -170,5 +172,5 @@ func use_ball()->void:
 
 
 func _on_mouse_entered():
-	if DragService.dragged == null:
+	if DragService.dragged == null && ball_data:
 		activate_ball_desctiption()

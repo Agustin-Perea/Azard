@@ -59,3 +59,20 @@ tracks/7/path = NodePath("Bat:Key 5")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = PackedFloat32Array(0, 1, 0, 0.033333335, 1, 0.25925928, 0.06666667, 1, 0.74074084, 0.1, 1, 1, 0.73333335, 1, 1, 0.76666665, 1, 0.7407407, 0.8, 1, 0.25925916, 0.8333333, 1, 0)
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = false
+tracks/8/path = NodePath("../..")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.06666667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [0.1, 0.5, 15.0],
+"method": &"apply_camera_shake"
+}, {
+"args": [0.1, 0.333],
+"method": &"frame_freeze"
+}]
+}

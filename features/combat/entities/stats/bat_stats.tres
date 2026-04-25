@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatsComponent" format=3 uid="uid://bpyr7auyfshaj"]
+
+[ext_resource type="Script" uid="uid://bisiegiye7v2a" path="res://features/combat/controllers/StatsComponent.gd" id="1_5y23j"]
+
+[resource]
+script = ExtResource("1_5y23j")
+current_healt = 50
+max_healt = 50
+attack = 5
+metadata/_custom_type_script = "uid://bisiegiye7v2a"

@@ -117,7 +117,7 @@ func update_field(index : int)->void:
 #se deberia desactivar junto a las clickablesares, incluso el collision
 func call_mult_anim(index : int)->void:
 	#esto es una negrada
-	var multiplicator_indicator = $"../../../Temp/PopUpText"
+	var multiplicator_indicator = $"../../../PopUpText"
 	#print("Referencia del objeto: ", multiplicator_indicator)
 	
 	if multiplicator_indicator != null:

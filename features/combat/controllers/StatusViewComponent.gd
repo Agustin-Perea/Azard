@@ -10,10 +10,12 @@ class_name StatusViewComponent
 @onready var health_progress_bar : ProgressBar = $"../ModelVisualComponent/StatsView/SubViewport/ProgressBar"
 @onready var health_label_text : Label3D = $"../ModelVisualComponent/StatsView/LifeText"
 
-@onready var stats : StatsComponent = $"../StatsComponent"
+
+var stats : StatsComponent
 
 
-func _ready() -> void:
+func set_up(view_stats : StatsComponent)->void:
+	stats = view_stats
 	stats.health_changed.connect(_update_health)
 	_update_health()
 

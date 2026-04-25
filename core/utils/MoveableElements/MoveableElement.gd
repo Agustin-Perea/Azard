@@ -10,6 +10,7 @@ signal exited()
 static var global_input_enabled: bool = true
 
 func _ready() -> void:
+	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
 	pass
 	#se asignan los eventos
 	#Drag_Service.add_clickable(area3D) este nop, pues cambia de otra manera
@@ -41,11 +42,13 @@ func on_release() -> void:
 #otras funciones 
 
 func on_enter() -> void:
-	pass
+	if not global_input_enabled:
+		return
 
 
 func on_exit() -> void:
-	pass
+	if not global_input_enabled:
+		return
 	
 func _on_mouse_entered():
 	if not global_input_enabled:
@@ -66,3 +69,9 @@ func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, n
 		on_press()
 	if event is InputEventMouseButton and event.is_released():
 		released.emit()
+
+
+func _on_change_collision_detection(value : bool):
+	var collision := get_node_or_null("CollisionShape3D")
+	if collision:
+		collision.disabled = value

@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://4biv6muw0kdx"]
 
 [ext_resource type="PackedScene" uid="uid://6f6udoqh4s0l" path="res://resources/enemies/bat/bat.glb" id="1_3ar4h"]
-[ext_resource type="Script" uid="uid://bisiegiye7v2a" path="res://features/combat/controllers/StatsComponent.gd" id="1_m88l1"]
+[ext_resource type="Script" uid="uid://d0h0qd6bbruja" path="res://features/combat/controllers/turn_based_combat/unit.gd" id="1_iy404"]
 [ext_resource type="Script" uid="uid://dw0pxbqiq52da" path="res://features/combat/controllers/StatusViewComponent.gd" id="2_fldkf"]
+[ext_resource type="Resource" uid="uid://bpyr7auyfshaj" path="res://features/combat/entities/stats/bat_stats.tres" id="2_o7wca"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="4_4l2kj"]
+[ext_resource type="Script" uid="uid://d3y71vaw8trb2" path="res://features/combat/entities/actions/action_controller.gd" id="4_awiem"]
 [ext_resource type="AnimationLibrary" uid="uid://bohtab1pg17c1" path="res://resources/enemies/bat/animations/bat_animations.res" id="4_iy404"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fldkf"]
@@ -21,6 +23,12 @@ viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
 [sub_resource type="ViewportTexture" id="ViewportTexture_4l2kj"]
 viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_awiem"]
+animation = &"bat_animations/Bat_confusion"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qx4hk"]
+animation = &"bat_animations/Bat_Attacked"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iy404"]
 animation = &"bat_animations/Bat_Attacked"
 
@@ -35,33 +43,38 @@ xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qx4hk"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qx4hk"]
-states/attacked/node = SubResource("AnimationNodeAnimation_iy404")
-states/attacked/position = Vector2(346, 187)
+states/attack/node = SubResource("AnimationNodeAnimation_awiem")
+states/attack/position = Vector2(509, 177)
+states/death/node = SubResource("AnimationNodeAnimation_qx4hk")
+states/death/position = Vector2(593, 105)
+states/hurt/node = SubResource("AnimationNodeAnimation_iy404")
+states/hurt/position = Vector2(346, 187)
 states/idle/node = SubResource("AnimationNodeAnimation_o7wca")
 states/idle/position = Vector2(337, 94)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_awiem"), "attacked", "idle", SubResource("AnimationNodeStateMachineTransition_o7wca")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_awiem"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_o7wca"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_qx4hk")]
 graph_offset = Vector2(16, 28)
 
-[node name="EnemyEntity" type="Node3D" unique_id=986372475]
+[sub_resource type="BoxShape3D" id="BoxShape3D_awiem"]
+size = Vector3(1.369873, 1, 1)
 
-[node name="StatsComponent" type="Node" parent="." unique_id=1847357195]
-script = ExtResource("1_m88l1")
-current_healt = 100
-
-[node name="StatusViewComponent" type="Node" parent="." unique_id=1302820884]
-script = ExtResource("2_fldkf")
-
-[node name="ActionController" type="Node" parent="." unique_id=63284386]
+[node name="EnemyEntity" type="Node3D" unique_id=986372475 groups=["enemy"]]
+script = ExtResource("1_iy404")
+stats = ExtResource("2_o7wca")
 
 [node name="ModelVisualComponent" type="Node3D" parent="." unique_id=787457806]
 
 [node name="bat" parent="ModelVisualComponent" unique_id=151119345 instance=ExtResource("1_3ar4h")]
+physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=589395905]
-transform = Transform3D(1.0214071, 0, 0, 0, 0.9657486, 0, 0, 0, 1, 0, 1.9014155, 0)
-"blend_shapes/Key 1" = 0.6465162
+transform = Transform3D(1.0155329, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8438271, 0)
+"blend_shapes/Key 2" = 1.0
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=1510423416]
 libraries/bat_animations = ExtResource("4_iy404")
@@ -100,10 +113,11 @@ fixed_size = true
 text = "80"
 
 [node name="DamageView" type="Sprite3D" parent="ModelVisualComponent/StatsView" unique_id=873522915]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9626876, 0.33751047)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53928, 0.33751047)
 visible = false
 billboard = 1
 double_sided = false
+no_depth_test = true
 texture = SubResource("ViewportTexture_4l2kj")
 
 [node name="DamageSubViewport" type="SubViewport" parent="ModelVisualComponent/StatsView" unique_id=728267348]
@@ -124,16 +138,34 @@ theme_override_fonts/normal_font = ExtResource("4_4l2kj")
 theme_override_fonts/mono_font = ExtResource("4_4l2kj")
 theme_override_font_sizes/normal_font_size = 64
 bbcode_enabled = true
-text = "[wave amp=50 freq=5]aya me duele![/wave]"
+text = "[wave amp=50 freq=5]123456789[/wave]"
 fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ConfusionGizmo" type="Label3D" parent="ModelVisualComponent" unique_id=1328174519]
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+visible = false
+text = "???"
+font_size = 53
+
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621545040]
 root_node = NodePath("../ModelVisualComponent/bat")
 tree_root = SubResource("AnimationNodeStateMachine_qx4hk")
 anim_player = NodePath("../ModelVisualComponent/bat/AnimationPlayer")
+
+[node name="target_area" type="StaticBody3D" parent="." unique_id=473892783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8613776, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="target_area" unique_id=655554962]
+shape = SubResource("BoxShape3D_awiem")
+
+[node name="StatusViewComponent" type="Node" parent="." unique_id=1302820884]
+script = ExtResource("2_fldkf")
+
+[node name="ActionController" type="Node" parent="." unique_id=63284386]
+script = ExtResource("4_awiem")
 
 [editable path="ModelVisualComponent/bat"]
