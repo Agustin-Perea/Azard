@@ -25,7 +25,7 @@ func on_pre_resolve()->void:
 	pass
 func on_bet_resolved()->void:
 	pass
-func on_post_resolved(roullette_controller : RouletteController)->void:
+func on_post_resolved(roullette_controller)->void:
 	pass
 	
 func on_ball_use()->void:

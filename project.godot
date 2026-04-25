@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Azard"
-run/main_scene="uid://ckjjsqq6r5ljr"
+run/main_scene="uid://ljs75i2re1r6"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://buwcryw1eujb2"
 
@@ -32,6 +32,11 @@ window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[global_group]
+
+player="representa una unidad de player"
+enemy="representa una unidad de enemigo"
 
 [gui]
 

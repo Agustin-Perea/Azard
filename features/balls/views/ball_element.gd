@@ -15,16 +15,24 @@ var aura_material: ShaderMaterial
 
 var active : bool = true
 var description_active : bool = false
+var hand_slot_index: int = -1
 
 func _ready() -> void:
 	super()
+	hand_slot_index = _resolve_hand_slot_index()
+	if not GameState.ball_hand_changed.is_connected(_on_ball_hand_changed):
+		GameState.ball_hand_changed.connect(_on_ball_hand_changed)
+	BookEventBus.player_turn_started.connect(_on_player_turn_started)
+	GameState.ensure_ball_run_ready(_hand_slot_count())
 			
 	#if not aura_material:
 		#aura_material = ShaderMaterial.new()
 		#aura_material.shader = preload("res://Resources/Shaders/selection_outline.gdshader")
 		#aura_material = null
 		
-	if ball_data:
+	if hand_slot_index >= 0:
+		_assign_data_model(GameState.get_hand_ball(hand_slot_index))
+	elif ball_data:
 		_assign_data_model(ball_data)
 		
 
@@ -55,6 +63,7 @@ func _assign_data_model(new_data:BallRuntimeState)->void:
 func activate()->void:
 	active = true
 	ball_mesh.visible = active
+	$CollisionShape3D.disabled = false
 	#area3D.process_mode = PROCESS_MODE_INHERIT	
 	
 func _activate_selection_aura():
@@ -118,11 +127,13 @@ func deactivate_ball_desctiption()->void:
 		
 	
 func on_enter() -> void:
+	super()
 	if DragService.dragged == null:
 		activate_ball_desctiption()
 
 
 func on_exit() -> void:
+	super()
 	pass
 
 	
@@ -156,8 +167,14 @@ func use_ball()->bool:
 	if ball_data == null:
 		return false
 
+	var selected_ball := ball_data
+	if hand_slot_index >= 0:
+		var spent_ball := GameState.spend_hand_ball(hand_slot_index)
+		if spent_ball != null:
+			selected_ball = spent_ball
+
 	#agrega eventos de la bola
-	BookEventBus.start_spin.emit(ball_data)
+	BookEventBus.start_spin.emit(selected_ball)
 	#roulette spin with, this ball
 	#
 
@@ -186,5 +203,32 @@ func _show_missing_chips_warning() -> void:
 
 
 func _on_mouse_entered():
-	if DragService.dragged == null:
+	if DragService.dragged == null && ball_data:
 		activate_ball_desctiption()
+
+func _on_player_turn_started() -> void:
+	GameState.refill_ball_hand(_hand_slot_count())
+
+func _on_ball_hand_changed(_current_hand: Array) -> void:
+	if hand_slot_index >= 0:
+		_assign_data_model(GameState.get_hand_ball(hand_slot_index))
+
+func _resolve_hand_slot_index() -> int:
+	if get_parent() == null:
+		return -1
+	var index := 0
+	for child in get_parent().get_children():
+		if child is BallElement:
+			if child == self:
+				return index
+			index += 1
+	return -1
+
+func _hand_slot_count() -> int:
+	if get_parent() == null:
+		return GameState.DEFAULT_BALL_HAND_SIZE
+	var count := 0
+	for child in get_parent().get_children():
+		if child is BallElement:
+			count += 1
+	return max(count, GameState.DEFAULT_BALL_HAND_SIZE)

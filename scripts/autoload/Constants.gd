@@ -1,12 +1,13 @@
 extends Node
 
 const COMBAT_STATE_NAMES: Dictionary = {
-	"EnemySelection" : "EnemySelection",
-	"Preparation" : "Preparation",
-	"PlayerAttack" : "PlayerAttack",
-	"EnemyTurn" : "EnemyTurn",
+	"EnemySelection" : "SelectionState",
+	"BookState" : "BookState",
+	"RoulleteSpin" : "RouletteState",
+	"BetResolve" : "BetResolve",
 	"Victory" : "Victory",
-	"Defeat" : "Defeat"
+	"Defeat" : "Defeat",
+	"StandBy" : "StandBy",
 }
 
 const RARITY_ID: Dictionary = {
@@ -16,10 +17,10 @@ const RARITY_ID: Dictionary = {
 	"LEGENDARY" : 4,
 }
 
-const ATTACK_TYPE: Dictionary = {
-	"SINGLE" : 1,
-	"HALF" : 2,
-	"ALL" : 3,
+enum ATTACK_TYPE {
+	SINGLE,
+	HALF,
+	ALL
 }
 
 enum BALL_RARITY {

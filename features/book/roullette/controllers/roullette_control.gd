@@ -62,6 +62,7 @@ var _spin_finish_emitted := false
 
 @export var finish_y_level: float = -0.09
 
+@onready var parent : Node3D = $".."
 
 var _original_parent: Node
 
@@ -91,7 +92,10 @@ func _initialize_geometry() -> void:
 	_initial_radius = Vector2(rel.x, rel.z).length()
 	_current_radius = _initial_radius
 	_angle_rad = atan2(rel.z, rel.x)
-
+	
+	inner_radius *= parent.scale.x
+	finish_radius *= parent.scale.x
+	finish_y_level *= parent.scale.x
 
 func _initialize_physics() -> void:
 	_omega_initial = deg_to_rad(angular_speed_deg)
@@ -157,7 +161,7 @@ func _process_dropping(delta: float) -> void:
 		get_relative_ball_angle(roulette, ball)
 		- roulette.global_rotation.y
 		+ choosed_field * FIELD_ANGLE
-		+ BASE_OFFSET,
+		+ BASE_OFFSET  + parent.rotation.y,
 		0, TAU
 	)
 
@@ -165,11 +169,12 @@ func _process_dropping(delta: float) -> void:
 	_current_radius = move_toward(_current_radius, inner_radius, radius_speed * delta)
 
 	var adjusted_omega = _omega_final
-	var radius_reached = abs(_current_radius - inner_radius) < 0.01
+	var radius_reached = abs(_current_radius - inner_radius) < 0.01 * parent.scale.x
 
 	if radius_reached:
 		var distance_factor = clamp(angle_diff / deg_to_rad(90.0), 0.1, 1.0)
 		adjusted_omega = _omega_final * distance_factor
+
 
 	_angle_rad += wrapf(adjusted_omega * delta, 0, TAU)
 	_move_ball_smooth(_current_radius, _angle_rad, adjusted_omega)
@@ -181,35 +186,31 @@ func _process_dropping(delta: float) -> void:
 
 
 func _process_adjust(delta: float) -> void:
-	var finish_radius_reached = abs(_current_radius - finish_radius) < 0.01
-
+	var finish_radius_reached = abs(_current_radius - finish_radius) < 0.01* parent.scale.x
 	var radius_speed = (_initial_radius - inner_radius) / drop_duration
 	_current_radius = move_toward(_current_radius, finish_radius, radius_speed * delta)
 
-	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET / 2
+	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
 	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * finish_radius
-	var target_ball_angle = atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708
+	var finish_pos = get_position_from_angle(
+		atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
+		finish_radius,
+		roulette.global_position
+	)
 
+	var target_ball_angle = atan2(finish_pos.z - _center.z, finish_pos.x - _center.x)
 	_move_ball_smooth(_current_radius, target_ball_angle, _omega_final)
 
-	angle_diff = wrapf(
-		get_relative_ball_angle(roulette, ball)
-		- roulette.global_rotation.y
-		+ choosed_field * FIELD_ANGLE
-		+ BASE_OFFSET,
-		0, TAU
-	)
-	var angle_reached = (abs(angle_diff) < deg_to_rad(5) or abs(angle_diff - TAU) < deg_to_rad(5))
+	# Comparar distancia XZ directamente contra finish_pos, sin depender de angle_diff
+	var ball_xz = Vector2(ball.global_position.x, ball.global_position.z)
+	var target_xz = Vector2(finish_pos.x, finish_pos.z)
+	var dist_to_target = ball_xz.distance_to(target_xz)
+	var position_reached = dist_to_target < 0.005 * parent.scale.x
 
-	if finish_radius_reached and angle_reached:
-		_complete_spin()
-		return
-
-	if _phase_time > 0.5:
-		var finish_pos = get_position_from_angle(target_ball_angle, finish_radius, roulette.global_position)
+	if finish_radius_reached and position_reached:
 		ball.global_position.x = finish_pos.x
 		ball.global_position.z = finish_pos.z
-		ball.global_position.y = finish_y_level
+		ball.global_position.y = parent.global_position.y + finish_y_level
 		_complete_spin()
 
 
@@ -238,7 +239,7 @@ func _move_ball_smooth(radius: float, angle: float, omega: float) -> void:
 	ball.global_position.z = lerp(ball.global_position.z, z, lerp_factor)
 
 	# Descenso suave en Y sin gravedad real
-	ball.global_position.y = move_toward(ball.global_position.y, finish_y_level, 0.001 * (1.0 - omega / _omega_initial))
+	ball.global_position.y = move_toward(ball.global_position.y, parent.global_position.y + finish_y_level, 0.0001 * (1.0 - omega / _omega_initial))
 
 
 func _transition_to(new_phase: Phase) -> void:
