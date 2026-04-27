@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dj5r04f32rs4n"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_cqy7l"]
+[ext_resource type="Script" uid="uid://dmj576oc41lq" path="res://features/balls/effects/catalog/uncommon/ball_13_random_ball_effect.gd" id="1_mswfj"]
+
+[sub_resource type="Resource" id="Resource_pqibv"]
+script = ExtResource("1_mswfj")
+name = "RandomBall"
+description = "Bola caótica. Al resolverse, elige aleatoriamente uno entre varios efectos útiles. "
+metadata/_custom_type_script = "uid://dmj576oc41lq"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cj6kb"]
+shading_mode = 0
+albedo_color = Color(0.38596946, 0.3315931, 0.086607955, 1)
+
+[resource]
+script = ExtResource("1_cqy7l")
+ball_id = 13
+display_name = "RandomBall"
+rarity = "uncommon"
+pool_weight = 80
+base_damage = 1
+level_1_damage = 1
+ball_material = SubResource("StandardMaterial3D_cj6kb")
+ball_effect = SubResource("Resource_pqibv")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

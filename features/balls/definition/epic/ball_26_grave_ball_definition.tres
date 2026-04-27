@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://0e0afk6cxt2q"]
+
+[ext_resource type="Script" uid="uid://bhgj4vjdi6g5x" path="res://features/balls/effects/catalog/epic/ball_26_grave_ball_effect.gd" id="1_fhtds"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_0d6hl"]
+
+[sub_resource type="Resource" id="Resource_t2nv0"]
+script = ExtResource("1_fhtds")
+name = "GraveBall"
+description = "Bola finisher. Si el enemigo está suficientemente debilitado, muere instantáneamente. "
+metadata/_custom_type_script = "uid://bhgj4vjdi6g5x"
+
+[resource]
+script = ExtResource("2_0d6hl")
+ball_id = 26
+display_name = "GraveBall"
+rarity = "epic"
+pool_weight = 20
+base_damage = 5
+level_1_damage = 5
+ball_effect = SubResource("Resource_t2nv0")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

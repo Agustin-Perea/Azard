@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://bhsnwn4427pmr"]
+
+[ext_resource type="Script" uid="uid://b02kba8b3gc07" path="res://features/balls/effects/catalog/common/ball_07_red_ball_effect.gd" id="1_ivuwc"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_re66x"]
+
+[sub_resource type="Resource" id="Resource_00h6p"]
+script = ExtResource("1_ivuwc")
+name = "RedBall"
+description = "Bola condicional orientada a builds que explotan colores de ruleta. Si el número final pertenece al color rojo, su daño final aumenta."
+metadata/_custom_type_script = "uid://b02kba8b3gc07"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qs0nu"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[resource]
+script = ExtResource("1_re66x")
+ball_id = 7
+display_name = "RedBall"
+pool_weight = 125
+base_damage = 4
+level_1_damage = 4
+ball_material = SubResource("StandardMaterial3D_qs0nu")
+ball_effect = SubResource("Resource_00h6p")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

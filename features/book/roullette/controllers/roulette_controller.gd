@@ -70,8 +70,13 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	last_ball_used = ball
 	BookEventBus.spin_started.emit()
 	
+	if ball == null or ball.ball_definition == null:
+		push_error("on_start_spin received an invalid ball runtime state")
+		return
+	
 	#agregar el base de la bola
-	add_base(ball.ball_definition.base_damage)
+	var resolved_damage := ball.ball_definition.get_damage_for_level(ball.level_upgrade)
+	add_base(resolved_damage)
 	#cambiar el material de la bola de la ruleta
 	ball_mesh.material_override = ball.ball_definition.ball_material
 	#desactivar colisiones
@@ -81,7 +86,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	
 	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, 36)
+	result_field_id = rng.randi_range(0, _max_result_field_id())
 
 	# 2. Obtenemos el BetFieldModel ganador
 	winner_betfield_model = GameState.bet_field_models[result_field_id]
@@ -120,7 +125,10 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	score = delta_score#bad
 	
 	#eventos finales post resolve, bolas y pasivos
-	ball.ball_definition.ball_effect.on_post_resolved(self)
+	if ball.ball_definition.ball_effect != null:
+		ball.ball_definition.ball_effect.set_meta("runtime_level", ball.level_upgrade)
+		ball.ball_definition.ball_effect.set_meta("runtime_ball_id", ball.ball_definition.ball_id)
+		ball.ball_definition.ball_effect.on_post_resolved(self)
 	
 	#cambio de score
 	changeScore()
@@ -151,7 +159,7 @@ func spin() -> void:
 	#CombatEventBus.disableClickableAreas()
 	BookEventBus.spin_started.emit()
 	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, 36)
+	result_field_id = rng.randi_range(0, _max_result_field_id())
 
 	# 2. Obtenemos el BetFieldModel ganador
 	winner_betfield_model = GameState.bet_field_models[result_field_id]
@@ -191,6 +199,12 @@ func spin() -> void:
 	
 	#cambio de score
 	changeScore()
+
+func _max_result_field_id() -> int:
+	var count := GameState.bet_field_models.size()
+	if count <= 0:
+		return 36
+	return count - 1
 	
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({

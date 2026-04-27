@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://bn7lh4ocjqsc5"]
+
+[ext_resource type="Script" uid="uid://l3taie63glxe" path="res://features/balls/effects/catalog/epic/ball_22_rig_ball_effect.gd" id="1_f60ri"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_o5riw"]
+
+[sub_resource type="Resource" id="Resource_xetva"]
+script = ExtResource("1_f60ri")
+name = "RigBall"
+description = "Bola de manipulación directa. Antes del giro o del cierre del resultado, el jugador marca un número objetivo. Si la ruleta cae suficientemente cerca, la bola “empuja” el resultado hacia esa casilla. "
+metadata/_custom_type_script = "uid://l3taie63glxe"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ibfi"]
+shading_mode = 0
+
+[resource]
+script = ExtResource("2_o5riw")
+ball_id = 22
+display_name = "RigBall"
+rarity = "epic"
+pool_weight = 24
+base_damage = 3
+level_1_damage = 3
+ball_material = SubResource("StandardMaterial3D_0ibfi")
+ball_effect = SubResource("Resource_xetva")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dk4vi3du4x6mq"]
+
+[ext_resource type="Script" uid="uid://b10mva23vmhtx" path="res://features/balls/effects/catalog/rare/ball_15_mute_ball_effect.gd" id="1_0gw7y"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_h07bf"]
+
+[sub_resource type="Resource" id="Resource_wxsj6"]
+script = ExtResource("1_0gw7y")
+name = "MuteBall"
+description = "Bola de control. Impide que el enemigo use su habilidad especial durante cierto tiempo. "
+metadata/_custom_type_script = "uid://b10mva23vmhtx"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i0kb5"]
+shading_mode = 0
+albedo_color = Color(0.5019608, 0.38039216, 1, 1)
+
+[resource]
+script = ExtResource("1_h07bf")
+ball_id = 15
+display_name = "MuteBall"
+rarity = "rare"
+pool_weight = 55
+base_damage = 2
+level_1_damage = 2
+ball_material = SubResource("StandardMaterial3D_i0kb5")
+ball_effect = SubResource("Resource_wxsj6")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

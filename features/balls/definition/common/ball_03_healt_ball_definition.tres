@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://b0n5eeymofi7b"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_gnw46"]
+[ext_resource type="Script" uid="uid://yb3ahg0vynjn" path="res://features/balls/effects/catalog/common/ball_03_healt_ball_effect.gd" id="1_xcj3x"]
+
+[sub_resource type="Resource" id="Resource_t57qo"]
+script = ExtResource("1_xcj3x")
+name = "HealtBall"
+description = " Después de resolver el daño, cura al jugador. Fin."
+metadata/_custom_type_script = "uid://yb3ahg0vynjn"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2saw6"]
+shading_mode = 0
+albedo_color = Color(0.2440679, 0.7572161, 0.19733176, 1)
+
+[resource]
+script = ExtResource("1_gnw46")
+ball_id = 3
+display_name = "HealtBall"
+pool_weight = 135
+category = "damage,support"
+base_damage = 1
+level_1_damage = 1
+ball_material = SubResource("StandardMaterial3D_2saw6")
+ball_effect = SubResource("Resource_t57qo")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

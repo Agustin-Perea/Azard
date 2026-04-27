@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://bg710w0l4ko3n"]
+
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_c8bgd"]
+[ext_resource type="Script" uid="uid://no5k8bi5nuqa" path="res://features/balls/effects/catalog/uncommon/ball_14_bank_ball_effect.gd" id="1_y3gor"]
+
+[sub_resource type="Resource" id="Resource_kvmj8"]
+script = ExtResource("1_y3gor")
+name = "BankBall"
+description = "Bola económica. Convierte parte del turno en progreso para la tienda o mejoras futuras. "
+metadata/_custom_type_script = "uid://no5k8bi5nuqa"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhkbq"]
+shading_mode = 0
+albedo_color = Color(0.23464456, 0.65031934, 0.2674075, 1)
+
+[resource]
+script = ExtResource("1_c8bgd")
+ball_id = 14
+display_name = "BankBall"
+rarity = "uncommon"
+pool_weight = 80
+base_damage = 3
+level_1_damage = 3
+ball_material = SubResource("StandardMaterial3D_qhkbq")
+ball_effect = SubResource("Resource_kvmj8")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

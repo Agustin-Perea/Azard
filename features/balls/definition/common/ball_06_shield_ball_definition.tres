@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://pwa0hoptc18m"]
+
+[ext_resource type="Script" uid="uid://6rdf3o73s6hp" path="res://features/balls/effects/catalog/common/ball_06_shield_ball_effect.gd" id="1_g68g7"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_88r41"]
+
+[sub_resource type="Resource" id="Resource_po0dj"]
+script = ExtResource("1_g68g7")
+name = "ShieldBall"
+description = "Bola defensiva. Luego de golpear, otorga escudo al jugador. El escudo absorbe daño recibido dentro del combate."
+metadata/_custom_type_script = "uid://6rdf3o73s6hp"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8mj2g"]
+shading_mode = 0
+albedo_color = Color(0.023529412, 1, 1, 1)
+
+[resource]
+script = ExtResource("2_88r41")
+ball_id = 6
+display_name = " ShieldBall"
+pool_weight = 125
+category = " support"
+base_damage = 1
+level_1_damage = 1
+ball_material = SubResource("StandardMaterial3D_8mj2g")
+ball_effect = SubResource("Resource_po0dj")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

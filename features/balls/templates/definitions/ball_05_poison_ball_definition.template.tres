@@ -1,0 +1,29 @@
+﻿[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://REPLACE_ME"]
+
+[ext_resource type="Script" uid="uid://REPLACE_ME" path="res://features/balls/effects/catalog/common/ball_05_poison_ball_effect.gd" id="1_effect"]
+[ext_resource type="Material" uid="uid://REPLACE_ME" path="res://resources/balls/materials/double_ball_material.tres" id="2_material"]
+[ext_resource type="Script" uid="uid://REPLACE_ME" path="res://features/balls/definition/ball_definition.gd" id="3_definition_script"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+name = "PoisonBall"
+description = "TODO: completar descripcion"
+metadata/_custom_type_script = "uid://REPLACE_ME"
+
+[resource]
+script = ExtResource("3_definition_script")
+ball_id = 5
+display_name = "PoisonBall"
+rarity = "common"
+pool_weight = 125
+attack_profile = "uni-target/dot"
+category = "dot"
+design_notes = "TODO: completar notas"
+base_damage = 2
+level_1_damage = 2
+level_2_damage = 3
+level_3_damage = 4
+attack_type = 1
+ball_material = ExtResource("2_material")
+ball_effect = SubResource("Resource_effect")
+metadata/_custom_type_script = "uid://REPLACE_ME"
