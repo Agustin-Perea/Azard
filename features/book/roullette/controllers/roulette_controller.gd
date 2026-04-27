@@ -60,9 +60,10 @@ func multiply_mult_score(add_mult : float)->void:
 		"paralel": false,
 		"action": func():
 			multiplier *= add_mult
+			multiplicatorChanged.emit(add_mult)
 			return true
 	}))
-	multiplicatorChanged.emit(add_mult)
+	
 
 func on_start_spin(ball : BallRuntimeState) -> void:
 	

@@ -41,12 +41,6 @@ albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
 size = Vector2(100, 100)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4aapt"]
-viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_axs1r"]
-viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
-
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1370694247]
@@ -176,86 +170,13 @@ camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
 
 [node name="StandBy" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=32333335 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_0u8xs")
+change_camera = false
 camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
 
 [node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
 script = ExtResource("7_6b2ki")
 
 [node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("2_isoin")]
-
-[node name="LifeView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="1" unique_id=1436878656]
-texture = SubResource("ViewportTexture_4aapt")
-
-[node name="DamageView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="3" unique_id=2027840614]
-texture = SubResource("ViewportTexture_axs1r")
-
-[node name="Skeleton3D" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig" parent_id_path=PackedInt32Array(136977887, 1913276100) index="0" unique_id=1297471484]
-bones/0/rotation = Quaternion(-0.011406741, 0.044248644, 0.99889153, -0.011303348)
-bones/2/position = Vector3(-0.006957061, 0.87720656, 0.063540965)
-bones/2/rotation = Quaternion(0.038001217, -0.13934374, 0.0029577906, 0.98951024)
-bones/3/rotation = Quaternion(-0.018046888, 7.6413285e-09, 4.345655e-09, 0.99983716)
-bones/4/rotation = Quaternion(-0.021516792, 0.02090277, 0.0047825277, 0.99953854)
-bones/5/rotation = Quaternion(-0.057757165, 0.06937331, 0.007861586, 0.99588645)
-bones/6/position = Vector3(0.037929762, 0.15042987, 0.030401103)
-bones/6/rotation = Quaternion(-0.5781507, -0.39947626, -0.4417987, 0.5576508)
-bones/7/rotation = Quaternion(-0.4083513, 0.59838855, -0.5115721, 0.46203282)
-bones/8/position = Vector3(-1.0826666e-08, 0.25736415, 2.3366937e-08)
-bones/8/rotation = Quaternion(0.081106156, -0.0007383452, 6.003888e-05, 0.99670523)
-bones/9/position = Vector3(3.0375737e-09, 0.25647002, 3.394696e-09)
-bones/9/rotation = Quaternion(-0.027313722, 0.001116286, 0.0023993724, 0.9996235)
-bones/10/position = Vector3(-0.0004997272, 0.0906765, 0.036388494)
-bones/10/rotation = Quaternion(-0.017172229, 0.7269746, -0.012373072, 0.6863381)
-bones/11/rotation = Quaternion(0.0023569278, 0.00010069911, -4.787689e-07, 0.99999726)
-bones/12/rotation = Quaternion(0.0033523499, -0.0002071012, -3.094335e-07, 0.9999944)
-bones/19/position = Vector3(-0.0027187448, 0.08697871, -0.011640191)
-bones/19/rotation = Quaternion(-0.017153215, 0.7270386, -0.01239353, 0.6862704)
-bones/20/rotation = Quaternion(0.0023301248, 7.954664e-06, -8.6681564e-07, 0.99999726)
-bones/21/rotation = Quaternion(0.0032462415, -8.068576e-06, 1.0621117e-06, 0.9999948)
-bones/22/position = Vector3(0.012657707, 0.022167046, 0.017135125)
-bones/22/rotation = Quaternion(0.11230209, 0.9491348, 0.29267967, -0.02949488)
-bones/23/rotation = Quaternion(0.16022632, 5.2142423e-06, 1.4301986e-06, 0.98708034)
-bones/24/rotation = Quaternion(-0.0006802829, -1.5201513e-06, -9.0340643e-07, 0.99999976)
-bones/25/position = Vector3(-0.037929717, 0.15042976, 0.03040111)
-bones/25/rotation = Quaternion(-0.57629776, 0.40618992, 0.43696144, 0.5585296)
-bones/26/rotation = Quaternion(0.3626311, 0.64749616, -0.45096946, -0.49585688)
-bones/27/position = Vector3(3.2557274e-08, 0.24770457, 3.3759626e-09)
-bones/27/rotation = Quaternion(0.71909267, 0.03422773, -0.03552283, 0.69316113)
-bones/28/position = Vector3(3.144714e-08, 0.24628751, 9.6033126e-08)
-bones/28/rotation = Quaternion(0.13108246, 0.7621665, -0.1434193, 0.617536)
-bones/29/position = Vector3(0.0004995577, 0.09067649, 0.036388576)
-bones/29/rotation = Quaternion(-0.017171588, -0.7269747, 0.012373101, 0.686338)
-bones/30/rotation = Quaternion(0.0023573379, -0.00010048153, 7.578336e-07, 0.99999726)
-bones/31/rotation = Quaternion(0.003351143, 0.00020716529, 1.7598495e-07, 0.9999944)
-bones/32/position = Vector3(0.0050197635, 0.09128243, 0.013297638)
-bones/33/rotation = Quaternion(-0.0021382573, -5.1314364e-06, -4.884161e-07, 0.9999978)
-bones/34/rotation = Quaternion(0.056613207, 4.0954046e-06, -1.9903553e-07, 0.9983962)
-bones/38/position = Vector3(0.002718849, 0.08697886, -0.0116400905)
-bones/38/rotation = Quaternion(-0.01715334, -0.72703856, 0.012392976, 0.6862704)
-bones/39/rotation = Quaternion(0.0023304368, -7.87994e-06, 1.0955146e-06, 0.9999973)
-bones/40/rotation = Quaternion(0.0032459951, 8.162145e-06, -1.2215884e-06, 0.9999948)
-bones/41/position = Vector3(-0.012657689, 0.022166988, 0.017135112)
-bones/41/rotation = Quaternion(-0.6976952, 0.703881, 0.07862685, -0.10766041)
-bones/42/rotation = Quaternion(0.16022612, -5.2219257e-06, -1.2309974e-06, 0.98708034)
-bones/43/rotation = Quaternion(-0.00068030023, 1.5569385e-06, 8.037633e-07, 0.99999976)
-bones/44/rotation = Quaternion(0.15936595, -0.045472156, -0.0018200495, 0.9861701)
-bones/45/rotation = Quaternion(-0.11433156, 0.07435184, -0.008581372, 0.99061924)
-bones/46/rotation = Quaternion(0.07542355, 0.030001426, -0.003890329, 0.9966926)
-bones/47/rotation = Quaternion(0.9718264, 0.03636741, -0.19148122, 0.13253646)
-bones/48/position = Vector3(4.1515268e-08, 0.39567122, -2.5262114e-08)
-bones/48/rotation = Quaternion(0.17725913, 0.003921344, -0.0007062706, 0.9841562)
-bones/49/position = Vector3(-1.169974e-08, 0.43147734, -5.820766e-11)
-bones/49/rotation = Quaternion(-0.5104159, -0.26479986, -0.09199301, 0.8129539)
-bones/50/rotation = Quaternion(-2.992092e-07, 0.95680606, -0.29072693, -7.548806e-07)
-bones/51/rotation = Quaternion(0.9759707, -0.038840458, 0.19194749, 0.095545255)
-bones/52/position = Vector3(-4.0570702e-09, 0.395842, 6.4028427e-10)
-bones/52/rotation = Quaternion(0.16456088, -0.004681623, 0.00078128907, 0.9863556)
-bones/52/scale = Vector3(1, 1.000002, 0.999998)
-bones/53/position = Vector3(1.187551e-08, 0.4323242, -2.108883e-08)
-bones/53/rotation = Quaternion(-0.5549585, 0.018240863, -0.032063756, 0.8310597)
-bones/54/rotation = Quaternion(-9.370335e-05, 0.95680594, -0.2907274, -0.00030872508)
-
-[node name="CameraPlayer-camera" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/CameraPlayer" parent_id_path=PackedInt32Array(136977887, 467993775) index="0" unique_id=46036733]
-transform = Transform3D(0.9247614, -0.033522844, 0.37906793, -1.322478e-07, 0.9961124, 0.08809145, -0.38054734, -0.08146363, 0.9211663, 2.534773, 1.3760142, 3.0666668)
 
 [node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
 script = ExtResource("7_6b2ki")
@@ -267,6 +188,3 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 
 [connection signal="pressed" from="UI/Control/SelectionButton" to="UI/Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="UI/Control/BookButton" to="UI/Control" method="_on_book_button_pressed"]
-
-[editable path="BattleManager/CombatGroups/PlayerGroup/Player"]
-[editable path="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/CameraPlayer"]

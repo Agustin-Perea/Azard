@@ -41,11 +41,12 @@ func game_loop() -> void:
 
 
 func _on_perform_attack(attack_info : AttackInfo)->void:
+
+	attack_info.target._recieve_attack(attack_info.damage)
+	
+	await get_tree().create_timer(0.05).timeout
 	UiEventBus.apply_camera_shake.emit(.1,.5,15)
 	UiEventBus.frame_freeze.emit(.1,.333)
-	
-	
-	attack_info.target._recieve_attack(attack_info.damage)
 	#debe chequear por tipo de ataque y dar su ataque y efecto o todo el atkinfo en si a las unidades correspondientes
 	
 

@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cc2jg8s4fnn3m"]
+
+[ext_resource type="Shader" uid="uid://ddiepc8455isn" path="res://resources/materials/shaders/hit_flash.gdshader" id="1_bi68g"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_bi68g")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 1.0

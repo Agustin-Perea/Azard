@@ -4,9 +4,12 @@
 [ext_resource type="Script" uid="uid://d0h0qd6bbruja" path="res://features/combat/controllers/turn_based_combat/unit.gd" id="1_iy404"]
 [ext_resource type="Script" uid="uid://dw0pxbqiq52da" path="res://features/combat/controllers/StatusViewComponent.gd" id="2_fldkf"]
 [ext_resource type="Resource" uid="uid://bpyr7auyfshaj" path="res://features/combat/entities/stats/bat_stats.tres" id="2_o7wca"]
+[ext_resource type="Script" uid="uid://cso2lpv6nc7lx" path="res://features/combat/entities/model_visual_component.gd" id="3_dbjgi"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="4_4l2kj"]
 [ext_resource type="Script" uid="uid://d3y71vaw8trb2" path="res://features/combat/entities/actions/action_controller.gd" id="4_awiem"]
+[ext_resource type="Material" uid="uid://c6yl5cdgqymnv" path="res://resources/materials/dissolve_material.tres" id="4_idsw0"]
 [ext_resource type="AnimationLibrary" uid="uid://bohtab1pg17c1" path="res://resources/enemies/bat/animations/bat_animations.res" id="4_iy404"]
+[ext_resource type="Texture2D" uid="uid://ccg8h7e32h072" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/trace_02.png" id="6_qx4hk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fldkf"]
 bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
@@ -22,6 +25,31 @@ viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4l2kj"]
 viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_idsw0"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+cull_mode = 2
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+disable_specular_occlusion = true
+albedo_texture = ExtResource("6_qx4hk")
+albedo_texture_msdf = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dbjgi"]
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 0.01
+spread = 180.0
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, -1, 0)
+scale_max = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ayqks"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_awiem"]
 animation = &"bat_animations/Bat_confusion"
@@ -66,15 +94,17 @@ size = Vector3(1.369873, 1, 1)
 script = ExtResource("1_iy404")
 stats = ExtResource("2_o7wca")
 
-[node name="ModelVisualComponent" type="Node3D" parent="." unique_id=787457806]
+[node name="ModelVisualComponent" type="Node3D" parent="." unique_id=787457806 node_paths=PackedStringArray("mesh")]
+script = ExtResource("3_dbjgi")
+mesh = NodePath("bat/Bat")
 
 [node name="bat" parent="ModelVisualComponent" unique_id=151119345 instance=ExtResource("1_3ar4h")]
 physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=589395905]
-transform = Transform3D(1.0155329, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8438271, 0)
-"blend_shapes/Key 2" = 1.0
+transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
+material_override = ExtResource("4_idsw0")
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=1510423416]
 libraries/bat_animations = ExtResource("4_iy404")
@@ -150,6 +180,19 @@ transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 visible = false
 text = "???"
 font_size = 53
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="ModelVisualComponent" unique_id=976152347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8190824, 0)
+material_override = SubResource("StandardMaterial3D_idsw0")
+gi_mode = 0
+emitting = false
+amount = 15
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_dbjgi")
+draw_pass_1 = SubResource("QuadMesh_ayqks")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621545040]
 root_node = NodePath("../ModelVisualComponent/bat")

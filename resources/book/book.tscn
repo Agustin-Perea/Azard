@@ -599,6 +599,7 @@ _data = {
 script = ExtResource("1_q6njx")
 
 [node name="roulette_collision" type="StaticBody3D" parent="." unique_id=957894952 groups=["roulette_collision"]]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84832156, 0, -1.6401474)
 collision_layer = 3
 collision_mask = 3
@@ -1437,7 +1438,6 @@ material_override = ExtResource("19_khsg3")
 mesh = ExtResource("19_5lkav")
 
 [node name="PopUpText" parent="." unique_id=877394085 instance=ExtResource("21_eev62")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1364547, 0.027824014, -0.99232846)
 
 [node name="Temp" type="Node" parent="." unique_id=427208635]
 
@@ -1467,6 +1467,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Node3D" type="StaticBody3D" parent="Temp" unique_id=365811749 node_paths=PackedStringArray("add_collision", "item_collision")]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0808461)
 visible = false
 script = ExtResource("35_hnjqa")

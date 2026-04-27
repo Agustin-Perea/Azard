@@ -21,7 +21,7 @@ func _ready() -> void:
 	if deactivate_button:
 		deactivate_button.pressed.connect(deactivate)
 	DragService.dragged_changed.connect(deactivate)
-
+	UiEventBus.deactivate_descriptions.connect(deactivate)
 
 	
 func assign_ball_model(new_model : BallElement)->void:

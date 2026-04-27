@@ -43,11 +43,12 @@ func _on_change_base() -> void:
 	
 #esto deberia tener anim
 func _on_change_mult(mult : float) -> void:
+	#esto debe ser un evento
 	multiplicator.text = str(int(round(roulette_controller.multiplier)))
 	#callear un popupmult a multiplicator.globalpos
 	if mult > 0:
 		var text := str("x",mult)
-		BookEventBus.popuptext.emit(multiplicator.global_position,text)
+		BookEventBus.popuptext.emit(multiplicator.position,text)
 	
 
 func _on_change_total() -> void:

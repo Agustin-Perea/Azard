@@ -133,7 +133,7 @@ func on_exit() -> void:
 func stop_drag()->void:
 	var field_under_mouse := DragService._get_field_under_mouse()
 	DragService._return_to_origin()
-	if field_under_mouse and field_under_mouse.get("collider").is_in_group("roulette_collision"):
+	if ball_data and field_under_mouse and field_under_mouse.get("collider").is_in_group("roulette_collision"):
 		_on_chip_dropped()
 
 @warning_ignore("unused_parameter")

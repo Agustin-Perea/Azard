@@ -18,6 +18,8 @@ func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
 	stats.health_changed.connect(_update_health)
 	_update_health()
+	UiEventBus.deactivate_descriptions.connect(deactivate)
+	UiEventBus.activate_status_view_component.connect(activate)
 
 func _show_health() -> void:
 	health_sprite_viewport.visible = true
@@ -59,3 +61,11 @@ func _show_damaged(damage: float) -> void:
 		damage_viewport.visible = false #desactivar la visual de los nodos ahorra gpu, nodo.process_mode = Node.PROCESS_MODE_DISABLED ahorra cpu
 		# queue_free() # esto borra la instancia del nodo	
 	)
+
+func activate()->void:
+	health_label_text.visible = true
+	health_sprite_viewport.visible = true
+
+func deactivate()->void:
+	health_label_text.visible = false
+	health_sprite_viewport.visible = false

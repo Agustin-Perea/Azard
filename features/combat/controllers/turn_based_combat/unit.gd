@@ -100,7 +100,7 @@ func _show_damaged(damage: float) -> void:
 
 
 func _recieve_attack(damage : int)-> void:
-	animation_state_machine.start("hurt")
+	animation_state_machine.travel("hurt")
 	stats._substract_life(damage)
 	status_view_component._show_damaged(damage)
 

@@ -5,7 +5,7 @@ signal spin_initialized
 signal spin_finished
 
 @export var roulette: Node3D
-@export var ball: Node3D  # Ya no necesita ser RigidBody3D
+@export var ball: Node3D
 
 @export var ball_origin_transform: Node3D
 
@@ -18,12 +18,18 @@ signal spin_finished
 
 # === FASE 3: ENCAJE ===
 @export var drop_duration: float = 2.5
-@export var inner_radius: float = 0.35
-@export var finish_radius: float = 0.30
+@export var inner_radius: float = 0.35       # valor BASE — no tocar en runtime
+@export var finish_radius: float = 0.30      # valor BASE — no tocar en runtime
 @export var choosed_field: int = 0
 
 # === CONFIGURACIÓN ===
 @export var lock_height: bool = true
+@export var finish_y_level: float = -0.09    # valor BASE — no tocar en runtime
+
+# === VERSIONES ESCALADAS (calculadas en _initialize_geometry) ===
+var _inner_radius_s: float
+var _finish_radius_s: float
+var _finish_y_s: float
 
 # === CONSTANTES DE CAMPOS ===
 const FIELD_COUNT := 37
@@ -59,26 +65,23 @@ var _roulette_initial_rotation: float
 var angle_diff: float = 0.0
 var _angle_rad: float = 0.0
 
-@export var finish_y_level: float = -0.09
-
-@onready var parent : Node3D = $".."
+@onready var parent: Node3D = $".."
 
 var _original_parent: Node
 
-func _ready() -> void:
 
+func _ready() -> void:
 	assert(roulette, "Falta asignar la ruleta")
 	assert(ball, "Falta asignar la bola")
 
-	_original_parent = ball.get_parent()  # ← guardar hermano de roulette
+	_original_parent = ball.get_parent()
 
 	_initialize_geometry()
 	_initialize_physics()
 	_calculate_target()
-	#spin()
 
 
-func spin(number_winner : int) -> void:
+func spin(number_winner: int) -> void:
 	if number_winner >= 0 and number_winner < FIELD_COUNT:
 		set_target_field(number_winner)
 	reset_simulation()
@@ -91,17 +94,18 @@ func _initialize_geometry() -> void:
 	_initial_radius = Vector2(rel.x, rel.z).length()
 	_current_radius = _initial_radius
 	_angle_rad = atan2(rel.z, rel.x)
-	
-	inner_radius *= parent.scale.x
-	finish_radius *= parent.scale.x
-	finish_y_level *= parent.scale.x
+
+	# Escalar UNA SOLA VEZ desde los valores base exportados
+	_inner_radius_s  = inner_radius  * parent.scale.x
+	_finish_radius_s = finish_radius * parent.scale.x
+	_finish_y_s      = finish_y_level * parent.scale.x
+
 
 func _initialize_physics() -> void:
 	_omega_initial = deg_to_rad(angular_speed_deg)
 	_omega_final = deg_to_rad(final_speed_deg)
 	_omega_current = _omega_initial
 	_omega_decay_rate = (_omega_initial - _omega_final) / deceleration_time
-	# Sin RigidBody: no hay gravity_scale, damp, freeze, etc.
 
 
 func _calculate_target() -> void:
@@ -124,13 +128,6 @@ func _physics_process(delta: float) -> void:
 			_process_adjust(delta)
 		Phase.FINISHED:
 			pass
-			# Fijar la bola en la posición final
-			#var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
-			#var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * finish_radius
-			#var target_ball_angle = atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708
-			#var finishPos = get_position_from_angle(target_ball_angle, finish_radius, roulette.global_position)
-			#ball.global_position.x = finishPos.x
-			#ball.global_position.z = finishPos.z
 
 
 func _process_initial_speed(delta: float) -> void:
@@ -160,23 +157,22 @@ func _process_dropping(delta: float) -> void:
 		get_relative_ball_angle(roulette, ball)
 		- roulette.global_rotation.y
 		+ choosed_field * FIELD_ANGLE
-		+ BASE_OFFSET  + parent.rotation.y,
+		+ BASE_OFFSET + parent.rotation.y,
 		0, TAU
 	)
 
-	var radius_speed = (_initial_radius - inner_radius) / drop_duration
-	_current_radius = move_toward(_current_radius, inner_radius, radius_speed * delta)
+	var radius_speed = (_initial_radius - _inner_radius_s) / drop_duration
+	_current_radius = move_toward(_current_radius, _inner_radius_s, radius_speed * delta)
 
 	var adjusted_omega = _omega_final
-	var radius_reached = abs(_current_radius - inner_radius) < 0.01 * parent.scale.x
+	var radius_reached = abs(_current_radius - _inner_radius_s) < 0.01 * parent.scale.x
 
 	if radius_reached:
 		var distance_factor = clamp(angle_diff / deg_to_rad(90.0), 0.1, 1.0)
 		adjusted_omega = _omega_final * distance_factor
 
-
 	_angle_rad += wrapf(adjusted_omega * delta, 0, TAU)
-	_move_ball_smooth(_current_radius, _angle_rad, adjusted_omega)
+	_move_ball_smooth(_current_radius, _angle_rad, adjusted_omega, _finish_y_s * 0.8)
 
 	var angle_reached = (abs(angle_diff) < deg_to_rad(5) or abs(angle_diff - TAU) < deg_to_rad(5))
 
@@ -185,22 +181,21 @@ func _process_dropping(delta: float) -> void:
 
 
 func _process_adjust(delta: float) -> void:
-	var finish_radius_reached = abs(_current_radius - finish_radius) < 0.01* parent.scale.x
-	var radius_speed = (_initial_radius - inner_radius) / drop_duration
-	_current_radius = move_toward(_current_radius, finish_radius, radius_speed * delta)
+	var finish_radius_reached = abs(_current_radius - _finish_radius_s) < 0.01 * parent.scale.x
+	var radius_speed = (_initial_radius - _inner_radius_s) / drop_duration
+	_current_radius = move_toward(_current_radius, _finish_radius_s, radius_speed * delta)
 
 	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
-	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * finish_radius
+	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * _finish_radius_s
 	var finish_pos = get_position_from_angle(
 		atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
-		finish_radius,
+		_finish_radius_s,
 		roulette.global_position
 	)
 
 	var target_ball_angle = atan2(finish_pos.z - _center.z, finish_pos.x - _center.x)
-	_move_ball_smooth(_current_radius, target_ball_angle, _omega_final)
+	_move_ball_smooth(_current_radius, target_ball_angle, _omega_final, _finish_y_s)
 
-	# Comparar distancia XZ directamente contra finish_pos, sin depender de angle_diff
 	var ball_xz = Vector2(ball.global_position.x, ball.global_position.z)
 	var target_xz = Vector2(finish_pos.x, finish_pos.z)
 	var dist_to_target = ball_xz.distance_to(target_xz)
@@ -211,7 +206,7 @@ func _process_adjust(delta: float) -> void:
 		print("Han finalizado, dist: ", dist_to_target)
 		ball.global_position.x = finish_pos.x
 		ball.global_position.z = finish_pos.z
-		ball.global_position.y = self.global_position.y + finish_y_level
+		ball.global_position.y = self.global_position.y + _finish_y_s
 		_transition_to(Phase.FINISHED)
 
 
@@ -223,15 +218,13 @@ func get_position_from_angle(target_ball_angle: float, finish_radius: float, cen
 
 
 func _move_ball_orbit(radius: float) -> void:
-	# Posicionamiento directo, sin física
 	var x = _center.x + cos(_angle_rad) * radius
 	var z = _center.z + sin(_angle_rad) * radius
 	var y = _height if lock_height else ball.global_transform.origin.y
 	ball.global_position = Vector3(x, y, z)
 
 
-func _move_ball_smooth(radius: float, angle: float, omega: float) -> void:
-	# Interpolación suave de posición XZ; Y desciende linealmente hacia finish_y_level
+func _move_ball_smooth(radius: float, angle: float, omega: float, finish_vertical_level: float = 0) -> void:
 	var x = _center.x + cos(angle) * radius
 	var z = _center.z + sin(angle) * radius
 
@@ -239,8 +232,12 @@ func _move_ball_smooth(radius: float, angle: float, omega: float) -> void:
 	ball.global_position.x = lerp(ball.global_position.x, x, lerp_factor)
 	ball.global_position.z = lerp(ball.global_position.z, z, lerp_factor)
 
-	# Descenso suave en Y sin gravedad real
-	ball.global_position.y = move_toward(ball.global_position.y, parent.global_position.y + finish_y_level, 0.0001 * (1.0 - omega / _omega_initial))
+	# Constante de descenso escalada con el padre
+	ball.global_position.y = move_toward(
+		ball.global_position.y,
+		parent.global_position.y + finish_vertical_level,
+		0.0001 * parent.scale.x * (1.0 - omega / _omega_initial)
+	)
 
 
 func _transition_to(new_phase: Phase) -> void:
@@ -256,11 +253,10 @@ func _transition_to(new_phase: Phase) -> void:
 func _finish_movement() -> void:
 	set_physics_process(false)
 
-	# Reparentear bola → hija de roulette, manteniendo posición global
 	var global_pos = ball.global_position
 	ball.get_parent().remove_child(ball)
 	roulette.add_child(ball)
-	ball.global_position = global_pos  # ← restaurar posición tras reparenteo
+	ball.global_position = global_pos
 
 
 func reset_simulation() -> void:
@@ -270,7 +266,6 @@ func reset_simulation() -> void:
 	_omega_current = _omega_initial
 	_current_radius = _initial_radius
 
-	# Reparentear bola → de vuelta al nivel original (hermana de roulette)
 	if ball.get_parent() != _original_parent:
 		var global_pos = ball.global_position
 		ball.get_parent().remove_child(ball)

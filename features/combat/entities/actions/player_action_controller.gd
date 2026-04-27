@@ -1,13 +1,10 @@
 extends ActionController
 class_name PlayerActionController
 
-#@export var bet_resolver : BetResolver
-@export var book_camera : Camera3D 
-
 @onready var attack_camera : Camera3D = $"../ModelVisualComponent/CameraPlayer/CameraPlayer-camera"
 
+@onready var roulette_controller : RouletteController = $"../Books/Book"
 
-@onready var roulette_controller : RouletteController = $"../Book"
 
 
 func _ready() -> void:
@@ -23,6 +20,8 @@ func _ready() -> void:
 	
 func perform_movement() -> void:
 	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookState)
+	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.ROULETTE)
+	UiEventBus.activate_status_view_component.emit()
 	if target:
 		on_change_target(target)
 	else:
@@ -31,9 +30,7 @@ func perform_movement() -> void:
 	
 	#reset del attack info y la ruleta y su visual
 	
-	#CombatEventBus.reset_score.emit()
-	#PlayerUiEvents.change_book_page.emit(Constants.BOOK_PAGE.ROULETTE)
-
+	roulette_controller.reset_score()
 
 
 func on_change_target(new_target : Unit):
@@ -46,7 +43,7 @@ func on_change_target(new_target : Unit):
 
 func _do_attacK()->void:
 	#cambiar de estado
-	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.StandBy)
+	
 	if target:
 		# Orientamos el personaje hacia el objetivo
 		# Usamos global_position para evitar problemas con la jerarquía
@@ -60,18 +57,28 @@ func _do_attacK()->void:
 		actual_attacK_Info.damage = roulette_controller.score
 	
 	attack_beginning.emit()
-	#CombatEventBus.finish_turn.emit()
+
+	
+	#cerrar libro y cambiarlo a placeholder(quitar visibilidad)
+	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
 	
 	
-	
-	UiEventBus.changeCamera.emit(attack_camera,.5)
-	animation_state_machine.start("attack")
-	anim_finished = false
-	#espera a que termine la animacion
+	#inicio de animacion de ataque
+
 	var ev = GameEvent.new({
 		"paralel": false,
 		"action": func():
-
+			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.StandBy)
+			UiEventBus.changeCamera.emit(attack_camera,.5)
+			animation_state_machine.start("attack")
+			anim_finished = false
+			return true
+	})
+	EventManager.add_event(EventManager.QueueType.GAME, ev)
+	#espera a que termine la animacion
+	ev = GameEvent.new({
+		"paralel": false,
+		"action": func():
 			return anim_finished
 	})
 	
