@@ -68,6 +68,7 @@ func _do_attacK()->void:
 	var ev = GameEvent.new({
 		"paralel": false,
 		"action": func():
+			UiEventBus.deactivate_status_view_component.emit()
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.StandBy)
 			UiEventBus.changeCamera.emit(attack_camera,.5)
 			animation_state_machine.start("attack")

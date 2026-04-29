@@ -61,6 +61,18 @@ albedo_color = Color(0.71160364, 0.36466023, 1, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_nq47p"]
 size = Vector3(0.33395386, 0.08807373, 0.22705078)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2bku"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+border_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac6gq"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+anti_aliasing = false
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4a5wc"]
+viewport_path = NodePath("left_cover/SubViewport")
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
 
@@ -925,6 +937,33 @@ font_size = 15
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/FinishMoveButton" unique_id=11273679]
 shape = SubResource("BoxShape3D_nq47p")
+
+[node name="SubViewport" type="SubViewport" parent="left_cover" unique_id=2109446995]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(30, 2)
+
+[node name="ProgressBar" type="ProgressBar" parent="left_cover/SubViewport" unique_id=294875285]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 2.0
+theme_override_styles/background = SubResource("StyleBoxFlat_f2bku")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ac6gq")
+value = 50.0
+show_percentage = false
+
+[node name="LifeView" type="Sprite3D" parent="left_cover" unique_id=1996390829]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85367143, 0.112562895, -0.32125103)
+pixel_size = 0.02
+double_sided = false
+texture_filter = 0
+texture = SubResource("ViewportTexture_4a5wc")
+
+[node name="LifeText" type="Label3D" parent="left_cover" unique_id=125935465]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85884213, 0.08875367, -0.4164775)
+pixel_size = 0.003
+double_sided = false
+text = "80"
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=305352410]
 mesh = ExtResource("2_vb2ae")

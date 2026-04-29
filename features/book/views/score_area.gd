@@ -19,6 +19,11 @@ var posiciones_iniciales = {}
 @export var rerolls_count :int
 
 
+var player_stats : StatsComponent
+@onready var Life_bar : Sprite3D = $"../LifeView"
+@onready var health_progress_bar : ProgressBar = $"../SubViewport/ProgressBar"
+@onready var info : Label3D = $"../LifeText"
+
 func _ready() -> void:
 
 	roulette_controller.baseChanged.connect(_on_change_base)
@@ -37,7 +42,15 @@ func _ready() -> void:
 	reroll_button.pressed.connect(_on_reroll_pressed)
 	rerolls_count = GameState.max_reroll
 	
-
+	player_stats = GameState.player_stats
+	player_stats.health_changed.connect(_on_health_changed)
+	_on_health_changed()
+	
+func _on_health_changed()->void:
+	info.text = str(player_stats.current_healt) + "/" + str(player_stats.max_healt)
+	health_progress_bar.max_value = player_stats.max_healt
+	health_progress_bar.value = player_stats.current_healt
+	
 func _on_change_base() -> void:
 	base_damage.text = str(int(round(roulette_controller.base)))
 	

@@ -94,8 +94,8 @@ text = "book
 environment = SubResource("Environment_njiuf")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
-transform = Transform3D(-0.99355346, 0.013545167, -0.112552665, -0.03760549, 0.8972399, 0.43993914, 0.10694579, 0.44133568, -0.8909464, 0, 5.866068, 0)
-light_color = Color(0.58431375, 0.58431375, 0.58431375, 1)
+transform = Transform3D(0.8737722, -0.213958, 0.4367426, 0, 0.8980276, 0.43993917, -0.4863354, -0.38440663, 0.78467155, 0, 5.866068, 0)
+light_color = Color(0.40069774, 0.40069774, 0.40069768, 1)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 light_specular = 0.0
@@ -188,3 +188,5 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 
 [connection signal="pressed" from="UI/Control/SelectionButton" to="UI/Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="UI/Control/BookButton" to="UI/Control" method="_on_book_button_pressed"]
+
+[editable path="Environment/EntornoArena"]

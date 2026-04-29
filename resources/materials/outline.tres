@@ -2,7 +2,8 @@
 
 [resource]
 resource_local_to_scene = true
+transparency = 1
 cull_mode = 1
 shading_mode = 0
 grow = true
-grow_amount = 0.03
+grow_amount = 0.05

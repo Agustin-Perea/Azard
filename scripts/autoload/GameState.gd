@@ -29,11 +29,11 @@ signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
 
 #playerStats
-@export var current_healt : int = 100# % de vida
-@export var max_healt : int = 100
+var player_stats : StatsComponent
 
 func _ready():
 #	CombatEventBus.reload.connect(reload)
+	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
 #	ballsDefinition = preload("res://Scripts/BetTable/Balls/BallsDefault.tres")
@@ -43,8 +43,7 @@ func _ready():
 signal table_ready
 func reload():
 	#playerStats
-	max_healt = 100
-	current_healt = max_healt
+	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	
 	#limpieza de apuestas
 	Bets.clear()

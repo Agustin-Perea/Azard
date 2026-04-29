@@ -7,9 +7,32 @@
 [ext_resource type="Script" uid="uid://cso2lpv6nc7lx" path="res://features/combat/entities/model_visual_component.gd" id="3_dbjgi"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="4_4l2kj"]
 [ext_resource type="Script" uid="uid://d3y71vaw8trb2" path="res://features/combat/entities/actions/action_controller.gd" id="4_awiem"]
-[ext_resource type="Material" uid="uid://c6yl5cdgqymnv" path="res://resources/materials/dissolve_material.tres" id="4_idsw0"]
 [ext_resource type="AnimationLibrary" uid="uid://bohtab1pg17c1" path="res://resources/enemies/bat/animations/bat_animations.res" id="4_iy404"]
+[ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="5_fo5sc"]
+[ext_resource type="Texture2D" uid="uid://cv67dupj6c4qq" path="res://resources/enemies/bat/bat_bat_texture.png" id="6_gqviy"]
 [ext_resource type="Texture2D" uid="uid://ccg8h7e32h072" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/trace_02.png" id="6_qx4hk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
+noise = SubResource("FastNoiseLite_lfkuk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxll8"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("5_fo5sc")
+shader_parameter/base_color = Color(0.86, 0.86, 0.86, 1)
+shader_parameter/main_texture = ExtResource("6_gqviy")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fldkf"]
 bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
@@ -103,8 +126,10 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=589395905]
-transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
-material_override = ExtResource("4_idsw0")
+transform = Transform3D(1.0011989, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0614402, 0)
+material_override = SubResource("ShaderMaterial_xxll8")
+"blend_shapes/Key 2" = 0.010899555
+"blend_shapes/Key 4" = 0.033940718
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=1510423416]
 libraries/bat_animations = ExtResource("4_iy404")

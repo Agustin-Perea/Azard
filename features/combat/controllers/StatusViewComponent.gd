@@ -18,7 +18,7 @@ func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
 	stats.health_changed.connect(_update_health)
 	_update_health()
-	UiEventBus.deactivate_descriptions.connect(deactivate)
+	UiEventBus.deactivate_status_view_component.connect(deactivate)
 	UiEventBus.activate_status_view_component.connect(activate)
 
 func _show_health() -> void:

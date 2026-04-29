@@ -21,6 +21,7 @@ signal book_inputs_enabled(value : bool)
 
 signal deactivate_descriptions
 
+signal deactivate_status_view_component
 signal activate_status_view_component
 
 signal change_book_page(arg : Constants.BOOK_PAGE)
