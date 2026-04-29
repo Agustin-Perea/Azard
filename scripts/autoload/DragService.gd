@@ -3,7 +3,7 @@ extends Node
 ##el objeto es dado en startDrag, stopdrag decide a donde llevar al objeto
 
 
-@export var drag_height := 0.2
+@export var drag_height := 0.02
 @export var lerp_speed := 10.0
 @export var max_offset := 5.0
 

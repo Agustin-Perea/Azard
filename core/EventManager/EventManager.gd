@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 			#revisa todos los eventos para ejecutar los no bloqueables
 			if not blocked or ev.paralel:
 				#si el evento esta completado retornara true
-				var finished = ev.handle()
+				var finished = ev.handle(delta)
 				if finished:
 					queue.remove_at(i)
 					continue # No incrementamos i porque el sig. evento ahora es i

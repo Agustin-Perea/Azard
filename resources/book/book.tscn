@@ -61,6 +61,18 @@ albedo_color = Color(0.71160364, 0.36466023, 1, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_nq47p"]
 size = Vector3(0.33395386, 0.08807373, 0.22705078)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2bku"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+border_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac6gq"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+anti_aliasing = false
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4a5wc"]
+viewport_path = NodePath("left_cover/SubViewport")
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
 
@@ -601,6 +613,7 @@ _data = {
 script = ExtResource("1_q6njx")
 
 [node name="roulette_collision" type="StaticBody3D" parent="." unique_id=957894952 groups=["roulette_collision"]]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84832156, 0, -1.6401474)
 collision_layer = 3
 collision_mask = 3
@@ -637,7 +650,7 @@ velocidad = 2.0
 [node name="RerollLabel" type="Label3D" parent="left_cover/Score Area" unique_id=26818016]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.385322, 0, -1.8504446)
 modulate = Color(0.3529412, 0.1764706, 0.2784314, 1)
-text = "Rerrolls"
+text = "Rerolls"
 font_size = 20
 
 [node name="RerollCount" type="Label3D" parent="left_cover/Score Area" unique_id=1235283512]
@@ -910,6 +923,49 @@ font_size = 18
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/RerollButton" unique_id=1870119429]
 shape = SubResource("BoxShape3D_nq47p")
+
+[node name="FinishMoveButton" type="StaticBody3D" parent="left_cover" unique_id=673465544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30929124, 0, -1.3056993)
+script = ExtResource("11_vvjhm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/FinishMoveButton" unique_id=1834467383]
+mesh = ExtResource("11_nq47p")
+
+[node name="Label3D" type="Label3D" parent="left_cover/FinishMoveButton/MeshInstance3D" unique_id=1443492601]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.004503131, 0.016467407, 0.012253761)
+text = "Finish 
+Move"
+font_size = 15
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/FinishMoveButton" unique_id=11273679]
+shape = SubResource("BoxShape3D_nq47p")
+
+[node name="SubViewport" type="SubViewport" parent="left_cover" unique_id=2109446995]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(30, 2)
+
+[node name="ProgressBar" type="ProgressBar" parent="left_cover/SubViewport" unique_id=294875285]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 2.0
+theme_override_styles/background = SubResource("StyleBoxFlat_f2bku")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ac6gq")
+value = 50.0
+show_percentage = false
+
+[node name="LifeView" type="Sprite3D" parent="left_cover" unique_id=1996390829]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85367143, 0.112562895, -0.32125103)
+pixel_size = 0.02
+double_sided = false
+texture_filter = 0
+texture = SubResource("ViewportTexture_4a5wc")
+
+[node name="LifeText" type="Label3D" parent="left_cover" unique_id=125935465]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85884213, 0.08875367, -0.4164775)
+pixel_size = 0.003
+double_sided = false
+text = "80"
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=305352410]
 mesh = ExtResource("2_vb2ae")
@@ -1423,14 +1479,13 @@ transform = Transform3D(1.005, 0, 0, 0, 1.005, 0, 0, 0, 1.005, 0.552558, 0.01014
 material_override = ExtResource("19_khsg3")
 mesh = ExtResource("19_5lkav")
 
+[node name="PopUpText" parent="." unique_id=877394085 instance=ExtResource("21_eev62")]
+
 [node name="Temp" type="Node" parent="." unique_id=427208635]
 
 [node name="Camera3D" type="Camera3D" parent="Temp" unique_id=2058904043]
 transform = Transform3D(1, 0, 0, 0, 0.028759047, 0.9995864, 0, -0.9995864, 0.028759047, 0, 4.361888, -0.93015957)
 fov = 30.0
-
-[node name="PopUpText" parent="Temp" unique_id=877394085 instance=ExtResource("21_eev62")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1364547, 0.027824014, -0.99232846)
 
 [node name="UI" type="CanvasLayer" parent="Temp" unique_id=2108080054]
 
@@ -1454,6 +1509,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Node3D" type="StaticBody3D" parent="Temp" unique_id=365811749 node_paths=PackedStringArray("add_collision", "item_collision")]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0808461)
 visible = false
 script = ExtResource("35_hnjqa")
@@ -1509,6 +1565,9 @@ libraries/ = SubResource("AnimationLibrary_8qbf8")
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_exited"]
+[connection signal="input_event" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_mouse_exited"]
 [connection signal="input_event" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_input_event"]
 [connection signal="mouse_entered" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="bottom_cover/Ball_Spot" to="bottom_cover/Ball_Spot" method="_on_mouse_exited"]

@@ -56,7 +56,7 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 				self.global_position = spot_global_postion
 			else:
 				self.position = spot_global_postion
-			
+			self.position.y += 0.1
 			label_text.bbcode_enabled = true
 			label_text.text = "[wave amp=50 freq=5]" + text + "[/wave]"
 

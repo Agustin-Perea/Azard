@@ -21,7 +21,7 @@ func _ready() -> void:
 	if deactivate_button:
 		deactivate_button.pressed.connect(deactivate)
 	DragService.dragged_changed.connect(deactivate)
-
+	UiEventBus.deactivate_descriptions.connect(deactivate)
 
 	
 func assign_ball_model(new_model : BallElement)->void:
@@ -33,7 +33,7 @@ func assign_ball_model(new_model : BallElement)->void:
 func update_labels()->void:
 	button.collision_shape.disabled = false
 	deactivate_button.collision_shape.disabled = false
-	
+
 	ball_name.text = ball_element.ball_data.ball_definition.ball_effect.name
 	base_damage_text.text = str(ball_element.ball_data.ball_definition.base_damage)
 	description.text = ball_element.ball_data.ball_definition.ball_effect.description

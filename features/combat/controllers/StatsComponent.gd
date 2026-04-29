@@ -1,4 +1,4 @@
-extends Node
+extends Resource
 class_name StatsComponent
 
 #Healt component
@@ -12,11 +12,10 @@ class_name StatsComponent
 signal death #deberia saber quien murio
 signal health_changed
 
-func _ready() -> void:
-	setup()
-	
+#func _ready() -> void:
+	#setup()
 
-func setup()->void:
+func set_up()->void:
 	current_healt = max_healt #esto cambia cuando estamos ingame
 	health_changed.emit()
 	

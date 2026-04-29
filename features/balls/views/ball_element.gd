@@ -118,11 +118,13 @@ func deactivate_ball_desctiption()->void:
 		
 	
 func on_enter() -> void:
+	super()
 	if DragService.dragged == null:
 		activate_ball_desctiption()
 
 
 func on_exit() -> void:
+	super()
 	pass
 
 	
@@ -131,7 +133,7 @@ func on_exit() -> void:
 func stop_drag()->void:
 	var field_under_mouse := DragService._get_field_under_mouse()
 	DragService._return_to_origin()
-	if field_under_mouse and field_under_mouse.get("collider").is_in_group("roulette_collision"):
+	if ball_data and field_under_mouse and field_under_mouse.get("collider").is_in_group("roulette_collision"):
 		_on_chip_dropped()
 
 @warning_ignore("unused_parameter")
@@ -170,5 +172,5 @@ func use_ball()->void:
 
 
 func _on_mouse_entered():
-	if DragService.dragged == null:
+	if DragService.dragged == null && ball_data:
 		activate_ball_desctiption()

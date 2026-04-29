@@ -115,18 +115,14 @@ func update_field(index : int)->void:
 
 
 #se deberia desactivar junto a las clickablesares, incluso el collision
-func call_mult_anim(index : int)->void:
-	#esto es una negrada
-	var multiplicator_indicator = $"../../../Temp/PopUpText"
-	#print("Referencia del objeto: ", multiplicator_indicator)
-	
+func call_mult_anim(index: int) -> void:
+	var multiplicator_indicator = $"../../../PopUpText"
 	if multiplicator_indicator != null:
 		var pos := calcular_centro_desde_indice(index)
-		pos.y += 0.1
-		multiplicator_indicator.animate_in_pos(pos,"+"+str(int(GameState.bet_field_models[index].multiplier)),true)
-	else:
-		print("EL OBJETO multiplicator_indicator ES NULO")
+		#pos.y += 0.1 * 0.15
+		print("pos global enviada: ", pos)
 
+		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(GameState.bet_field_models[index].multiplier)), true)
 
 func _on_mouse_entered() -> void:
 	pass # Replace with function body.

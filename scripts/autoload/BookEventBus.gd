@@ -14,3 +14,8 @@ signal bet_resolved(RouletteController)
 signal bet_post_resolved(RouletteController)
 
 signal popuptext(spot_global_postion :Vector3, text : String)
+
+
+signal unit_death(unit : Unit)
+@warning_ignore("unused_signal")
+signal reroll(RouletteController)

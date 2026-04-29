@@ -11,7 +11,7 @@ signal totalChanged
 @warning_ignore("unused_signal")
 signal betResolved
 
-var base: float = 1 
+var base: float = 0
 var multiplier: float = 1 
 var number_winner: int 
 var winner_betfield_model : BetFieldModel
@@ -24,6 +24,10 @@ var result_field_id : int = 0
 @onready var table_meshes : TableFieldsController = $right_cover/BetTable
 
 @onready var ball_mesh : MeshInstance3D = $left_cover/roulette_ball
+
+@onready var finish_button : SB_Button3D = $left_cover/FinishMoveButton
+
+var last_ball_used : BallRuntimeState = null
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
@@ -56,11 +60,14 @@ func multiply_mult_score(add_mult : float)->void:
 		"paralel": false,
 		"action": func():
 			multiplier *= add_mult
+			multiplicatorChanged.emit(add_mult)
 			return true
 	}))
-	multiplicatorChanged.emit(add_mult)
+	
 
 func on_start_spin(ball : BallRuntimeState) -> void:
+	
+	last_ball_used = ball
 	BookEventBus.spin_started.emit()
 	
 	#agregar el base de la bola
@@ -68,6 +75,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	#cambiar el material de la bola de la ruleta
 	ball_mesh.material_override = ball.ball_definition.ball_material
 	#desactivar colisiones
+	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.RoulleteSpin)
+	#para test local
 	UiEventBus.change_collision_detection.emit(true)
 	
 	
@@ -100,7 +109,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
-			##CombatEventBus.changeToState.emit("BetResolveState")
+			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BetResolve)
 			return true#Deberia esperar el tween, osea el finish del spin
 	}))
 
@@ -115,7 +124,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	#cambio de score
 	changeScore()
-
+	
+	await get_tree().create_timer(1).timeout
 	#habilita los clicks al completar
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
@@ -132,6 +142,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 			##PlayerUiEvents.bet_procesed.emit()
 			return true#Deberia esperar el tween, osea el finish del spin
 	}))
+	
 	
 func spin() -> void:
 
@@ -282,18 +293,15 @@ func reset_score()->void:
 
 #reroll
 func reroll()->void:
-	##CombatEventBus.reroll.emit(self)
-	##base = CombatEventBus.last_ball_data_used.base_damage
-	multiplier = 1
-	score = 0
-	baseChanged.emit()
-	multiplicatorChanged.emit(0)
-	totalChanged.emit() 
-	#cambio de visuals o animacion
-	
-	
-	#lllama a reroll event
-	##CombatEventBus.last_ball_data_used.on_ball_use()
-	
-	#llama al estado de Spin de Ruleta
-	spin()
+	if last_ball_used:
+		##CombatEventBus.reroll.emit(self)
+		base = 0
+		multiplier = 1
+		score = 0
+		baseChanged.emit()
+		multiplicatorChanged.emit(0)
+		totalChanged.emit() 
+		#cambio de visuals o animacion
+		
+		#llama al estado de Spin de Ruleta
+		on_start_spin(last_ball_used)
