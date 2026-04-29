@@ -42,7 +42,7 @@ _subresources={
 "Bat_Attack": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://resources/enemies/bat/animations/bat_attack.tres",
-"save_to_file/keep_custom_tracks": "",
+"save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://ko60mpa1r64g",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -2098,7 +2098,7 @@ _subresources={
 "Bat_Attacked": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://resources/enemies/bat/animations/Bat_Attacked.tres",
-"save_to_file/keep_custom_tracks": "",
+"save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://djk8li2yheovd",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -4154,7 +4154,7 @@ _subresources={
 "Bat_Idle": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://resources/enemies/bat/animations/Bat_Idle.tres",
-"save_to_file/keep_custom_tracks": "",
+"save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://oxetu6q6kqna",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,

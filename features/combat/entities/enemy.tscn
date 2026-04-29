@@ -96,15 +96,15 @@ stats = ExtResource("2_o7wca")
 script = ExtResource("3_dbjgi")
 mesh = NodePath("bat/Bat")
 
-[node name="bat" parent="ModelVisualComponent" unique_id=104755207 instance=ExtResource("1_3ar4h")]
+[node name="bat" parent="ModelVisualComponent" unique_id=2005783650 instance=ExtResource("1_3ar4h")]
 physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
-[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=2142702990]
+[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=1573715906]
 transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
 material_override = SubResource("ShaderMaterial_ayqks")
 
-[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=992555910]
+[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=418515768]
 libraries/bat_animations = ExtResource("4_iy404")
 
 [node name="StatsView" type="Node3D" parent="ModelVisualComponent" unique_id=403448201]
