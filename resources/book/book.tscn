@@ -623,12 +623,10 @@ collision_mask = 3
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roulette_collision" unique_id=154327095]
 shape = SubResource("SphereShape3D_liidn")
 
-[node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("spin_sound", "finish_sound", "roulette", "ball", "ball_origin_transform")]
+[node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
 material_override = ExtResource("2_padf7")
 mesh = ExtResource("1_hgj57")
 script = ExtResource("2_d1tnm")
-spin_sound = NodePath("../RouletteSpin")
-finish_sound = NodePath("../RouletteFinish")
 roulette = NodePath("Roulette")
 ball = NodePath("roulette_ball")
 ball_origin_transform = NodePath("roulette_ball_origin")

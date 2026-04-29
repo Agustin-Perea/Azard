@@ -57,3 +57,5 @@ vertical_alignment = 1
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0.11385687, 0)
 material_override = SubResource("StandardMaterial3D_eev62")
 mesh = SubResource("PlaneMesh_001lf")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=502929154]

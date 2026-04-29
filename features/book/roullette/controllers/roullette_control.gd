@@ -4,8 +4,13 @@ class_name RouletteControl
 signal spin_initialized
 signal spin_finished
 
-@export var spin_sound : AudioStreamPlayer
-@export var finish_sound : AudioStreamPlayer
+@onready var stream_player : AudioStreamPlayer = $"../AudioStreamPlayer"
+
+var sounds = {
+	"spin_init": preload("res://resources/sounds/roulette_spin init.wav"),
+	"spin_finish": preload("res://resources/sounds/mult1.wav")
+}
+
 
 @export var roulette: Node3D
 @export var ball: Node3D
@@ -211,7 +216,13 @@ func _process_adjust(delta: float) -> void:
 		ball.global_position.z = finish_pos.z
 		ball.global_position.y = self.global_position.y + _finish_y_s
 		_transition_to(Phase.FINISHED)
-		finish_sound.play()
+		
+		
+		stream_player.stream = sounds["spin_finish"]
+		sound_tween.kill()
+		stream_player.pitch_scale = 1.0
+		stream_player.volume_db = 0
+		stream_player.play()
 
 
 @warning_ignore("shadowed_variable")
@@ -281,10 +292,31 @@ func reset_simulation() -> void:
 	_initialize_physics()
 	set_physics_process(true)
 	spin_initialized.emit()
-	spin_sound.play(4)
+	play_and_slow_down()
+
+var sound_tween : Tween
+func play_and_slow_down():
+	# 1. Configurar y reproducir el sonido inicial
+	stream_player.stream = sounds["spin_init"]
+	stream_player.pitch_scale = 1.0
+	stream_player.volume_db = 0 # Volumen normal
+	stream_player.play()
+
+	# 2. Crear el Tween para la animación de parámetros
+	sound_tween = create_tween()
+	
+	# Usamos set_parallel(true) para que el volumen y la velocidad 
+	# bajen al mismo tiempo durante los 4 segundos
+	sound_tween.set_parallel(true)
+	
+	# Atenuar el volumen (de 0dB a -80dB para silencio total)
+	sound_tween.tween_property(stream_player, "volume_db", -40.0, 7.0)
+	
+	# Bajar la velocidad/tono (de 1.0 a 0.2, por ejemplo)
+	sound_tween.tween_property(stream_player, "pitch_scale", 0.5, 5.0)
 	
 
-
+	
 func set_target_field(field: int) -> void:
 	assert(field >= 0 and field < FIELD_COUNT, "Campo fuera de rango")
 	choosed_field = field

@@ -15,6 +15,8 @@ var finished : bool = false
 @export var base_spot : Vector3 = Vector3(-1.34,0.0,-1.278)
 @export var mult_spot : Vector3 = Vector3(-0.822,0.0,-1.278)
 
+@onready var audio_stream_player :AudioStreamPlayer = $AudioStreamPlayer
+
 func _ready():
 	reset_state()
 	BookEventBus.popuptext.connect(animate_in_pos)
@@ -48,6 +50,17 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 		"paralel": false,
 		"action": func():
 			reset_state()
+			#audio_stream_player.stream = preload("res://resources/sounds/mult1.wav")
+			#audio_stream_player.pitch_scale = 2
+			#audio_stream_player.play()
+			#var player = AudioStreamPlayer.new()
+			#add_child(player)
+			#player.stream = preload("res://resources/sounds/Rise05.wav")
+			#player.pitch_scale = 2
+			#player.play()
+			audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
+			audio_stream_player.pitch_scale = 2
+			audio_stream_player.play()
 			self.visible = true
 
 			#Setup de datos
