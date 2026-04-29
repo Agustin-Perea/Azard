@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djd4oqya5urtk"
+path="res://.godot/imported/sound fichas de poker(youtube sound free ).mp3-fe21d44d2b95f9e7559ec0d1fc98a6a5.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/sound fichas de poker(youtube sound free ).mp3"
+dest_files=["res://.godot/imported/sound fichas de poker(youtube sound free ).mp3-fe21d44d2b95f9e7559ec0d1fc98a6a5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

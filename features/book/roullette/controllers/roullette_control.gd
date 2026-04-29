@@ -4,6 +4,9 @@ class_name RouletteControl
 signal spin_initialized
 signal spin_finished
 
+@export var spin_sound : AudioStreamPlayer
+@export var finish_sound : AudioStreamPlayer
+
 @export var roulette: Node3D
 @export var ball: Node3D
 
@@ -208,6 +211,7 @@ func _process_adjust(delta: float) -> void:
 		ball.global_position.z = finish_pos.z
 		ball.global_position.y = self.global_position.y + _finish_y_s
 		_transition_to(Phase.FINISHED)
+		finish_sound.play()
 
 
 @warning_ignore("shadowed_variable")
@@ -277,6 +281,8 @@ func reset_simulation() -> void:
 	_initialize_physics()
 	set_physics_process(true)
 	spin_initialized.emit()
+	spin_sound.play(4)
+	
 
 
 func set_target_field(field: int) -> void:

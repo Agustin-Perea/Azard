@@ -7,6 +7,8 @@ class_name ChipElement
 
 signal chip_moved(chip : ChipElement)
 
+var  audio_stream : AudioStreamPlayer
+
 func _ready() -> void:
 	super()
 	if GameState:
@@ -49,6 +51,8 @@ func stop_drag()->void:
 		chip_id
 		)
 		DragService._snap_to_position(data.last_position)
+		audio_stream.stream = preload("res://resources/sounds/817554__silverdubloons__chip02.wav")
+		audio_stream.play()
 		#activar confirm on click
 		#desactivacion
 	else:

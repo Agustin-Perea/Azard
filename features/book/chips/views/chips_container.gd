@@ -9,6 +9,8 @@ class_name ChipContainer
 
 var chip_elements_in_container : Array[ChipElement]
 
+@onready var  audio_stream : AudioStreamPlayer = $"../../AudioStreamPlayer"
+
 func _ready() -> void:
 	
 	spawn_chips(GameState.chips)
@@ -27,6 +29,7 @@ func spawn_chips(chips: Array[ChipModel]):
 			new_chip.global_position = new_chip.data.last_position
 		# Posicionamiento ordenado: i * offset
 		
+		new_chip.audio_stream = audio_stream
 		new_chip.scale = Vector3.ONE * chip_scale
 
 func reorder_chips() -> void:

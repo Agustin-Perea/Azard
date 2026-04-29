@@ -38,6 +38,8 @@
 [ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
 [ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
 [ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="38_f2bku"]
+[ext_resource type="AudioStream" uid="uid://dy8bivpvrfbvk" path="res://resources/sounds/roulete_girando.mp3" id="39_ac6gq"]
+[ext_resource type="AudioStream" uid="uid://bqmhcdx3yymfl" path="res://resources/sounds/mult1.wav" id="40_4a5wc"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_liidn"]
 radius = 0.34764636
@@ -621,10 +623,12 @@ collision_mask = 3
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roulette_collision" unique_id=154327095]
 shape = SubResource("SphereShape3D_liidn")
 
-[node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("roulette", "ball", "ball_origin_transform")]
+[node name="left_cover" type="MeshInstance3D" parent="." unique_id=1440093180 node_paths=PackedStringArray("spin_sound", "finish_sound", "roulette", "ball", "ball_origin_transform")]
 material_override = ExtResource("2_padf7")
 mesh = ExtResource("1_hgj57")
 script = ExtResource("2_d1tnm")
+spin_sound = NodePath("../RouletteSpin")
+finish_sound = NodePath("../RouletteFinish")
 roulette = NodePath("Roulette")
 ball = NodePath("roulette_ball")
 ball_origin_transform = NodePath("roulette_ball_origin")
@@ -1561,6 +1565,14 @@ texture = ExtResource("38_f2bku")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=917025914]
 libraries/ = SubResource("AnimationLibrary_8qbf8")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1400391308]
+
+[node name="RouletteSpin" type="AudioStreamPlayer" parent="." unique_id=1465777940]
+stream = ExtResource("39_ac6gq")
+
+[node name="RouletteFinish" type="AudioStreamPlayer" parent="." unique_id=363897723]
+stream = ExtResource("40_4a5wc")
 
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]

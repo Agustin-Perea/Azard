@@ -1,5 +1,8 @@
 [gd_resource type="Animation" format=3 uid="uid://ko60mpa1r64g"]
 
+[ext_resource type="AudioStream" uid="uid://bk32pvlj1hrea" path="res://resources/sounds/attack2.wav" id="1_2kr21"]
+[ext_resource type="AudioStream" uid="uid://clldsethv5r1t" path="res://resources/sounds/attack.wav" id="1_medsg"]
+
 [resource]
 resource_name = "Bat_Attack"
 length = 1.6666666
@@ -73,3 +76,33 @@ tracks/8/keys = {
 "method": &"_perform_attack"
 }]
 }
+tracks/9/type = "audio"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../../Sounds/bat_attack")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("1_2kr21")
+}],
+"times": PackedFloat32Array(0.100000024)
+}
+tracks/9/use_blend = true
+tracks/10/type = "audio"
+tracks/10/imported = false
+tracks/10/enabled = false
+tracks/10/path = NodePath("../../Sounds/bat_attack")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("1_medsg")
+}],
+"times": PackedFloat32Array(0.8)
+}
+tracks/10/use_blend = true

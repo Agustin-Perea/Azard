@@ -5,6 +5,11 @@ class_name BooksController
 @onready var book_roulette : Node3D = $Book
 #@onready var book_map : Node3D = $MapBook
 
+@onready var audio_stream : AudioStreamPlayer = $"../Sounds/AudioStreamPlayer"
+var sonidos = {
+	"book_open": preload("res://resources/sounds/open_book.wav"),
+	"book_close": preload("res://resources/sounds/kodack__closing-a-book.wav")
+}
 
 var pages_dictionary : Dictionary 
 var actual_page : Node3D
@@ -32,6 +37,9 @@ func change_book(book_page : Constants.BOOK_PAGE)->void:
 		UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.StandBy)
 		
 		animation_player.play("book_close")
+		audio_stream.stream = sonidos["book_close"]
+		audio_stream.play()
+		
 		EventManager.add_event(EventManager.QueueType.GAME, 
 		GameEvent.new({
 			"paralel": false,
@@ -49,7 +57,7 @@ func change_book(book_page : Constants.BOOK_PAGE)->void:
 		EventManager.add_event(EventManager.QueueType.GAME, 
 		GameEvent.new({
 			"paralel": false,
-			"delay" : 0.3,
+			"delay" : 0.2,
 			"action": func():
 				#actual_page.global_position.y = 200
 				actual_page.visible = false
@@ -70,6 +78,9 @@ func change_book(book_page : Constants.BOOK_PAGE)->void:
 				
 				var animation_player : AnimationPlayer = next_page.get_node_or_null("AnimationPlayer")
 				animation_player.play("book_open")
+				
+				audio_stream.stream = sonidos["book_open"]
+				audio_stream.play()
 				
 			actual_page = next_page
 			return true
