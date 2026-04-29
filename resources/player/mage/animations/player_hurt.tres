@@ -470,3 +470,17 @@ tracks/65/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/66/type = "method"
+tracks/66/imported = false
+tracks/66/enabled = true
+tracks/66/path = NodePath("../GPUParticles3D")
+tracks/66/interp = 1
+tracks/66/loop_wrap = true
+tracks/66/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [false],
+"method": &"restart"
+}]
+}

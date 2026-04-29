@@ -181,7 +181,7 @@ script = ExtResource("7_6b2ki")
 [node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
 script = ExtResource("7_6b2ki")
 
-[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=389923164 instance=ExtResource("4_b6bnk")]
+[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("4_b6bnk")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=287020783]
