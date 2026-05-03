@@ -1,37 +1,38 @@
 extends Resource
 class_name BallsDatabase
 
-@export var all_balls: Array[BallRuntimeState]
+@export var all_balls: Array[BallDefinition]
 
 var rng : RandomNumberGenerator;
 
+@export var pool_seed : int
+var total_weight: int
 	
-func get_rng() -> RandomNumberGenerator:
-	if rng == null:
-		rng = RandomNumberGenerator.new()
-		# Aquí el Singleton ya estará cargado con seguridad
-		#rng.seed = ObjectPoolsDataBase.master_seed
-	return rng
-	
-func shuffle_balls() -> void:
+func calculate_total_weight()->void:
+	total_weight = 0
+	for item in all_balls:
+		total_weight += item.weight
 
-	for ball in all_balls:
-		ball.used = false
-	for i in range(all_balls.size() - 1, -1, -1):
-		var j = get_rng().randi() % (i + 1)
-		var temp = all_balls[i]
-		all_balls[i] = all_balls[j]
-		all_balls[j] = temp
+func set_seed(master_seed : int)->void:
+	pool_seed = master_seed
+	rng = RandomNumberGenerator.new()
+	rng.seed = hash(pool_seed)
+	calculate_total_weight()
 	
-func get_ball_by_index(index: int) -> BallRuntimeState:
-	if index >= 0 and index < all_balls.size():
-		return all_balls[index]
-	
-	push_error("Índice de bola fuera de rango: ", index)
-	return null
-
 func get_random_ball() -> BallRuntimeState:
-	if all_balls.is_empty():
+	if all_balls.is_empty() or total_weight <= 0:
 		return null
-	return all_balls.pick_random()
+	
+	var roll = rng.randi_range(0, total_weight - 1)
+	var current_sum = 0
+	
+	var random_ball = BallRuntimeState.new()
+	
+	for item in all_balls:
+		current_sum += item.weight
+		if roll < current_sum:
+			random_ball.ball_definition = item#.duplicate(true)
+			return random_ball
+	#deberia ver la probabilidad de que tenga nivel y demas
+	return random_ball
 	

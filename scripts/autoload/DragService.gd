@@ -130,7 +130,15 @@ func _input(event: InputEvent) -> void:
 		pending_drop = true#no me gusta pero resuelve el bug de regresar al origen cuando no esta el area del objeto tocando el mouse
 	elif persistent_drag and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		pending_drop = true
-		
+	
+	#pulir
+	if event is InputEventMouseButton \
+	and event.pressed \
+	and event.button_index == MOUSE_BUTTON_LEFT:
+		var container = _get_any_container_under_mouse()
+		print(container.get("collider"))
+		if !container or (!(container.get("collider") is MoveableElement) and !(container.get("collider") is SB_Button3D)):
+			UiEventBus.deactivate_descriptions.emit()
 		
 var pending_drop := false
 
@@ -154,6 +162,30 @@ func _get_field_under_mouse() -> Dictionary:
 
 	var params := PhysicsRayQueryParameters3D.create(from, to)
 	params.collision_mask = 1 << 1 # layer 2
+	params.collide_with_areas = true
+
+	var result := cam.get_world_3d().direct_space_state.intersect_ray(params)
+
+	# 1. Verificamos si hubo choque
+	if result.is_empty():
+		return result
+	
+	# Si chocó con algo de la Layer 2 pero NO es del grupo, retornamos null
+	return result
+
+func _get_any_container_under_mouse() -> Dictionary:
+	var viewport := get_tree().root
+	var cam := viewport.get_camera_3d()
+
+	#print("Viewport:", get_tree().root)
+	#print("In cam:", cam)
+	#print("In world:", cam.get_world_3d())
+	#print("DirectSPS:", cam.get_world_3d().direct_space_state)
+	var mouse_pos := viewport.get_mouse_position()
+	var from := cam.project_ray_origin(mouse_pos)
+	var to := from + cam.project_ray_normal(mouse_pos) * 1000.0
+
+	var params := PhysicsRayQueryParameters3D.create(from, to)
 	params.collide_with_areas = true
 
 	var result := cam.get_world_3d().direct_space_state.intersect_ray(params)

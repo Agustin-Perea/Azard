@@ -22,6 +22,7 @@ func perform_movement() -> void:
 	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookState)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.ROULETTE)
 	UiEventBus.activate_status_view_component.emit()
+	BookEventBus.player_turn.emit()
 	if target:
 		on_change_target(target)
 	else:

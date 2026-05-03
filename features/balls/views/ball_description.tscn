@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://bisvvkie0uri"]
+
+[ext_resource type="ArrayMesh" uid="uid://dm6vvl2d0pept" path="res://resources/3d_UI/info_canvas.tres" id="1_q1wbs"]
+[ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="2_rgwna"]
+[ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="3_n1txx"]
+[ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="4_n1txx"]
+[ext_resource type="Texture2D" uid="uid://c4bqu455x1cry" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/star_05.png" id="5_v23ja"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ugj2k"]
+size = Vector3(0.7416992, 0.10809326, 0.30444336)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2ihi"]
+size = Vector3(0.2831421, 0.10668945, 0.28125)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hlx4"]
+render_priority = 0
+shader = ExtResource("4_n1txx")
+shader_parameter/color_aura = Color(1, 0.41037312, 0.8756574, 1)
+shader_parameter/radio_base = 0.23600000795012
+shader_parameter/velocidad_giro = 0.6220005045449994
+shader_parameter/intensidad_lava = 0.0530000025175
+shader_parameter/suavizado = 0.10000000149012
+
+[node name="BallDescription" type="MeshInstance3D" unique_id=313159008]
+physics_interpolation_mode = 2
+transform = Transform3D(0.575, 0, 0, 0, 0.575, 0, 0, 0, 0.575, 0, 0, 0)
+mesh = ExtResource("1_q1wbs")
+script = ExtResource("2_rgwna")
+spin = true
+
+[node name="Name" type="Label3D" parent="." unique_id=635137828]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.68044186, 0.009922445, -1.392862)
+modulate = Color(0.0885599, 0.0885599, 0.0885599, 1)
+text = "Name"
+horizontal_alignment = 0
+
+[node name="X" type="Label3D" parent="." unique_id=1379518431]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.54613304, 0.05353841, -1.3354394)
+text = "X"
+
+[node name="Spin" type="Label3D" parent="." unique_id=949304057]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.051970333, -0.29050338)
+text = "Spin
+"
+font_size = 28
+
+[node name="Description" type="Label3D" parent="." unique_id=60519173]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.6436844, 0.009922445, -0.9250393)
+modulate = Color(0.09019608, 0.09019608, 0.09019608, 1)
+text = "-Descriptions           -
+-
+-"
+font_size = 24
+horizontal_alignment = 0
+vertical_alignment = 0
+autowrap_mode = 3
+width = 280.0
+
+[node name="BaseDamage" type="Label3D" parent="." unique_id=116614140]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.01568818, 0.009922445, -1.0819768)
+modulate = Color(0.74509805, 0.2509804, 1, 1)
+text = "Base"
+font_size = 47
+
+[node name="Spin_Button3D" type="StaticBody3D" parent="." unique_id=1230278663]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.30014002)
+script = ExtResource("3_n1txx")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Spin_Button3D" unique_id=1978340042]
+shape = SubResource("BoxShape3D_ugj2k")
+disabled = true
+
+[node name="X_Button3D" type="StaticBody3D" parent="." unique_id=1201677118]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5387856, 0, -1.3674377)
+script = ExtResource("3_n1txx")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="X_Button3D" unique_id=1208656889]
+shape = SubResource("BoxShape3D_o2ihi")
+disabled = true
+
+[node name="aura" type="Sprite3D" parent="." unique_id=1265007134]
+transform = Transform3D(1.7391305, 0, 0, 0, -7.601981e-08, 1.7391305, 0, -1.7391305, -7.601981e-08, -1.1051645, -0.1846756, -1.3926558)
+material_override = SubResource("ShaderMaterial_8hlx4")
+pixel_size = 0.0008
+texture = ExtResource("5_v23ja")
+
+[connection signal="input_event" from="Spin_Button3D" to="Spin_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="Spin_Button3D" to="Spin_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Spin_Button3D" to="Spin_Button3D" method="_on_mouse_exited"]
+[connection signal="input_event" from="X_Button3D" to="X_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="X_Button3D" to="X_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="X_Button3D" to="X_Button3D" method="_on_mouse_exited"]

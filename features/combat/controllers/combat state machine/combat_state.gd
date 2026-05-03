@@ -6,6 +6,7 @@ extends BaseState
 #estrategia de comportamiento
 @export var fixed_time : float = .5
 @export var disable_book_inputs : bool = true
+@export var disable_moveable_collisions : bool = false
 @export var ui_book_button : bool = false
 @export var ui_selection_button : bool = false
 
@@ -20,6 +21,7 @@ func start():
 	UiEventBus.selection_button_visible.emit(ui_selection_button)
 	UiEventBus.book_inputs_enabled.emit(disable_book_inputs)
 	UiEventBus.change_collision_detection.emit(disable_book_inputs)
+	UiEventBus.change_collision_detection_moveable.emit(disable_moveable_collisions)
 	
 func end():
 	pass

@@ -38,6 +38,10 @@ func _ready() -> void:
 	stats = stats.duplicate(true)
 	
 	status_view_component.set_up(stats)
+	
+	#temporal
+	stats.max_healt = int(stats.max_healt * pow(1.5, GameState.temp_scene_changed_value))
+	
 	stats.set_up()
 	#movement_manager.base_damage = ataque
 	animation_state_machine = animation_tree.get("parameters/playback")

@@ -32,10 +32,14 @@ func _play_hit_flash(duration: float = 0.5):
 
 func _play_dissolve(duration: float = 0.5):
 	var tween = create_tween()
-
+	material.set_shader_parameter("flash_modifier", 1)
+	material.set_shader_parameter("burn_size", .1)
 	tween.tween_method(
 		func(v): material.set_shader_parameter("dissolve_value", v),
 		0.0,
 		1.0,
 		duration
 	)
+	
+func set_flash_modifier(value : float)->void:
+	material.set_shader_parameter("flash_modifier", value)

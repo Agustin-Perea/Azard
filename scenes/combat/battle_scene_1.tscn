@@ -152,6 +152,7 @@ default_state = NodePath("SelectionState")
 [node name="SelectionState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1470090554 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_0u8xs")
 camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
 ui_book_button = true
 
 [node name="BookState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=715524440 node_paths=PackedStringArray("camera")]
@@ -163,15 +164,23 @@ ui_selection_button = true
 [node name="RouletteState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2082908531 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_0u8xs")
 camera = NodePath("../../../../CameraContainer/CombatCameras/RouletteCamera")
+disable_moveable_collisions = true
 
 [node name="BetResolve" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1208368497 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_0u8xs")
 camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_moveable_collisions = true
 
 [node name="StandBy" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=32333335 node_paths=PackedStringArray("camera")]
 script = ExtResource("5_0u8xs")
 change_camera = false
 camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
+
+[node name="BookCase" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2025596019 node_paths=PackedStringArray("camera")]
+script = ExtResource("5_0u8xs")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_book_inputs = false
 
 [node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
 script = ExtResource("7_6b2ki")

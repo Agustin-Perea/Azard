@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://yers7tswll0g"]
+
+[ext_resource type="Shader" uid="uid://b3een36to8yj4" path="res://resources/materials/shaders/bet_field_shader_material_multimesh.gdshader" id="1_3h3fr"]
+[ext_resource type="Texture2D" uid="uid://dujnpd6skf4qg" path="res://resources/book/model/roulette_book_PaletaColoresRuleta.png" id="2_uflds"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_3h3fr")
+shader_parameter/tex_palette = ExtResource("2_uflds")

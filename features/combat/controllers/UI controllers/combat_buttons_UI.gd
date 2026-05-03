@@ -11,7 +11,7 @@ func _ready() -> void:
 	
 
 func _on_selection_button_pressed() -> void:
-	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
+	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)#esto va al placeholder
 
 	EventManager.add_event(EventManager.QueueType.GAME, GameEvent.new({
 		"paralel": false,

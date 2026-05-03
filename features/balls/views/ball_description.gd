@@ -16,8 +16,8 @@ func _ready() -> void:
 	if button:
 		if spin:
 			button.pressed.connect(spin_with_ball)
-		#else:
-			#button.pressed.connect(add_ball)
+		else:
+			button.pressed.connect(add_ball)
 	if deactivate_button:
 		deactivate_button.pressed.connect(deactivate)
 	DragService.dragged_changed.connect(deactivate)
@@ -38,11 +38,11 @@ func update_labels()->void:
 	base_damage_text.text = str(ball_element.ball_data.ball_definition.base_damage)
 	description.text = ball_element.ball_data.ball_definition.ball_effect.description
 
-#@warning_ignore("unused_parameter")
-#func add_ball(area : Area3D)->void:
-	#self.visible = false
-	#GameState.balls.all_balls.push_back(ball_element.data)
-	#ball_element._assign_data_model(null)
+@warning_ignore("unused_parameter")
+func add_ball()->void:
+	self.visible = false
+	GameState.add_ball(ball_element.ball_data)
+	ball_element._assign_data_model(null)
 
 @warning_ignore("unused_parameter")
 func spin_with_ball()->void:

@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://ck2q7nqegxf60"]
+
+[ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="1_0y55j"]
+[ext_resource type="Texture2D" uid="uid://c8w2ler1wcenx" path="res://resources/player/mage/mage_Mage_texture.png" id="2_qevu0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
+noise = SubResource("FastNoiseLite_lfkuk")
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_0y55j")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/main_texture = ExtResource("2_qevu0")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0

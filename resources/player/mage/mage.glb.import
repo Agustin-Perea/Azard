@@ -8270,6 +8270,17 @@ _subresources={
 "use_external/fallback_path": "res://resources/player/mage/material/mage_material.tres",
 "use_external/path": "uid://ju068or3aax2"
 }
+},
+"meshes": {
+"mage_Plane_015": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://resources/player/mage/book_placeholder.res",
+"save_to_file/path": "uid://d25io7jf2t753"
+}
 }
 }
 gltf/naming_version=2

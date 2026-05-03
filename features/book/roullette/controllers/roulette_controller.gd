@@ -132,7 +132,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 		"paralel": false,
 		"action": func():
 			table_meshes.deactivate_highlight_field()
-			UiEventBus.change_collision_detection.emit(false)
+			UiEventBus.change_collision_detection_buttons.emit(false)
 			return true
 	}))
 	EventManager.add_event(EventManager.QueueType.GAME, 

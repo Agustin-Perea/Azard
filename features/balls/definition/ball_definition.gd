@@ -8,6 +8,10 @@ class_name BallDefinition
 
 @export var ball_material: StandardMaterial3D
 
+@export var weight: int = 50
+
+@export var base_price: int = 5
+
 #datos del ataque 
 @export var attack_type: int
 

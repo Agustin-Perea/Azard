@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://ck3te155udka6"]
+
+[ext_resource type="Script" uid="uid://bnwxidflh8kux" path="res://features/bingo_chip/views/bingo_chip_element.gd" id="1_m2sm0"]
+[ext_resource type="Script" uid="uid://4pdksbd8xnr6" path="res://features/book/bet_fields/systems/BetConditionStrategy/StraightUpCondition.gd" id="2_sk4p4"]
+[ext_resource type="Script" uid="uid://ej3m6sdc86mf" path="res://features/book/bet_fields/BetFieldModel.gd" id="3_jiplf"]
+[ext_resource type="Material" uid="uid://cubiw0r7c8fll" path="res://resources/materials/bet_field_shader_material.tres" id="4_w4ggk"]
+[ext_resource type="ArrayMesh" uid="uid://bybxkjf30r2bk" path="res://resources/bingo_chip/bingo_chip.res" id="5_mmfgx"]
+
+[sub_resource type="Resource" id="Resource_sk5a6"]
+script = ExtResource("2_sk4p4")
+metadata/_custom_type_script = "uid://4pdksbd8xnr6"
+
+[sub_resource type="Resource" id="Resource_j2gin"]
+script = ExtResource("3_jiplf")
+number = 15
+ConditionStrategy = SubResource("Resource_sk5a6")
+metadata/_custom_type_script = "uid://ej3m6sdc86mf"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_p4ka6"]
+radius = 0.094321325
+
+[node name="Bingo_Chip_Spot" type="StaticBody3D" unique_id=233787783]
+physics_interpolation_mode = 2
+transform = Transform3D(1.22, 0, 0, 0, 1.22, 0, 0, 0, 1.22, 0, 0, 0)
+script = ExtResource("1_m2sm0")
+data = SubResource("Resource_j2gin")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2136695936]
+shape = SubResource("SphereShape3D_p4ka6")
+
+[node name="chip_mesh" type="MeshInstance3D" parent="." unique_id=270726854]
+material_override = ExtResource("4_w4ggk")
+mesh = ExtResource("5_mmfgx")
+
+[node name="number" type="Label3D" parent="." unique_id=947303125]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.032088697, 0.016424343)
+text = "36"
+font_size = 15
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

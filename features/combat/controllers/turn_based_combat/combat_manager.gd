@@ -59,8 +59,8 @@ func _victory()->void:
 			combat_finished = true
 			EnemyGroup.turn_complete.emit()
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
-			#CombatEventBus.changeToState.emit("Victory")
-			#PlayerUiEvents.disable_book.emit()
+			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
+			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
 			print("victory")
 			return true
 	}))

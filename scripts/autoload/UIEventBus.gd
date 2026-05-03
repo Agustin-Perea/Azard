@@ -5,6 +5,8 @@ const TIME_SCALE = 1.0
 
 signal change_collision_detection
 
+signal change_collision_detection_moveable(value: bool)
+signal change_collision_detection_buttons(value: bool)
 
 @warning_ignore("unused_signal")
 signal changeCamera(desired_camera :Camera3D, time : float)

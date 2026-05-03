@@ -1,5 +1,8 @@
 extends Node
 
+var object_pool_database : ObjectPoolDatabase
+
+
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
 
@@ -10,13 +13,15 @@ var bet_field_models: Array[BetFieldModel] = []
 var chipDefinition: ChipsDefinition
 var chips: Array[ChipModel] = []
 
-#pasivos en posesion
-@export var passiveItems: Array[PassiveItemRuntimeState] = []
+var temp_scene_changed_value : int
+#colecciones
+
+@export var balls_deck: BallsRuntimeCollection
+@export var passiveItems_collection: Array[PassiveItemRuntimeState] = []
 
 #items usables, actualmente es solo el betfieldmodel, pero en realidad deberian haber mas
 #var usableItems: Array[BetFieldModel] = []
 #las bolas en posesion
-
 #var balls : BallsDefinition
 #se deberian construir las posiciones de chips en base a esto
 @export var Bets: Dictionary[int, Array] = {}
@@ -30,20 +35,25 @@ signal bet_updated(field_id: int, chip_stack: Array)
 
 #playerStats
 var player_stats : StatsComponent
+signal table_ready
 
 func _ready():
+	object_pool_database = ObjectPoolDatabase.new()
+	
 #	CombatEventBus.reload.connect(reload)
-	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
-#	ballsDefinition = preload("res://Scripts/BetTable/Balls/BallsDefault.tres")
+	
 	reload()
 
-	
-signal table_ready
+
 func reload():
 	#playerStats
 	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
+	player_stats.set_up()
+	
+	balls_deck = preload("res://features/balls/database/ball_collection_default.tres").duplicate(true)
+	balls_deck.set_rng(object_pool_database.master_seed)
 	
 	#limpieza de apuestas
 	Bets.clear()
@@ -111,7 +121,6 @@ func get_bet_field_model(id: int) -> BetFieldModel:
 func get_chip(id: int) -> ChipModel:
 	return chips[id]
 
-
 func get_Bets() -> Dictionary[int, Array]:
 	return Bets
 
@@ -158,7 +167,7 @@ func remove_bet(chip_id: int) -> void:
 func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	var existing_item = null
 	
-	for item in passiveItems:
+	for item in passiveItems_collection:
 		if (item.passive_item_definition == new_passive): 
 			existing_item = item
 			break
@@ -171,8 +180,13 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
 		existing_item.quantity = 1
-		passiveItems.append(existing_item)
+		passiveItems_collection.append(existing_item)
 		existing_item.on_item_added()
+		
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control
+
+func add_ball(new_ball : BallRuntimeState)->void:
+	balls_deck.all_balls.push_back(new_ball)
+	

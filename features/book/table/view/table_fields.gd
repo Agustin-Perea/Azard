@@ -14,7 +14,7 @@ class_name TableFields
 
 var table_instances: Array = []
 
-@onready var mesh_groups : Node3D =  $"../Table_Groups"
+@onready var mesh_groups : Node3D = get_node_or_null("../Table_Groups")
 
 @export_group("Datos de Control")
 @export var table_instances_groups: Array = [MeshInstance3D]
@@ -36,12 +36,13 @@ func _ready() -> void:
 	for child in children:
 		if child is Label3D:
 			number_labels.append(child)
-		
-	var mesh_children = mesh_groups.get_children()
 	
-	for child in mesh_children:
-		if child is MeshInstance3D:
-			table_instances_groups.append(child)
+	if 	mesh_groups:
+		var mesh_children = mesh_groups.get_children()
+		
+		for child in mesh_children:
+			if child is MeshInstance3D:
+				table_instances_groups.append(child)
 
 	#ordenar por si acaso
 	number_labels.sort_custom(func(a, b): return a.get_index() < b.get_index())
@@ -94,7 +95,7 @@ func _on_table_ready()-> void:
 
 func update_field_visual(index :int)->void:
 	var field := GameState.get_bet_field_model(index)#cuidado con el
-	print(str(index))
+	#print(str(index))
 	#print(str(field.number))
 	#print(str(field.color))
 	#print(number_labels[index].text)

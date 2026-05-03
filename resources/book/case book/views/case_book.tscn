@@ -1,0 +1,412 @@
+[gd_scene format=3 uid="uid://bv433xmxi0fuo"]
+
+[ext_resource type="ArrayMesh" uid="uid://dlqct188u77no" path="res://resources/book/case book/case_left_cover.res" id="1_abdhi"]
+[ext_resource type="Script" uid="uid://bvjv2trxc1xh3" path="res://resources/book/case book/views/case_book_controller.gd" id="1_qblis"]
+[ext_resource type="PackedScene" uid="uid://wat314uoi0bg" path="res://features/balls/views/ball_spot.tscn" id="2_c2n12"]
+[ext_resource type="ArrayMesh" uid="uid://c2x3qh5hum75p" path="res://resources/book/case book/case_bottom_cover.res" id="2_skb3x"]
+[ext_resource type="ArrayMesh" uid="uid://dcdsauu4uvoff" path="res://resources/book/case book/case_right_cover.res" id="3_0f6lf"]
+[ext_resource type="AnimationLibrary" uid="uid://by8ay17fwfqj6" path="res://resources/book/animations/book_animations.res" id="4_skb3x"]
+[ext_resource type="PackedScene" uid="uid://c4ra01uqkwtxq" path="res://features/balls/views/ball_shop_tooltip.tscn" id="4_vh2v0"]
+[ext_resource type="Script" uid="uid://dxkevrvjwaccu" path="res://features/bingo_chip/views/bingo_chip_tooltip.gd" id="5_vh2v0"]
+[ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material_multimesh.tres" id="6_hbfy0"]
+[ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="7_dm3np"]
+[ext_resource type="ArrayMesh" uid="uid://c8odj12oepqi3" path="res://resources/3d_UI/info_tooltip_small.res" id="7_hm2pu"]
+[ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="7_qstwr"]
+[ext_resource type="ArrayMesh" uid="uid://d1lqjlfn3aqk1" path="res://resources/book/model/bet_field.tres" id="8_qvpcn"]
+[ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://features/book/table/view/table_fields.gd" id="9_p4ka6"]
+[ext_resource type="PackedScene" uid="uid://ck3te155udka6" path="res://features/bingo_chip/views/bingo_chip_spot.tscn" id="9_vh2v0"]
+[ext_resource type="ArrayMesh" uid="uid://cvniucx8oowbm" path="res://resources/3d_UI/price_chart.res" id="10_ckgmk"]
+[ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="10_hbfy0"]
+[ext_resource type="ArrayMesh" uid="uid://baeoiakx8vtop" path="res://resources/book/model/outline.tres" id="11_hm2pu"]
+[ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="17_vh2v0"]
+[ext_resource type="Texture2D" uid="uid://buwcryw1eujb2" path="res://Icon.png" id="18_vh2v0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i7d7l"]
+size = Vector3(0.32332993, 0.16040039, 0.11782837)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vh2v0"]
+size = Vector3(0.39627075, 0.06652832, 0.30029297)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckgmk"]
+size = Vector3(0.38619995, 0.16973877, 0.2869873)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qstwr"]
+size = Vector3(0.668, 0.1, 1.626)
+
+[sub_resource type="MultiMesh" id="MultiMesh_i7d7l"]
+transform_format = 1
+use_colors = true
+instance_count = 36
+mesh = ExtResource("8_qvpcn")
+buffer = PackedFloat32Array(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.135, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.27, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.405, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.54, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.675, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.81, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.945, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.08, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.215, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.35, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.485, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ckgmk"]
+render_priority = 0
+shader = ExtResource("17_vh2v0")
+shader_parameter/color_aura = Color(1, 0.41037312, 0.8756574, 1)
+shader_parameter/radio_base = 0.24300000828262
+shader_parameter/velocidad_giro = 0.7880005124299991
+shader_parameter/intensidad_lava = 0.0450000021375
+shader_parameter/suavizado = 0.10000000149012
+
+[node name="CaseBook" type="Node3D" unique_id=523368687]
+physics_interpolation_mode = 2
+script = ExtResource("1_qblis")
+
+[node name="left_cover" type="MeshInstance3D" parent="." unique_id=203415166]
+mesh = ExtResource("1_abdhi")
+
+[node name="Ball_Spot" parent="left_cover" unique_id=1548367600 instance=ExtResource("2_c2n12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3811272, 0.07352896, -1.7205057)
+offset_description_canvas = Vector3(0, 0, 0)
+
+[node name="Ball_Spot2" parent="left_cover" unique_id=1698720685 instance=ExtResource("2_c2n12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85193837, 0.07352896, -1.7205057)
+offset_description_canvas = Vector3(0, 0, 0)
+
+[node name="Ball_Spot3" parent="left_cover" unique_id=1698349077 instance=ExtResource("2_c2n12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33400056, 0.07352896, -1.7205057)
+offset_description_canvas = Vector3(0, 0, 0)
+
+[node name="BallDescription" parent="left_cover" unique_id=313159008 instance=ExtResource("4_vh2v0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2657552, 0, -2.76454)
+visible = false
+spin = false
+
+[node name="Bingo_Chip_Tooltip" type="Node3D" parent="left_cover" unique_id=53400926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4522948, 0.06046474, -2.7134752)
+visible = false
+script = ExtResource("5_vh2v0")
+
+[node name="Bingo_Chip_Tooltip_mesh" type="MeshInstance3D" parent="left_cover/Bingo_Chip_Tooltip" unique_id=1312665599]
+transform = Transform3D(0.56, 0, 0, 0, 0.56, 0, 0, 0, 0.56, 0.031846404, 0, 0.50927556)
+material_override = ExtResource("6_hbfy0")
+mesh = ExtResource("7_hm2pu")
+
+[node name="SB_Button3D" type="StaticBody3D" parent="left_cover/Bingo_Chip_Tooltip" unique_id=167002510]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3777503)
+script = ExtResource("7_qstwr")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/Bingo_Chip_Tooltip/SB_Button3D" unique_id=1096386229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0005092621, 0.012329102, 0.004989594)
+shape = SubResource("BoxShape3D_i7d7l")
+
+[node name="Description" type="Label3D" parent="left_cover/Bingo_Chip_Tooltip" unique_id=2003160902]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.0030942857, 0.24474242)
+modulate = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "usar?"
+font_size = 21
+
+[node name="Description2" type="Label3D" parent="left_cover/Bingo_Chip_Tooltip" unique_id=1864536829]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.034602523, 0.38821128)
+text = "usar"
+font_size = 15
+
+[node name="Bingo_Chip_Spot" parent="left_cover" unique_id=233787783 instance=ExtResource("9_vh2v0")]
+transform = Transform3D(1.2200001, 0, 0, 0, 1.0903435, -0.54731303, 0, 0.54731303, 1.0903435, -1.4760351, 0.033539668, -1.21892)
+
+[node name="Bingo_Chip_Spot2" parent="left_cover" unique_id=1055783912 instance=ExtResource("9_vh2v0")]
+transform = Transform3D(1.2200001, 0, 0, 0, 1.0903435, -0.54731303, 0, 0.54731303, 1.0903435, -1.2503736, 0.033539668, -1.21892)
+
+[node name="Bingo_Chip_Spot3" parent="left_cover" unique_id=333671318 instance=ExtResource("9_vh2v0")]
+transform = Transform3D(1.2200001, 0, 0, 0, 1.0903435, -0.54731303, 0, 0.54731303, 1.0903435, -1.0232049, 0.033539668, -1.21892)
+
+[node name="SB_Button3D" type="StaticBody3D" parent="left_cover" unique_id=1565650957]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2336916, -1.1920929e-07, -0.34549907)
+script = ExtResource("7_qstwr")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/SB_Button3D" unique_id=1292779337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.031799316, 0)
+shape = SubResource("BoxShape3D_vh2v0")
+
+[node name="Next_SB_Button3D" type="StaticBody3D" parent="left_cover" unique_id=1822325332]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48573995, -0.07502035, -0.34549907)
+script = ExtResource("7_qstwr")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/Next_SB_Button3D" unique_id=475670533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013442993, 0, -0.0005493164)
+shape = SubResource("BoxShape3D_ckgmk")
+
+[node name="rerollDescription" type="Label3D" parent="left_cover" unique_id=946180215]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.2459216, -0.01811704, -0.33016306)
+text = "Reroll"
+font_size = 24
+
+[node name="next" type="Label3D" parent="left_cover" unique_id=682238484]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.50139725, -0.01811704, -0.33016306)
+text = "Next"
+font_size = 24
+
+[node name="price_chart" type="MeshInstance3D" parent="left_cover" unique_id=1988890857]
+transform = Transform3D(0.9706787, 0, 0.2403805, 0, 1, 0, -0.2403805, 0, 0.9706787, -1.4741162, 0.083574, -1.8911015)
+mesh = ExtResource("10_ckgmk")
+
+[node name="price_chart2" type="MeshInstance3D" parent="left_cover" unique_id=322747982]
+transform = Transform3D(0.99899423, 0, 0.044839926, 0, 1, 0, -0.044839926, 0, 0.99899423, -0.86906093, 0.083574, -1.9013367)
+mesh = ExtResource("10_ckgmk")
+
+[node name="price_chart3" type="MeshInstance3D" parent="left_cover" unique_id=169615189]
+transform = Transform3D(0.9941321, 0, -0.10817288, 0, 1, 0, 0.10817288, 0, 0.9941321, -0.24129683, 0.083574, -1.8856789)
+mesh = ExtResource("10_ckgmk")
+
+[node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=1793716634]
+mesh = ExtResource("2_skb3x")
+
+[node name="right_cover" type="MeshInstance3D" parent="." unique_id=925397820]
+mesh = ExtResource("3_0f6lf")
+
+[node name="SBTable" type="StaticBody3D" parent="right_cover" unique_id=1863299191 groups=["table_container"]]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.008671224, -0.018444434, -0.009492211)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("7_dm3np")
+first_index = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="right_cover/SBTable" unique_id=1140767969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.431, 0, -1.031)
+shape = SubResource("BoxShape3D_qstwr")
+
+[node name="Bet_Fields" type="MultiMeshInstance3D" parent="right_cover" unique_id=1144194666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.008671224, -0.018444434, -0.009492211)
+multimesh = SubResource("MultiMesh_i7d7l")
+script = ExtResource("9_p4ka6")
+
+[node name="Labels" type="Node3D" parent="right_cover" unique_id=565180285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5463288, 0.002555566, 0.02750779)
+
+[node name="1" type="Label3D" parent="right_cover/Labels" unique_id=2056345707]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.796)
+text = "1"
+font_size = 16
+
+[node name="2" type="Label3D" parent="right_cover/Labels" unique_id=2092646896]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.796)
+text = "1"
+font_size = 16
+
+[node name="3" type="Label3D" parent="right_cover/Labels" unique_id=575228656]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.796)
+text = "1"
+font_size = 16
+
+[node name="4" type="Label3D" parent="right_cover/Labels" unique_id=1702985326]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.659)
+text = "1"
+font_size = 16
+
+[node name="5" type="Label3D" parent="right_cover/Labels" unique_id=1423287018]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.659)
+text = "1"
+font_size = 16
+
+[node name="6" type="Label3D" parent="right_cover/Labels" unique_id=1574264716]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.659)
+text = "1"
+font_size = 16
+
+[node name="7" type="Label3D" parent="right_cover/Labels" unique_id=839846565]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.527)
+text = "1"
+font_size = 16
+
+[node name="8" type="Label3D" parent="right_cover/Labels" unique_id=1536148118]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.527)
+text = "1"
+font_size = 16
+
+[node name="9" type="Label3D" parent="right_cover/Labels" unique_id=1066103239]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.527)
+text = "1"
+font_size = 16
+
+[node name="10" type="Label3D" parent="right_cover/Labels" unique_id=1807803232]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.395)
+text = "1"
+font_size = 16
+
+[node name="11" type="Label3D" parent="right_cover/Labels" unique_id=1065455806]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.395)
+text = "1"
+font_size = 16
+
+[node name="12" type="Label3D" parent="right_cover/Labels" unique_id=1682648274]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.395)
+text = "1"
+font_size = 16
+
+[node name="13" type="Label3D" parent="right_cover/Labels" unique_id=531730815]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.258)
+text = "1"
+font_size = 16
+
+[node name="14" type="Label3D" parent="right_cover/Labels" unique_id=419679517]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.258)
+text = "1"
+font_size = 16
+
+[node name="15" type="Label3D" parent="right_cover/Labels" unique_id=1040874377]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.258)
+text = "1"
+font_size = 16
+
+[node name="16" type="Label3D" parent="right_cover/Labels" unique_id=992564193]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -1.121)
+text = "1"
+font_size = 16
+
+[node name="17" type="Label3D" parent="right_cover/Labels" unique_id=1190773605]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -1.121)
+text = "1"
+font_size = 16
+
+[node name="18" type="Label3D" parent="right_cover/Labels" unique_id=2019506945]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -1.121)
+text = "1"
+font_size = 16
+
+[node name="19" type="Label3D" parent="right_cover/Labels" unique_id=1718742795]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.989)
+text = "1"
+font_size = 16
+
+[node name="20" type="Label3D" parent="right_cover/Labels" unique_id=1003885989]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.989)
+text = "1"
+font_size = 16
+
+[node name="21" type="Label3D" parent="right_cover/Labels" unique_id=609824130]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.989)
+text = "1"
+font_size = 16
+
+[node name="22" type="Label3D" parent="right_cover/Labels" unique_id=1111224395]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.852)
+text = "1"
+font_size = 16
+
+[node name="23" type="Label3D" parent="right_cover/Labels" unique_id=2091057978]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.852)
+text = "1"
+font_size = 16
+
+[node name="24" type="Label3D" parent="right_cover/Labels" unique_id=635966537]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.852)
+text = "1"
+font_size = 16
+
+[node name="25" type="Label3D" parent="right_cover/Labels" unique_id=1914097087]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.72)
+text = "1"
+font_size = 16
+
+[node name="26" type="Label3D" parent="right_cover/Labels" unique_id=1932052393]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.72)
+text = "1"
+font_size = 16
+
+[node name="27" type="Label3D" parent="right_cover/Labels" unique_id=1662858801]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.72)
+text = "1"
+font_size = 16
+
+[node name="28" type="Label3D" parent="right_cover/Labels" unique_id=132803095]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.583)
+text = "1"
+font_size = 16
+
+[node name="29" type="Label3D" parent="right_cover/Labels" unique_id=633590910]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.583)
+text = "1"
+font_size = 16
+
+[node name="30" type="Label3D" parent="right_cover/Labels" unique_id=160277433]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.583)
+text = "1"
+font_size = 16
+
+[node name="31" type="Label3D" parent="right_cover/Labels" unique_id=2037835120]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.446)
+text = "1"
+font_size = 16
+
+[node name="32" type="Label3D" parent="right_cover/Labels" unique_id=1898362122]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.446)
+text = "1"
+font_size = 16
+
+[node name="33" type="Label3D" parent="right_cover/Labels" unique_id=564934861]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.446)
+text = "1"
+font_size = 16
+
+[node name="34" type="Label3D" parent="right_cover/Labels" unique_id=145711994]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.765, 0, -0.30857754)
+text = "1"
+font_size = 16
+
+[node name="35" type="Label3D" parent="right_cover/Labels" unique_id=539649245]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.984, 0, -0.30857754)
+text = "1"
+font_size = 16
+
+[node name="36" type="Label3D" parent="right_cover/Labels" unique_id=13126186]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.207, 0, -0.30857754)
+text = "1"
+font_size = 16
+
+[node name="outline" type="MeshInstance3D" parent="right_cover" unique_id=1573786263]
+transform = Transform3D(1.005, 0, 0, 0, 1.005, 0, 0, 0, 1.005, 0.006229222, -0.008297004, -0.0033053681)
+material_override = ExtResource("10_hbfy0")
+mesh = ExtResource("11_hm2pu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1364728007]
+libraries/book_animations = ExtResource("4_skb3x")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=29955028]
+
+[node name="Temp" type="Node" parent="." unique_id=1495428841]
+
+[node name="Camera3D" type="Camera3D" parent="Temp" unique_id=510284659]
+transform = Transform3D(1, 0, 0, 0, -0.0039618914, 0.9999922, 0, -0.9999922, -0.0039618914, 0, 2.6684234, -1.052412)
+fov = 45.0
+
+[node name="Sprite3D2" type="Sprite3D" parent="." unique_id=2095982428]
+transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -0.8516918, 0.058823094, -1.7205795)
+material_override = SubResource("ShaderMaterial_ckgmk")
+pixel_size = 0.007
+billboard = 1
+texture = ExtResource("18_vh2v0")
+
+[node name="Sprite3D4" type="Sprite3D" parent="." unique_id=567087982]
+transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -1.3804758, 0.058823094, -1.7205794)
+material_override = SubResource("ShaderMaterial_ckgmk")
+pixel_size = 0.007
+billboard = 1
+texture = ExtResource("18_vh2v0")
+
+[node name="Sprite3D3" type="Sprite3D" parent="." unique_id=752630340]
+transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -0.33414152, 0.058823094, -1.7211857)
+material_override = SubResource("ShaderMaterial_ckgmk")
+pixel_size = 0.007
+billboard = 1
+texture = ExtResource("18_vh2v0")
+
+[connection signal="input_event" from="left_cover/Bingo_Chip_Tooltip/SB_Button3D" to="left_cover/Bingo_Chip_Tooltip/SB_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="left_cover/Bingo_Chip_Tooltip/SB_Button3D" to="left_cover/Bingo_Chip_Tooltip/SB_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="left_cover/Bingo_Chip_Tooltip/SB_Button3D" to="left_cover/Bingo_Chip_Tooltip/SB_Button3D" method="_on_mouse_exited"]
+[connection signal="input_event" from="left_cover/SB_Button3D" to="left_cover/SB_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="left_cover/SB_Button3D" to="left_cover/SB_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="left_cover/SB_Button3D" to="left_cover/SB_Button3D" method="_on_mouse_exited"]
+[connection signal="input_event" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_input_event"]
+[connection signal="mouse_entered" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_mouse_exited"]
+[connection signal="input_event" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_input_event"]
+[connection signal="mouse_entered" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_exited"]

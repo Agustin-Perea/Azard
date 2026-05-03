@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://wat314uoi0bg"]
+
+[ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="1_nx6r2"]
+[ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="3_8lm48"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
+radius = 0.115460515
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2bku"]
+
+[node name="Ball_Spot" type="StaticBody3D" unique_id=1548367600]
+physics_interpolation_mode = 1
+collision_mask = 0
+script = ExtResource("1_nx6r2")
+offset_description_canvas = Vector3(0.631, 0.092, 0.802)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2079117565]
+shape = SubResource("SphereShape3D_q6jwi")
+
+[node name="ball_mesh" type="MeshInstance3D" parent="." unique_id=440408662]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_f2bku")
+mesh = ExtResource("3_8lm48")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

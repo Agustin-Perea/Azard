@@ -15,8 +15,10 @@
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
 noise_type = 2
 seed = 1
+frequency = 0.0298
 fractal_lacunarity = 1.0
 fractal_weighted_strength = 1.0
+cellular_return_type = 5
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
 noise = SubResource("FastNoiseLite_lfkuk")
@@ -25,7 +27,7 @@ noise = SubResource("FastNoiseLite_lfkuk")
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_fo5sc")
-shader_parameter/base_color = Color(0.86, 0.86, 0.86, 1)
+shader_parameter/base_color = Color(1, 1, 1, 1)
 shader_parameter/main_texture = ExtResource("6_gqviy")
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
 shader_parameter/dissolve_value = 0.0
@@ -49,41 +51,43 @@ viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
 [sub_resource type="ViewportTexture" id="ViewportTexture_4l2kj"]
 viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_awiem"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ayqks"]
 animation = &"bat_animations/bat_attack"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qx4hk"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fo5sc"]
+animation = &"bat_animations/Bat_death"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gqviy"]
 animation = &"bat_animations/Bat_Attacked"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iy404"]
-animation = &"bat_animations/Bat_Attacked"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o7wca"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d2kjj"]
 animation = &"bat_animations/Bat_Idle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_awiem"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o7wca"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xxll8"]
 xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qx4hk"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_206xx"]
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qx4hk"]
-states/attack/node = SubResource("AnimationNodeAnimation_awiem")
-states/attack/position = Vector2(509, 177)
-states/death/node = SubResource("AnimationNodeAnimation_qx4hk")
-states/death/position = Vector2(593, 105)
-states/hurt/node = SubResource("AnimationNodeAnimation_iy404")
-states/hurt/position = Vector2(346, 187)
-states/idle/node = SubResource("AnimationNodeAnimation_o7wca")
-states/idle/position = Vector2(337, 94)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_awiem"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_o7wca"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_qx4hk")]
-graph_offset = Vector2(16, 28)
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b34tf"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0mwm0"]
+states/Start/position = Vector2(219, 100)
+states/attack/node = SubResource("AnimationNodeAnimation_ayqks")
+states/attack/position = Vector2(304, 205)
+states/death/node = SubResource("AnimationNodeAnimation_fo5sc")
+states/death/position = Vector2(559, 100)
+states/hurt/node = SubResource("AnimationNodeAnimation_gqviy")
+states/hurt/position = Vector2(422, 205)
+states/idle/node = SubResource("AnimationNodeAnimation_d2kjj")
+states/idle/position = Vector2(368, 100)
+transitions = ["attack", "idle", SubResource("AnimationNodeStateMachineTransition_xxll8"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_206xx"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_b34tf")]
+graph_offset = Vector2(-12, 58)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_awiem"]
 size = Vector3(1.369873, 1, 1)
@@ -101,13 +105,15 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0237291, 0, 0, 0, 0.96203345, 0, 0, 0, 1, 0, 1.7058511, 0)
+transform = Transform3D(1.0469986, 0, 0, 0, 0.92480206, 0, 0, 0, 1, 0, 1.6552782, 0)
 material_override = SubResource("ShaderMaterial_ayqks")
-"blend_shapes/Key 2" = 0.3100958
-"blend_shapes/Key 4" = 0.6899042
+"blend_shapes/Key 3" = 0.5948241
+"blend_shapes/Key 4" = 0.40517595
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
+active = false
 libraries/bat_animations = ExtResource("4_iy404")
+playback_default_blend_time = 0.2
 
 [node name="StatsView" type="Node3D" parent="ModelVisualComponent" unique_id=403448201]
 
@@ -186,7 +192,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8190824, 0)
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621545040]
 root_node = NodePath("../ModelVisualComponent/bat")
-tree_root = SubResource("AnimationNodeStateMachine_qx4hk")
+tree_root = SubResource("AnimationNodeStateMachine_0mwm0")
 anim_player = NodePath("../ModelVisualComponent/bat/AnimationPlayer")
 
 [node name="target_area" type="StaticBody3D" parent="." unique_id=473892783]

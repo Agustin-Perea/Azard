@@ -3,6 +3,7 @@ extends Node
 const COMBAT_STATE_NAMES: Dictionary = {
 	"EnemySelection" : "SelectionState",
 	"BookState" : "BookState",
+	"BookCaseState" : "BookCase",
 	"RoulleteSpin" : "RouletteState",
 	"BetResolve" : "BetResolve",
 	"Victory" : "Victory",

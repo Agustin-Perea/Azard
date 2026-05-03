@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://yers7tswll0g"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cubiw0r7c8fll"]
 
-[ext_resource type="Shader" uid="uid://b3een36to8yj4" path="res://resources/materials/shaders/bet_field_shader_material.gdshader" id="1_df7lt"]
+[ext_resource type="Shader" uid="uid://6vlfyidxqdoh" path="res://resources/materials/shaders/bet_field_shader_material.gdshader" id="1_df7lt"]
 [ext_resource type="Texture2D" uid="uid://dujnpd6skf4qg" path="res://resources/book/model/roulette_book_PaletaColoresRuleta.png" id="2_2whvq"]
 
 [resource]

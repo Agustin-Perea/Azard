@@ -45,6 +45,7 @@ func copy_metadata(new_model:BetFieldModel)->void:
 		self.ConditionStrategy = new_model.ConditionStrategy
 		#señal de cambio
 		self.fieldChanged.emit()
+		self.number = new_model.number
 		
 		#refactor
 		self.color = new_model.color

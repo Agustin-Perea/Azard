@@ -1,11 +1,10 @@
 shader_type spatial;
-
-render_mode unshaded, shadows_disabled, cull_disabled;
+render_mode unshaded, shadows_disabled, cull_disabled, specular_disabled;
 
 // === BASE ===
 uniform vec4 base_color : source_color = vec4(1.0);
-uniform sampler2D main_texture : source_color;
-uniform sampler2D noise_tex;
+uniform sampler2D main_texture : source_color, filter_nearest;
+uniform sampler2D noise_tex : filter_nearest;
 
 // === DISSOLVE ===
 uniform float dissolve_value : hint_range(0.0, 1.0) = 0.0;
@@ -26,7 +25,8 @@ void fragment() {
 	// =====================
 	// NOISE / DISSOLVE
 	// =====================
-	vec2 custom_uv = local_pos.xy * 0.5;
+	vec3 world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	vec2 custom_uv = world_pos.xz * 0.5;
 	float noise_sample = texture(noise_tex, custom_uv).r;
 
 	if (noise_sample < dissolve_value) {
@@ -49,11 +49,11 @@ void fragment() {
 	}
 
 	// =====================
-	// FLASH (BLEND A BLANCO)
+	// FLASH
 	// =====================
 	final_color = mix(final_color, flash_color, flash_modifier);
 
-	// opcional: que también brille más cuando flashea
+	// brillo extra en flash
 	EMISSION += flash_color * flash_modifier * 2.0;
 
 	ALBEDO = final_color;

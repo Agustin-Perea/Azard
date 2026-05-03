@@ -11,6 +11,7 @@ static var global_input_enabled: bool = true
 
 func _ready() -> void:
 	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
+	UiEventBus.change_collision_detection_moveable.connect(_on_change_collision_detection)
 	pass
 	#se asignan los eventos
 	#Drag_Service.add_clickable(area3D) este nop, pues cambia de otra manera
@@ -31,6 +32,7 @@ func stop_drag()->void:
 #
 #primer click
 func on_press() -> void:
+	
 	DragService.deassign_dragged()
 	DragService.start_drag(self)#deberia mandarse a si mismo
 

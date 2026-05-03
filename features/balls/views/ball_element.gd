@@ -55,26 +55,29 @@ func _assign_data_model(new_data:BallRuntimeState)->void:
 func activate()->void:
 	active = true
 	ball_mesh.visible = active
+	$CollisionShape3D.disabled = false
 	#area3D.process_mode = PROCESS_MODE_INHERIT	
 	
 func _activate_selection_aura():
-	var chip_data = ball_mesh.get_instance_shader_parameter("chip_data") 
-
-	# Si es null, lo inicializamos nosotros
-	if chip_data == null:
-		chip_data = Vector3(0.0, 0.0, 0.0)
-
-	chip_data.z = 0.005 # Tu grosor
-	ball_mesh.set_instance_shader_parameter("chip_data", chip_data)
+	#var chip_data = ball_mesh.get_instance_shader_parameter("chip_data") 
+#
+	## Si es null, lo inicializamos nosotros
+	#if chip_data == null:
+		#chip_data = Vector3(0.0, 0.0, 0.0)
+#
+	#chip_data.z = 0.005 # Tu grosor
+	#ball_mesh.set_instance_shader_parameter("chip_data", chip_data)
+	pass
 	
 func _deactivate_selection_aura():
-	var chip_data = ball_mesh.get_instance_shader_parameter("chip_data") 
-
-	if chip_data == null:
-		chip_data = Vector3(0.0, 0.0, 0.0)
-		
-	chip_data.z = 0.0
-	ball_mesh.set_instance_shader_parameter("chip_data", chip_data)
+	#var chip_data = ball_mesh.get_instance_shader_parameter("chip_data") 
+#
+	#if chip_data == null:
+		#chip_data = Vector3(0.0, 0.0, 0.0)
+		#
+	#chip_data.z = 0.0
+	#ball_mesh.set_instance_shader_parameter("chip_data", chip_data)
+	pass
 	
 func deactivate()->void:
 	_deactivate_selection_aura()
@@ -111,15 +114,15 @@ func deactivate_ball_desctiption()->void:
 
 
 
-#func on_press(area: ClickableArea) -> void:
-	#super(area)
-	#
-	#activate_ball_desctiption()
+func on_press() -> void:
+	super()
+	if ball_data:
+		activate_ball_desctiption()
 		
 	
 func on_enter() -> void:
 	super()
-	if DragService.dragged == null:
+	if DragService.dragged == null && ball_data:
 		activate_ball_desctiption()
 
 
