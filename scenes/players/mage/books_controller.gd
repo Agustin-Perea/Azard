@@ -72,10 +72,9 @@ func change_book(book_page : Constants.BOOK_PAGE)->void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
-			if next_page == book_none:
-				next_page.visible = true
+			if next_page == book_none && actual_page != next_page:
 				actual_page.visible = false
-				
+				next_page.visible = true
 				
 			elif next_page && actual_page != next_page:
 				actual_page.visible = false

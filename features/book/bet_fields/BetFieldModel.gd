@@ -40,6 +40,8 @@ signal call_betfield_animation
 
 @export var modifiable: bool = true
 
+
+
 func copy_metadata(new_model:BetFieldModel)->void:
 	if modifiable:
 		self.ConditionStrategy = new_model.ConditionStrategy
@@ -51,3 +53,4 @@ func copy_metadata(new_model:BetFieldModel)->void:
 		self.color = new_model.color
 		self.parity = new_model.parity
 		self.half_table = new_model.half_table
+	

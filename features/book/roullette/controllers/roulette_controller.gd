@@ -286,8 +286,8 @@ func add_base(base_added: float)->void:
 #reset_score
 func reset_score()->void:
 	score = 0
-	multiplier = 1
-	base = 1
+	multiplier = 0
+	base = 0
 	baseChanged.emit()
 	multiplicatorChanged.emit(0)
 	totalChanged.emit() 
@@ -296,12 +296,7 @@ func reset_score()->void:
 func reroll()->void:
 	if last_ball_used:
 		##CombatEventBus.reroll.emit(self)
-		base = 0
-		multiplier = 1
-		score = 0
-		baseChanged.emit()
-		multiplicatorChanged.emit(0)
-		totalChanged.emit() 
+		reset_score()
 		#cambio de visuals o animacion
 		
 		#llama al estado de Spin de Ruleta

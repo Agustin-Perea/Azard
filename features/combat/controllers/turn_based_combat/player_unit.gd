@@ -17,3 +17,4 @@ func _ready() -> void:
 	
 	@warning_ignore("unused_parameter")
 	animation_tree.animation_finished.connect(func(anim_name: StringName): anim_finished = true)
+	
