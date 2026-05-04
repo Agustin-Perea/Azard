@@ -9,6 +9,8 @@ signal released
 
 @onready var collision_shape : CollisionShape3D = $CollisionShape3D
 
+var enabled : bool = true
+
 func _ready() -> void:
 	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
 	UiEventBus.change_collision_detection_buttons.connect(_on_change_collision_detection)
@@ -24,7 +26,7 @@ func _on_mouse_exited():
 	exited.emit()
 
 func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	if not global_input_enabled:
+	if not global_input_enabled or not enabled:
 		return
 	if event is InputEventMouseButton and event.pressed:
 		pressed.emit()

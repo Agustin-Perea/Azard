@@ -5,8 +5,6 @@ class_name PlayerActionController
 
 @onready var roulette_controller : RouletteController = $"../Books/Book"
 
-
-
 func _ready() -> void:
 	super()
 	roulette_controller.finish_button.pressed.connect(_do_attacK)

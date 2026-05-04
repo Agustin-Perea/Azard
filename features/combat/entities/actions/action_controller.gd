@@ -13,6 +13,8 @@ var anim_finished = false
 
 @export var base_damage = 10
 
+@export var camera_attack : Camera3D
+
 
 #la camera attack tiene multiples animaciones de ataque, igual que los ataques en si
 #no tiene
@@ -57,6 +59,7 @@ func perform_movement() -> void:
 	#en realidad la attack camera, el nombre y demas es dado un "ataque" recurso que deberia tener
 
 	animation_state_machine.travel("attack")
+	UiEventBus.changeCamera.emit(camera_attack)
 	
 	anim_finished = false
 	var ev = GameEvent.new({

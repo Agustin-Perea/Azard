@@ -15,8 +15,16 @@ var posiciones_iniciales = {}
 
 #@onready var book_buttons : Node3D = $"../LibroContornoButtons"
 @onready var reroll_button : SB_Button3D = $"../RerollButton"
+@onready var reroll_mesh : MeshInstance3D = $"../RerollButton/MeshInstance3D"
+
+@onready var finish_button : SB_Button3D = $"../FinishMoveButton"
+@onready var finish_button_mesh : MeshInstance3D = $"../FinishMoveButton/MeshInstance3D"
+
+
+
 @onready var rerolls_count_label : Label3D = $RerollCount
 @export var rerolls_count :int
+
 
 
 var player_stats : StatsComponent
@@ -36,6 +44,12 @@ func _ready() -> void:
 		posiciones_iniciales[label] = label.position
 	BookEventBus.spin_started.connect(number_disappear)
 	BookEventBus.spin_finished.connect(number_appear)
+	
+	
+	BookEventBus.player_turn.connect(disable_reroll)
+	BookEventBus.player_turn.connect(disable_finish_button)
+	BookEventBus.spin_started.connect(enable_reroll)
+	BookEventBus.spin_started.connect(enable_finish_button)
 	
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
@@ -167,10 +181,32 @@ func number_disappear()->void:
 	 
 
 func _on_reroll_pressed()->void:
-
 	if rerolls_count > 0:
 		rerolls_count -= 1
 		rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 		
 		roulette_controller.reroll()
+		
+	if rerolls_count <= 0:
+		disable_reroll()
+
+func disable_reroll()->void:
+	reroll_mesh.set_instance_shader_parameter("palette_offset",1.9)
+	reroll_mesh.set_instance_shader_parameter("palette_offset_y",0.1)
+	reroll_button.enabled = false
 	
+func enable_reroll()->void:
+	if rerolls_count > 0:
+		reroll_mesh.set_instance_shader_parameter("palette_offset",0)
+		reroll_mesh.set_instance_shader_parameter("palette_offset_y",0)
+	reroll_button.enabled = true
+
+func disable_finish_button()->void:
+	finish_button_mesh.set_instance_shader_parameter("palette_offset",1.9)
+	finish_button_mesh.set_instance_shader_parameter("palette_offset_y",0.1)
+	finish_button.enabled = false
+	
+func enable_finish_button()->void:
+	finish_button_mesh.set_instance_shader_parameter("palette_offset",0.6)
+	finish_button_mesh.set_instance_shader_parameter("palette_offset_y",0.8)
+	finish_button.enabled = true

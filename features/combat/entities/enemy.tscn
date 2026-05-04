@@ -11,6 +11,8 @@
 [ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="5_fo5sc"]
 [ext_resource type="Texture2D" uid="uid://cv67dupj6c4qq" path="res://resources/enemies/bat/bat_bat_texture.png" id="6_gqviy"]
 [ext_resource type="PackedScene" uid="uid://0xpa0e35mojk" path="res://resources/particles/gpu_particles_3d.tscn" id="9_ayqks"]
+[ext_resource type="Animation" uid="uid://cusvp3u4p138k" path="res://resources/enemies/bat/animations/camera_animations/CameraBat_Attack.res" id="10_gqviy"]
+[ext_resource type="Animation" uid="uid://bampai4lbvq04" path="res://resources/enemies/bat/animations/camera_animations/CameraEnemyAtack.res" id="11_d2kjj"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
 noise_type = 2
@@ -50,6 +52,12 @@ viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4l2kj"]
 viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_katsr"]
+_data = {
+&"CameraBat_Attack": ExtResource("10_gqviy"),
+&"CameraEnemyAtack": ExtResource("11_d2kjj")
+}
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ayqks"]
 animation = &"bat_animations/bat_attack"
@@ -105,10 +113,8 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0469986, 0, 0, 0, 0.92480206, 0, 0, 0, 1, 0, 1.6552782, 0)
+transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
 material_override = SubResource("ShaderMaterial_ayqks")
-"blend_shapes/Key 3" = 0.5948241
-"blend_shapes/Key 4" = 0.40517595
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
 active = false
@@ -190,6 +196,15 @@ font_size = 53
 [node name="GPUParticles3D" parent="ModelVisualComponent" unique_id=829231785 instance=ExtResource("9_ayqks")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8190824, 0)
 
+[node name="Camera-camera" type="Camera3D" parent="ModelVisualComponent" unique_id=1764889419]
+transform = Transform3D(0.8290376, -0.058451537, 0.5561296, 3.7252903e-09, 0.9945219, 0.10452839, -0.5591929, -0.08665796, 0.8244961, 2.6423516, 1.9501433, 7.2592955)
+fov = 45.0
+near = 0.1
+far = 5000.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ModelVisualComponent" unique_id=246336074]
+libraries/ = SubResource("AnimationLibrary_katsr")
+
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621545040]
 root_node = NodePath("../ModelVisualComponent/bat")
 tree_root = SubResource("AnimationNodeStateMachine_0mwm0")
@@ -204,8 +219,9 @@ shape = SubResource("BoxShape3D_awiem")
 [node name="StatusViewComponent" type="Node" parent="." unique_id=1302820884]
 script = ExtResource("2_fldkf")
 
-[node name="ActionController" type="Node" parent="." unique_id=63284386]
+[node name="ActionController" type="Node" parent="." unique_id=63284386 node_paths=PackedStringArray("camera_attack")]
 script = ExtResource("4_awiem")
+camera_attack = NodePath("../ModelVisualComponent/Camera-camera")
 
 [node name="Sounds" type="Node" parent="." unique_id=1751384729]
 

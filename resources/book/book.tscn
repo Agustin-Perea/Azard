@@ -824,6 +824,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3852596, 0, -1.3056993)
 script = ExtResource("11_vvjhm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/RerollButton" unique_id=100792153]
+instance_shader_parameters/palette_offset = 0.0
+instance_shader_parameters/palette_offset_y = 0.0
 mesh = ExtResource("11_nq47p")
 
 [node name="Label3D" type="Label3D" parent="left_cover/RerollButton/MeshInstance3D" unique_id=1480586477]
@@ -840,7 +842,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30929124, 0, -1.3056993)
 script = ExtResource("11_vvjhm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/FinishMoveButton" unique_id=1834467383]
-instance_shader_parameters/palette_offset = 0.0
+instance_shader_parameters/palette_offset = 0.6
+instance_shader_parameters/palette_offset_y = 0.8
 mesh = ExtResource("11_nq47p")
 
 [node name="Label3D" type="Label3D" parent="left_cover/FinishMoveButton/MeshInstance3D" unique_id=1443492601]
@@ -902,6 +905,7 @@ mesh = ExtResource("7_jx2r3")
 
 [node name="BallDescription" parent="bottom_cover" unique_id=313159008 instance=ExtResource("19_8qbf8")]
 transform = Transform3D(0.575, 0, 0, 0, 0.575, 0, 0, 0, 0.575, 0.6313158, 0.1811561, -1.042273)
+visible = false
 
 [node name="right_cover" type="MeshInstance3D" parent="." unique_id=21736364]
 material_override = ExtResource("2_padf7")

@@ -3,16 +3,17 @@ render_mode unshaded, shadows_disabled, cull_back;
 
 uniform sampler2D tex_palette : source_color, filter_nearest;
 
-// 0.0 = rojo
-// 0.25 = negro
-// 0.5 = verde
+// Offset horizontal
 instance uniform float palette_offset = 0.0;
+
+// Offset vertical
+instance uniform float palette_offset_y = 0.0;
 
 instance uniform bool highlighted = false;
 
 void fragment() {
 
-	vec2 palette_uv = UV + vec2(palette_offset, 0.0);
+	vec2 palette_uv = UV + vec2(palette_offset, palette_offset_y);
 
 	vec3 color_base = texture(tex_palette, palette_uv).rgb;
 

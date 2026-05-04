@@ -27,6 +27,7 @@ var result_field_id : int = 0
 
 @onready var finish_button : SB_Button3D = $left_cover/FinishMoveButton
 
+
 var last_ball_used : BallRuntimeState = null
 
 func _ready() -> void:
