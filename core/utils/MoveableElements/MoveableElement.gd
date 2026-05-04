@@ -33,7 +33,7 @@ func stop_drag()->void:
 #primer click
 func on_press() -> void:
 	
-	DragService.deassign_dragged()
+	#DragService.deassign_dragged()
 	DragService.start_drag(self)#deberia mandarse a si mismo
 
 #el release es cuando se suelta pero esta dentro del area, no siempre sucede

@@ -129,10 +129,16 @@ func highlight_field(id : int)->void:
 			var shader_mat = mesh_instance.get_surface_override_material(0)
 			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
 	elif id == 0:
-		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
-		var shader_mat = mesh_instance.get_surface_override_material(0)
-		
-		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
+		var mesh_instance = table_instances_groups[table_instances_groups.size() - 1]
+		if mesh_instance == null:
+			return
+		if not mesh_instance is MeshInstance3D:
+			return
+		var material = mesh_instance.get_surface_override_material(0)
+		if material == null:
+			return
+		if material is ShaderMaterial:
+			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
 	
 func reset_field(id : int)->void:
 	if id > 0 and id < 37:
@@ -147,10 +153,19 @@ func reset_field(id : int)->void:
 			
 			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
 	elif id == 0:
-		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
-		var shader_mat = mesh_instance.get_surface_override_material(0)
-		
-		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
+		var mesh_instance = table_instances_groups[table_instances_groups.size() - 1]
+		if mesh_instance == null:
+			return
+		if not mesh_instance is MeshInstance3D:
+			return
+		var material = mesh_instance.get_surface_override_material(0)
+		if material == null:
+			return
+		if material is ShaderMaterial:
+			mesh_instance.set_instance_shader_parameter(
+				"chip_data",
+				Vector3.ZERO
+			)
 		
 func highlight_equals_field(id : int)->void:
 	var number := GameState.bet_field_models[id].number
