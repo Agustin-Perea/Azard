@@ -13,11 +13,17 @@ class_name StatusViewComponent
 
 var stats : StatsComponent
 
+var health_tween : Tween
+var displayed_health : float = 0.0
 
 func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
+	
+	displayed_health = stats.current_healt
+	
 	stats.health_changed.connect(_update_health)
-	_update_health()
+	#_update_health()
+	activate()
 	UiEventBus.deactivate_status_view_component.connect(deactivate)
 	UiEventBus.activate_status_view_component.connect(activate)
 
@@ -26,8 +32,9 @@ func _show_health() -> void:
 	
 func _update_health() -> void:
 	health_progress_bar.max_value = stats.max_healt
-	health_progress_bar.value = stats.current_healt
-	health_label_text.text = str(stats.current_healt)
+	
+	show_life_drop_animation()
+	
 
 func _show_damaged(damage: float) -> void:
 	damage_viewport.visible = true
@@ -69,3 +76,35 @@ func activate()->void:
 func deactivate()->void:
 	health_label_text.visible = false
 	health_sprite_viewport.visible = false
+
+func show_life_drop_animation() -> void:
+	activate()
+
+	# evitar tweens acumulados
+	if health_tween:
+		health_tween.kill()
+
+	var target_health = stats.current_healt
+
+	health_progress_bar.max_value = stats.max_healt
+
+	health_tween = create_tween()
+	health_tween.set_parallel(true)
+
+	# barra
+	health_tween.tween_property(
+		health_progress_bar,
+		"value",
+		target_health,
+		0.5
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	# numero
+	health_tween.tween_method(
+		func(value):
+			displayed_health = value
+			health_label_text.text = str(int(round(value))),
+		displayed_health,
+		target_health,
+		0.5
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)

@@ -60,6 +60,7 @@ func perform_movement() -> void:
 
 	animation_state_machine.travel("attack")
 	UiEventBus.changeCamera.emit(camera_attack)
+	UiEventBus.deactivate_status_view_component.emit()
 	
 	anim_finished = false
 	var ev = GameEvent.new({
