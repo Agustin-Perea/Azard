@@ -37,7 +37,6 @@ func game_loop() -> void:
 		if combat_finished: break
 		EnemyGroup._begin_turn()
 		await EnemyGroup.turn_complete
-	print("combate terminado")
 	
 
 
@@ -65,7 +64,6 @@ func _victory()->void:
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
-			print("victory")
 			return true
 	}))
 

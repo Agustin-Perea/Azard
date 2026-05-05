@@ -77,6 +77,24 @@ func _process(_delta: float) -> bool:
 	if game_state.get_shop_reroll_cost() != 10:
 		_fail("Unexpected first reroll cost")
 		return true
+	game_state.run_gold = 20
+	game_state.shop_reroll_count = 0
+	if not game_state.reroll_shop_offers():
+		_fail("First shop reroll should be available")
+		return true
+	if game_state.run_gold != 10:
+		_fail("First shop reroll did not spend expected gold")
+		return true
+	if game_state.get_shop_reroll_cost() != 15:
+		_fail("Second shop reroll cost should increase")
+		return true
+	game_state.run_gold = 15
+	if not game_state.reroll_shop_offers():
+		_fail("Second shop reroll should be available")
+		return true
+	if game_state.run_gold != 0:
+		_fail("Second shop reroll did not spend expected gold")
+		return true
 
 	print("economy_shop_ok:", int(reward["total"]))
 	quit(0)

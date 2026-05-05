@@ -2,6 +2,8 @@ extends MoveableElement
 class_name BingoChipElement
 
 @export var data: BetFieldModel
+@export var shop_price: int = 0
+var shop_price_visuals: Array[Node3D] = []
 
 #@onready var selection_outline_shader : ShaderMaterial 
 @onready var chip_mesh : MeshInstance3D = $chip_mesh
@@ -41,6 +43,11 @@ func assign_data_model(new_data: BetFieldModel)->void:
 	#bet_field.apply_data()
 	#set_outline(0.0)
 	activate()
+
+func set_shop_price(price: int, visuals: Array[Node3D] = []) -> void:
+	shop_price = price
+	shop_price_visuals = visuals
+	_set_shop_price_visuals_visible(data != null and shop_price > 0)
 
 func set_outline(thickness : float)->void:
 	var chip_data = chip_mesh.get_instance_shader_parameter("chip_data")
@@ -88,6 +95,12 @@ func _on_chip_dropped():
 	#print(container)
 
 	if !container.is_empty() and container.get("collider").is_in_group("table_container"):
+		if shop_price > 0 and not GameState.spend_run_gold(shop_price):
+			BookEventBus.popuptext.emit(global_position, "No alcanza el Gold", true)
+			DragService._return_to_origin()
+			DragService.deassign_dragged()
+			activate()
+			return
 		var static_body_table = container.get("collider") as StaticBodyTable_
 		#esto obtiene cualquier cosa a veces
 		var index : int = static_body_table.calcular_indice_desde_posicion(container.get("position"))
@@ -109,13 +122,13 @@ func _on_chip_dropped():
 
 func activate_chip_info()->void:
 	if data and info_canvas.bingo_chip_element != self:
-			print(info_canvas.bingo_chip_element)
-			print(self )
+			UiEventBus.deactivate_descriptions.emit()
 			info_canvas.deactivate()
 			info_canvas.assign_bingo_chip_element(self)
 			info_canvas.position =  self.position + offset_description_canvas
 			#set_outline(0.005)
-			info_canvas.use_button.pressed.connect(_on_use_button_pressed)
+			if not info_canvas.use_button.pressed.is_connected(_on_use_button_pressed):
+				info_canvas.use_button.pressed.connect(_on_use_button_pressed)
 			#agregar un listener a el use que activa un drag persistente
 	elif DragService.dragged != self or info_canvas.bingo_chip_element == self:
 		info_canvas.deactivate()
@@ -124,7 +137,8 @@ func activate_chip_info()->void:
 #es propio pero deberia ser propio de el chipinfo
 func deactivate_chip_info()->void:
 	#set_outline(0.0)
-	info_canvas.use_button.pressed.disconnect(_on_use_button_pressed)
+	if info_canvas.use_button.pressed.is_connected(_on_use_button_pressed):
+		info_canvas.use_button.pressed.disconnect(_on_use_button_pressed)
 
 	
 	
@@ -134,6 +148,7 @@ func deactivate()->void:
 	number_label.visible = false
 	$CollisionShape3D.disabled = true
 	data = null
+	_set_shop_price_visuals_visible(false)
 	
 
 func activate()->void:
@@ -142,6 +157,7 @@ func activate()->void:
 	number_label.visible = true
 	$CollisionShape3D.disabled = false
 	position = origin
+	_set_shop_price_visuals_visible(shop_price > 0)
 	
 
 func _on_use_button_pressed()->void:
@@ -152,3 +168,8 @@ func _on_use_button_pressed()->void:
 	UiEventBus.change_collision_detection_moveable.emit(true)
 	UiEventBus.change_collision_detection_buttons.emit(true)
 	#set_outline(0.005)
+
+func _set_shop_price_visuals_visible(value: bool) -> void:
+	for visual in shop_price_visuals:
+		if visual != null:
+			visual.visible = value

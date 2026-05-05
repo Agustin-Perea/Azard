@@ -50,7 +50,7 @@ func on_change_target(new_target : Unit):
 
 func _do_attacK()->void:
 	if not roulette_score_ready or not roulette_controller.is_resolution_ready():
-		BookEventBus.popuptext.emit(roulette_controller.finish_button.global_position, "Primero usa una pelota")
+		BookEventBus.popuptext.emit(roulette_controller.finish_button.global_position, "Primero usa una pelota", true)
 		return
 
 	#cambiar de estado

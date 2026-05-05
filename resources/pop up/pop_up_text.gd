@@ -12,6 +12,9 @@ extends Node3D
 
 var active_tween : Tween = null
 var finished : bool = false
+var last_popup_key := ""
+var last_popup_time_msec := 0
+var last_audio_time_msec := 0
 
 @export var base_spot : Vector3 = Vector3(-1.34,0.0,-1.278)
 @export var mult_spot : Vector3 = Vector3(-0.822,0.0,-1.278)
@@ -52,6 +55,12 @@ func reset_state():
 	self.visible = false
 
 func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool = false)->void:
+	var now := Time.get_ticks_msec()
+	var key := text + "|" + str(global) + "|" + str(spot_global_postion.round())
+	if key == last_popup_key and now - last_popup_time_msec < 500:
+		return
+	last_popup_key = key
+	last_popup_time_msec = now
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
@@ -65,9 +74,12 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 			#player.stream = preload("res://resources/sounds/Rise05.wav")
 			#player.pitch_scale = 2
 			#player.play()
-			audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
-			audio_stream_player.pitch_scale = 2
-			audio_stream_player.play()
+			if Time.get_ticks_msec() - last_audio_time_msec > 650:
+				last_audio_time_msec = Time.get_ticks_msec()
+				audio_stream_player.stop()
+				audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
+				audio_stream_player.pitch_scale = 2
+				audio_stream_player.play()
 			self.visible = true
 
 			#Setup de datos

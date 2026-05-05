@@ -60,7 +60,7 @@ func add_base(base_added: float) -> void:
 
 func changeScore() -> void:
 	_queue_score_event(func():
-		score = int(round(base)) * int(round(multiplier))
+		score = round(base * multiplier)
 		totalChanged.emit()
 	)
 
@@ -122,7 +122,7 @@ func on_start_spin(ball: BallRuntimeState) -> void:
 		return
 
 	number_winner = winner_betfield_model.number
-	roulette_control.spin(number_winner)
+	roulette_control.spin(number_winner, _roulette_field_count())
 	_queue_game_event(func():
 		numberChanged.emit()
 		return true
@@ -182,6 +182,17 @@ func _result_field_ids() -> Array[int]:
 			ids.append(field_id)
 	return ids
 
+func _roulette_field_count() -> int:
+	var max_number := 36
+	var game_state = _game_state()
+	if game_state == null:
+		return max_number + 1
+	for field_id in _result_field_ids():
+		var field := game_state.get_bet_field_model(field_id) as BetFieldModel
+		if field != null:
+			max_number = max(max_number, field.number)
+	return max_number + 1
+
 @warning_ignore("shadowed_variable")
 func _resolve_bets(result_field_id: int) -> float:
 	var game_state = _game_state()
@@ -228,10 +239,17 @@ func _resolve_bets(result_field_id: int) -> float:
 	return multiplier
 
 func reroll() -> void:
+	if resolution_in_progress:
+		_show_reroll_warning("Espera que termine")
+		return
 	if last_ball_used == null:
+		_show_reroll_warning("Primero usa una pelota")
 		return
 	var game_state = _game_state()
-	if game_state == null or not game_state.consume_reroll():
+	if game_state == null:
+		return
+	if not game_state.consume_reroll():
+		_show_reroll_warning("No quedan rerolls")
 		return
 
 	var book_event_bus = _book_event_bus()
@@ -255,13 +273,13 @@ func _queue_score_event(action: Callable) -> void:
 		return true
 	)
 
-func _queue_game_event(action: Callable, paralel: bool = false, blocking: bool = true, in_front: bool = false) -> void:
+func _queue_game_event(action: Callable, parallel: bool = false, blocking: bool = true, in_front: bool = false) -> void:
 	var event_manager = _event_manager()
 	if event_manager == null:
 		action.call()
 		return
 	event_manager.add_event(event_manager.QueueType.GAME, GameEvent.new({
-		"paralel": paralel,
+		"parallel": parallel,
 		"blocking": blocking,
 		"action": action,
 	}), in_front)
@@ -310,3 +328,9 @@ func _record_roulette_multiplier(value: float) -> void:
 	var game_state = _game_state()
 	if game_state != null:
 		game_state.record_roulette_multiplier(value)
+
+func _show_reroll_warning(text: String) -> void:
+	var book_event_bus = _book_event_bus()
+	if book_event_bus == null or finish_button == null:
+		return
+	book_event_bus.popuptext.emit(finish_button.global_position, text, true)

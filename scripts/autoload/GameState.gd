@@ -46,6 +46,7 @@ const SHOP_BOARD_UPGRADE_PRICES := {
 }
 
 const SHOP_REROLL_PRICES := [10, 15, 22, 30, 40]
+const SHOP_CHIP_MOD_PRICE := 20
 const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
 	"normal": {1: 15, 2: 20, 3: 25},
 	"elite": {1: 35, 2: 45, 3: 60},
@@ -91,8 +92,8 @@ var shop_rng := RandomNumberGenerator.new()
 # chip_id -> field_id
 var field_by_chip: Dictionary[int, int] = {}
 
-var max_reroll : int = 3
-var current_reroll: int = 3
+var max_reroll : int = 1
+var current_reroll: int = 1
 var run_luck: int = 0
 var extra_chip_slots: int = 0
 var extra_ball_slots: int = 0
@@ -142,6 +143,7 @@ func _ready():
 	
 signal table_ready
 func reload():
+	_clear_run_inventory_effects()
 	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	player_stats.set_up()
 	max_healt = player_stats.max_healt
@@ -181,10 +183,23 @@ func reload():
 	gold_changed.emit(run_gold)
 	table_ready.emit()
 
+func _clear_run_inventory_effects() -> void:
+	for item in passiveItems:
+		if item != null and item.has_method("on_item_removed"):
+			item.on_item_removed()
+	passiveItems.clear()
+	for trinket in trinkets:
+		if trinket != null and trinket.has_method("on_item_removed"):
+			trinket.on_item_removed()
+	trinkets.clear()
+	for upgrade in board_upgrades:
+		if upgrade != null and upgrade.has_method("on_item_removed"):
+			upgrade.on_item_removed()
+	board_upgrades.clear()
+
 func load_from_definition():
 	bet_field_models.clear()
 	chips.clear()
-	#passiveItems.clear()
 	#balls = null
 	for f in bet_field_definition.fields:
 		bet_field_models.append(f.duplicate(true)) # deep copy
@@ -340,6 +355,9 @@ func reroll_shop_offers() -> bool:
 func get_shop_reroll_cost() -> int:
 	var index: int = min(shop_reroll_count, SHOP_REROLL_PRICES.size() - 1)
 	return SHOP_REROLL_PRICES[index]
+
+func can_reroll_shop_offers() -> bool:
+	return can_afford(get_shop_reroll_cost())
 
 func buy_shop_offer(index: int) -> bool:
 	if index < 0 or index >= last_shop_offers.size():
@@ -607,6 +625,8 @@ func add_trinket(new_trinket: Resource) -> void:
 		return
 	var existing_trinket = null
 	for trinket in trinkets:
+		if trinket == null or not trinket.has_method("on_item_added") or trinket.trinket_definition == null:
+			continue
 		if trinket.trinket_definition == new_trinket or trinket.trinket_definition.trinket_id == new_trinket.trinket_id:
 			existing_trinket = trinket
 			break
@@ -628,6 +648,8 @@ func add_board_upgrade(new_board_upgrade: Resource) -> void:
 		return
 	var existing_upgrade = null
 	for upgrade in board_upgrades:
+		if upgrade == null or not upgrade.has_method("on_item_added") or upgrade.board_upgrade_definition == null:
+			continue
 		if upgrade.board_upgrade_definition == new_board_upgrade or upgrade.board_upgrade_definition.board_upgrade_id == new_board_upgrade.board_upgrade_id:
 			existing_upgrade = upgrade
 			break
@@ -636,7 +658,10 @@ func add_board_upgrade(new_board_upgrade: Resource) -> void:
 			existing_upgrade.quantity += 1
 			if existing_upgrade.board_upgrade_definition.board_upgrade_effect != null:
 				existing_upgrade.board_upgrade_definition.board_upgrade_effect.animate.emit()
-				existing_upgrade.board_upgrade_definition.board_upgrade_effect.on_item_added()
+				if existing_upgrade.has_method("apply_stack_delta"):
+					existing_upgrade.apply_stack_delta()
+				else:
+					existing_upgrade.on_item_added()
 	else:
 		existing_upgrade = BoardUpgradeRuntimeStateResource.new()
 		existing_upgrade.board_upgrade_definition = new_board_upgrade

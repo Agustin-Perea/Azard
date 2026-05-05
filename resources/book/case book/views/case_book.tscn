@@ -3,6 +3,7 @@
 [ext_resource type="ArrayMesh" uid="uid://dlqct188u77no" path="res://resources/book/case book/case_left_cover.res" id="1_abdhi"]
 [ext_resource type="Script" uid="uid://bvjv2trxc1xh3" path="res://resources/book/case book/views/case_book_controller.gd" id="1_qblis"]
 [ext_resource type="PackedScene" uid="uid://wat314uoi0bg" path="res://features/balls/views/ball_spot.tscn" id="2_c2n12"]
+[ext_resource type="PackedScene" path="res://features/shop/views/extra_offer_spot.tscn" id="2_extra_offer"]
 [ext_resource type="ArrayMesh" uid="uid://c2x3qh5hum75p" path="res://resources/book/case book/case_bottom_cover.res" id="2_skb3x"]
 [ext_resource type="ArrayMesh" uid="uid://dcdsauu4uvoff" path="res://resources/book/case book/case_right_cover.res" id="3_0f6lf"]
 [ext_resource type="AnimationLibrary" uid="uid://by8ay17fwfqj6" path="res://resources/book/animations/book_animations.res" id="4_skb3x"]
@@ -10,12 +11,12 @@
 [ext_resource type="Script" uid="uid://dxkevrvjwaccu" path="res://features/bingo_chip/views/bingo_chip_tooltip.gd" id="5_vh2v0"]
 [ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material_multimesh.tres" id="6_hbfy0"]
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="7_dm3np"]
-[ext_resource type="ArrayMesh" uid="uid://c8odj12oepqi3" path="res://resources/3d_UI/info_tooltip_small.res" id="7_hm2pu"]
+[ext_resource type="ArrayMesh" uid="uid://b2ql12ouyaijt" path="res://resources/3d_UI/info_tooltip_small.res" id="7_hm2pu"]
 [ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="7_qstwr"]
 [ext_resource type="ArrayMesh" uid="uid://d1lqjlfn3aqk1" path="res://resources/book/model/bet_field.tres" id="8_qvpcn"]
 [ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://features/book/table/view/table_fields.gd" id="9_p4ka6"]
 [ext_resource type="PackedScene" uid="uid://ck3te155udka6" path="res://features/bingo_chip/views/bingo_chip_spot.tscn" id="9_vh2v0"]
-[ext_resource type="ArrayMesh" uid="uid://cvniucx8oowbm" path="res://resources/3d_UI/price_chart.res" id="10_ckgmk"]
+[ext_resource type="ArrayMesh" uid="uid://ce0o2rrofvcfx" path="res://resources/3d_UI/price_chart.res" id="10_ckgmk"]
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="10_hbfy0"]
 [ext_resource type="ArrayMesh" uid="uid://baeoiakx8vtop" path="res://resources/book/model/outline.tres" id="11_hm2pu"]
 [ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="17_vh2v0"]
@@ -112,6 +113,18 @@ transform = Transform3D(1.2200001, 0, 0, 0, 1.0903435, -0.54731303, 0, 0.5473130
 
 [node name="Bingo_Chip_Spot3" parent="left_cover" unique_id=333671318 instance=ExtResource("9_vh2v0")]
 transform = Transform3D(1.2200001, 0, 0, 0, 1.0903435, -0.54731303, 0, 0.54731303, 1.0903435, -1.0232049, 0.033539668, -1.21892)
+
+[node name="ExtraOfferSpot" parent="left_cover" unique_id=787944704 instance=ExtResource("2_extra_offer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.42, 0.086, -0.69)
+offset_description_canvas = Vector3(0.12, 0.02, -0.15)
+
+[node name="ExtraOfferSpot2" parent="left_cover" unique_id=752455349 instance=ExtResource("2_extra_offer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.94, 0.086, -0.69)
+offset_description_canvas = Vector3(0.12, 0.02, -0.15)
+
+[node name="ExtraOfferSpot3" parent="left_cover" unique_id=1080647090 instance=ExtResource("2_extra_offer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.46, 0.086, -0.69)
+offset_description_canvas = Vector3(0.12, 0.02, -0.15)
 
 [node name="SB_Button3D" type="StaticBody3D" parent="left_cover" unique_id=1565650957]
 physics_interpolation_mode = 1
@@ -379,6 +392,7 @@ fov = 45.0
 
 [node name="Sprite3D2" type="Sprite3D" parent="." unique_id=2095982428]
 transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -0.8516918, 0.058823094, -1.7205795)
+visible = false
 material_override = SubResource("ShaderMaterial_ckgmk")
 pixel_size = 0.007
 billboard = 1
@@ -386,6 +400,7 @@ texture = ExtResource("18_vh2v0")
 
 [node name="Sprite3D4" type="Sprite3D" parent="." unique_id=567087982]
 transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -1.3804758, 0.058823094, -1.7205794)
+visible = false
 material_override = SubResource("ShaderMaterial_ckgmk")
 pixel_size = 0.007
 billboard = 1
@@ -393,6 +408,7 @@ texture = ExtResource("18_vh2v0")
 
 [node name="Sprite3D3" type="Sprite3D" parent="." unique_id=752630340]
 transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, -0.33414152, 0.058823094, -1.7211857)
+visible = false
 material_override = SubResource("ShaderMaterial_ckgmk")
 pixel_size = 0.007
 billboard = 1

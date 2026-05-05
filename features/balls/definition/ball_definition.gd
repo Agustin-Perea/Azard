@@ -25,12 +25,49 @@ var attack_type: int = Constants.BALL_TARGET.TARGET_SINGLE
 
 @export var ball_effect: BallEffect
 
+const SHORT_DESCRIPTIONS := {
+	1: "Dano directo simple y consistente.",
+	2: "Duplica el score final del golpe.",
+	3: "Cura al jugador despues de golpear.",
+	4: "Dano al objetivo y splash a vecinos.",
+	5: "Aplica veneno al objetivo.",
+	6: "Otorga shield despues de golpear.",
+	7: "Gana dano si cae en rojo.",
+	8: "Gana shield si cae en negro.",
+	9: "Rebota dano entre enemigos.",
+	10: "Copia parte del efecto de otra bola.",
+	11: "Cura segun el dano infligido.",
+	12: "Gana valor si cae en numero primo.",
+	13: "Activa un efecto util al azar.",
+	14: "Gana Gold al resolverse.",
+	15: "Bloquea habilidades del enemigo.",
+	16: "Escala con casillas doradas.",
+	17: "Mucho dano, pero te lastima.",
+	18: "Elige la mejor casilla cercana.",
+	19: "Marca al enemigo para recibir mas dano.",
+	20: "Encadena dano entre enemigos.",
+	21: "Si cae en 0, 00 o 37, gana mucho valor.",
+	22: "Empuja el resultado hacia un numero marcado.",
+	23: "Repite parte de la bola anterior.",
+	24: "Atraviesa escudos y defensas.",
+	25: "Convierte Gold acumulado en dano.",
+	26: "Ejecuta enemigos debilitados.",
+	27: "Gana dano por variedad de bolas usadas.",
+	28: "Jackpot fuerte si activa su condicion.",
+	29: "Convierte tu shield en dano.",
+	30: "Tira resultados extra y usa el mejor.",
+	31: "Repite efectos recientes del combate.",
+	32: "Combina condiciones incompatibles.",
+}
+
 func get_display_name() -> String:
 	if not display_name.is_empty():
 		return display_name
 	return "Ball"
 
 func get_description() -> String:
+	if SHORT_DESCRIPTIONS.has(ball_id):
+		return str(SHORT_DESCRIPTIONS[ball_id])
 	if not description.is_empty():
 		return description
 	return ""

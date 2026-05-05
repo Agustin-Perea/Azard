@@ -34,9 +34,7 @@ var sound_tween: Tween
 @export var lock_height: bool = true
 
 # === CONSTANTES DE CAMPOS ===
-const FIELD_COUNT := 37
-const FIELD_ANGLE := TAU / FIELD_COUNT
-const BASE_OFFSET := FIELD_ANGLE / 2.5
+const DEFAULT_FIELD_COUNT := 37
 
 # === ESTADOS ===
 enum Phase {
@@ -63,6 +61,9 @@ var _omega_decay_rate: float
 
 var _target_angle_local: float
 var _roulette_initial_rotation: float
+var _field_count := DEFAULT_FIELD_COUNT
+var _field_angle := TAU / DEFAULT_FIELD_COUNT
+var _base_offset := _field_angle / 2.5
 
 var angle_diff: float = 0.0
 var _angle_rad: float = 0.0
@@ -73,6 +74,9 @@ var _spin_finish_emitted := false
 @onready var parent : Node3D = $".."
 
 var _original_parent: Node
+var _base_inner_radius: float
+var _base_finish_radius: float
+var _base_finish_y_level: float
 
 func _ready() -> void:
 
@@ -80,6 +84,9 @@ func _ready() -> void:
 	assert(ball, "Falta asignar la bola")
 
 	_original_parent = ball.get_parent()  # ← guardar hermano de roulette
+	_base_inner_radius = inner_radius
+	_base_finish_radius = finish_radius
+	_base_finish_y_level = finish_y_level
 
 	_initialize_geometry()
 	_initialize_physics()
@@ -87,8 +94,9 @@ func _ready() -> void:
 	#spin()
 
 
-func spin(number_winner : int) -> void:
-	if number_winner >= 0 and number_winner < FIELD_COUNT:
+func spin(number_winner : int, field_count: int = DEFAULT_FIELD_COUNT) -> void:
+	set_field_count(field_count)
+	if number_winner >= 0 and number_winner < _field_count:
 		set_target_field(number_winner)
 	reset_simulation()
 
@@ -101,9 +109,9 @@ func _initialize_geometry() -> void:
 	_current_radius = _initial_radius
 	_angle_rad = atan2(rel.z, rel.x)
 	
-	inner_radius *= parent.scale.x
-	finish_radius *= parent.scale.x
-	finish_y_level *= parent.scale.x
+	inner_radius = _base_inner_radius * parent.scale.x
+	finish_radius = _base_finish_radius * parent.scale.x
+	finish_y_level = _base_finish_y_level * parent.scale.x
 
 func _initialize_physics() -> void:
 	_omega_initial = deg_to_rad(angular_speed_deg)
@@ -114,7 +122,7 @@ func _initialize_physics() -> void:
 
 
 func _calculate_target() -> void:
-	_target_angle_local = (FIELD_ANGLE * choosed_field) + BASE_OFFSET
+	_target_angle_local = (_field_angle * choosed_field) + _base_offset
 	_roulette_initial_rotation = roulette.global_rotation.y
 
 
@@ -168,8 +176,8 @@ func _process_dropping(delta: float) -> void:
 	angle_diff = wrapf(
 		get_relative_ball_angle(roulette, ball)
 		- roulette.global_rotation.y
-		+ choosed_field * FIELD_ANGLE
-		+ BASE_OFFSET  + parent.rotation.y,
+		+ choosed_field * _field_angle
+		+ _base_offset  + parent.rotation.y,
 		0, TAU
 	)
 
@@ -198,7 +206,7 @@ func _process_adjust(delta: float) -> void:
 	var radius_speed = (_initial_radius - inner_radius) / drop_duration
 	_current_radius = move_toward(_current_radius, finish_radius, radius_speed * delta)
 
-	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
+	var spot_angle = -roulette.global_rotation.y + (choosed_field * _field_angle) + _base_offset
 	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * finish_radius
 	var finish_pos = get_position_from_angle(
 		atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
@@ -216,15 +224,14 @@ func _process_adjust(delta: float) -> void:
 	var position_reached = dist_to_target < 0.005 * parent.scale.x
 
 	if finish_radius_reached and position_reached:
+		if _spin_finish_emitted:
+			return
 		ball.global_position.x = finish_pos.x
 		ball.global_position.z = finish_pos.z
 		ball.global_position.y = parent.global_position.y + finish_y_level
-		stream_player.stream = sounds["spin_finish"]
 		if sound_tween != null:
 			sound_tween.kill()
-		stream_player.pitch_scale = 1.0
-		stream_player.volume_db = 0
-		stream_player.play()
+		_play_roulette_sound(sounds["spin_finish"], -8.0, 1.0)
 		_complete_spin()
 
 
@@ -307,17 +314,31 @@ func reset_simulation() -> void:
 func play_and_slow_down() -> void:
 	if stream_player == null:
 		return
-	stream_player.stream = sounds["spin_init"]
-	stream_player.pitch_scale = 1.0
-	stream_player.volume_db = 0
-	stream_player.play()
+	if sound_tween != null:
+		sound_tween.kill()
+	_play_roulette_sound(sounds["spin_init"], -12.0, 1.0)
 	sound_tween = create_tween()
 	sound_tween.set_parallel(true)
-	sound_tween.tween_property(stream_player, "volume_db", -40.0, 7.0)
+	sound_tween.tween_property(stream_player, "volume_db", -45.0, 7.0)
 	sound_tween.tween_property(stream_player, "pitch_scale", 0.5, 5.0)
 
 
 func set_target_field(field: int) -> void:
-	assert(field >= 0 and field < FIELD_COUNT, "Campo fuera de rango")
+	assert(field >= 0 and field < _field_count, "Campo fuera de rango")
 	choosed_field = field
 	_calculate_target()
+
+func set_field_count(field_count: int) -> void:
+	_field_count = max(1, field_count)
+	_field_angle = TAU / float(_field_count)
+	_base_offset = _field_angle / 2.5
+	_calculate_target()
+
+func _play_roulette_sound(stream: AudioStream, volume_db: float, pitch_scale: float) -> void:
+	if stream_player == null:
+		return
+	stream_player.stop()
+	stream_player.stream = stream
+	stream_player.pitch_scale = pitch_scale
+	stream_player.volume_db = volume_db
+	stream_player.play()

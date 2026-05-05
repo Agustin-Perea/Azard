@@ -5,6 +5,7 @@ class_name GameEvent
 var blocking: bool = true
 #ignora el bloqueo de eventos, funciona como si fuera paralelo
 var paralel: bool = false
+var parallel: bool = false
 
 #uso para esperar antes de resolver el evento
 var delay: float = 0.0
@@ -20,7 +21,8 @@ var started := false
 
 func _init(config: Dictionary):
 	blocking = config.get("blocking", true)
-	paralel = config.get("paralel", false)
+	parallel = config.get("parallel", config.get("paralel", false))
+	paralel = parallel
 
 	delay = config.get("delay", 0.0)
 	action = config.get("action", func(): return true)

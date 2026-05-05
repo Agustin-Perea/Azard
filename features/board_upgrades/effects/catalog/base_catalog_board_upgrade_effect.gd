@@ -28,10 +28,12 @@ func _apply_definition() -> void:
 	if board_upgrade_definition == null:
 		return
 	var ops: Array = board_upgrade_definition.metadata.get("operations", [])
-	for op in ops:
-		_apply_operation(op)
+	for op_index in range(ops.size()):
+		var op = ops[op_index]
+		if op is Dictionary:
+			_apply_operation(_operation_for_runtime_quantity(op), op_index)
 
-func _apply_operation(op: Dictionary) -> void:
+func _apply_operation(op: Dictionary, op_index: int = 0) -> void:
 	var fields := _select_fields(op)
 	var set_meta: Dictionary = op.get("set_meta", {})
 	for field in fields:
@@ -43,7 +45,12 @@ func _apply_operation(op: Dictionary) -> void:
 		if op.has("add_meta"):
 			var add_meta: Dictionary = op["add_meta"]
 			for key in add_meta:
-				model.set_meta(str(key), float(model.get_meta(str(key), 0.0)) + float(add_meta[key]))
+				var meta_key := str(key)
+				var applied_key := _applied_meta_key(op_index, meta_key)
+				var previous := float(model.get_meta(applied_key, 0.0))
+				var desired := float(add_meta[key])
+				model.set_meta(meta_key, float(model.get_meta(meta_key, 0.0)) - previous + desired)
+				model.set_meta(applied_key, desired)
 		if op.has("color"):
 			model.color = int(op["color"])
 		if op.has("number"):
@@ -51,6 +58,22 @@ func _apply_operation(op: Dictionary) -> void:
 		if op.has("both_colors"):
 			model.set_meta(Constants.BOARD_TAG.BOTH_COLORS, bool(op["both_colors"]))
 		model.fieldChanged.emit()
+
+func _operation_for_runtime_quantity(op: Dictionary) -> Dictionary:
+	var expanded := op.duplicate(true)
+	var quantity := _runtime_quantity()
+	if quantity > 1 and expanded.has("count"):
+		expanded["count"] = int(expanded["count"]) * quantity
+	return expanded
+
+func _runtime_quantity() -> int:
+	return max(1, int(get_meta("runtime_quantity", 1)))
+
+func _applied_meta_key(op_index: int, meta_key: String) -> String:
+	var upgrade_id := 0
+	if board_upgrade_definition != null:
+		upgrade_id = int(board_upgrade_definition.board_upgrade_id)
+	return "board_upgrade_applied:%d:%d:%s" % [upgrade_id, op_index, meta_key]
 
 func _select_fields(op: Dictionary) -> Array:
 	var game_state := _game_state()
