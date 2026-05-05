@@ -70,6 +70,8 @@ func _defeat()->void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
+			print("defeat")
+			#BookEventBus.defeat.emit()
 			EventManager.call_deferred("clear_queue",EventManager.QueueType.GAME)
 			combat_finished = true
 			return true

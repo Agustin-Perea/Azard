@@ -1,7 +1,7 @@
 extends Node
 
 var object_pool_database : ObjectPoolDatabase
-
+var master_seed: int = 123456789
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -13,7 +13,7 @@ var bet_field_models: Array[BetFieldModel] = []
 var chipDefinition: ChipsDefinition
 var chips: Array[ChipModel] = []
 
-var temp_scene_changed_value : int
+
 #colecciones
 
 @export var balls_deck: BallsRuntimeCollection
@@ -37,17 +37,26 @@ signal bet_updated(field_id: int, chip_stack: Array)
 var player_stats : StatsComponent
 signal table_ready
 
+
+var temp_scene_changed_value : int
 func _ready():
 	object_pool_database = ObjectPoolDatabase.new()
-	
-#	CombatEventBus.reload.connect(reload)
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
+#	CombatEventBus.reload.connect(reload)
+
 	
 	reload()
 
 
 func reload():
+	#BookEventBus.reload.emit()
+	temp_scene_changed_value = 0
+	master_seed = randi() % 999999999 + 1
+	
+	object_pool_database.set_seed(master_seed)
+	object_pool_database.reload()
+	
 	#playerStats
 	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	player_stats.set_up()
@@ -68,7 +77,7 @@ func reload():
 
 func load_from_definition():
 	bet_field_models.clear()
-	#chips.clear()
+	chips.clear()
 	#passiveItems.clear()
 	#balls = null
 	for f in bet_field_definition.fields:
@@ -78,7 +87,7 @@ func load_from_definition():
 	for f in chipDefinition.fields:
 		chips.append(f.duplicate(true)) # deep copy
 	#fields = definition.fields.duplicate(true)
-	chips = chipDefinition.fields.duplicate(true)
+	#chips = chipDefinition.fields.duplicate(true)
 	
 	# 1. Duplicamos el contenedor principal
 	#balls = ballsDefinition.duplicate() 

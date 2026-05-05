@@ -30,6 +30,10 @@ signal change_book_page(arg : Constants.BOOK_PAGE)
 
 signal change_target(target : Unit)
 
+
+signal change_scente_to(scene : String)
+signal scene_changed
+
 func disableClickableAreas()->void:
 	#ClickableArea.global_input_enabled = false
 	#PlayerUiEvents.disable_camera_buttons.emit()
