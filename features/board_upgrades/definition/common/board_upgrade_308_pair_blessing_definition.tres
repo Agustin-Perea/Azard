@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_308_pair_blessing_effect.gd" id="1_3u0kh"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_okaq7"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_b6j0i"]
+
+[sub_resource type="Resource" id="Resource_lystg"]
+script = ExtResource("1_3u0kh")
+
+[resource]
+script = ExtResource("3_b6j0i")
+board_upgrade_id = 308
+display_name = "Pair Blessing"
+description = "Elige 1 numero par. Cuando cae ahi, gana +1 base."
+pool_weight = 120
+upgrade_type = 2
+design_notes = "Mejora minima, facil de balancear."
+effect_key = "pair_blessing"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_pair_base": 1.0
+},
+"count": 1,
+"filter": "even"
+}]
+}
+board_upgrade_effect = SubResource("Resource_lystg")

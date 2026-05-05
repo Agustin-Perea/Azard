@@ -11,293 +11,302 @@ signal totalChanged
 @warning_ignore("unused_signal")
 signal betResolved
 
-var base: float = 0
-var multiplier: float = 1 
-var number_winner: int 
-var winner_betfield_model : BetFieldModel
-var result_field_id : int = 0
-#signal spin_resolved(result_field_id: int, delta_score: float, total_score: folat)
+var base: float = 1
+var multiplier: float = 1
+var number_winner: int
+var winner_betfield_model: BetFieldModel
+var result_field_id: int = 0
+var last_winning_bet_entries: Array[Dictionary] = []
+var last_ball_used: BallRuntimeState = null
+var resolution_in_progress := false
+var resolution_ready := false
 
-@onready var roulette_control : RouletteControl = $left_cover
-
-#esto para decidir donde va el multanim y cual highlightear
-@onready var table_meshes : TableFieldsController = $right_cover/BetTable
-
-@onready var ball_mesh : MeshInstance3D = $left_cover/roulette_ball
-
-@onready var finish_button : SB_Button3D = $left_cover/FinishMoveButton
-
-
-var last_ball_used : BallRuntimeState = null
+@onready var roulette_control: RouletteControl = $left_cover
+@onready var table_meshes: TableFieldsController = $right_cover/BetTable
+@onready var ball_mesh: MeshInstance3D = $left_cover/roulette_ball
+@onready var finish_button: SB_Button3D = $left_cover/FinishMoveButton
 
 func _ready() -> void:
-	BookEventBus.start_spin.connect(on_start_spin)
-	
-
-	#rng.seed = ObjectPoolsDataBase.master_seed
+	var book_event_bus = _book_event_bus()
+	if book_event_bus != null:
+		book_event_bus.start_spin.connect(on_start_spin)
 	rng.randomize()
-	#spin()
-	#CombatEventBus.update_base_score.connect(update_base_score)
-	#
-	#CombatEventBus.add_multiplier.connect(add_multiplier)
-	#CombatEventBus.add_base.connect(add_base)
-	#CombatEventBus.apply_mult.connect(multiply_mult_score)
-	#CombatEventBus.reset_score.connect(reset_score)
 
-func update_base_score(new_base : int)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			base = new_base
-			baseChanged.emit()
-			return true
-	}))
+func update_base_score(new_base: int) -> void:
+	_queue_score_event(func():
+		base = new_base
+		baseChanged.emit()
+	)
 
-func multiply_mult_score(add_mult : float)->void:
-	#agrega un evento que multiplica el mult
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			multiplier *= add_mult
-			multiplicatorChanged.emit(add_mult)
-			return true
-	}))
-	
+func multiply_mult_score(mult_factor: float) -> void:
+	_queue_score_event(func():
+		multiplier *= mult_factor
+		_record_roulette_multiplier(multiplier)
+		multiplicatorChanged.emit(mult_factor)
+	)
 
-func on_start_spin(ball : BallRuntimeState) -> void:
-	
+func add_multiplier(mult: float) -> void:
+	_queue_score_event(func():
+		multiplier += mult
+		_record_roulette_multiplier(multiplier)
+		multiplicatorChanged.emit(mult)
+	)
+
+func add_base(base_added: float) -> void:
+	_queue_score_event(func():
+		base += base_added
+		baseChanged.emit()
+	)
+
+func changeScore() -> void:
+	_queue_score_event(func():
+		score = int(round(base)) * int(round(multiplier))
+		totalChanged.emit()
+	)
+
+func reset_score() -> void:
+	resolution_ready = false
+	last_winning_bet_entries.clear()
+	_queue_score_event(func():
+		score = 0
+		multiplier = 1
+		base = 1
+		baseChanged.emit()
+		multiplicatorChanged.emit(0)
+		totalChanged.emit()
+	)
+
+func is_resolution_ready() -> bool:
+	return resolution_ready
+
+func get_final_score() -> int:
+	return int(round(score))
+
+func on_start_spin(ball: BallRuntimeState) -> void:
+	if ball == null or ball.ball_definition == null:
+		push_error("on_start_spin received an invalid ball runtime state")
+		return
+
 	last_ball_used = ball
-	BookEventBus.spin_started.emit()
-	
-	#agregar el base de la bola
-	add_base(ball.ball_definition.base_damage)
-	#cambiar el material de la bola de la ruleta
-	ball_mesh.material_override = ball.ball_definition.ball_material
-	#desactivar colisiones
-	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.RoulleteSpin)
-	#para test local
-	UiEventBus.change_collision_detection.emit(true)
-	
-	
-	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, 36)
+	resolution_in_progress = true
+	resolution_ready = false
+	var book_event_bus = _book_event_bus()
+	if book_event_bus != null:
+		book_event_bus.spin_started.emit()
+	reset_score()
 
-	# 2. Obtenemos el BetFieldModel ganador
-	winner_betfield_model = GameState.bet_field_models[result_field_id]
+	var resolved_damage := ball.ball_definition.get_damage_for_level(ball.level_upgrade)
+	add_base(resolved_damage)
+	if ball.ball_definition.ball_material:
+		ball_mesh.material_override = ball.ball_definition.ball_material
+
+	var ui_event_bus = _ui_event_bus()
+	if ui_event_bus != null:
+		ui_event_bus.changeToState.emit(Constants.COMBAT_STATE_NAMES.RoulleteSpin)
+		ui_event_bus.change_collision_detection.emit(true)
+
+	result_field_id = _random_result_field_id()
+	var game_state = _game_state()
+	if game_state == null:
+		push_error("GameState autoload is not available.")
+		if ui_event_bus != null:
+			ui_event_bus.change_collision_detection.emit(false)
+		resolution_in_progress = false
+		return
+	winner_betfield_model = game_state.get_bet_field_model(result_field_id)
+	if winner_betfield_model == null:
+		push_error("Could not resolve roulette result field: " + str(result_field_id))
+		if ui_event_bus != null:
+			ui_event_bus.change_collision_detection.emit(false)
+		resolution_in_progress = false
+		return
+
 	number_winner = winner_betfield_model.number
-	
-	
 	roulette_control.spin(number_winner)
-	#Este mesnsaje hara que la ruleta gire
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			numberChanged.emit()#esto cambia la visual del numero ganador
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	
-	#espera que el spin de la ruleta termine
+	_queue_game_event(func():
+		numberChanged.emit()
+		return true
+	)
+
 	await roulette_control.spin_finished
-	BookEventBus.spin_finished.emit()
-	#muestra el numero ganador y sus equals
+	if book_event_bus != null:
+		book_event_bus.spin_finished.emit()
 	table_meshes.activate_highlight_field(result_field_id)
-	
-	#cambia de estado, ahora pasa el estado de muestra de cambios
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BetResolve)
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
+
+	_queue_game_event(func():
+		var queued_ui_event_bus = _ui_event_bus()
+		if queued_ui_event_bus != null:
+			queued_ui_event_bus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BetResolve)
+		return true
+	)
 
 	await get_tree().create_timer(1).timeout
+	_resolve_bets(result_field_id)
+	await _wait_for_game_queue()
 
-	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
-	score = delta_score#bad
-	
-	#eventos finales post resolve, bolas y pasivos
-	ball.ball_definition.ball_effect.on_post_resolved(self)
-	
-	#cambio de score
+	if book_event_bus != null:
+		book_event_bus.bet_post_resolved.emit(self)
+	if ball.ball_definition.ball_effect != null:
+		ball.ball_definition.ball_effect.set_meta("runtime_level", ball.level_upgrade)
+		ball.ball_definition.ball_effect.set_meta("runtime_ball_id", ball.ball_definition.ball_id)
+		ball.ball_definition.ball_effect.on_post_resolved(self)
+
 	changeScore()
-	
-	await get_tree().create_timer(1).timeout
-	#habilita los clicks al completar
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			table_meshes.deactivate_highlight_field()
-			UiEventBus.change_collision_detection_buttons.emit(false)
-			return true
-	}))
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##PlayerUiEvents.bet_procesed.emit()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	
-	
+	_queue_cleanup_after_resolution()
+	_queue_resolution_completed()
+
 func spin() -> void:
+	if last_ball_used != null:
+		on_start_spin(last_ball_used)
 
-	#aca sucede el reroll?	
-	#CombatEventBus.changeToState.emit("RouletteState")
-	#CombatEventBus.disableClickableAreas()
-	BookEventBus.spin_started.emit()
-	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, 36)
+func _max_result_field_id() -> int:
+	var result_ids := _result_field_ids()
+	if result_ids.is_empty():
+		return 36
+	return int(result_ids.back())
 
-	# 2. Obtenemos el BetFieldModel ganador
-	winner_betfield_model = GameState.bet_field_models[result_field_id]
-	number_winner = winner_betfield_model.number
-	roulette_control.spin(number_winner)
-	#Este mesnsaje hara que la ruleta gire
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			numberChanged.emit()#esto cambia la visual del numero ganador
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	
-	#espera que el spin de la ruleta termine
-	await roulette_control.spin_finished
-	BookEventBus.spin_finished.emit()
+func _random_result_field_id() -> int:
+	var result_ids := _result_field_ids()
+	if result_ids.is_empty():
+		return rng.randi_range(0, 36)
+	return int(result_ids[rng.randi_range(0, result_ids.size() - 1)])
 
-	#cambia de estado, ahora pasa el estado de muestra de cambios
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##CombatEventBus.changeToState.emit("BetResolveState")
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	#como no espera aun :v
-	##table_meshes.table_fields.highlight_equals_field(result_field_id-1)
-	await get_tree().create_timer(.5).timeout
-
-	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
-	score = delta_score#bad
-	
-	#eventos finales post resolve, bolas y pasivos
-	##CombatEventBus.bet_resolved.emit()
-	
-	#cambio de score
-	changeScore()
-	
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##CombatEventBus.enableClickableAreas()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##PlayerUiEvents.bet_procesed.emit()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
-		
-
-func changeScore()->void:
-	#agrega un evento de cambio de score
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
-			totalChanged.emit() 
-			return true
-	}))
+func _result_field_ids() -> Array[int]:
+	var ids: Array[int] = []
+	var game_state = _game_state()
+	if game_state == null:
+		return ids
+	for field_id in range(game_state.bet_field_models.size()):
+		var field := game_state.get_bet_field_model(field_id) as BetFieldModel
+		if field != null and field.ConditionStrategy is StraightUpCondition:
+			ids.append(field_id)
+	return ids
 
 @warning_ignore("shadowed_variable")
 func _resolve_bets(result_field_id: int) -> float:
-	# Obtenemos el BetFieldModel ganador
-	var winner_model = GameState.bet_field_models[result_field_id] as BetFieldModel
-	
-	var delta := 0.0
-	##CombatEventBus.pre_resolve.emit()
-	var active_bets = GameState.get_Bets() as Dictionary[int, Array]
+	var game_state = _game_state()
+	if game_state == null:
+		push_error("GameState autoload is not available.")
+		return multiplier
+	var winner_model := game_state.get_bet_field_model(result_field_id) as BetFieldModel
+	if winner_model == null:
+		push_error("Cannot resolve bets for invalid result field: " + str(result_field_id))
+		return multiplier
 
-	#mmmm
+	last_winning_bet_entries.clear()
+	var active_bets := game_state.get_Bets() as Dictionary[int, Array]
+
 	winner_model.activateHighlight.emit()
-	#table_meshes.table_fields.highlight_field(result_field_id-1)
-	BookEventBus.bet_pre_resolve.emit(self)
-	var count : int = 0
+	var book_event_bus = _book_event_bus()
+	if book_event_bus != null:
+		book_event_bus.bet_pre_resolve.emit(self)
+
+	var count := 0
 	for field_id in active_bets:
-		var field := GameState.get_bet_field_model(field_id) as BetFieldModel
+		var field := game_state.get_bet_field_model(field_id) as BetFieldModel
+		if field == null or field.ConditionStrategy == null:
+			continue
+
 		var chip_stack: Array = active_bets[field_id]
-		# Verificamos si este campo cumple la condición ganadora
-		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
-			for i in range(0, chip_stack.size()):
-				EventManager.add_event(EventManager.QueueType.GAME, 
-				GameEvent.new({
-					"paralel": false,
-					"action": func():
-						multiplier += field.multiplier
-						multiplicatorChanged.emit(0)#esto modifica globalmente el mult
-						return true
-				}))
-				table_meshes.call_mult_anim(field_id)
-				field.call_betfield_animation.emit() #eso especificamente pone una anim en el campo
-				#aca se llama muchas veces sin razon
-			
-			if count > 0:
-				pass
-			
-			BookEventBus.bet_resolved.emit(self)
-			
-			count+=1#tambien deberia aumentar la velocidad de enimacion
-			delta = multiplier
-	
-	BookEventBus.bet_post_resolved.emit(self)
-	#m
-	return delta
+		if chip_stack.is_empty() or not field.ConditionStrategy.matches(winner_model, field):
+			continue
 
-func add_multiplier(mult: float)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			multiplier += mult
-			multiplicatorChanged.emit(mult)#esto modifica globalmente el mult
-			return true
-	}))
-func add_base(base_added: float)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			base += base_added
-			baseChanged.emit()#esto modifica globalmente el mult
-			return true
-	}))
+		for i in range(chip_stack.size()):
+			_queue_bet_multiplier(field_id, field, field.multiplier)
 
-#reset_score
-func reset_score()->void:
-	score = 0
-	multiplier = 0
-	base = 0
-	baseChanged.emit()
-	multiplicatorChanged.emit(0)
-	totalChanged.emit() 
+		last_winning_bet_entries.append({
+			"field_id": field_id,
+			"field": field,
+			"chip_count": chip_stack.size(),
+			"field_multiplier": field.multiplier,
+		})
 
-#reroll
-func reroll()->void:
-	if last_ball_used:
-		##CombatEventBus.reroll.emit(self)
-		reset_score()
-		#cambio de visuals o animacion
-		
-		#llama al estado de Spin de Ruleta
-		on_start_spin(last_ball_used)
+		if book_event_bus != null:
+			book_event_bus.bet_resolved.emit(self)
+		count += 1
+
+	return multiplier
+
+func reroll() -> void:
+	if last_ball_used == null:
+		return
+	var game_state = _game_state()
+	if game_state == null or not game_state.consume_reroll():
+		return
+
+	var book_event_bus = _book_event_bus()
+	if book_event_bus != null:
+		book_event_bus.reroll_used.emit(self)
+	on_start_spin(last_ball_used)
+
+func _queue_bet_multiplier(field_id: int, field: BetFieldModel, mult: float) -> void:
+	_queue_game_event(func():
+		multiplier += mult
+		_record_roulette_multiplier(multiplier)
+		multiplicatorChanged.emit(mult)
+		table_meshes.call_mult_anim(field_id)
+		field.call_betfield_animation.emit()
+		return true
+	)
+
+func _queue_score_event(action: Callable) -> void:
+	_queue_game_event(func():
+		action.call()
+		return true
+	)
+
+func _queue_game_event(action: Callable, paralel: bool = false, blocking: bool = true, in_front: bool = false) -> void:
+	var event_manager = _event_manager()
+	if event_manager == null:
+		action.call()
+		return
+	event_manager.add_event(event_manager.QueueType.GAME, GameEvent.new({
+		"paralel": paralel,
+		"blocking": blocking,
+		"action": action,
+	}), in_front)
+
+func _queue_cleanup_after_resolution() -> void:
+	_queue_game_event(func():
+		table_meshes.deactivate_highlight_field()
+		var ui_event_bus = _ui_event_bus()
+		if ui_event_bus != null:
+			ui_event_bus.change_collision_detection.emit(false)
+		return true
+	)
+
+func _queue_resolution_completed() -> void:
+	_queue_game_event(func():
+		resolution_in_progress = false
+		resolution_ready = true
+		var book_event_bus = _book_event_bus()
+		if book_event_bus != null:
+			book_event_bus.roulette_resolution_completed.emit(self, get_final_score(), last_ball_used)
+		return true
+	)
+
+func _wait_for_game_queue() -> void:
+	var marker := {"done": false}
+	_queue_game_event(func():
+		marker["done"] = true
+		return true
+	)
+	while not bool(marker["done"]):
+		await get_tree().physics_frame
+
+func _book_event_bus():
+	return get_node_or_null("/root/BookEventBus")
+
+func _game_state():
+	return get_node_or_null("/root/GameState")
+
+func _ui_event_bus():
+	return get_node_or_null("/root/UiEventBus")
+
+func _event_manager():
+	return get_node_or_null("/root/EventManager")
+
+func _record_roulette_multiplier(value: float) -> void:
+	var game_state = _game_state()
+	if game_state != null:
+		game_state.record_roulette_multiplier(value)

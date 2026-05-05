@@ -38,6 +38,9 @@ func _begin_turn() -> void:
 func _remove_unit(unit : Unit)->void:
 	group.erase(unit)
 	BookEventBus.unit_death.emit(unit)
+	if unit != null and unit.is_in_group("enemy"):
+		BookEventBus.enemy_killed.emit(unit)
+		BookEventBus.combat_kill.emit(unit)
 	unit._death()
 	
 	if group.size() == 0:

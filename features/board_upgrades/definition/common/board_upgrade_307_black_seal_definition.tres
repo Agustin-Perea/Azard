@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_307_black_seal_effect.gd" id="1_tfcxw"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_4a1mi"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_67d1m"]
+
+[sub_resource type="Resource" id="Resource_cwbrt"]
+script = ExtResource("1_tfcxw")
+
+[resource]
+script = ExtResource("3_67d1m")
+board_upgrade_id = 307
+display_name = "Black Seal"
+description = "Elige 1 numero negro. Cuando cae ahi, gana +0.15 mult adicional."
+pool_weight = 120
+upgrade_type = 1
+design_notes = "Equivalente ofensivo suave para negro."
+effect_key = "black_seal"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_black_seal_mult": 0.15
+},
+"count": 1,
+"filter": "black"
+}]
+}
+board_upgrade_effect = SubResource("Resource_cwbrt")

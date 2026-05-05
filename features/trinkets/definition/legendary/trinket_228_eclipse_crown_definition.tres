@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://ty2saxgbywxa"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/legendary/trinket_228_eclipse_crown_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_vw0av"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 228
+display_name = "Eclipse Crown"
+description = "Una resolucion puede contar como rojo y negro a la vez. Si ademas activa primo o dorado, gana +2 mult extra."
+stackable = false
+rarity_type = 5
+pool_weight = 8
+trigger_types = Array[int]([4])
+design_notes = "Legendario de convergencia. Habilita combinaciones que normalmente no existen."
+effect_key = "eclipse_crown"
+metadata = {
+"mult": 2.0
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_304_prime_mark_effect.gd" id="1_12are"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_u3lbs"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_155l3"]
+
+[sub_resource type="Resource" id="Resource_5j37p"]
+script = ExtResource("1_12are")
+
+[resource]
+script = ExtResource("3_155l3")
+board_upgrade_id = 304
+display_name = "Prime Mark"
+description = "Convierte 1 numero no primo en numero primo a efectos de sinergias."
+pool_weight = 115
+design_notes = "Util para PrimeBall y otras builds matematicas. No cambia el valor visual del numero, solo su tag."
+effect_key = "prime_mark"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "non_prime",
+"set_meta": {
+"board_tag_prime_override": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_5j37p")

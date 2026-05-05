@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_301_gold_paint_effect.gd" id="1_rfyh8"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_8iytq"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_1u0vx"]
+
+[sub_resource type="Resource" id="Resource_4nmcb"]
+script = ExtResource("1_rfyh8")
+
+[resource]
+script = ExtResource("3_1u0vx")
+board_upgrade_id = 301
+display_name = "Gold Paint"
+description = "Convierte 1 numero normal en numero dorado."
+pool_weight = 130
+design_notes = "Mejora base de tablero. Muy simple y util para builds de dorados."
+effect_key = "gold_paint"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "normal",
+"set_meta": {
+"board_tag_golden": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_4nmcb")

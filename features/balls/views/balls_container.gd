@@ -10,30 +10,16 @@ func _ready() -> void:
 	reset_balls()
 	recharge_balls()
 	BookEventBus.player_turn.connect(recharge_balls)
+	BookEventBus.player_turn_started.connect(recharge_balls)
 	#PlayerUiEvents.spin_started.connect(_on_spin_started)
 
 func get_not_used_ball()->BallRuntimeState:
-	for ball_raw in GameState.balls_deck.all_balls:
-		var ball = ball_raw as BallRuntimeState 
-		
-		if ball and not ball.used:
-			ball.used = true
-			return ball
 	return null
 
 func recharge_balls()->void:
-	if !ball_spot.ball_data:
-		ball_spot._assign_data_model(get_not_used_ball())
-	if !ball_spot_2.ball_data:
-		ball_spot_2._assign_data_model(get_not_used_ball())
-	
+	GameState.refill_ball_hand(_slot_count())
 	ball_spot.drop_active = true
 	ball_spot_2.drop_active = true
-	
-	if !ball_spot.ball_data && !ball_spot_2.ball_data:
-		reset_balls()
-		ball_spot._assign_data_model(get_not_used_ball())
-		ball_spot_2._assign_data_model(get_not_used_ball())
 
 
 func _on_spin_started()->void:
@@ -41,4 +27,11 @@ func _on_spin_started()->void:
 	ball_spot_2.drop_active = false
 
 func reset_balls()->void:
-	GameState.balls_deck.shuffle_balls()
+	GameState.ensure_ball_run_ready(_slot_count())
+
+func _slot_count() -> int:
+	var count := 0
+	for child in get_children():
+		if child is BallElement:
+			count += 1
+	return max(count, GameState.DEFAULT_BALL_HAND_SIZE)

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://blt6owtre5yyv"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/common/passive_08_quiet_purse_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 8
+display_name = "QuietPurse"
+description = "Si ganas el combate sin usar reroll, obtenes +5 Gold al final."
+pool_weight = 120
+trigger_types = Array[int]([5])
+design_notes = "Economico, simple y con decision tactica real."
+effect_key = "quiet_purse"
+metadata = {
+"gold": 5,
+"requires_no_reroll": true
+}
+passive_item_effect = SubResource("Resource_effect")

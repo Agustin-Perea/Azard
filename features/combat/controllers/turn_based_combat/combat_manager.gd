@@ -11,6 +11,7 @@ func _ready() -> void:
 	##iniciar nivel
 	
 	combat_finished = false
+	BookEventBus.combat_started.emit()
 	for player in Player.group:
 		player.action_controller.perform_attack.connect(_on_perform_attack)
 	for enemy in EnemyGroup.group:
@@ -41,6 +42,8 @@ func game_loop() -> void:
 
 
 func _on_perform_attack(attack_info : AttackInfo)->void:
+	if attack_info != null and attack_info.target != null and attack_info.target.stats != null:
+		GameState.record_overkill(attack_info.damage, attack_info.target.stats.current_healt)
 
 	attack_info.target._recieve_attack(attack_info.damage)
 	
@@ -58,6 +61,7 @@ func _victory()->void:
 		"action": func():
 			combat_finished = true
 			EnemyGroup.turn_complete.emit()
+			BookEventBus.combat_ended.emit(true)
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
@@ -72,5 +76,6 @@ func _defeat()->void:
 		"action": func():
 			EventManager.call_deferred("clear_queue",EventManager.QueueType.GAME)
 			combat_finished = true
+			BookEventBus.combat_ended.emit(false)
 			return true
 	}),true)

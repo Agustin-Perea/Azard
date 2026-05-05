@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://d2yqym5vaeg4w"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_5y7ek"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_226_gilded_engine_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 226
+display_name = "Gilded Engine"
+description = "Cada casilla dorada activada en el combate aumenta en +0.20 mult permanente las siguientes resoluciones de ese combate."
+rarity_type = 4
+pool_weight = 18
+trigger_types = Array[int]([3])
+design_notes = "Escalado de combate por dorados, fuerte pero dependiente del tablero."
+effect_key = "gilded_engine"
+metadata = {
+"mult_per_golden": 0.2
+}
+trinket_effect = SubResource("Resource_effect")

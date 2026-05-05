@@ -23,8 +23,10 @@ func _ready():
 	get_tree().root.size_changed.connect(_on_viewport_size_changed)
 
 func _on_viewport_size_changed():
-	center_of_screen = DisplayServer.window_get_size() / 2.0
 	var viewport_size = get_viewport().get_visible_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		viewport_size = Vector2(1.0, 1.0)
+	center_of_screen = viewport_size / 2.0
 	var current_aspect = viewport_size.x / viewport_size.y
 
 	if current_aspect < aspect_limit:
@@ -42,6 +44,8 @@ func _on_viewport_size_changed():
 			fov_scale = 1
 			
 func _process(delta):
+	if center_of_screen.x <= 0.0 or center_of_screen.y <= 0.0:
+		return
 	# 1. Calcular hacia dónde quiere rotar el ratón
 	var mouse_pos = get_viewport().get_mouse_position()
 	var offset = (mouse_pos - center_of_screen) * sensitivity
@@ -56,7 +60,7 @@ func _process(delta):
 	var target_mouse_quat = Quaternion.from_euler(Vector3(pitch, yaw, 0))
 
 	# 2. Suavizar el offset del ratón de forma independiente
-	current_mouse_offset_quat = current_mouse_offset_quat.slerp(target_mouse_quat, delta * smoothing)
+	current_mouse_offset_quat = current_mouse_offset_quat.slerp(target_mouse_quat, clamp(delta * smoothing, 0.0, 1.0))
 
 	# 3. COMBINAR: Aplicamos el offset de ratón SOBRE el target_transform
 	# Multiplicar el Basis del target por el Quat del ratón genera la rotación combinada

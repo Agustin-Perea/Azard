@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://o6dq6tdr4vq"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_227_triple_knot_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_jtmn4"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 227
+display_name = "Triple Knot"
+description = "Si en el mismo turno subiste el mult 3 veces o mas, la ultima resolucion del turno gana +1 mult extra."
+stackable = false
+rarity_type = 4
+pool_weight = 18
+trigger_types = Array[int]([4])
+design_notes = "Soporte directo para builds que juegan alrededor del multiplicador."
+effect_key = "triple_knot"
+metadata = {
+"mult": 1.0,
+"required_mult_increases": 3
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

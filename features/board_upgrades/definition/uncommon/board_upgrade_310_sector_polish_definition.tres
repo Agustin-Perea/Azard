@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_310_sector_polish_effect.gd" id="1_ojfk5"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_i2thi"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_yva4a"]
+
+[sub_resource type="Resource" id="Resource_mnp7g"]
+script = ExtResource("1_ojfk5")
+
+[resource]
+script = ExtResource("3_yva4a")
+board_upgrade_id = 310
+display_name = "Sector Polish"
+description = "Elige un sector pequeno de 3 numeros consecutivos. Ese sector gana +0.15 mult cuando activa una ficha."
+rarity_type = 2
+pool_weight = 80
+upgrade_type = 3
+design_notes = "Empieza a premiar jugar por zonas, no solo por numeros aislados."
+effect_key = "sector_polish"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_sector_mult": 0.15
+},
+"count": 3,
+"filter": "wheel_sector",
+"start": 0
+}]
+}
+board_upgrade_effect = SubResource("Resource_mnp7g")

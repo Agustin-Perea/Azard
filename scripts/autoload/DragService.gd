@@ -109,7 +109,6 @@ func start_drag(moveable: StaticBody3D, can_drag_height : bool = true) -> void:
 
 	# ---------- VALIDATION ----------
 	if not active or dragging or dragged != null:
-		print("1st return")
 		return
 	
 	if dragged:
@@ -241,6 +240,8 @@ func _get_field_under_mouse() -> Dictionary:
 
 	var viewport := get_tree().root
 	var cam := viewport.get_camera_3d()
+	if cam == null:
+		return {}
 
 	var mouse_pos := viewport.get_mouse_position()
 

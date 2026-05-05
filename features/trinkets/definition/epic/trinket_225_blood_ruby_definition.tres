@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://b0u5qes8uajb"]
+
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_47mtm"]
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/epic/trinket_225_blood_ruby_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 225
+display_name = "Blood Ruby"
+description = "Si resolves una tirada con el jugador por debajo de 50% HP, la resolucion obtiene +1 mult. Si esta por debajo de 25% HP, ademas gana +2 base."
+stackable = false
+rarity_type = 4
+pool_weight = 20
+trigger_types = Array[int]([1, 4])
+design_notes = "Riesgo muy premiado. Excelente para runs tensas."
+effect_key = "blood_ruby"
+metadata = {
+"half_hp_mult": 1.0,
+"quarter_hp_base": 2
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false
