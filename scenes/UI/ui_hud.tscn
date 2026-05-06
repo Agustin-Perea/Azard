@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cbuhan4nyq3m5" path="res://features/UI/defeat_canvas_ui_controller.gd" id="2_e3xy8"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="3_topx2"]
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
+[ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
+[ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsid0"]
 bg_color = Color(0, 0, 0, 0.27450982)
@@ -189,7 +191,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
+
+[node name="PassiveItemsControl" type="Control" parent="." unique_id=780785938]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_topx2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 1.0
+offset_right = 178.0
+offset_bottom = 1197.0
+
+[node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(128, 140.8)
+layout_mode = 2
+
+[node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
+visible = false
+layout_mode = 2
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

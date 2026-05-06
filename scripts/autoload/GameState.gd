@@ -192,6 +192,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		passiveItems_collection.append(existing_item)
 		existing_item.on_item_added()
 		
+		UiEventBus.add_passive_item.emit(new_passive)
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control
