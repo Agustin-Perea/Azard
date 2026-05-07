@@ -20,16 +20,19 @@ func set_up()->void:
 	health_changed.emit()
 	
 func _substract_life(life:int) -> void:
-	shield -= life
-	
-	if(shield<0):
-		current_healt += shield
-		shield = 0
-		
+	var pending_damage: int = max(0, life)
+	if shield > 0:
+		var absorbed: int = min(shield, pending_damage)
+		shield -= absorbed
+		pending_damage -= absorbed
+
+	if pending_damage > 0:
+		current_healt = max(0, current_healt - pending_damage)
+
 	health_changed.emit()
 	if(current_healt < 1):
 		death.emit()
 
 func add_life(pv : int)->void:
-	current_healt += pv
+	current_healt = min(max_healt, current_healt + max(0, pv))
 	health_changed.emit()

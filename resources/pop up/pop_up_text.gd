@@ -54,13 +54,7 @@ func reset_state():
 	# Ocultamos el nodo padre para seguridad extra hasta que inicie la animación
 	self.visible = false
 
-func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool = false)->void:
-	var now := Time.get_ticks_msec()
-	var key := text + "|" + str(global) + "|" + str(spot_global_postion.round())
-	if key == last_popup_key and now - last_popup_time_msec < 500:
-		return
-	last_popup_key = key
-	last_popup_time_msec = now
+func animate_in_pos(spot_global_postion :Vector3, text : String, use_global_position : bool = false)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
@@ -84,7 +78,7 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 
 			#Setup de datos
 			
-			if global:
+			if use_global_position:
 				self.global_position = spot_global_postion
 			else:
 				self.position = spot_global_postion
@@ -128,6 +122,40 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 		"action": func():
 			return active_tween == null
 	}))
+
+func animate_now(spot_global_postion: Vector3, text: String, use_global_position: bool = false) -> void:
+	reset_state()
+	if Time.get_ticks_msec() - last_audio_time_msec > 650:
+		last_audio_time_msec = Time.get_ticks_msec()
+		audio_stream_player.stop()
+		audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
+		audio_stream_player.pitch_scale = 2
+		audio_stream_player.play()
+	self.visible = true
+	if use_global_position:
+		self.global_position = spot_global_postion
+	else:
+		self.position = spot_global_postion
+	self.position.y += 0.1
+	label_text.bbcode_enabled = true
+	_apply_text_layout(text)
+	label_text.text = "[wave amp=50 freq=5]" + text + "[/wave]"
+	active_tween = create_tween()
+	active_tween.finished.connect(kill_tween)
+	finished = false
+	active_tween.set_parallel(true)
+	active_tween.tween_property(self, "scale", Vector3.ONE, duracion_animacion)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var rotacion_final_y = background_mesh.rotation.y + (PI * 2 * giros_y)
+	active_tween.tween_property(background_mesh, "rotation:y", rotacion_final_y, duracion_animacion)\
+		.set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	active_tween.set_parallel(false)
+	active_tween.tween_interval(0.5)
+	active_tween.chain().set_parallel(true)
+	active_tween.tween_property(sprite_viewport, "modulate:a", 0.0, duracion_fade)
+	var material = background_mesh.get_active_material(0)
+	if material:
+		active_tween.tween_property(material, "albedo_color:a", 0.0, duracion_fade)
 
 func kill_tween()->void:
 	if active_tween:

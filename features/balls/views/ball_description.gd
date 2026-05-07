@@ -18,6 +18,7 @@ var rarity_text: Label3D = null
 
 func _ready() -> void:
 	_ensure_rarity_label()
+	_configure_tooltip_rendering()
 	if button:
 		if spin:
 			button.pressed.connect(spin_with_ball)
@@ -44,21 +45,28 @@ func update_labels()->void:
 	var rarity_id := definition.get_rarity_id()
 	var rarity_color := _rarity_color(rarity_id)
 	ball_name.text = definition.get_display_name()
-	base_damage_text.text = "Base damage\n%d" % definition.get_damage_for_level(ball_element.ball_data.level_upgrade)
-	base_damage_text.font_size = 8 if is_shop_offer else 20
+	ball_name.font_size = 18 if is_shop_offer else 34
+	var base_damage := definition.get_damage_for_level(ball_element.ball_data.level_upgrade)
+	if is_shop_offer:
+		base_damage_text.text = "Base\n%d" % base_damage
+		base_damage_text.position = Vector3(0.73, 0.077, 0.02)
+	else:
+		base_damage_text.text = "Base damage\n%d" % base_damage
+		base_damage_text.position = Vector3(0.12, 0.009922445, -1.01)
+	base_damage_text.font_size = 16 if is_shop_offer else 24
 	base_damage_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	description.text = _fit_description(definition.get_description(), is_shop_offer)
-	description.font_size = 9 if is_shop_offer else 18
-	description.width = 126.0 if is_shop_offer else 280.0
+	description.font_size = 14 if is_shop_offer else 21
+	description.width = 140.0 if is_shop_offer else 280.0
 	_update_rarity_label(rarity_id, rarity_color, is_shop_offer)
 	_update_aura_color(rarity_color)
 	if action_text != null:
 		if is_shop_offer:
-			action_text.text = "comprar\n%d G" % ball_element.shop_price
-			action_text.font_size = 13
+			action_text.text = "comprar"
+			action_text.font_size = 17
 		else:
 			action_text.text = "usar"
-			action_text.font_size = 15
+			action_text.font_size = 18
 
 @warning_ignore("unused_parameter")
 func add_ball()->void:
@@ -94,7 +102,7 @@ func activate()->void:
 
 func _fit_description(text: String, is_shop_offer: bool) -> String:
 	var clean := text.strip_edges().replace("\n", " ")
-	var max_length := 88 if is_shop_offer else 170
+	var max_length := 110 if is_shop_offer else 170
 	if clean.length() <= max_length:
 		return clean
 	return clean.substr(0, max_length - 3).strip_edges() + "..."
@@ -115,10 +123,36 @@ func _update_rarity_label(rarity_id: int, rarity_color: Color, is_shop_offer: bo
 		_ensure_rarity_label()
 	rarity_text.text = _rarity_name(rarity_id)
 	rarity_text.modulate = rarity_color
-	rarity_text.font_size = 9 if is_shop_offer else 16
+	rarity_text.font_size = 14 if is_shop_offer else 20
 	rarity_text.outline_size = 5
-	rarity_text.width = 96.0 if is_shop_offer else 160.0
-	rarity_text.position = Vector3(0.49, 0.079, -0.108) if is_shop_offer else Vector3(0.02, 0.013, -1.305)
+	rarity_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	rarity_text.width = 96.0 if is_shop_offer else 170.0
+	rarity_text.position = Vector3(0.29, 0.079, -0.106) if is_shop_offer else Vector3(-0.64, 0.013, -1.29)
+
+func _configure_tooltip_rendering() -> void:
+	_raise_material_priority(self, 80)
+	for child in get_children():
+		if child is GeometryInstance3D:
+			var geometry := child as GeometryInstance3D
+			_raise_material_priority(geometry, 81)
+		if child is Label3D:
+			var label := child as Label3D
+			label.no_depth_test = true
+		elif child is Sprite3D:
+			var sprite := child as Sprite3D
+			sprite.no_depth_test = true
+			sprite.render_priority = 81
+
+func _raise_material_priority(geometry: GeometryInstance3D, priority: int) -> void:
+	var material := geometry.material_override
+	if material == null:
+		return
+	var local_material := material.duplicate()
+	local_material.resource_local_to_scene = true
+	local_material.set("render_priority", priority)
+	if local_material.get("no_depth_test") != null:
+		local_material.set("no_depth_test", true)
+	geometry.material_override = local_material
 
 func _update_aura_color(rarity_color: Color) -> void:
 	if aura == null:

@@ -188,6 +188,10 @@ func use_ball()->bool:
 		return false
 	if ball_data == null:
 		return false
+	var roulette_controller := _roulette_controller()
+	if roulette_controller != null and not roulette_controller.can_start_new_ball():
+		BookEventBus.popuptext.emit(global_position, "Termina el ataque", true)
+		return false
 
 	var selected_ball := ball_data
 	if hand_slot_index >= 0:
@@ -259,6 +263,14 @@ func _hand_slot_count() -> int:
 		if child is BallElement:
 			count += 1
 	return max(count, GameState.DEFAULT_BALL_HAND_SIZE)
+
+func _roulette_controller() -> RouletteController:
+	var node: Node = self
+	while node != null:
+		if node is RouletteController:
+			return node as RouletteController
+		node = node.get_parent()
+	return null
 
 func _process(_delta: float) -> void:
 	if rarity_aura == null or ball_data == null or not active:

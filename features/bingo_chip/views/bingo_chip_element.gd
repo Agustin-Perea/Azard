@@ -161,6 +161,11 @@ func activate()->void:
 	
 
 func _on_use_button_pressed()->void:
+	if shop_price > 0 and not GameState.can_afford(shop_price):
+		BookEventBus.popuptext.emit(global_position, "No alcanza el Gold", true)
+		info_canvas.deactivate()
+		return
+
 	info_canvas.visible = false
 	
 	DragService.start_persisted_drag(self)

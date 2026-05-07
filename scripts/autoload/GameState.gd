@@ -20,13 +20,15 @@ const BOARD_UPGRADE_POOL_PATH := "res://features/board_upgrades/database/board_u
 const SHOP_ITEM_TYPE_BALL := "ball"
 const SHOP_ITEM_TYPE_TRINKET := "trinket"
 const SHOP_ITEM_TYPE_BOARD_UPGRADE := "board_upgrade"
+const SHOP_ITEM_TYPE_POTION := "potion"
+const DEFAULT_MAX_REROLL := 3
 
 const SHOP_BALL_PRICES := {
-	Constants.BALL_RARITY.RARITY_COMMON: 45,
-	Constants.BALL_RARITY.RARITY_UNCOMMON: 70,
-	Constants.BALL_RARITY.RARITY_RARE: 110,
-	Constants.BALL_RARITY.RARITY_EPIC: 170,
-	Constants.BALL_RARITY.RARITY_LEGENDARY: 260,
+	Constants.BALL_RARITY.RARITY_COMMON: 5,
+	Constants.BALL_RARITY.RARITY_UNCOMMON: 6,
+	Constants.BALL_RARITY.RARITY_RARE: 7,
+	Constants.BALL_RARITY.RARITY_EPIC: 8,
+	Constants.BALL_RARITY.RARITY_LEGENDARY: 10,
 }
 
 const SHOP_TRINKET_PRICES := {
@@ -46,11 +48,14 @@ const SHOP_BOARD_UPGRADE_PRICES := {
 }
 
 const SHOP_REROLL_PRICES := [10, 15, 22, 30, 40]
-const SHOP_CHIP_MOD_PRICE := 20
+const SHOP_CHIP_MOD_PRICE := 4
+const SHOP_POTION_PRICE := 5
+const SHOP_POTION_HEAL := 25
 const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
-	"normal": {1: 15, 2: 20, 3: 25},
-	"elite": {1: 35, 2: 45, 3: 60},
-	"boss": {1: 80, 2: 110, 3: 150},
+	"normal": {1: 5, 2: 5, 3: 5},
+	"elite": {1: 7, 2: 7, 3: 7},
+	"miniboss": {1: 7, 2: 7, 3: 7},
+	"boss": {1: 10, 2: 10, 3: 10},
 }
 
 var object_pool_database: ObjectPoolDatabase
@@ -92,8 +97,8 @@ var shop_rng := RandomNumberGenerator.new()
 # chip_id -> field_id
 var field_by_chip: Dictionary[int, int] = {}
 
-var max_reroll : int = 1
-var current_reroll: int = 1
+var max_reroll : int = DEFAULT_MAX_REROLL
+var current_reroll: int = DEFAULT_MAX_REROLL
 var run_luck: int = 0
 var extra_chip_slots: int = 0
 var extra_ball_slots: int = 0
@@ -106,6 +111,7 @@ var combat_turns_taken: int = 0
 var combat_max_multiplier: float = 1.0
 var combat_final_overkill: int = 0
 var combat_started_below_half_hp: bool = false
+var run_potion_bought: bool = false
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -145,15 +151,19 @@ signal table_ready
 func reload():
 	_clear_run_inventory_effects()
 	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
+	player_stats.shield = 0
 	player_stats.set_up()
 	max_healt = player_stats.max_healt
 	current_healt = player_stats.current_healt
+	if not player_stats.health_changed.is_connected(_on_player_stats_health_changed):
+		player_stats.health_changed.connect(_on_player_stats_health_changed)
 	run_gold = 0
 	run_shield = 0
 	run_luck = 0
 	extra_chip_slots = 0
 	extra_ball_slots = 0
 	extra_trinket_slots = 0
+	max_reroll = DEFAULT_MAX_REROLL
 	current_reroll = max_reroll
 	current_act = 1
 	current_encounter_type = "normal"
@@ -163,6 +173,7 @@ func reload():
 	combat_max_multiplier = 1.0
 	combat_final_overkill = 0
 	combat_started_below_half_hp = false
+	run_potion_bought = false
 	last_shop_offers.clear()
 	if object_pool_database == null:
 		object_pool_database = ObjectPoolDatabase.new()
@@ -334,8 +345,6 @@ func generate_shop_offers() -> Array[Dictionary]:
 	last_shop_offers.clear()
 	shop_reroll_count = 0
 	_add_shop_ball_offers(3)
-	_add_shop_trinket_offers(2)
-	_add_shop_board_upgrade_offers(1)
 	shop_offers_generated.emit(last_shop_offers)
 	return last_shop_offers
 
@@ -347,8 +356,6 @@ func reroll_shop_offers() -> bool:
 	shop_reroll_count += 1
 	last_shop_offers.clear()
 	_add_shop_ball_offers(3)
-	_add_shop_trinket_offers(2)
-	_add_shop_board_upgrade_offers(1)
 	shop_offers_generated.emit(last_shop_offers)
 	return true
 
@@ -366,11 +373,14 @@ func buy_shop_offer(index: int) -> bool:
 	if bool(offer.get("sold", false)):
 		return false
 	var price := int(offer.get("price", 0))
+	var item_type := str(offer.get("type", ""))
+	if item_type == SHOP_ITEM_TYPE_POTION and run_potion_bought:
+		shop_purchase_failed.emit(offer, "potion_already_bought")
+		return false
 	if not spend_run_gold(price):
 		shop_purchase_failed.emit(offer, "not_enough_gold")
 		return false
 
-	var item_type := str(offer.get("type", ""))
 	var item := offer.get("item", null) as Resource
 	match item_type:
 		SHOP_ITEM_TYPE_BALL:
@@ -379,6 +389,9 @@ func buy_shop_offer(index: int) -> bool:
 			add_trinket(item)
 		SHOP_ITEM_TYPE_BOARD_UPGRADE:
 			add_board_upgrade(item)
+		SHOP_ITEM_TYPE_POTION:
+			run_potion_bought = true
+			heal_player(SHOP_POTION_HEAL)
 		_:
 			add_run_gold(price)
 			return false
@@ -489,6 +502,16 @@ func _add_shop_board_upgrade_offers(count: int) -> void:
 		if upgrade != null:
 			last_shop_offers.append(_make_shop_offer(SHOP_ITEM_TYPE_BOARD_UPGRADE, upgrade, _price_for_board_upgrade(upgrade)))
 
+func _add_shop_potion_offer() -> void:
+	last_shop_offers.append({
+		"type": SHOP_ITEM_TYPE_POTION,
+		"item": null,
+		"price": SHOP_POTION_PRICE,
+		"sold": false,
+		"display_name": "Pocion",
+		"description": "Cura %d de vida. Solo una por partida." % SHOP_POTION_HEAL,
+	})
+
 func _make_shop_offer(item_type: String, item: Resource, price: int) -> Dictionary:
 	return {
 		"type": item_type,
@@ -499,8 +522,8 @@ func _make_shop_offer(item_type: String, item: Resource, price: int) -> Dictiona
 
 func _price_for_ball(definition: Resource) -> int:
 	if definition != null and definition.has_method("get_rarity_id"):
-		return int(SHOP_BALL_PRICES.get(definition.get_rarity_id(), 45))
-	return 45
+		return int(SHOP_BALL_PRICES.get(definition.get_rarity_id(), SHOP_BALL_PRICES[Constants.BALL_RARITY.RARITY_COMMON]))
+	return SHOP_BALL_PRICES[Constants.BALL_RARITY.RARITY_COMMON]
 
 func _price_for_trinket(definition: Resource) -> int:
 	if definition != null and definition.has_method("get_rarity_id"):
@@ -513,12 +536,16 @@ func _price_for_board_upgrade(definition: Resource) -> int:
 	return 60
 
 func get_shop_offer_name(offer: Dictionary) -> String:
+	if offer.has("display_name"):
+		return str(offer.get("display_name", "Offer"))
 	var item = offer.get("item", null)
 	if item != null and item.has_method("get_display_name"):
 		return item.get_display_name()
 	return "Offer"
 
 func get_shop_offer_description(offer: Dictionary) -> String:
+	if offer.has("description"):
+		return str(offer.get("description", ""))
 	var item = offer.get("item", null)
 	if item != null and item.has_method("get_description"):
 		return item.get_description()
@@ -787,34 +814,37 @@ func grant_combat_victory_gold() -> int:
 
 func calculate_combat_gold_reward() -> Dictionary:
 	var base_gold := _combat_base_gold()
-	var speed_bonus := _speed_gold_bonus()
-	var health_bonus := _health_gold_bonus()
-	var multiplier_bonus := _multiplier_gold_bonus()
-	var overkill_bonus := _overkill_gold_bonus()
-	var comeback_bonus := 5 if combat_started_below_half_hp else 0
-	var total := base_gold + speed_bonus + health_bonus + multiplier_bonus + overkill_bonus + comeback_bonus
+	var turn_bonus := _turn_gold_bonus()
+	var reroll_bonus := _remaining_reroll_gold_bonus()
+	var total := base_gold + turn_bonus + reroll_bonus
 	return {
 		"base": base_gold,
-		"speed": speed_bonus,
-		"health": health_bonus,
-		"multiplier": multiplier_bonus,
-		"overkill": overkill_bonus,
-		"comeback": comeback_bonus,
+		"turns": turn_bonus,
+		"speed": turn_bonus,
+		"rerolls": reroll_bonus,
+		"health": 0,
+		"multiplier": 0,
+		"overkill": 0,
+		"comeback": 0,
 		"total": total,
 	}
 
 func _combat_base_gold() -> int:
 	var by_act: Dictionary = COMBAT_BASE_GOLD_BY_ENCOUNTER.get(current_encounter_type, COMBAT_BASE_GOLD_BY_ENCOUNTER["normal"])
-	return int(by_act.get(current_act, by_act.get(1, 15)))
+	return int(by_act.get(current_act, by_act.get(1, 5)))
 
-func _speed_gold_bonus() -> int:
-	if combat_turns_taken <= 1:
-		return 8
-	if combat_turns_taken == 2:
-		return 5
-	if combat_turns_taken == 3:
-		return 3
-	return 0
+func _turn_gold_bonus() -> int:
+	return max(0, 5 - combat_turns_taken)
+
+func _remaining_reroll_gold_bonus() -> int:
+	return max(0, current_reroll)
+
+func _on_player_stats_health_changed() -> void:
+	if player_stats == null:
+		return
+	max_healt = player_stats.max_healt
+	current_healt = player_stats.current_healt
+	run_shield = player_stats.shield
 
 func _health_gold_bonus() -> int:
 	var hp := current_healt

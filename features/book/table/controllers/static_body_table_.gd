@@ -10,7 +10,6 @@ var size_z_collider = 1.626
 
 @onready var table_fields : TableFields = $"../Bet_Fields"
 
-
 var last_field_entered : int = -1
 
 func _ready() -> void:
@@ -118,17 +117,19 @@ func update_field(index : int)->void:
 
 #se deberia desactivar junto a las clickablesares, incluso el collision
 func call_mult_anim(index : int)->void:
-	#esto es una negrada
-	var multiplicator_indicator = $"../../../PopUpText"
-	#print("Referencia del objeto: ", multiplicator_indicator)
-	
-	if multiplicator_indicator != null:
-		var game_state = get_node_or_null("/root/GameState")
-		if game_state == null:
-			return
-		var pos := calcular_centro_desde_indice(index)
-		pos.y += 0.1
-		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(game_state.bet_field_models[index].multiplier)), true)
+	var game_state = get_node_or_null("/root/GameState")
+	if game_state == null:
+		return
+	var field := game_state.get_bet_field_model(index) as BetFieldModel
+	if field == null or field.multiplier <= 0:
+		return
+	var popup := get_node_or_null("../../../PopUpText")
+	var popup_position := calcular_centro_desde_indice(index)
+	var text := "+" + str(int(field.multiplier))
+	if popup != null and popup.has_method("animate_in_pos"):
+		popup.animate_in_pos(popup_position, text, true)
+	else:
+		BookEventBus.popuptext.emit(popup_position, text, true)
 
 
 func _on_mouse_entered() -> void:

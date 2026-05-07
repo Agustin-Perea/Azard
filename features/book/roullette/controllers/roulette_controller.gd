@@ -3,16 +3,18 @@ class_name RouletteController
 
 var rng := RandomNumberGenerator.new()
 var score: float = 0
+const MULTIPLIER_START_VALUE := 0.0
 
 signal numberChanged
 signal baseChanged
+signal basePopupRequested(float)
 signal multiplicatorChanged(float)
 signal totalChanged
 @warning_ignore("unused_signal")
 signal betResolved
 
-var base: float = 1
-var multiplier: float = 1
+var base: float = 0
+var multiplier: float = MULTIPLIER_START_VALUE
 var number_winner: int
 var winner_betfield_model: BetFieldModel
 var result_field_id: int = 0
@@ -52,10 +54,12 @@ func add_multiplier(mult: float) -> void:
 		multiplicatorChanged.emit(mult)
 	)
 
-func add_base(base_added: float) -> void:
+func add_base(base_added: float, show_popup := false) -> void:
 	_queue_score_event(func():
 		base += base_added
 		baseChanged.emit()
+		if show_popup:
+			basePopupRequested.emit(base_added)
 	)
 
 func changeScore() -> void:
@@ -69,12 +73,15 @@ func reset_score() -> void:
 	last_winning_bet_entries.clear()
 	_queue_score_event(func():
 		score = 0
-		multiplier = 1
-		base = 1
+		multiplier = MULTIPLIER_START_VALUE
+		base = 0
 		baseChanged.emit()
 		multiplicatorChanged.emit(0)
 		totalChanged.emit()
 	)
+
+func can_start_new_ball() -> bool:
+	return not resolution_in_progress and not resolution_ready
 
 func is_resolution_ready() -> bool:
 	return resolution_ready
@@ -82,7 +89,13 @@ func is_resolution_ready() -> bool:
 func get_final_score() -> int:
 	return int(round(score))
 
-func on_start_spin(ball: BallRuntimeState) -> void:
+func on_start_spin(ball: BallRuntimeState, from_reroll: bool = false) -> void:
+	if resolution_in_progress:
+		_show_spin_warning("Espera que termine")
+		return
+	if resolution_ready and not from_reroll:
+		_show_spin_warning("Termina el ataque")
+		return
 	if ball == null or ball.ball_definition == null:
 		push_error("on_start_spin received an invalid ball runtime state")
 		return
@@ -93,10 +106,8 @@ func on_start_spin(ball: BallRuntimeState) -> void:
 	var book_event_bus = _book_event_bus()
 	if book_event_bus != null:
 		book_event_bus.spin_started.emit()
-	reset_score()
 
 	var resolved_damage := ball.ball_definition.get_damage_for_level(ball.level_upgrade)
-	add_base(resolved_damage)
 	if ball.ball_definition.ball_material:
 		ball_mesh.material_override = ball.ball_definition.ball_material
 
@@ -131,6 +142,8 @@ func on_start_spin(ball: BallRuntimeState) -> void:
 	await roulette_control.spin_finished
 	if book_event_bus != null:
 		book_event_bus.spin_finished.emit()
+	reset_score()
+	add_base(resolved_damage, true)
 	table_meshes.activate_highlight_field(result_field_id)
 
 	_queue_game_event(func():
@@ -222,8 +235,10 @@ func _resolve_bets(result_field_id: int) -> float:
 		if chip_stack.is_empty() or not field.ConditionStrategy.matches(winner_model, field):
 			continue
 
-		for i in range(chip_stack.size()):
-			_queue_bet_multiplier(field_id, field, field.multiplier)
+		for chip_id in chip_stack:
+			var chip := game_state.get_chip(int(chip_id)) as ChipModel
+			var popup_position := chip.last_position if chip != null and chip.last_position != Vector3.ZERO else table_meshes.get_field_popup_position(field_id)
+			_queue_bet_multiplier(field_id, field, field.multiplier, popup_position)
 
 		last_winning_bet_entries.append({
 			"field_id": field_id,
@@ -255,14 +270,14 @@ func reroll() -> void:
 	var book_event_bus = _book_event_bus()
 	if book_event_bus != null:
 		book_event_bus.reroll_used.emit(self)
-	on_start_spin(last_ball_used)
+	on_start_spin(last_ball_used, true)
 
-func _queue_bet_multiplier(field_id: int, field: BetFieldModel, mult: float) -> void:
+func _queue_bet_multiplier(_field_id: int, field: BetFieldModel, mult: float, popup_position: Vector3) -> void:
 	_queue_game_event(func():
 		multiplier += mult
 		_record_roulette_multiplier(multiplier)
-		multiplicatorChanged.emit(mult)
-		table_meshes.call_mult_anim(field_id)
+		multiplicatorChanged.emit(0)
+		_show_multiplier_popup(popup_position, mult)
 		field.call_betfield_animation.emit()
 		return true
 	)
@@ -289,7 +304,8 @@ func _queue_cleanup_after_resolution() -> void:
 		table_meshes.deactivate_highlight_field()
 		var ui_event_bus = _ui_event_bus()
 		if ui_event_bus != null:
-			ui_event_bus.change_collision_detection.emit(false)
+			ui_event_bus.change_collision_detection_buttons.emit(false)
+			ui_event_bus.change_collision_detection_moveable.emit(true)
 		return true
 	)
 
@@ -330,7 +346,20 @@ func _record_roulette_multiplier(value: float) -> void:
 		game_state.record_roulette_multiplier(value)
 
 func _show_reroll_warning(text: String) -> void:
+	_show_spin_warning(text)
+
+func _show_spin_warning(text: String) -> void:
 	var book_event_bus = _book_event_bus()
 	if book_event_bus == null or finish_button == null:
 		return
 	book_event_bus.popuptext.emit(finish_button.global_position, text, true)
+
+func _show_multiplier_popup(popup_position: Vector3, mult: float) -> void:
+	var text := "+" + str(int(mult))
+	var popup := get_node_or_null("PopUpText")
+	if popup != null and popup.has_method("animate_in_pos"):
+		popup.animate_in_pos(popup_position, text, true)
+	else:
+		var book_event_bus = _book_event_bus()
+		if book_event_bus != null:
+			book_event_bus.popuptext.emit(popup_position, text, true)

@@ -1,6 +1,7 @@
 extends Node3D
 
 const EXTRA_OFFER_TOOLTIP_SCENE := preload("res://features/balls/views/ball_shop_tooltip.tscn")
+const PRICE_CHART_MESH := preload("res://resources/3d_UI/price_chart.res")
 
 @onready var ball_spot :  = $left_cover/Ball_Spot
 @onready var ball_spot_2 : BallElement = $left_cover/Ball_Spot2
@@ -32,6 +33,7 @@ const EXTRA_OFFER_TOOLTIP_SCALE := Vector3(0.64, 0.64, 0.64)
 var gold_label: Label
 var price_labels: Array[Label3D] = []
 var price_coins: Array[Sprite3D] = []
+var chip_price_charts: Array[MeshInstance3D] = []
 var chip_price_labels: Array[Label3D] = []
 var chip_price_coins: Array[Sprite3D] = []
 var extra_offer_tooltip: BallDescription
@@ -184,6 +186,8 @@ func _build_price_labels() -> void:
 	price_labels.clear()
 	price_coins.clear()
 	for chart in price_charts:
+		if chart is GeometryInstance3D:
+			_raise_material_priority(chart as GeometryInstance3D, 19, false)
 		var label := Label3D.new()
 		label.name = "PriceLabel"
 		label.position = chart.position + Vector3(-0.02, 0.027, 0.015)
@@ -192,6 +196,8 @@ func _build_price_labels() -> void:
 		label.outline_modulate = Color(0.0, 0.0, 0.0, 1.0)
 		label.outline_size = 5
 		label.font_size = 16
+		label.no_depth_test = false
+		label.render_priority = 21
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.text = ""
 		$left_cover.add_child(label)
@@ -204,22 +210,37 @@ func _build_price_labels() -> void:
 		coin_sprite.texture = coin_texture
 		coin_sprite.pixel_size = 0.00105
 		coin_sprite.modulate = Color(1.0, 0.95, 0.65, 1.0)
+		coin_sprite.no_depth_test = false
+		coin_sprite.render_priority = 20
 		$left_cover.add_child(coin_sprite)
 		price_coins.append(coin_sprite)
 
 func _build_chip_price_labels() -> void:
+	chip_price_charts.clear()
 	chip_price_labels.clear()
 	chip_price_coins.clear()
 	var chip_spots: Array[BingoChipElement] = [bingo_chip_spot, bingo_chip_spot_2, bingo_chip_spot_3]
 	for spot in chip_spots:
+		var chart := MeshInstance3D.new()
+		chart.name = "ChipPriceChart"
+		chart.mesh = PRICE_CHART_MESH
+		chart.position = spot.position + Vector3(0.01, 0.068, -0.175)
+		chart.rotation_degrees = Vector3(0.0, 0.0, -7.0)
+		chart.scale = Vector3(0.78, 0.78, 0.78)
+		_raise_material_priority(chart, 19, false)
+		$left_cover.add_child(chart)
+		chip_price_charts.append(chart)
+
 		var label := Label3D.new()
 		label.name = "ChipPriceLabel"
-		label.position = spot.position + Vector3(-0.025, 0.071, 0.175)
+		label.position = chart.position + Vector3(-0.02, 0.027, 0.015)
 		label.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
 		label.modulate = Color(1.0, 0.92, 0.36, 1.0)
 		label.outline_modulate = Color.BLACK
 		label.outline_size = 5
-		label.font_size = 11
+		label.font_size = 16
+		label.no_depth_test = false
+		label.render_priority = 21
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.text = str(GameState.SHOP_CHIP_MOD_PRICE)
 		$left_cover.add_child(label)
@@ -227,10 +248,12 @@ func _build_chip_price_labels() -> void:
 
 		var coin_sprite := Sprite3D.new()
 		coin_sprite.name = "ChipPriceCoin"
-		coin_sprite.position = spot.position + Vector3(0.045, 0.073, 0.175)
+		coin_sprite.position = chart.position + Vector3(0.075, 0.029, 0.012)
 		coin_sprite.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
 		coin_sprite.texture = coin_texture
-		coin_sprite.pixel_size = 0.00072
+		coin_sprite.pixel_size = 0.00105
+		coin_sprite.no_depth_test = false
+		coin_sprite.render_priority = 20
 		$left_cover.add_child(coin_sprite)
 		chip_price_coins.append(coin_sprite)
 
@@ -271,15 +294,19 @@ func _configure_extra_offer_tooltip_rendering() -> void:
 			sprite.no_depth_test = true
 			sprite.render_priority = 101
 
-func _raise_material_priority(geometry: GeometryInstance3D, priority: int) -> void:
-	var material := geometry.material_override
+func _raise_material_priority(geometry: GeometryInstance3D, priority: int, no_depth := true) -> void:
+	var material: Material = geometry.material_override
+	if material == null and geometry is MeshInstance3D:
+		var mesh_instance := geometry as MeshInstance3D
+		if mesh_instance.mesh != null and mesh_instance.mesh.get_surface_count() > 0:
+			material = mesh_instance.mesh.surface_get_material(0)
 	if material == null:
 		return
 	var local_material := material.duplicate()
 	local_material.resource_local_to_scene = true
 	local_material.set("render_priority", priority)
 	if local_material.get("no_depth_test") != null:
-		local_material.set("no_depth_test", true)
+		local_material.set("no_depth_test", no_depth)
 	geometry.material_override = local_material
 
 func _refresh_shop_visuals() -> void:
@@ -296,17 +323,8 @@ func _refresh_shop_visuals() -> void:
 	_refresh_extra_offer_cards()
 
 func _refresh_extra_offer_cards() -> void:
-	for local_index in range(extra_offer_spots.size()):
-		var offer_index := 3 + local_index
-		var has_offer := offer_index < GameState.last_shop_offers.size()
-		var offer := GameState.last_shop_offers[offer_index] if has_offer else {}
-		var sold := has_offer and bool(offer.get("sold", false))
-		var visible := has_offer and not sold
-		if not visible:
-			extra_offer_spots[local_index].clear_offer()
-			continue
-		extra_offer_spots[local_index].assign_offer(offer_index, offer, coin_texture)
-		extra_offer_spots[local_index].set_base_price_visible(offer_index != active_extra_offer_index)
+	for spot in extra_offer_spots:
+		spot.clear_offer()
 
 func _on_shop_offer_pressed(index: int) -> void:
 	if GameState.buy_shop_offer(index):
@@ -327,8 +345,11 @@ func _on_extra_offer_spot_pressed(spot) -> void:
 func _on_shop_offer_bought(_offer: Dictionary) -> void:
 	_refresh_shop_visuals()
 
-func _on_shop_purchase_failed(offer: Dictionary, _reason: String) -> void:
-	BookEventBus.popuptext.emit(_shop_offer_popup_position(offer), "No alcanza el Gold", true)
+func _on_shop_purchase_failed(offer: Dictionary, reason: String) -> void:
+	var text := "No alcanza el Gold"
+	if reason == "potion_already_bought":
+		text = "Ya compraste una pocion"
+	BookEventBus.popuptext.emit(_shop_offer_popup_position(offer), text, true)
 
 func _on_gold_changed(current_gold: int) -> void:
 	if gold_label != null:
@@ -341,10 +362,10 @@ func _update_reroll_label() -> void:
 		reroll_description.text = "Reroll\n%d G" % GameState.get_shop_reroll_cost()
 
 func _assign_shop_chip_price(spot: BingoChipElement, index: int) -> void:
-	if index < 0 or index >= chip_price_labels.size() or index >= chip_price_coins.size():
+	if index < 0 or index >= chip_price_charts.size() or index >= chip_price_labels.size() or index >= chip_price_coins.size():
 		spot.set_shop_price(GameState.SHOP_CHIP_MOD_PRICE)
 		return
-	var visuals: Array[Node3D] = [chip_price_labels[index], chip_price_coins[index]]
+	var visuals: Array[Node3D] = [chip_price_charts[index], chip_price_labels[index], chip_price_coins[index]]
 	spot.set_shop_price(GameState.SHOP_CHIP_MOD_PRICE, visuals)
 
 func _show_extra_offer_tooltip(offer_index: int) -> void:
@@ -353,6 +374,9 @@ func _show_extra_offer_tooltip(offer_index: int) -> void:
 		return
 	var offer := GameState.last_shop_offers[offer_index]
 	if bool(offer.get("sold", false)):
+		_hide_extra_offer_tooltip()
+		return
+	if str(offer.get("type", "")) != GameState.SHOP_ITEM_TYPE_POTION:
 		_hide_extra_offer_tooltip()
 		return
 	var local_index := offer_index - 3
@@ -366,13 +390,13 @@ func _show_extra_offer_tooltip(offer_index: int) -> void:
 	extra_offer_tooltip.scale = EXTRA_OFFER_TOOLTIP_SCALE
 	extra_offer_tooltip.ball_name.text = GameState.get_shop_offer_name(offer)
 	extra_offer_tooltip.base_damage_text.text = _rarity_name_for_offer(offer)
-	extra_offer_tooltip.base_damage_text.font_size = 10
+	extra_offer_tooltip.base_damage_text.font_size = 12
 	extra_offer_tooltip.base_damage_text.modulate = _offer_rarity_color(offer)
 	extra_offer_tooltip.description.text = _short_offer_description(offer)
-	extra_offer_tooltip.description.font_size = 9
-	extra_offer_tooltip.description.width = 126.0
-	extra_offer_tooltip.action_text.text = "comprar\n%d G" % int(offer.get("price", 0))
-	extra_offer_tooltip.action_text.font_size = 13
+	extra_offer_tooltip.description.font_size = 12
+	extra_offer_tooltip.description.width = 140.0
+	extra_offer_tooltip.action_text.text = "comprar"
+	extra_offer_tooltip.action_text.font_size = 15
 	_disable_extra_offer_tooltip_aura()
 	extra_offer_tooltip.visible = true
 	extra_offer_tooltip.button.collision_shape.disabled = false
@@ -402,12 +426,14 @@ func _hide_extra_offer_tooltip() -> void:
 
 func _short_offer_description(offer: Dictionary) -> String:
 	var text := GameState.get_shop_offer_description(offer).strip_edges().replace("\n", " ")
-	var max_length := 92
+	var max_length := 110
 	if text.length() <= max_length:
 		return text
 	return text.substr(0, max_length - 3).strip_edges() + "..."
 
 func _rarity_name_for_offer(offer: Dictionary) -> String:
+	if str(offer.get("type", "")) == GameState.SHOP_ITEM_TYPE_POTION:
+		return "Pocion"
 	var item = offer.get("item", null)
 	if item == null or not item.has_method("get_rarity_id"):
 		return "Common"
@@ -424,6 +450,8 @@ func _rarity_name_for_offer(offer: Dictionary) -> String:
 			return "Common"
 
 func _offer_rarity_color(offer: Dictionary) -> Color:
+	if str(offer.get("type", "")) == GameState.SHOP_ITEM_TYPE_POTION:
+		return Color(0.95, 0.24, 0.32, 1.0)
 	var item = offer.get("item", null)
 	if item == null or not item.has_method("get_rarity_id"):
 		return Color.WHITE

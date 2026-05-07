@@ -20,6 +20,19 @@ func call_mult_anim(index : int)->void:
 		table_fields.call_mult_anim(index)
 	elif index ==  zero_field.first_index:
 		zero_field.call_mult_anim(index)
+
+func get_field_popup_position(index: int) -> Vector3:
+	if index >=  column_fields.first_index:
+		return column_fields.calcular_centro_desde_indice(index)
+	elif index >=  row_fields.first_index:
+		return row_fields.calcular_centro_desde_indice(index)
+	elif index >=  parity_fields.first_index:
+		return parity_fields.calcular_centro_desde_indice(index)
+	elif index >=  table_fields.first_index:
+		return table_fields.calcular_centro_desde_indice(index)
+	elif index == zero_field.first_index:
+		return zero_field.calcular_centro_desde_indice(index)
+	return global_position
 		
 func activate_highlight_field(index :int)->void:
 	if index >=  column_fields.first_index:
