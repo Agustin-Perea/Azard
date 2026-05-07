@@ -17,7 +17,7 @@ func _change_scente_to(scene : String)->void:
 	
 	color_rect_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",_load_new_scene)
-	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,0.5)
+	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)
 
 func _change_scene_to(scene : PackedScene)->void:
 	
@@ -27,12 +27,13 @@ func _change_scene_to(scene : PackedScene)->void:
 	color_rect_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",func(): get_tree().call_deferred("change_scene_to_packed",scene))
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 1.0,0.3)
-	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,0.5)
+	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)
 
 func _load_new_scene()->void:
 	
 	get_tree().call_deferred("change_scene_to_file",scene_to_load)
 	UiEventBus.scene_changed.emit()
+	
 
 
 func _change_scente_to_with_texture_transition(scene : String)->void:
@@ -49,5 +50,5 @@ func _change_scente_to_with_texture_transition(scene : String)->void:
 	color_rect_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	$TextureRect.modulate.a = 1.0
 	color_rect_tween.tween_property($TextureRect,"modulate:a", 1.0,0.0).connect("finished",_load_new_scene)
-	color_rect_tween.chain().tween_property($TextureRect,"modulate:a", 0.0,2)
+
 	
