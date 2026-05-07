@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://ljs75i2re1r6"]
 
-[ext_resource type="Script" uid="uid://cyixiifjvlul4" path="res://features/combat/controllers/UI controllers/combat_buttons_UI.gd" id="1_0u8xs"]
 [ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_b6bnk"]
 [ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_02vyu"]
 [ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="2_isoin"]
@@ -10,13 +9,6 @@
 [ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="5_0u8xs"]
 [ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="5_4aapt"]
 [ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_6b2ki"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsid0"]
-bg_color = Color(0, 0, 0, 0.27450982)
-corner_radius_top_left = 180
-corner_radius_top_right = 180
-corner_radius_bottom_right = 180
-corner_radius_bottom_left = 180
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
 sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
@@ -32,7 +24,7 @@ radiance_size = 0
 background_mode = 2
 sky = SubResource("Sky_vt4cp")
 ambient_light_source = 2
-ambient_light_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+ambient_light_color = Color(0.8089983, 0.8089983, 0.80899835, 1)
 reflected_light_source = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isoin"]
@@ -43,51 +35,6 @@ size = Vector2(100, 100)
 
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=1370694247]
-
-[node name="Control" type="Control" parent="UI" unique_id=2106614365]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("1_0u8xs")
-
-[node name="SelectionButton" type="Button" parent="UI/Control" unique_id=970352346]
-texture_filter = 2
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 45.0
-offset_top = -254.0
-offset_right = 273.0
-offset_bottom = -31.0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 32
-text = "selection"
-
-[node name="BookButton" type="Button" parent="UI/Control" unique_id=870070773]
-texture_filter = 2
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -260.0
-offset_top = -249.0
-offset_right = -32.0
-offset_bottom = -26.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
-text = "book
-"
-
 [node name="Environment" type="Node" parent="." unique_id=1416635751]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1431979176]
@@ -95,7 +42,6 @@ environment = SubResource("Environment_njiuf")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
 transform = Transform3D(0.8737722, -0.213958, 0.4367426, 0, 0.8980276, 0.43993917, -0.4863354, -0.38440663, 0.78467155, 0, 5.866068, 0)
-light_color = Color(0.40069774, 0.40069774, 0.40069768, 1)
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 light_specular = 0.0
@@ -135,6 +81,10 @@ fov = 45.0
 [node name="EnemySelectCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1450840542]
 transform = Transform3D(-0.9573195, 0, -0.28903192, 0, 1, 0, 0.28903192, 0, -0.9573195, -1.5797986, 1.6798961, -1.6191579)
 fov = 45.0
+
+[node name="DefeatCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1892104669]
+transform = Transform3D(0.24512559, 0.078623, -0.96629804, 0.061418407, 0.99344486, 0.09641211, 0.967544, -0.08298156, 0.23868985, -1.7503628, 0.6074704, 0.8997381)
+fov = 30.0
 
 [node name="Extra" type="Node" parent="." unique_id=1603717315]
 
@@ -182,6 +132,12 @@ script = ExtResource("5_0u8xs")
 camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
 disable_book_inputs = false
 
+[node name="Defeat" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1188575509 node_paths=PackedStringArray("camera")]
+script = ExtResource("5_0u8xs")
+camera = NodePath("../../../../CameraContainer/CombatCameras/DefeatCamera")
+fixed_time = 2.0
+disable_moveable_collisions = true
+
 [node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
 script = ExtResource("7_6b2ki")
 
@@ -194,8 +150,5 @@ script = ExtResource("7_6b2ki")
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=287020783]
-
-[connection signal="pressed" from="UI/Control/SelectionButton" to="UI/Control" method="_on_selection_button_pressed"]
-[connection signal="pressed" from="UI/Control/BookButton" to="UI/Control" method="_on_book_button_pressed"]
 
 [editable path="Environment/EntornoArena"]

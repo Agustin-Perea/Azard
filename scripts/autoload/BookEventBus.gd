@@ -1,8 +1,8 @@
 extends Node
 
-
 @warning_ignore("unused_signal")
 signal spin_started
+
 @warning_ignore("unused_signal")
 signal spin_finished
 
@@ -29,9 +29,16 @@ signal reroll_used(RouletteController)
 
 signal popuptext(spot_global_postion :Vector3, text : String, use_global_position : bool)
 
-
 signal unit_death(unit : Unit)
 @warning_ignore("unused_signal")
 signal reroll(RouletteController)
 
 signal player_turn
+
+signal enemy_turn
+
+signal defeat
+
+signal victory
+
+signal reload

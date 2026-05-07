@@ -59,6 +59,7 @@ const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
 }
 
 var object_pool_database: ObjectPoolDatabase
+var master_seed: int = 123456789
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -146,9 +147,13 @@ func _ready():
 #	ballsDefinition = preload("res://Scripts/BetTable/Balls/BallsDefault.tres")
 	reload()
 
-	
 signal table_ready
 func reload():
+	temp_scene_changed_value = 0
+	master_seed = randi() % 999999999 + 1
+	if object_pool_database == null:
+		object_pool_database = ObjectPoolDatabase.new()
+	object_pool_database.set_seed(master_seed)
 	_clear_run_inventory_effects()
 	player_stats = preload("res://features/combat/entities/stats/player_stats.tres").duplicate()
 	player_stats.shield = 0
@@ -175,8 +180,6 @@ func reload():
 	combat_started_below_half_hp = false
 	run_potion_bought = false
 	last_shop_offers.clear()
-	if object_pool_database == null:
-		object_pool_database = ObjectPoolDatabase.new()
 	balls_deck = preload("res://features/balls/database/ball_collection_default.tres").duplicate(true)
 	balls_deck.set_rng(object_pool_database.master_seed)
 	
@@ -643,6 +646,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		existing_item.quantity = 1
 		passiveItems.append(existing_item)
 		existing_item.on_item_added()
+		UiEventBus.add_passive_item.emit(new_passive)
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control

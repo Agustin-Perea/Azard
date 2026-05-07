@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://doguotrnk170t"]
+
+[ext_resource type="Script" uid="uid://cyixiifjvlul4" path="res://features/combat/controllers/UI controllers/combat_buttons_UI.gd" id="1_kdbiy"]
+[ext_resource type="Script" path="res://features/UI/defeat_canvas_ui_controller.gd" id="2_e3xy8"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="3_topx2"]
+[ext_resource type="Script" path="res://features/UI/transition_control.gd" id="4_31jtf"]
+[ext_resource type="Script" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
+[ext_resource type="PackedScene" path="res://features/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsid0"]
+bg_color = Color(0, 0, 0, 0.27450982)
+corner_radius_top_left = 180
+corner_radius_top_right = 180
+corner_radius_bottom_right = 180
+corner_radius_bottom_left = 180
+
+[sub_resource type="Gradient" id="Gradient_6jlm3"]
+colors = PackedColorArray(0.1764706, 0.06666667, 0.06666667, 0.1882353, 0.9411765, 0.35686275, 0.35686275, 0.6431373)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygcga"]
+gradient = SubResource("Gradient_6jlm3")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cfu6f"]
+texture = SubResource("GradientTexture2D_ygcga")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r1ju"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+border_width_bottom = 20
+border_color = Color(0.7137255, 0.16862746, 0.19607843, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guf56"]
+bg_color = Color(0.7137255, 0.16862746, 0.19607843, 1)
+border_width_top = 20
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sae1u"]
+bg_color = Color(0.972549, 0.49411765, 0.47843137, 1)
+border_width_bottom = 20
+border_color = Color(0.90588236, 0.27450982, 0.2901961, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnyru"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="UI" type="CanvasLayer" unique_id=153793616]
+
+[node name="Control" type="Control" parent="." unique_id=1176285555]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_kdbiy")
+
+[node name="SelectionButton" type="Button" parent="Control" unique_id=1151124999]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = -254.0
+offset_right = 273.0
+offset_bottom = -31.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "selection"
+
+[node name="BookButton" type="Button" parent="Control" unique_id=1334060315]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -249.0
+offset_right = -32.0
+offset_bottom = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
+text = "book
+"
+
+[node name="DefeatCanvas" type="Control" parent="." unique_id=1210028539]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_e3xy8")
+
+[node name="Panel" type="Panel" parent="DefeatCanvas" unique_id=1343101402]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_cfu6f")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="DefeatCanvas" unique_id=1378989208]
+texture_filter = 2
+clip_contents = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -270.0
+offset_top = 252.0
+offset_right = 270.0
+offset_bottom = 477.0
+grow_horizontal = 2
+theme_override_colors/default_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+theme_override_colors/font_outline_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 65
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 25
+theme_override_fonts/normal_font = ExtResource("3_topx2")
+theme_override_font_sizes/normal_font_size = 150
+bbcode_enabled = true
+text = "[wave amp=150 freq=2]Defeat[/wave]
+
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="DefeatCanvas" unique_id=426515105]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -215.0
+offset_top = -280.0
+offset_right = 215.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_7r1ju")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_guf56")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sae1u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lnyru")
+text = "Restart"
+
+[node name="TransitionControl" type="Control" parent="." unique_id=588496759]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_31jtf")
+
+[node name="ColorRect" type="ColorRect" parent="TransitionControl" unique_id=544864707]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="PassiveItemsControl" type="Control" parent="." unique_id=780785938]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_topx2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 1.0
+offset_right = 178.0
+offset_bottom = 1197.0
+
+[node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(128, 140.8)
+layout_mode = 2
+
+[node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
+visible = false
+layout_mode = 2
+
+[connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
+[connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

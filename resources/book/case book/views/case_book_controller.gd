@@ -508,5 +508,5 @@ func on_map_button_pressed()->void:
 	#PlayerUiEvents.change_book_page.emit(Constants.BOOK_PAGE.MAP)
 	#preload()
 	GameState.temp_scene_changed_value +=1
-	get_tree().call_deferred("change_scene_to_file","res://scenes/combat/battle_scene_1.tscn")
+	UiEventBus.change_scente_to.emit("res://scenes/combat/battle_scene_1.tscn")
 	

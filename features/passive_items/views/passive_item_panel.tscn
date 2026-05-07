@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c6oq1rhmydd1m"]
+
+[ext_resource type="Script" path="res://features/passive_items/views/passive_item_panel.gd" id="1_eb5ee"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_s4ac8"]
+
+[node name="PassiveItemPanel" type="Panel" unique_id=1912728531]
+self_modulate = Color(1, 1, 1, 0)
+texture_filter = 2
+custom_minimum_size = Vector2(128, 140.8)
+script = ExtResource("1_eb5ee")
+
+[node name="PassiveItemSprite" type="Sprite2D" parent="." unique_id=1266355935]
+self_modulate = Color(1, 1, 1, 0.63529414)
+position = Vector2(64, 64)
+scale = Vector2(0.333, 0.333)
+texture = ExtResource("1_s4ac8")
+
+[node name="Label" type="Label" parent="." unique_id=1930323516]
+texture_filter = 2
+layout_mode = 0
+offset_left = 85.0
+offset_top = 90.0
+offset_right = 159.0
+offset_bottom = 174.0
+theme_override_font_sizes/font_size = 48
