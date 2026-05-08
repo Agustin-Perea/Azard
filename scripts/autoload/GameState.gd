@@ -6,6 +6,8 @@ var master_seed: int = 123456789
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
 
+
+var economy_component : EconomyComponent
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
 #heuristica de campos iguales
@@ -29,6 +31,7 @@ var chips: Array[ChipModel] = []
 var field_by_chip: Dictionary[int, int] = {}
 
 var max_reroll : int = 3
+var current_reroll : int = 3
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -40,6 +43,7 @@ signal table_ready
 
 var temp_scene_changed_value : int
 func _ready():
+	economy_component = EconomyComponent.new()
 	object_pool_database = ObjectPoolDatabase.new()
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")

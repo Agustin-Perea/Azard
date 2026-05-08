@@ -61,6 +61,7 @@ func _victory()->void:
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
+			BookEventBus.victory.emit()
 			print("victory")
 			return true
 	}))

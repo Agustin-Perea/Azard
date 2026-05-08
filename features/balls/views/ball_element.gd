@@ -11,10 +11,17 @@ class_name BallElement
 @onready var ball_mesh: MeshInstance3D = $ball_mesh
 
 
-var aura_material: ShaderMaterial
-
 var active : bool = true
 var description_active : bool = false
+
+
+
+var shop_price: int = 0
+
+@onready var aura : Sprite3D = $Sprite3D_aura
+#pueden no estar
+#aura
+#price_chart
 
 func _ready() -> void:
 	super()
@@ -26,15 +33,6 @@ func _ready() -> void:
 		
 	if ball_data:
 		_assign_data_model(ball_data)
-		
-
-	
-	call_deferred("setup")
-	
-
-func setup()->void:
-	#ball_description_canvas.deactivate_canvas.connect(_deactivate_selection_aura)
-	pass
 
 
 func _assign_data_model(new_data:BallRuntimeState)->void:
@@ -44,6 +42,17 @@ func _assign_data_model(new_data:BallRuntimeState)->void:
 			activate()
 		if ball_data and ball_data.ball_definition.ball_material:
 			ball_mesh.material_override = ball_data.ball_definition.ball_material
+		
+		match ball_data.ball_definition.rarity:
+			Constants.RARITY.COMMON:
+				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.COMMON])
+			Constants.RARITY.RARE:
+				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.RARE])
+			Constants.RARITY.EPIC:
+				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.EPIC])
+			Constants.RARITY.LEGENDARY:
+				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.LEGENDARY])
+	
 		#if ball_mesh and ball_mesh.material_override:
 			#ball_mesh.material_override.next_pass = aura_material
 			#_deactivate_selection_aura() 
@@ -55,8 +64,9 @@ func _assign_data_model(new_data:BallRuntimeState)->void:
 func activate()->void:
 	active = true
 	ball_mesh.visible = active
+	aura.visible = active
 	$CollisionShape3D.disabled = false
-	#area3D.process_mode = PROCESS_MODE_INHERIT	
+
 	
 func _activate_selection_aura():
 	#var chip_data = ball_mesh.get_instance_shader_parameter("chip_data") 
@@ -83,6 +93,7 @@ func deactivate()->void:
 	_deactivate_selection_aura()
 	active = false
 	ball_mesh.visible = active
+	aura.visible = active
 	$CollisionShape3D.disabled = true
 	
 func ball_description_changed()->void:
@@ -92,25 +103,17 @@ func ball_description_changed()->void:
 func activate_ball_desctiption()->void:
 	if ball_description_canvas.ball_element != self:
 			ball_description_canvas.assign_ball_model(self)
-			
 	
 	_activate_selection_aura()
 	ball_description_canvas.update_labels()
 	ball_description_canvas.position =  self.position + offset_description_canvas
 	
 	ball_description_canvas.visible = true
-		
-	#if drop_active:
-		#CombatEventBus.update_base_score.emit(data.base_damage)#updatear desde aqui el score esta mal, solo deberia ser representativo
 
 func deactivate_ball_desctiption()->void:
 	_deactivate_selection_aura()
 	ball_description_canvas.visible = false
 	description_active = false
-	#if drop_active:
-		#CombatEventBus.update_base_score.emit(1)
-		
-	#
 
 
 
@@ -157,16 +160,6 @@ func _on_chip_dropped():
 func use_ball()->void:
 	#agrega eventos de la bola
 	BookEventBus.start_spin.emit(ball_data)
-	#roulette spin with, this ball
-	#
-
-	#CombatEventBus.last_ball_data_used = self.data
-	#data.on_ball_use()
-		#
-	##llama al estado de Spin de Ruleta
-	#bet_resolver.spin()
-	#
-	#
 	##desactivacion de la bola
 	_assign_data_model(null)
 	ball_description_canvas.visible = false

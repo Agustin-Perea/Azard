@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c4ra01uqkwtxq"]
 
 [ext_resource type="Material" uid="uid://cubiw0r7c8fll" path="res://resources/materials/bet_field_shader_material.tres" id="1_6h2u0"]
-[ext_resource type="ArrayMesh" uid="uid://bdg6xc34o3klp" path="res://resources/3d_UI/ball_shop_tooltip.res" id="1_jnr1a"]
+[ext_resource type="ArrayMesh" uid="uid://4bqascxvfmr" path="res://resources/3d_UI/ball_shop_tooltip.res" id="1_jnr1a"]
 [ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="2_6h2u0"]
 [ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="3_axujv"]
 [ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="4_vj6k8"]
@@ -16,11 +16,6 @@ size = Vector3(0.2831421, 0.10668945, 0.28125)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8hlx4"]
 render_priority = 0
 shader = ExtResource("4_vj6k8")
-shader_parameter/color_aura = Color(1, 0.41037312, 0.8756574, 1)
-shader_parameter/radio_base = 0.23600000795012
-shader_parameter/velocidad_giro = 0.6220005045449994
-shader_parameter/intensidad_lava = 0.0530000025175
-shader_parameter/suavizado = 0.10000000149012
 
 [node name="BallDescription" type="MeshInstance3D" unique_id=313159008]
 physics_interpolation_mode = 2
@@ -84,6 +79,11 @@ disabled = true
 [node name="aura" type="Sprite3D" parent="." unique_id=1265007134]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_8hlx4")
+instance_shader_parameters/color_aura = Color(0.86, 0.91366667, 1, 0.6627451)
+instance_shader_parameters/intensidad_lava = 0.0630000029925
+instance_shader_parameters/radio_base = 0.25300000875761997
+instance_shader_parameters/suavizado = 0.10000000149012
+instance_shader_parameters/velocidad_giro = 1.0000005225000006
 pixel_size = 0.0008
 texture = ExtResource("5_jdxq7")
 

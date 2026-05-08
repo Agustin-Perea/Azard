@@ -7,6 +7,7 @@ var color_rect_tween : Tween
 
 func _ready() -> void:
 	UiEventBus.change_scente_to.connect(_change_scente_to)
+	visible = true
 	color_rect.modulate.a = 0.0
 
 func _change_scente_to(scene : String)->void:

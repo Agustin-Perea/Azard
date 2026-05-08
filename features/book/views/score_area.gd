@@ -51,9 +51,13 @@ func _ready() -> void:
 	BookEventBus.spin_started.connect(enable_reroll)
 	BookEventBus.spin_started.connect(enable_finish_button)
 	
+	
+	
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
+	GameState.current_reroll = rerolls_count
+	
 	rerolls_count = GameState.max_reroll
 	
 	player_stats = GameState.player_stats
@@ -189,6 +193,7 @@ func _on_reroll_pressed()->void:
 		
 	if rerolls_count <= 0:
 		disable_reroll()
+	GameState.current_reroll = rerolls_count
 
 func disable_reroll()->void:
 	reroll_mesh.set_instance_shader_parameter("palette_offset",1.9)

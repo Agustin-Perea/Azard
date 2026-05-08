@@ -17,7 +17,18 @@ const RARITY_ID: Dictionary = {
 	"EPIC" : 3,
 	"LEGENDARY" : 4,
 }
-
+enum RARITY {
+	COMMON,
+	RARE,
+	EPIC,
+	LEGENDARY
+}
+const RARITY_COLORS : Dictionary = {
+	RARITY.COMMON: Color(0.886, 0.929, 1.0, 1.0),
+	RARITY.RARE: Color(0.2, 0.5, 1.0),
+	RARITY.EPIC: Color(0.7, 0.5, 1.0),
+	RARITY.LEGENDARY: Color(1.0, 0.85, 0.2)
+}
 enum ATTACK_TYPE {
 	SINGLE,
 	HALF,

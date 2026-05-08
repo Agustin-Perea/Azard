@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://doguotrnk170t"]
 
 [ext_resource type="Script" uid="uid://cyixiifjvlul4" path="res://features/combat/controllers/UI controllers/combat_buttons_UI.gd" id="1_kdbiy"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="2_31jtf"]
 [ext_resource type="Script" uid="uid://cbuhan4nyq3m5" path="res://features/UI/defeat_canvas_ui_controller.gd" id="2_e3xy8"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="3_topx2"]
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
@@ -59,6 +60,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [node name="UI" type="CanvasLayer" unique_id=153793616]
 
 [node name="Control" type="Control" parent="." unique_id=1176285555]
+texture_filter = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,6 +102,34 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
 text = "book
 "
+
+[node name="GoldHUD" type="PanelContainer" parent="Control" unique_id=1773533231]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -106.0
+offset_top = 39.0
+offset_right = -49.0
+offset_bottom = 79.0
+grow_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/GoldHUD" unique_id=1636587063]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/GoldHUD/HBoxContainer" unique_id=856324499]
+layout_mode = 2
+texture = ExtResource("2_31jtf")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Control/GoldHUD/HBoxContainer" unique_id=1371718359]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = " 0 "
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DefeatCanvas" type="Control" parent="." unique_id=1210028539]
 visible = false
@@ -174,6 +204,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_lnyru")
 text = "Restart"
 
 [node name="TransitionControl" type="Control" parent="." unique_id=588496759]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -218,6 +249,7 @@ layout_mode = 2
 [node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
 visible = false
 layout_mode = 2
+script = null
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

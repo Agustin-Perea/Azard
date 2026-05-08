@@ -6,6 +6,8 @@ class_name BallDescription
 @onready var button: SB_Button3D = $Spin_Button3D
 @onready var deactivate_button: SB_Button3D = $X_Button3D
 
+@onready var aura_description: Sprite3D = $aura
+
 @export var ball_element : BallElement
 
 @export var spin : bool = false
@@ -31,6 +33,8 @@ func assign_ball_model(new_model : BallElement)->void:
 	update_labels()
 	
 func update_labels()->void:
+	aura_description.set_instance_shader_parameter("color_aura",
+	ball_element.aura.get_instance_shader_parameter("color_aura"))
 	button.collision_shape.disabled = false
 	deactivate_button.collision_shape.disabled = false
 

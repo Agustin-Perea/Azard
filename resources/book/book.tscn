@@ -20,7 +20,6 @@
 [ext_resource type="PackedScene" uid="uid://pwvj2b7jvycd" path="res://features/book/chips/views/bet_chip.tscn" id="12_mpnxt"]
 [ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://features/book/table/view/table_fields.gd" id="12_ve5xc"]
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="13_mpnxt"]
-[ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="14_liidn"]
 [ext_resource type="Script" uid="uid://dwk0uil3sfst5" path="res://features/balls/views/balls_container.gd" id="15_4a5wc"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
 [ext_resource type="PackedScene" uid="uid://wat314uoi0bg" path="res://features/balls/views/ball_spot.tscn" id="15_vh2hp"]
@@ -74,9 +73,6 @@ anti_aliasing = false
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4a5wc"]
 viewport_path = NodePath("left_cover/SubViewport")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
-radius = 0.115460515
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h1i5i"]
 size = Vector3(0.3583716, 0.051433593, 1.9744599)
@@ -807,8 +803,6 @@ transform = Transform3D(0.99642915, -0.080562726, 0.025271595, -0.01303286, 0.14
 text = "-"
 font_size = 4
 
-[node name="Buttons" type="Node3D" parent="left_cover" unique_id=444936294]
-
 [node name="roulette_ball" type="MeshInstance3D" parent="left_cover" unique_id=1421758351]
 physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1497431, -0.038038604, -1.6419201)
@@ -842,6 +836,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30929124, 0, -1.3056993)
 script = ExtResource("11_vvjhm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/FinishMoveButton" unique_id=1834467383]
+gi_mode = 0
 instance_shader_parameters/palette_offset = 0.6
 instance_shader_parameters/palette_offset_y = 0.8
 mesh = ExtResource("11_nq47p")
@@ -889,19 +884,8 @@ script = ExtResource("15_4a5wc")
 [node name="Ball_Spot" parent="bottom_cover" unique_id=1548367600 instance=ExtResource("15_vh2hp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.843952)
 
-[node name="Ball_Spot2" type="StaticBody3D" parent="bottom_cover" unique_id=755748486]
-physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.5123482)
-collision_mask = 0
-script = ExtResource("14_liidn")
-offset_description_canvas = Vector3(0.631, 0.092, 0.802)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="bottom_cover/Ball_Spot2" unique_id=1953884824]
-shape = SubResource("SphereShape3D_q6jwi")
-
-[node name="ball_mesh" type="MeshInstance3D" parent="bottom_cover/Ball_Spot2" unique_id=1395317964]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-mesh = ExtResource("7_jx2r3")
+[node name="Ball_Spot2" parent="bottom_cover" unique_id=972187590 instance=ExtResource("15_vh2hp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08930689, -1.5114887)
 
 [node name="BallDescription" parent="bottom_cover" unique_id=313159008 instance=ExtResource("19_8qbf8")]
 transform = Transform3D(0.575, 0, 0, 0, 0.575, 0, 0, 0, 0.575, 0.6313158, 0.1811561, -1.042273)
@@ -1419,9 +1403,6 @@ libraries/book_animations = ExtResource("42_0bnx2")
 [connection signal="input_event" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/FinishMoveButton" to="left_cover/FinishMoveButton" method="_on_mouse_exited"]
-[connection signal="input_event" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_input_event"]
-[connection signal="mouse_entered" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="bottom_cover/Ball_Spot2" to="bottom_cover/Ball_Spot2" method="_on_mouse_exited"]
 [connection signal="input_event" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/BetTable/SBTable" to="right_cover/BetTable/SBTable" method="_on_mouse_exited"]
