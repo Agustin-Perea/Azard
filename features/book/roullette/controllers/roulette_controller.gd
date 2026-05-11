@@ -1,6 +1,13 @@
 extends Node
 class_name RouletteController
 
+const ROULETTE_STATS_PAGE := preload("res://features/book/views/roulette_stats_page.gd")
+const STATS_LEFT_COVER_MESH := preload("res://resources/map/models/map_left_case.res")
+const STATS_RIGHT_COVER_MESH := preload("res://resources/map/models/map_right_case.res")
+const STATS_BOTTOM_COVER_MESH := preload("res://resources/map/models/map_bottom_case.res")
+const BOOK_OPEN_SOUND := preload("res://resources/sounds/open_book.wav")
+const BOOK_CLOSE_SOUND := preload("res://resources/sounds/kodack__closing-a-book.wav")
+
 var rng := RandomNumberGenerator.new()
 var score: float = 0
 
@@ -26,12 +33,31 @@ var result_field_id : int = 0
 @onready var ball_mesh : MeshInstance3D = $left_cover/roulette_ball
 
 @onready var finish_button : SB_Button3D = $left_cover/FinishMoveButton
+@onready var left_cover : Node3D = $left_cover
+@onready var right_cover : Node3D = $right_cover
+@onready var bottom_cover : Node3D = $bottom_cover
+@onready var animation_player : AnimationPlayer = $AnimationPlayer
+@onready var audio_stream : AudioStreamPlayer = $AudioStreamPlayer
 
 
 var last_ball_used : BallRuntimeState = null
+var stats_page
+var stats_page_visible := false
+var stats_page_transitioning := false
+var stats_default_left_cover_mesh: Mesh
+var stats_default_right_cover_mesh: Mesh
+var stats_default_bottom_cover_mesh: Mesh
+var stats_normal_nodes: Array[Node] = []
+var stats_node_visibility: Dictionary = {}
+var stats_collision_disabled: Dictionary = {}
+var stats_button_enabled: Dictionary = {}
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
+	stats_default_left_cover_mesh = left_cover.mesh
+	stats_default_right_cover_mesh = right_cover.mesh
+	stats_default_bottom_cover_mesh = bottom_cover.mesh
+	_setup_stats_page()
 	
 
 	#rng.seed = ObjectPoolsDataBase.master_seed
@@ -67,6 +93,9 @@ func multiply_mult_score(add_mult : float)->void:
 	
 
 func on_start_spin(ball : BallRuntimeState) -> void:
+	if stats_page_visible:
+		_set_stats_page_visible(false)
+	_set_stats_toggle_enabled(false)
 	
 	last_ball_used = ball
 	BookEventBus.spin_started.emit()
@@ -134,6 +163,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 		"action": func():
 			table_meshes.deactivate_highlight_field()
 			UiEventBus.change_collision_detection_buttons.emit(false)
+			_set_stats_toggle_enabled(true)
 			return true
 	}))
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -146,6 +176,9 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	
 func spin() -> void:
+	if stats_page_visible:
+		_set_stats_page_visible(false)
+	_set_stats_toggle_enabled(false)
 
 	#aca sucede el reroll?	
 	#CombatEventBus.changeToState.emit("RouletteState")
@@ -198,6 +231,7 @@ func spin() -> void:
 		"paralel": false,
 		"action": func():
 			##CombatEventBus.enableClickableAreas()
+			_set_stats_toggle_enabled(true)
 			return true#Deberia esperar el tween, osea el finish del spin
 	}))
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -301,3 +335,134 @@ func reroll()->void:
 		
 		#llama al estado de Spin de Ruleta
 		on_start_spin(last_ball_used)
+
+func _setup_stats_page() -> void:
+	stats_page = ROULETTE_STATS_PAGE.new()
+	stats_page.name = "RouletteStatsPage"
+	add_child(stats_page)
+	stats_page.setup(left_cover, right_cover)
+	stats_page.toggle_requested.connect(_on_stats_page_toggle_requested)
+	_cache_stats_normal_nodes()
+
+func _cache_stats_normal_nodes() -> void:
+	stats_normal_nodes.clear()
+	stats_node_visibility.clear()
+	stats_collision_disabled.clear()
+	stats_button_enabled.clear()
+
+	for child in left_cover.get_children():
+		if child == stats_page.left_root or child == stats_page.get_toggle_button():
+			continue
+		_cache_stats_node(child)
+
+	for child in right_cover.get_children():
+		if child == stats_page.right_root:
+			continue
+		_cache_stats_node(child)
+
+	_cache_stats_node(bottom_cover)
+
+func _cache_stats_node(node: Node) -> void:
+	if node is Node3D or node is CanvasItem:
+		stats_normal_nodes.append(node)
+		stats_node_visibility[node] = node.visible
+	_cache_stats_interactive_state(node)
+
+func _cache_stats_interactive_state(node: Node) -> void:
+	if node is CollisionShape3D:
+		stats_collision_disabled[node] = node.disabled
+	if node is SB_Button3D:
+		stats_button_enabled[node] = node.enabled
+	for child in node.get_children():
+		_cache_stats_interactive_state(child)
+
+func _on_stats_page_toggle_requested() -> void:
+	if stats_page_transitioning:
+		return
+	_transition_stats_page(not stats_page_visible)
+
+func _transition_stats_page(value: bool) -> void:
+	if animation_player == null:
+		_set_stats_page_visible(value)
+		return
+
+	stats_page_transitioning = true
+	_set_stats_toggle_enabled(false)
+	animation_player.play("book_animations/book_close")
+	_play_stats_page_sound(BOOK_CLOSE_SOUND)
+
+	EventManager.add_event(EventManager.QueueType.GAME,
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			return !animation_player.is_playing()
+	}))
+
+	EventManager.add_event(EventManager.QueueType.GAME,
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			_set_stats_page_visible(value)
+			animation_player.play("book_animations/book_open")
+			_play_stats_page_sound(BOOK_OPEN_SOUND)
+			return true
+	}))
+
+	EventManager.add_event(EventManager.QueueType.GAME,
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			return !animation_player.is_playing()
+	}))
+
+	EventManager.add_event(EventManager.QueueType.GAME,
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			stats_page_transitioning = false
+			_set_stats_toggle_enabled(true)
+			return true
+	}))
+
+func _set_stats_page_visible(value: bool) -> void:
+	if value == stats_page_visible:
+		stats_page.set_page_visible(value)
+		return
+	if value:
+		_cache_stats_normal_nodes()
+
+	stats_page_visible = value
+	_set_stats_page_background(value)
+	stats_page.set_page_visible(value)
+
+	for node in stats_normal_nodes:
+		node.visible = false if value else bool(stats_node_visibility.get(node, true))
+
+	for collision_shape in stats_collision_disabled.keys():
+		collision_shape.disabled = true if value else bool(stats_collision_disabled[collision_shape])
+
+	for button in stats_button_enabled.keys():
+		button.enabled = false if value else bool(stats_button_enabled[button])
+
+	if value:
+		UiEventBus.deactivate_descriptions.emit()
+
+func _set_stats_toggle_enabled(value: bool) -> void:
+	if stats_page:
+		stats_page.set_toggle_enabled(value)
+
+func _set_stats_page_background(value: bool) -> void:
+	if value:
+		left_cover.mesh = STATS_LEFT_COVER_MESH
+		right_cover.mesh = STATS_RIGHT_COVER_MESH
+		bottom_cover.mesh = STATS_BOTTOM_COVER_MESH
+	else:
+		left_cover.mesh = stats_default_left_cover_mesh
+		right_cover.mesh = stats_default_right_cover_mesh
+		bottom_cover.mesh = stats_default_bottom_cover_mesh
+
+func _play_stats_page_sound(sound: AudioStream) -> void:
+	if audio_stream == null:
+		return
+	audio_stream.stream = sound
+	audio_stream.play()

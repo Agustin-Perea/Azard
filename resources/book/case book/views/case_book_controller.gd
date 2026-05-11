@@ -27,6 +27,7 @@ extends Node3D
 @onready var map_button : SB_Button3D = $left_cover/Next_SB_Button3D
 @onready var next_label : Label3D = $left_cover/next
 @onready var animation_player : AnimationPlayer = $AnimationPlayer
+@onready var audio_stream : AudioStreamPlayer = $AudioStreamPlayer
 
 @onready var ball_description_canvas : BallDescription =  $left_cover/BallDescription
 #@onready var bingo_chip_info : BingoChipinfo =  $bingo_chip_info
@@ -55,6 +56,9 @@ const SUMMARY_BOTTOM_COVER_MESH := preload("res://resources/map/models/map_botto
 const SUMMARY_BUTTON_MESH := preload("res://resources/book/model/button.tres")
 const SUMMARY_BUTTON_MATERIAL := preload("res://resources/materials/finish_button_shader_material.tres")
 const SUMMARY_COIN_TEXTURE := preload("res://resources/economy/coin.png")
+const SUMMARY_PAPER_MATERIAL := preload("res://resources/book/materials/book_material.tres")
+const BOOK_OPEN_SOUND := preload("res://resources/sounds/open_book.wav")
+const BOOK_CLOSE_SOUND := preload("res://resources/sounds/kodack__closing-a-book.wav")
 
 var summary_visible := false
 var summary_root_left : Node3D
@@ -77,6 +81,10 @@ var default_next_text := "Next"
 var default_left_cover_mesh: Mesh
 var default_right_cover_mesh: Mesh
 var default_bottom_cover_mesh: Mesh
+var default_left_cover_material: Material
+var default_right_cover_material: Material
+var default_bottom_cover_material: Material
+var default_map_button_position: Vector3
 
 
 func _ready() -> void:
@@ -84,6 +92,10 @@ func _ready() -> void:
 	default_left_cover_mesh = left_cover.mesh
 	default_right_cover_mesh = right_cover.mesh
 	default_bottom_cover_mesh = bottom_cover.mesh
+	default_left_cover_material = left_cover.material_override
+	default_right_cover_material = right_cover.material_override
+	default_bottom_cover_material = bottom_cover.material_override
+	default_map_button_position = map_button.position
 	_create_summary_view()
 	_cache_shop_nodes()
 	reroll_button.pressed.connect(_on_reroll_pressed)
@@ -198,8 +210,8 @@ func _create_summary_view() -> void:
 	_create_coin_sprite(summary_root_right, Vector3(0.74, 0.128, -1.66), 0.64)
 	summary_continue_mesh = MeshInstance3D.new()
 	summary_continue_mesh.name = "ContinueButtonVisual"
-	summary_continue_mesh.position = Vector3(-0.54, 0.13, -0.28)
-	summary_continue_mesh.scale = Vector3(1.25, 1.0, 1.05)
+	summary_continue_mesh.position = Vector3(-0.84, 0.13, -0.23)
+	summary_continue_mesh.scale = Vector3(1.48, 1.0, 1.14)
 	summary_continue_mesh.mesh = SUMMARY_BUTTON_MESH
 	summary_continue_mesh.material_override = SUMMARY_BUTTON_MATERIAL
 	summary_root_left.add_child(summary_continue_mesh)
@@ -207,9 +219,9 @@ func _create_summary_view() -> void:
 	summary_continue_label = _create_summary_label(
 		summary_root_left,
 		"ContinueLabel",
-		Vector3(-0.54, 0.19, -0.245),
+		Vector3(-0.84, 0.19, -0.235),
 		"Continuar",
-		8,
+		11,
 		Color(1.0, 1.0, 1.0, 1.0),
 		Color(0.1, 0.35, 0.1, 0.9)
 	)
@@ -337,6 +349,7 @@ func _set_summary_visible(value: bool) -> void:
 		button.enabled = false if value else bool(shop_button_enabled[button])
 
 	map_button.enabled = true
+	map_button.position = Vector3(-0.84, -0.075, -0.23) if value else default_map_button_position
 	next_label.text = "Continuar" if value else default_next_text
 	next_label.visible = false if value else bool(shop_node_visibility.get(next_label, true))
 	UiEventBus.deactivate_descriptions.emit()
@@ -351,6 +364,7 @@ func _transition_summary_to_shop() -> void:
 	summary_transitioning = true
 	map_button.enabled = false
 	animation_player.play("book_animations/book_close")
+	_play_summary_page_sound(BOOK_CLOSE_SOUND)
 
 	EventManager.add_event(EventManager.QueueType.GAME,
 	GameEvent.new({
@@ -365,6 +379,7 @@ func _transition_summary_to_shop() -> void:
 		"action": func():
 			_set_summary_visible(false)
 			animation_player.play("book_animations/book_open")
+			_play_summary_page_sound(BOOK_OPEN_SOUND)
 			return true
 	}))
 
@@ -389,10 +404,22 @@ func _set_summary_background(value: bool) -> void:
 		left_cover.mesh = SUMMARY_LEFT_COVER_MESH
 		right_cover.mesh = SUMMARY_RIGHT_COVER_MESH
 		bottom_cover.mesh = SUMMARY_BOTTOM_COVER_MESH
+		left_cover.material_override = SUMMARY_PAPER_MATERIAL
+		right_cover.material_override = SUMMARY_PAPER_MATERIAL
+		bottom_cover.material_override = SUMMARY_PAPER_MATERIAL
 	else:
 		left_cover.mesh = default_left_cover_mesh
 		right_cover.mesh = default_right_cover_mesh
 		bottom_cover.mesh = default_bottom_cover_mesh
+		left_cover.material_override = default_left_cover_material
+		right_cover.material_override = default_right_cover_material
+		bottom_cover.material_override = default_bottom_cover_material
+
+func _play_summary_page_sound(sound: AudioStream) -> void:
+	if audio_stream == null:
+		return
+	audio_stream.stream = sound
+	audio_stream.play()
 
 func _update_summary_text(amount: int, breakdown: Dictionary, stats: Dictionary) -> void:
 	var player_health: Dictionary = stats.get("player_health", {})

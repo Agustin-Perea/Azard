@@ -17,3 +17,6 @@ mono_crash.*.json
 
 # Local Codex instructions
 AGENTS.md
+
+# Local Godot MCP tooling and screenshots
+addons/godot_mcp/
