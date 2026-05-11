@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="1_nx6r2"]
 [ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="3_8lm48"]
+[ext_resource type="Material" uid="uid://dcyu5hv0xs4ih" path="res://resources/materials/auras/legendary_aura_material.tres" id="3_l35wy"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="4_l35wy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
@@ -21,6 +23,13 @@ shape = SubResource("SphereShape3D_q6jwi")
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_f2bku")
 mesh = ExtResource("3_8lm48")
+
+[node name="Sprite3D_aura" type="Sprite3D" parent="." unique_id=993775335]
+transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, 0, 0, 0)
+material_override = ExtResource("3_l35wy")
+pixel_size = 0.08
+billboard = 1
+texture = ExtResource("4_l35wy")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -1,9 +1,9 @@
 extends Resource 
 class_name BallEffect
 
-@export_storage var name: String
+@export var name: String
 
-@export_storage var description: String
+@export var description: String
 
 #estas son callbacks propias
 func on_ball_added()->void:
@@ -25,7 +25,7 @@ func on_pre_resolve()->void:
 	pass
 func on_bet_resolved()->void:
 	pass
-func on_post_resolved(roullette_controller)->void:
+func on_post_resolved(roullette_controller : RouletteController)->void:
 	pass
 	
 func on_ball_use()->void:

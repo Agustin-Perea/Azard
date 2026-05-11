@@ -30,6 +30,12 @@ signal change_book_page(arg : Constants.BOOK_PAGE)
 
 signal change_target(target : Unit)
 
+
+signal change_scene_to(scene : String)
+signal change_scene_to_packed(scene : PackedScene)
+signal scene_changed
+
+signal add_passive_item(data_model : PassiveItemDefinition)
 func disableClickableAreas()->void:
 	#ClickableArea.global_input_enabled = false
 	#PlayerUiEvents.disable_camera_buttons.emit()

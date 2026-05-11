@@ -14,10 +14,3 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
-
-# Local Codex agent/skill memory and PDF extraction scratch files
-AGENTS.md
-.codex/
-
-# Godot can generate UID sidecars for local validation scripts.
-*.uid

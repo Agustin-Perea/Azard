@@ -36,9 +36,10 @@ func _ready() -> void:
 	for child in children:
 		if child is Label3D:
 			number_labels.append(child)
-		
-	if mesh_groups:
+	
+	if 	mesh_groups:
 		var mesh_children = mesh_groups.get_children()
+		
 		for child in mesh_children:
 			if child is MeshInstance3D:
 				table_instances_groups.append(child)
@@ -93,12 +94,8 @@ func _on_table_ready()-> void:
 #on field changed(id) este deberia reasignar color al cambiado, en uievents
 
 func update_field_visual(index :int)->void:
-	var game_state = get_node_or_null("/root/GameState")
-	if game_state == null:
-		return
-	var field := game_state.get_bet_field_model(index) as BetFieldModel
-	if field == null:
-		return
+	var field := GameState.get_bet_field_model(index)#cuidado con el
+	#print(str(index))
 	#print(str(field.number))
 	#print(str(field.color))
 	#print(number_labels[index].text)
@@ -132,10 +129,16 @@ func highlight_field(id : int)->void:
 			var shader_mat = mesh_instance.get_surface_override_material(0)
 			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
 	elif id == 0:
-		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
-		var shader_mat = mesh_instance.get_surface_override_material(0)
-		
-		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
+		var mesh_instance = table_instances_groups[table_instances_groups.size() - 1]
+		if mesh_instance == null:
+			return
+		if not mesh_instance is MeshInstance3D:
+			return
+		var material = mesh_instance.get_surface_override_material(0)
+		if material == null:
+			return
+		if material is ShaderMaterial:
+			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 1.0, 0.0))
 	
 func reset_field(id : int)->void:
 	if id > 0 and id < 37:
@@ -150,48 +153,49 @@ func reset_field(id : int)->void:
 			
 			mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
 	elif id == 0:
-		var mesh_instance = table_instances_groups[table_instances_groups.size()-1]
-		var shader_mat = mesh_instance.get_surface_override_material(0)
-		
-		mesh_instance.set_instance_shader_parameter("chip_data", Vector3(0.0, 0.0, 0.0))
+		var mesh_instance = table_instances_groups[table_instances_groups.size() - 1]
+		if mesh_instance == null:
+			return
+		if not mesh_instance is MeshInstance3D:
+			return
+		var material = mesh_instance.get_surface_override_material(0)
+		if material == null:
+			return
+		if material is ShaderMaterial:
+			mesh_instance.set_instance_shader_parameter(
+				"chip_data",
+				Vector3.ZERO
+			)
 		
 func highlight_equals_field(id : int)->void:
-	var game_state = get_node_or_null("/root/GameState")
-	if game_state == null or id < 0 or id >= game_state.bet_field_models.size():
-		return
-	var fields = game_state.bet_field_models
-	var number = fields[id].number
-	var color = fields[id].color 
+	var number := GameState.bet_field_models[id].number
+	var color := GameState.bet_field_models[id].color 
 
 	if id > 0 and id < 37:
-		for i in fields.size():
-			if number == fields[i].number and color == fields[i].color:
+		for i in GameState.bet_field_models.size():
+			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
 				highlight_field(i)
 	elif id > 36:
 		highlight_field(id)
-		for i in fields.size() - 12:
-			if fields[id].ConditionStrategy.matches(fields[i], fields[id]):
+		for i in GameState.bet_field_models.size()-12:
+			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
 				highlight_field(i)
 	elif id == 0:
 		highlight_field(id)
 
 
 func reset_equals_field(id : int)->void:
-	var game_state = get_node_or_null("/root/GameState")
-	if game_state == null or id < 0 or id >= game_state.bet_field_models.size():
-		return
-	var fields = game_state.bet_field_models
-	var number = fields[id].number
-	var color = fields[id].color
+	var number := GameState.bet_field_models[id].number
+	var color := GameState.bet_field_models[id].color
 	
 	if id >0 and id < 37:
-		for i in fields.size() - 12:
-			if number == fields[i].number and color == fields[i].color:
+		for i in GameState.bet_field_models.size()-12:
+			if number == GameState.bet_field_models[i].number and color == GameState.bet_field_models[i].color:
 				reset_field(i)
 	elif id > 36:
 		reset_field(id)
-		for i in fields.size() - 12:
-			if fields[id].ConditionStrategy.matches(fields[i], fields[id]):
+		for i in GameState.bet_field_models.size()-12:
+			if GameState.bet_field_models[id].ConditionStrategy.matches(GameState.bet_field_models[i],GameState.bet_field_models[id]):
 				reset_field(i)
 	elif id == 0:
 		reset_field(id)

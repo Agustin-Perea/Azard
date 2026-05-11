@@ -2,6 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://cvxbri3pvu684" path="res://resources/book/model/bet_chip.tres" id="1_80dld"]
 [ext_resource type="Script" uid="uid://psmuv7ujrqd5" path="res://core/utils/MoveableElements/ChipElement.gd" id="1_qy1vp"]
+[ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="2_dj0h5"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_451by"]
 radius = 0.09132065
@@ -11,6 +12,7 @@ collision_mask = 0
 script = ExtResource("1_qy1vp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=172683757]
+material_override = ExtResource("2_dj0h5")
 mesh = ExtResource("1_80dld")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1331976561]

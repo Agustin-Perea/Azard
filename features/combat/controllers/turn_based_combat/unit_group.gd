@@ -17,6 +17,8 @@ func _ready() -> void:
 		unit.stats.death.connect(_remove_unit.bind(unit))
 
 func _begin_turn() -> void:
+	print("Comenzando truno..." + self.to_string())
+
 #quitar el canvas de la vista, preferiria que esto sea asi y que se muestre solo el targeteado
 	#for unit in group:
 		#unit.damage_view.health_sprite_viewport.visible = false
@@ -36,9 +38,6 @@ func _begin_turn() -> void:
 func _remove_unit(unit : Unit)->void:
 	group.erase(unit)
 	BookEventBus.unit_death.emit(unit)
-	if unit != null and unit.is_in_group("enemy"):
-		BookEventBus.enemy_killed.emit(unit)
-		BookEventBus.combat_kill.emit(unit)
 	unit._death()
 	
 	if group.size() == 0:

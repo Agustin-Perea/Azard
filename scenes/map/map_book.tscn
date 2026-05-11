@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://vdb8px14xh4b"]
+
+[ext_resource type="Script" uid="uid://dqeswu1ifn8sl" path="res://features/UI/sub_viewport_resize.gd" id="1_7hox3"]
+[ext_resource type="PackedScene" uid="uid://bembx3bewxcfb" path="res://features/map/views/map_scene.tscn" id="1_a6oc1"]
+[ext_resource type="Script" uid="uid://bnqx52gtd4od2" path="res://scenes/map/map_book_project_input.gd" id="1_dm3ci"]
+[ext_resource type="ArrayMesh" uid="uid://c2dv0xxbmq7wt" path="res://resources/map/models/map_bottom_case.res" id="1_otwwq"]
+[ext_resource type="ArrayMesh" uid="uid://bm3bokcmmqjvy" path="res://resources/map/models/map_left_case.res" id="2_a6oc1"]
+[ext_resource type="ArrayMesh" uid="uid://b5g8vivkc25sy" path="res://resources/map/models/map_right_case.res" id="3_k085f"]
+[ext_resource type="ArrayMesh" uid="uid://bmaee24hjulpg" path="res://resources/map/models/map_left.res" id="4_2d3ee"]
+[ext_resource type="Shader" uid="uid://dgnx50hrx2vun" path="res://resources/map/materials/map_material.gdshader" id="4_aifr2"]
+[ext_resource type="ArrayMesh" uid="uid://dpdd2tun5xf56" path="res://resources/map/models/map_corner.res" id="5_aifr2"]
+[ext_resource type="AnimationLibrary" uid="uid://by8ay17fwfqj6" path="res://resources/book/animations/book_animations.res" id="5_k085f"]
+[ext_resource type="Material" uid="uid://cubiw0r7c8fll" path="res://resources/materials/bet_field_shader_material.tres" id="6_kpuro"]
+[ext_resource type="ArrayMesh" uid="uid://jy0ksqmd0ken" path="res://resources/map/models/map_right.res" id="7_kpuro"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_otwwq"]
+size = Vector3(3.149, 0.5, 2.027)
+
+[sub_resource type="QuadMesh" id="QuadMesh_dm3ci"]
+size = Vector2(3.149, 2.027)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kpuro"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hox3"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_aifr2")
+shader_parameter/viewport_tex = SubResource("ViewportTexture_kpuro")
+shader_parameter/is_left_side = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dm3ci"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gjec8"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_aifr2")
+shader_parameter/viewport_tex = SubResource("ViewportTexture_dm3ci")
+shader_parameter/is_left_side = false
+
+[node name="MapBook" type="StaticBody3D" unique_id=2052312531]
+physics_interpolation_mode = 2
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+script = ExtResource("1_dm3ci")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2132495190]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.242, -1.066)
+shape = SubResource("BoxShape3D_otwwq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=977978337]
+physics_interpolation_mode = 2
+transform = Transform3D(0.9999998, 0, 0, 0, -4.371138e-08, 0.9999998, 0, -0.9999998, -4.371138e-08, 0, 0.009, -1.066)
+visible = false
+mesh = SubResource("QuadMesh_dm3ci")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=2085390252]
+physics_interpolation_mode = 2
+disable_3d = true
+positional_shadow_atlas_size = 0
+positional_shadow_atlas_16_bits = false
+positional_shadow_atlas_quad_0 = 0
+positional_shadow_atlas_quad_1 = 0
+positional_shadow_atlas_quad_2 = 0
+positional_shadow_atlas_quad_3 = 0
+size = Vector2i(960, 540)
+size_2d_override = Vector2i(1920, 1080)
+size_2d_override_stretch = true
+script = ExtResource("1_7hox3")
+render_scale = 1.0
+
+[node name="Map" parent="SubViewport" unique_id=1399185867 instance=ExtResource("1_a6oc1")]
+
+[node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=908205517]
+mesh = ExtResource("1_otwwq")
+
+[node name="left_cover" type="MeshInstance3D" parent="." unique_id=2136106324]
+material_override = ExtResource("6_kpuro")
+mesh = ExtResource("2_a6oc1")
+
+[node name="map_left" type="MeshInstance3D" parent="left_cover" unique_id=1835088751]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, -1.574, -0.01, 0)
+material_override = SubResource("ShaderMaterial_7hox3")
+mesh = ExtResource("4_2d3ee")
+
+[node name="left_corver" type="MeshInstance3D" parent="left_cover" unique_id=273487632]
+material_override = ExtResource("6_kpuro")
+mesh = ExtResource("5_aifr2")
+
+[node name="right_cover" type="MeshInstance3D" parent="." unique_id=1104461594]
+material_override = ExtResource("6_kpuro")
+mesh = ExtResource("3_k085f")
+
+[node name="map_right" type="MeshInstance3D" parent="right_cover" unique_id=1303751771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+material_override = SubResource("ShaderMaterial_gjec8")
+mesh = ExtResource("7_kpuro")
+
+[node name="right_corner" type="MeshInstance3D" parent="right_cover" unique_id=1877877529]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("6_kpuro")
+mesh = ExtResource("5_aifr2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=488586619]
+libraries/book_animations = ExtResource("5_k085f")

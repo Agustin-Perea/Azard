@@ -109,6 +109,7 @@ func start_drag(moveable: StaticBody3D, can_drag_height : bool = true) -> void:
 
 	# ---------- VALIDATION ----------
 	if not active or dragging or dragged != null:
+		print("1st return")
 		return
 	
 	if dragged:
@@ -240,8 +241,6 @@ func _get_field_under_mouse() -> Dictionary:
 
 	var viewport := get_tree().root
 	var cam := viewport.get_camera_3d()
-	if cam == null:
-		return {}
 
 	var mouse_pos := viewport.get_mouse_position()
 
@@ -265,20 +264,21 @@ func _get_any_container_under_mouse() -> Dictionary:
 
 	var viewport := get_tree().root
 	var cam := viewport.get_camera_3d()
+	var result : Dictionary
+	if cam:
+		var mouse_pos := viewport.get_mouse_position()
 
-	var mouse_pos := viewport.get_mouse_position()
+		var from := cam.project_ray_origin(mouse_pos)
+		var to := from + cam.project_ray_normal(mouse_pos) * 1000.0
 
-	var from := cam.project_ray_origin(mouse_pos)
-	var to := from + cam.project_ray_normal(mouse_pos) * 1000.0
+		var params := PhysicsRayQueryParameters3D.create(from, to)
 
-	var params := PhysicsRayQueryParameters3D.create(from, to)
+		params.collide_with_areas = true
 
-	params.collide_with_areas = true
+		result = cam.get_world_3d().direct_space_state.intersect_ray(params)
 
-	var result := cam.get_world_3d().direct_space_state.intersect_ray(params)
-
-	if result.is_empty():
-		return result
+		if result.is_empty():
+			return result
 
 	return result
 

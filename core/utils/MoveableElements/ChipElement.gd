@@ -44,9 +44,6 @@ func stop_drag()->void:
 	elif !container2.is_empty() and container2.get("collider").is_in_group("table_container"):
 		var static_body_table = container2.get("collider") as StaticBodyTable_
 		var index : int = static_body_table.calcular_indice_desde_posicion(container2.get("position"))
-		if GameState.get_bet_field_model(index) == null:
-			DragService._return_to_origin()
-			return
 		data.last_position = static_body_table.calcular_centro_desde_indice(index)
 		chip_moved.emit(self)
 		GameState.place_bet(
@@ -60,3 +57,23 @@ func stop_drag()->void:
 		#desactivacion
 	else:
 		DragService._return_to_origin()
+
+
+func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if not global_input_enabled:
+		return
+	if event is InputEventMouseButton and event.pressed:
+		pressed.emit()
+		on_press()
+	if event is InputEventMouseButton and event.is_released():
+		released.emit()
+		
+func _on_mouse_entered():
+	if not global_input_enabled:
+		return
+	entered.emit()
+
+func _on_mouse_exited():
+	if not global_input_enabled:
+		return
+	exited.emit()

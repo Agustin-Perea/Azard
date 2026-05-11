@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 			#evento de la cola
 			var ev : GameEvent = queue[i]
 			#revisa todos los eventos para ejecutar los no bloqueables
-			if not blocked or ev.parallel:
+			if not blocked or ev.paralel:
 				#si el evento esta completado retornara true
 				var finished = ev.handle(delta)
 				if finished:

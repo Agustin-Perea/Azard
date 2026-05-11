@@ -14,9 +14,7 @@ var size_z_collider = 1.626
 var last_field_entered : int = -1
 
 func _ready() -> void:
-	var ui_event_bus = get_node_or_null("/root/UiEventBus")
-	if ui_event_bus != null:
-		ui_event_bus.change_collision_detection.connect(_on_change_collision_detection)
+	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
 
 func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	# Solo procesamos si el mouse está entrando o moviéndose DENTRO
@@ -117,19 +115,14 @@ func update_field(index : int)->void:
 
 
 #se deberia desactivar junto a las clickablesares, incluso el collision
-func call_mult_anim(index : int)->void:
-	#esto es una negrada
+func call_mult_anim(index: int) -> void:
 	var multiplicator_indicator = $"../../../PopUpText"
-	#print("Referencia del objeto: ", multiplicator_indicator)
-	
 	if multiplicator_indicator != null:
-		var game_state = get_node_or_null("/root/GameState")
-		if game_state == null:
-			return
 		var pos := calcular_centro_desde_indice(index)
-		pos.y += 0.1
-		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(game_state.bet_field_models[index].multiplier)), true)
+		#pos.y += 0.1 * 0.15
+		print("pos global enviada: ", pos)
 
+		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(GameState.bet_field_models[index].multiplier)), true)
 
 func _on_mouse_entered() -> void:
 	pass # Replace with function body.

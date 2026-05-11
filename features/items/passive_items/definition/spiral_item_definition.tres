@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://6uejekodgixx"]
+
+[ext_resource type="Script" uid="uid://bleacornpclic" path="res://features/items/passive_items/effects/spiral_item_effect.gd" id="1_1kujq"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_mmu07"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="2_mmu07"]
+
+[sub_resource type="Resource" id="Resource_n8f6b"]
+script = ExtResource("1_1kujq")
+name = "Spiral item"
+description = " x1.5 por cada ficha activada en un campo distinto"
+metadata/_custom_type_script = "uid://bleacornpclic"
+
+[resource]
+script = ExtResource("2_mmu07")
+passive_item_effect = SubResource("Resource_n8f6b")
+metadata/_custom_type_script = "uid://b3k5jwgh2o65v"

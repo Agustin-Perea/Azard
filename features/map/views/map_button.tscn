@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dxp5raibd2750"]
+
+[ext_resource type="Theme" uid="uid://dworaakj4tp5n" path="res://resources/map/map_icons/button_themes/enemy_button_theme.tres" id="1_xcsro"]
+[ext_resource type="Script" uid="uid://jjf1adkfysgk" path="res://features/map/controllers/map_node_button.gd" id="2_jekt6"]
+[ext_resource type="AnimationLibrary" uid="uid://crbi622tqd17h" path="res://resources/map/button_animations/map_button_animtaons.res" id="3_jekt6"]
+
+[sub_resource type="Animation" id="Animation_bfujk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k14sf"]
+_data = {
+&"RESET": SubResource("Animation_bfujk")
+}
+
+[node name="MapButton" type="Button" unique_id=1026249986]
+texture_filter = 2
+offset_right = 128.0
+offset_bottom = 128.0
+pivot_offset = Vector2(64, 64)
+theme = ExtResource("1_xcsro")
+script = ExtResource("2_jekt6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1180985535]
+libraries/ = SubResource("AnimationLibrary_k14sf")
+libraries/map_button_animations = ExtResource("3_jekt6")
+
+[connection signal="button_up" from="." to="." method="_on_button_up"]

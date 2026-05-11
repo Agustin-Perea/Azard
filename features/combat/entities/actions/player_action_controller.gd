@@ -5,14 +5,9 @@ class_name PlayerActionController
 
 @onready var roulette_controller : RouletteController = $"../Books/Book"
 
-var roulette_score_ready := false
-var resolved_attack_score := 0
-
 func _ready() -> void:
 	super()
 	roulette_controller.finish_button.pressed.connect(_do_attacK)
-	BookEventBus.spin_started.connect(_on_roulette_spin_started)
-	BookEventBus.roulette_resolution_completed.connect(_on_roulette_resolution_completed)
 	actual_attacK_Info = AttackInfo.new()
 	actual_attacK_Info.attacker = $".."
 	
@@ -22,15 +17,10 @@ func _ready() -> void:
 	
 	
 func perform_movement() -> void:
-	roulette_score_ready = false
-	resolved_attack_score = 0
-	roulette_controller.reset_score()
 	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.EnemySelection)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
 	UiEventBus.activate_status_view_component.emit()
 	BookEventBus.player_turn.emit()
-	BookEventBus.player_turn_started.emit()
-	GameState.record_player_turn_started()
 	if target:
 		on_change_target(target)
 	else:
@@ -38,6 +28,8 @@ func perform_movement() -> void:
 		on_change_target(target)
 	
 	#reset del attack info y la ruleta y su visual
+	
+	roulette_controller.reset_score()
 
 
 func on_change_target(new_target : Unit):
@@ -49,10 +41,6 @@ func on_change_target(new_target : Unit):
 		#target.shaders._activate_selection_aura()
 
 func _do_attacK()->void:
-	if not roulette_score_ready or not roulette_controller.is_resolution_ready():
-		BookEventBus.popuptext.emit(roulette_controller.finish_button.global_position, "Primero usa una pelota", true)
-		return
-
 	#cambiar de estado
 	
 	if target:
@@ -65,7 +53,7 @@ func _do_attacK()->void:
 		attacker.rotation.x = 0 
 		attacker.rotation.z = 0
 		actual_attacK_Info.target = target
-		actual_attacK_Info.damage = resolved_attack_score
+		actual_attacK_Info.damage = roulette_controller.score
 	
 	attack_beginning.emit()
 
@@ -108,13 +96,3 @@ func _perform_attack()->void:
 	#pasa el atkInfo actual hacia el manager que le da a los enemigos
 	#podria ser una señal emitida, y el combat controller se suscribe a esta señal de las units
 	perform_attack.emit(actual_attacK_Info)
-
-func _on_roulette_spin_started() -> void:
-	roulette_score_ready = false
-	resolved_attack_score = 0
-
-func _on_roulette_resolution_completed(controller: RouletteController, resolved_score: int, _ball: BallRuntimeState) -> void:
-	if controller != roulette_controller:
-		return
-	roulette_score_ready = true
-	resolved_attack_score = resolved_score

@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded, blend_mix, depth_draw_never, cull_disabled;
+render_mode unshaded, blend_mix, depth_draw_opaque, cull_disabled;
 
 uniform vec4 color_aura : source_color = vec4(0.2, 0.5, 1.0, 1.0);
 uniform float radio_base : hint_range(0.1, 0.4) = 0.25;

@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://bembx3bewxcfb"]
+
+[ext_resource type="Script" uid="uid://jmj7dplyybch" path="res://features/map/definition/map_lines.gd" id="1_3an6o"]
+[ext_resource type="Script" uid="uid://euqocjn767fg" path="res://features/map/controllers/map.gd" id="1_447bu"]
+[ext_resource type="Material" uid="uid://brdwd6h03ray1" path="res://resources/map/map_lines/shader/map_line.tres" id="2_447bu"]
+[ext_resource type="PackedScene" uid="uid://dxp5raibd2750" path="res://features/map/views/map_button.tscn" id="2_jm4l5"]
+
+[node name="Map" type="Node2D" unique_id=1399185867]
+texture_filter = 2
+script = ExtResource("1_447bu")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1821426899]
+layer = -1
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1214231292]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" unique_id=1117511828]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9137255, 0.92941177, 0.73333335, 1)
+
+[node name="Visuals" type="Node2D" parent="." unique_id=832192478]
+
+[node name="Lines" type="Line2D" parent="Visuals" unique_id=663857911]
+texture_filter = 2
+texture_repeat = 1
+material = ExtResource("2_447bu")
+script = ExtResource("1_3an6o")
+
+[node name="Nodes" type="Node2D" parent="Visuals" unique_id=583078563]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=791535764]
+offset = Vector2(960, 540)
+process_callback = 0
+
+[node name="MapButton" parent="." unique_id=1026249986 instance=ExtResource("2_jm4l5")]
+visible = false

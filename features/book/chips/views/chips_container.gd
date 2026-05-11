@@ -12,7 +12,7 @@ var chip_elements_in_container : Array[ChipElement]
 @onready var  audio_stream : AudioStreamPlayer = $"../../AudioStreamPlayer"
 
 func _ready() -> void:
-	
+
 	spawn_chips(GameState.chips)
 
 func spawn_chips(chips: Array[ChipModel]):
@@ -47,5 +47,3 @@ func chip_moved(chip : ChipElement)->void:
 	chip.chip_moved.disconnect(chip_moved)
 	chip_elements_in_container.erase(chip)
 	reorder_chips()
-
-		

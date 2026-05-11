@@ -3,7 +3,6 @@ extends Node3D
 #debe llevar un count reseteable a final de turno, cada count aumenta la velocidad hasta un x2
 @onready var background_mesh : MeshInstance3D = $BackgroundMesh
 @onready var sprite_viewport : Sprite3D = $Sprite3D
-@onready var viewport : SubViewport = $SubViewport
 @onready var label_text : RichTextLabel = $SubViewport/RichTextLabel
 
 @export var duracion_animacion : float = .5
@@ -12,18 +11,9 @@ extends Node3D
 
 var active_tween : Tween = null
 var finished : bool = false
-var last_popup_key := ""
-var last_popup_time_msec := 0
-var last_audio_time_msec := 0
 
 @export var base_spot : Vector3 = Vector3(-1.34,0.0,-1.278)
 @export var mult_spot : Vector3 = Vector3(-0.822,0.0,-1.278)
-@export var base_viewport_size := Vector2i(128, 128)
-@export var long_viewport_size := Vector2i(320, 160)
-@export var base_plane_size := Vector2(0.3, 0.3)
-@export var long_plane_size := Vector2(0.72, 0.36)
-@export var base_font_size := 46
-@export var long_font_size := 36
 
 @onready var audio_stream_player :AudioStreamPlayer = $AudioStreamPlayer
 
@@ -55,12 +45,6 @@ func reset_state():
 	self.visible = false
 
 func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool = false)->void:
-	var now := Time.get_ticks_msec()
-	var key := text + "|" + str(global) + "|" + str(spot_global_postion.round())
-	if key == last_popup_key and now - last_popup_time_msec < 500:
-		return
-	last_popup_key = key
-	last_popup_time_msec = now
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
@@ -74,12 +58,9 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 			#player.stream = preload("res://resources/sounds/Rise05.wav")
 			#player.pitch_scale = 2
 			#player.play()
-			if Time.get_ticks_msec() - last_audio_time_msec > 650:
-				last_audio_time_msec = Time.get_ticks_msec()
-				audio_stream_player.stop()
-				audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
-				audio_stream_player.pitch_scale = 2
-				audio_stream_player.play()
+			audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
+			audio_stream_player.pitch_scale = 2
+			audio_stream_player.play()
 			self.visible = true
 
 			#Setup de datos
@@ -90,7 +71,6 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 				self.position = spot_global_postion
 			self.position.y += 0.1
 			label_text.bbcode_enabled = true
-			_apply_text_layout(text)
 			label_text.text = "[wave amp=50 freq=5]" + text + "[/wave]"
 
 			#Nueva Animación
@@ -134,19 +114,3 @@ func kill_tween()->void:
 		active_tween.kill()
 	active_tween = null
 	finished = true
-
-func _apply_text_layout(text: String) -> void:
-	var is_long := text.length() > 6
-	var viewport_size := long_viewport_size if is_long else base_viewport_size
-	var plane_size := long_plane_size if is_long else base_plane_size
-	var font_size := long_font_size if is_long else base_font_size
-
-	viewport.size = viewport_size
-	label_text.size = Vector2(viewport_size)
-	label_text.position = Vector2.ZERO
-	label_text.pivot_offset = Vector2(viewport_size) * 0.5
-	label_text.add_theme_font_size_override("normal_font_size", font_size)
-
-	var plane := background_mesh.mesh as PlaneMesh
-	if plane != null:
-		plane.size = plane_size

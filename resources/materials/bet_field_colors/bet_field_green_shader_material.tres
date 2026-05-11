@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cc5lqxty5p60y"]
+
+[ext_resource type="Shader" uid="uid://6vlfyidxqdoh" path="res://resources/materials/shaders/bet_field_shader_material.gdshader" id="1_y6fr1"]
+[ext_resource type="Texture2D" uid="uid://dujnpd6skf4qg" path="res://resources/book/model/roulette_book_PaletaColoresRuleta.png" id="2_cnmdb"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_y6fr1")
+shader_parameter/tex_palette = ExtResource("2_cnmdb")
+shader_parameter/palette_offset = 0.0
+shader_parameter/palette_offset_y = 0.0
+shader_parameter/highlighted = false

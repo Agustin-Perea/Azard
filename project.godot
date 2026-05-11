@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Azard"
-run/main_scene="uid://ljs75i2re1r6"
+run/main_scene="uid://bembx3bewxcfb"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://buwcryw1eujb2"
 
@@ -23,6 +23,7 @@ DragService="*uid://m2jbm3o7s6bf"
 EventManager="*uid://dbw18b0bf5ody"
 BookEventBus="*uid://b2hortd7cvbwd"
 UiEventBus="*uid://clqbq1cyir7sx"
+UiHud="*uid://doguotrnk170t"
 
 [display]
 

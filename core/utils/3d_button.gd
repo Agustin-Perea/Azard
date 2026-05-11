@@ -12,10 +12,8 @@ signal released
 var enabled : bool = true
 
 func _ready() -> void:
-	var ui_event_bus = get_node_or_null("/root/UiEventBus")
-	if ui_event_bus != null:
-		ui_event_bus.change_collision_detection.connect(_on_change_collision_detection)
-		ui_event_bus.change_collision_detection_buttons.connect(_on_change_collision_detection)
+	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
+	UiEventBus.change_collision_detection_buttons.connect(_on_change_collision_detection)
 
 func _on_mouse_entered():
 	if not global_input_enabled:

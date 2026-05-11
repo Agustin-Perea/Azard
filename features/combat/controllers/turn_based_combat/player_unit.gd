@@ -18,3 +18,6 @@ func _ready() -> void:
 	@warning_ignore("unused_parameter")
 	animation_tree.animation_finished.connect(func(anim_name: StringName): anim_finished = true)
 	
+func _call_defeat_ui()->void:
+	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.Defeat)
+	BookEventBus.defeat.emit()
