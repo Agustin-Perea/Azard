@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://cahov02d1rq0r"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/uncommon/trinket_212_chain_hook_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_mx62k"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 212
+display_name = "Chain Hook"
+description = "Los efectos de rebote o cadena ganan +20% de dano en los impactos secundarios."
+stackable = false
+rarity_type = 2
+pool_weight = 75
+trigger_types = Array[int]([4])
+design_notes = "Soporte natural para BounceBall y StormBall."
+effect_key = "chain_hook"
+metadata = {
+"secondary_damage_bonus": 0.2
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

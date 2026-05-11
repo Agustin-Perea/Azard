@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/epic/board_upgrade_325_add_37_effect.gd" id="1_chbx2"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_f8llg"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_o2k42"]
+
+[sub_resource type="Resource" id="Resource_ypad4"]
+script = ExtResource("1_chbx2")
+
+[resource]
+script = ExtResource("3_o2k42")
+board_upgrade_id = 325
+display_name = "Add 37"
+description = "Marca un numero como 37 suave para sinergias de jackpot hasta que exista una casilla real en la ruleta."
+stackable = false
+rarity_type = 4
+pool_weight = 20
+upgrade_type = 10
+design_notes = "V1 soft: no agrega ni reemplaza una casilla real de ruleta. Requiere soporte visual futuro para ser estructural completo."
+effect_key = "add_37"
+metadata = {
+"operations": [{
+"count": 1,
+"filter": "any",
+"set_meta": {
+"board_tag_jackpot": true,
+"board_tag_soft_37": true
+}
+}],
+"requires_real_wheel_slot": true,
+"structural_mode": "soft"
+}
+board_upgrade_effect = SubResource("Resource_ypad4")
+cumulative = false

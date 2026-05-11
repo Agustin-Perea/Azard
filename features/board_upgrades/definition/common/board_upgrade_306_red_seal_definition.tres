@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/common/board_upgrade_306_red_seal_effect.gd" id="1_yfu82"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_vg5xc"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_68o0h"]
+
+[sub_resource type="Resource" id="Resource_xvx4l"]
+script = ExtResource("1_yfu82")
+
+[resource]
+script = ExtResource("3_68o0h")
+board_upgrade_id = 306
+display_name = "Red Seal"
+description = "Elige 1 numero rojo. Cuando cae ahi, gana +1 base adicional."
+pool_weight = 120
+upgrade_type = 1
+design_notes = "Pequeno empujon a builds rojas."
+effect_key = "red_seal"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_red_seal_base": 1.0
+},
+"count": 1,
+"filter": "red"
+}]
+}
+board_upgrade_effect = SubResource("Resource_xvx4l")

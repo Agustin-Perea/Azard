@@ -1,11 +1,11 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, depth_draw_opaque, cull_disabled;
 
-instance uniform vec4 color_aura : source_color = vec4(0.2, 0.5, 1.0, 1.0);
-instance uniform float radio_base : hint_range(0.1, 0.4) = 0.25;
-instance uniform float velocidad_giro : hint_range(-10.0, 10.0) = 2.0;
-instance uniform float intensidad_lava : hint_range(0.0, 0.3) = 0.1;
-instance uniform float suavizado : hint_range(0.01, 0.1) = 0.03;
+uniform vec4 color_aura : source_color = vec4(0.2, 0.5, 1.0, 1.0);
+uniform float radio_base : hint_range(0.1, 0.4) = 0.25;
+uniform float velocidad_giro : hint_range(-10.0, 10.0) = 2.0;
+uniform float intensidad_lava : hint_range(0.0, 0.3) = 0.1;
+uniform float suavizado : hint_range(0.01, 0.1) = 0.03;
 
 // Ruido simple y rápido
 float hash(vec2 p) {

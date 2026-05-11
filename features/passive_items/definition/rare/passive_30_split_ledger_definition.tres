@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://sstxejvlt2rh"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/rare/passive_30_split_ledger_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 30
+display_name = "SplitLedger"
+description = "Si en un mismo combate usaste 4 tipos distintos de pelotas, ganas +0.5 mult en la proxima resolucion."
+stackable = false
+rarity_type = 3
+pool_weight = 35
+trigger_types = Array[int]([4])
+design_notes = "Premia builds variadas y conecta con AscendBall."
+effect_key = "split_ledger"
+metadata = {
+"distinct_ball_types_required": 4,
+"mult": 0.5
+}
+passive_item_effect = SubResource("Resource_effect")
+cumulative = false

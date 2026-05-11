@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://bmq1or2xdo38u"]
+
+[ext_resource type="Script" path="res://features/passive_items/effects/catalog/common/passive_05_red_ribbon_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/passive_items/definition/passive_item_definition.gd" id="2_def"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="3_tex"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+item_id = 5
+display_name = "RedRibbon"
+description = "Cada ficha que gane en un campo rojo mejora el campo con +0.5 base."
+pool_weight = 125
+trigger_types = Array[int]([3])
+design_notes = "Recompensa builds de color sin explotar desde temprano."
+effect_key = "red_ribbon"
+metadata = {
+"base": 0.5,
+"color": "red"
+}
+passive_item_effect = SubResource("Resource_effect")

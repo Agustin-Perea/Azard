@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/uncommon/board_upgrade_309_double_gold_paint_effect.gd" id="1_mxdft"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_1ftuu"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_to5ny"]
+
+[sub_resource type="Resource" id="Resource_u7q28"]
+script = ExtResource("1_mxdft")
+
+[resource]
+script = ExtResource("3_to5ny")
+board_upgrade_id = 309
+display_name = "Double Gold Paint"
+description = "Convierte 2 numeros normales en dorados."
+rarity_type = 2
+pool_weight = 85
+design_notes = "Version mejorada de Gold Paint."
+effect_key = "double_gold_paint"
+metadata = {
+"operations": [{
+"count": 2,
+"filter": "normal",
+"set_meta": {
+"board_tag_golden": true
+}
+}]
+}
+board_upgrade_effect = SubResource("Resource_u7q28")

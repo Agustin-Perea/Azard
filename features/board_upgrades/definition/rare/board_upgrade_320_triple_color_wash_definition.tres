@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/rare/board_upgrade_320_triple_color_wash_effect.gd" id="1_phcce"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_xm80l"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_q33w4"]
+
+[sub_resource type="Resource" id="Resource_dbjvx"]
+script = ExtResource("1_phcce")
+
+[resource]
+script = ExtResource("3_q33w4")
+board_upgrade_id = 320
+display_name = "Triple Color Wash"
+description = "Cambia el color de 3 numeros al color elegido."
+rarity_type = 3
+pool_weight = 48
+design_notes = "Empieza a deformar el tablero en serio."
+effect_key = "triple_color_wash"
+metadata = {
+"operations": [{
+"color": 1,
+"count": 3,
+"filter": "any"
+}]
+}
+board_upgrade_effect = SubResource("Resource_dbjvx")

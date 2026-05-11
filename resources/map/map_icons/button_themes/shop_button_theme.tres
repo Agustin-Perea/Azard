@@ -1,0 +1,27 @@
+[gd_resource type="Theme" format=3 uid="uid://epbv6o0lidyy"]
+
+[ext_resource type="Texture2D" uid="uid://cjl8067h520ky" path="res://resources/map/map_icons/shop_icon.png" id="1_3vi40"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_51ptp"]
+texture = ExtResource("1_3vi40")
+modulate_color = Color(0.7283124, 0.7283124, 0.7283124, 0.6509804)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6tkw2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7cwfu"]
+texture = ExtResource("1_3vi40")
+modulate_color = Color(1.697393, 1.697393, 1.697393, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sku71"]
+texture = ExtResource("1_3vi40")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qnqa3"]
+texture = ExtResource("1_3vi40")
+modulate_color = Color(0.7852611, 0.7852611, 0.7852611, 1)
+
+[resource]
+Button/styles/disabled = SubResource("StyleBoxTexture_51ptp")
+Button/styles/focus = SubResource("StyleBoxEmpty_6tkw2")
+Button/styles/hover = SubResource("StyleBoxTexture_7cwfu")
+Button/styles/normal = SubResource("StyleBoxTexture_sku71")
+Button/styles/pressed = SubResource("StyleBoxTexture_qnqa3")

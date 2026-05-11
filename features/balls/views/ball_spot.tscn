@@ -2,17 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="1_nx6r2"]
 [ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="3_8lm48"]
-[ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="3_l35wy"]
-[ext_resource type="Texture2D" uid="uid://buwcryw1eujb2" path="res://Icon.png" id="4_8lm48"]
+[ext_resource type="Material" uid="uid://dcyu5hv0xs4ih" path="res://resources/materials/auras/legendary_aura_material.tres" id="3_l35wy"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="4_l35wy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2bku"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_urdie"]
-render_priority = 0
-shader = ExtResource("3_l35wy")
 
 [node name="Ball_Spot" type="StaticBody3D" unique_id=1548367600]
 physics_interpolation_mode = 1
@@ -30,15 +26,10 @@ mesh = ExtResource("3_8lm48")
 
 [node name="Sprite3D_aura" type="Sprite3D" parent="." unique_id=993775335]
 transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_urdie")
-instance_shader_parameters/color_aura = Color(0.9040001, 0.27999997, 1, 1)
-instance_shader_parameters/intensidad_lava = 0.0250000011875
-instance_shader_parameters/radio_base = 0.26500000932762
-instance_shader_parameters/suavizado = 0.10000000149012
-instance_shader_parameters/velocidad_giro = 1.0000005225000006
-pixel_size = 0.007
+material_override = ExtResource("3_l35wy")
+pixel_size = 0.08
 billboard = 1
-texture = ExtResource("4_8lm48")
+texture = ExtResource("4_l35wy")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

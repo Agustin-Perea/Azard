@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/rare/board_upgrade_323_treasury_number_effect.gd" id="1_aa3pf"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_hsemj"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_b7dd2"]
+
+[sub_resource type="Resource" id="Resource_kr3vd"]
+script = ExtResource("1_aa3pf")
+
+[resource]
+script = ExtResource("3_b7dd2")
+board_upgrade_id = 323
+display_name = "Treasury Number"
+description = "Elige 1 numero. Cuando cae ahi, la resolucion gana +1 Gold por cada condicion especial activa."
+rarity_type = 3
+pool_weight = 40
+upgrade_type = 5
+design_notes = "Excelente para sinergias complejas."
+effect_key = "treasury_number"
+metadata = {
+"operations": [{
+"add_meta": {
+"board_bonus_treasury_gold_per_condition": 1
+},
+"count": 1,
+"filter": "normal"
+}]
+}
+board_upgrade_effect = SubResource("Resource_kr3vd")

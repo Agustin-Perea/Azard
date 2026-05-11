@@ -29,6 +29,12 @@ const RARITY_COLORS : Dictionary = {
 	RARITY.EPIC: Color(0.7, 0.5, 1.0),
 	RARITY.LEGENDARY: Color(1.0, 0.85, 0.2)
 }
+const RARITY_MATERIAL_ROUTES : Dictionary = {
+	RARITY.COMMON: "res://resources/materials/auras/common_aura_material.tres",
+	RARITY.RARE: "res://resources/materials/auras/rare_aura_material.tres",
+	RARITY.EPIC: "res://resources/materials/auras/epic_aura_material.tres",
+	RARITY.LEGENDARY: "res://resources/materials/auras/legendary_aura_material.tres"
+}
 enum ATTACK_TYPE {
 	SINGLE,
 	HALF,

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketDefinition" format=3 uid="uid://j0oe4w5w3pcp"]
+
+[ext_resource type="Script" path="res://features/trinkets/effects/catalog/legendary/trinket_231_final_bet_seal_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_ta14d"]
+[ext_resource type="Script" path="res://features/trinkets/definition/trinket_definition.gd" id="2_def"]
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("1_effect")
+
+[resource]
+script = ExtResource("2_def")
+trinket_id = 231
+display_name = "Final Bet Seal"
+description = "Si la ultima resolucion ganadora del combate mata al enemigo, obtiene +2 mult y +10 Gold."
+stackable = false
+rarity_type = 5
+pool_weight = 6
+trigger_types = Array[int]([6, 4])
+design_notes = "Legendario de remate. Muy satisfactorio, no tan consistente como para romper todo."
+effect_key = "final_bet_seal"
+metadata = {
+"gold": 10,
+"mult": 2.0
+}
+trinket_effect = SubResource("Resource_effect")
+cumulative = false

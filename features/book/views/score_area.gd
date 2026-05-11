@@ -196,22 +196,23 @@ func _on_reroll_pressed()->void:
 	GameState.current_reroll = rerolls_count
 
 func disable_reroll()->void:
-	reroll_mesh.set_instance_shader_parameter("palette_offset",1.9)
-	reroll_mesh.set_instance_shader_parameter("palette_offset_y",0.1)
+	reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset",1.9)
+	reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0.1)
+
 	reroll_button.enabled = false
 	
 func enable_reroll()->void:
 	if rerolls_count > 0:
-		reroll_mesh.set_instance_shader_parameter("palette_offset",0)
-		reroll_mesh.set_instance_shader_parameter("palette_offset_y",0)
+		reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset",0)
+		reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0)
 	reroll_button.enabled = true
 
 func disable_finish_button()->void:
-	finish_button_mesh.set_instance_shader_parameter("palette_offset",1.9)
-	finish_button_mesh.set_instance_shader_parameter("palette_offset_y",0.1)
+	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset",1.9)
+	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0.1)
 	finish_button.enabled = false
 	
 func enable_finish_button()->void:
-	finish_button_mesh.set_instance_shader_parameter("palette_offset",0.6)
-	finish_button_mesh.set_instance_shader_parameter("palette_offset_y",0.8)
+	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset",0.6)
+	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0.8)
 	finish_button.enabled = true

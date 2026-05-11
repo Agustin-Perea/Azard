@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dfucwnbwwrj2a"]
+
+[ext_resource type="Texture2D" uid="uid://cgr2pcioyjyju" path="res://resources/map/map_lines/Line.png" id="1_whicu"]
+
+[node name="MapLine" type="Line2D" unique_id=254513469]
+texture_filter = 1
+texture_repeat = 2
+default_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+texture = ExtResource("1_whicu")
+texture_mode = 1
+joint_mode = 2
+round_precision = 4
+antialiased = true

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="BoardUpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/board_upgrades/effects/catalog/legendary/board_upgrade_336_eclipse_wheel_effect.gd" id="1_nlx1e"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_1mx7c"]
+[ext_resource type="Script" path="res://features/board_upgrades/definition/board_upgrade_definition.gd" id="3_or7u7"]
+
+[sub_resource type="Resource" id="Resource_ejp08"]
+script = ExtResource("1_nlx1e")
+
+[resource]
+script = ExtResource("3_or7u7")
+board_upgrade_id = 336
+display_name = "Eclipse Wheel"
+description = "Elige 1 numero. Ese numero cuenta al mismo tiempo como rojo y negro, ademas de conservar sus otros tags especiales."
+rarity_type = 5
+pool_weight = 5
+upgrade_type = 13
+design_notes = "Legendaria de combinaciones imposibles. Muy buena con builds de tags multiples."
+effect_key = "eclipse_wheel"
+metadata = {
+"operations": [{
+"both_colors": true,
+"count": 1,
+"filter": "normal"
+}]
+}
+board_upgrade_effect = SubResource("Resource_ejp08")

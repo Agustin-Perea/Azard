@@ -1,0 +1,5 @@
+extends "res://features/balls/effects/catalog/base_catalog_ball_effect.gd"
+class_name EchoBallCatalogEffect
+
+func on_post_resolved(roulette_controller: RouletteController) -> void:
+	GameState.set_meta(Constants.BALL_EFFECT_FLAG.ECHO_REPEAT_POWER, _scale_float(0.50, 0.75, 1.0))

@@ -17,7 +17,16 @@ class_name BingoChipElement
 @export var offset_description_canvas: Vector3
 
 
+
 @export var origin: Vector3
+
+
+const COLOR_MATERIALS : Array[ShaderMaterial] = [
+	preload("res://resources/materials/bet_field_colors/bet_field_green_shader_material.tres"),
+	preload("res://resources/materials/bet_field_colors/bet_field_red_shader_material.tres"),
+	preload("res://resources/materials/bet_field_colors/bet_field_black_shader_material.tres")
+]
+
 func _ready() -> void:
 	super()
 
@@ -30,13 +39,16 @@ func assign_data_model(new_data: BetFieldModel)->void:
 	number_label.text = str(data.number)
 	
 	if data.color == Constants.BET_FIELD_COLOR.RED:
-		chip_mesh.set_instance_shader_parameter("palette_offset", 0.25)
+		chip_mesh.material_override = COLOR_MATERIALS[1]
+		#chip_mesh.set_instance_shader_parameter("palette_offset", 0.25)
 
 	elif data.color == Constants.BET_FIELD_COLOR.BLACK:
-		chip_mesh.set_instance_shader_parameter("palette_offset", 0.5)
+		chip_mesh.material_override = COLOR_MATERIALS[2]
+		#chip_mesh.set_instance_shader_parameter("palette_offset", 0.5)
 
 	else:
-		chip_mesh.set_instance_shader_parameter("palette_offset", 0.0)
+		chip_mesh.material_override = COLOR_MATERIALS[0]
+		#chip_mesh.set_instance_shader_parameter("palette_offset", 0.0)
 	#bet_field.assign_data_model(new_data)
 	#bet_field.apply_data()
 	#set_outline(0.0)
@@ -143,12 +155,14 @@ func activate()->void:
 	$CollisionShape3D.disabled = false
 	position = origin
 	
-
+#esto deberia estar en el description no aqui
 func _on_use_button_pressed()->void:
-	info_canvas.visible = false
-	
-	DragService.start_persisted_drag(self)
-	$CollisionShape3D.disabled = true
-	UiEventBus.change_collision_detection_moveable.emit(true)
-	UiEventBus.change_collision_detection_buttons.emit(true)
-	#set_outline(0.005)
+	if GameState.economy_component.can_afford(4):
+		GameState.economy_component.spend_run_gold(4)
+		info_canvas.visible = false
+		
+		DragService.start_persisted_drag(self)
+		$CollisionShape3D.disabled = true
+		UiEventBus.change_collision_detection_moveable.emit(true)
+		UiEventBus.change_collision_detection_buttons.emit(true)
+		#set_outline(0.005)

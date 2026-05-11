@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="2_rgwna"]
 [ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="3_n1txx"]
 [ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="4_n1txx"]
-[ext_resource type="Texture2D" uid="uid://c4bqu455x1cry" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/star_05.png" id="5_v23ja"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="5_n1txx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ugj2k"]
 size = Vector3(0.7416992, 0.10809326, 0.30444336)
@@ -15,6 +15,11 @@ size = Vector3(0.2831421, 0.10668945, 0.28125)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8hlx4"]
 render_priority = 0
 shader = ExtResource("4_n1txx")
+shader_parameter/color_aura = Color(0.2, 0.5, 1, 1)
+shader_parameter/radio_base = 0.25
+shader_parameter/velocidad_giro = 2.0
+shader_parameter/intensidad_lava = 0.1
+shader_parameter/suavizado = 0.03
 
 [node name="BallDescription" type="MeshInstance3D" unique_id=313159008]
 physics_interpolation_mode = 2
@@ -80,12 +85,8 @@ disabled = true
 [node name="aura" type="Sprite3D" parent="." unique_id=1265007134]
 transform = Transform3D(1.7391305, 0, 0, 0, -7.601981e-08, 1.7391305, 0, -1.7391305, -7.601981e-08, -1.1051645, -0.1846756, -1.3926558)
 material_override = SubResource("ShaderMaterial_8hlx4")
-instance_shader_parameters/color_aura = Color(0.986545, 0.99168783, 0.99999994, 1)
-instance_shader_parameters/radio_base = 0.22700000752262
-instance_shader_parameters/suavizado = 0.10000000149012
-instance_shader_parameters/velocidad_giro = 1.0000005225000006
-pixel_size = 0.0008
-texture = ExtResource("5_v23ja")
+pixel_size = 0.004
+texture = ExtResource("5_n1txx")
 
 [connection signal="input_event" from="Spin_Button3D" to="Spin_Button3D" method="_on_input_event"]
 [connection signal="mouse_entered" from="Spin_Button3D" to="Spin_Button3D" method="_on_mouse_entered"]

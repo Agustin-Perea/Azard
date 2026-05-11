@@ -4,12 +4,12 @@ render_mode unshaded, shadows_disabled, cull_back;
 uniform sampler2D tex_palette : source_color, filter_nearest;
 
 // Offset horizontal
-instance uniform float palette_offset = 0.0;
+uniform float palette_offset = 0.0;
 
 // Offset vertical
-instance uniform float palette_offset_y = 0.0;
+uniform float palette_offset_y = 0.0;
 
-instance uniform bool highlighted = false;
+uniform bool highlighted = false;
 
 void fragment() {
 
