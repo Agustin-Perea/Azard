@@ -6,6 +6,9 @@ var ball_pool_definition : BallsDatabase
 var bingo_chips_constructor : BingoChipConstructor
 #@onready var passive_item_pool_definition : PoolDefinition = preload("res://Scripts/BetTable/ObjectPools/passive_item_pool.tres")
 
+
+
+
 ##battlepool
 #@onready var enemy_pool_definition :  = preload("res://Scripts/BattleDatabase/battle_pool.tres")
 

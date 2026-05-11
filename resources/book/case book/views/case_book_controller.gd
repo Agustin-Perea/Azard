@@ -38,23 +38,31 @@ const SHOP_BALL_PRICES := {
 const SHOP_REROLL_PRICE_BASE := 5
 const SHOP_REROLL_PRICE_UPDATE := 1
 var Shop_rerolls_count : int = 0 
+var actual_reroll_price : int = 5
 
 const SHOP_BASE_CHIP_MOD_PRICE := 4 #si este sale modificado se agrega el precio por modificacion
 const SHOP_POTION_PRICE := 5
 
 
 func _ready() -> void:
-	reroll_button.pressed.connect(reroll)
+	reroll_button.pressed.connect(_on_reroll_pressed)
 	map_button.pressed.connect(on_map_button_pressed)
 	reroll()
 	Shop_rerolls_count = 0
 	reroll_price_chart.text = str(SHOP_REROLL_PRICE_BASE + SHOP_REROLL_PRICE_UPDATE * Shop_rerolls_count)
 
+func _on_reroll_pressed()->void:
+	actual_reroll_price = SHOP_REROLL_PRICE_BASE + SHOP_REROLL_PRICE_UPDATE * Shop_rerolls_count
+	if GameState.economy_component.can_afford(actual_reroll_price):
+		GameState.economy_component.spend_run_gold(actual_reroll_price)
+		reroll()
+	
+
 func reroll() -> void:
 
-	
 	Shop_rerolls_count += 1
-	reroll_price_chart.text = str(SHOP_REROLL_PRICE_BASE + SHOP_REROLL_PRICE_UPDATE * Shop_rerolls_count)
+	actual_reroll_price = SHOP_REROLL_PRICE_BASE + SHOP_REROLL_PRICE_UPDATE * Shop_rerolls_count
+	reroll_price_chart.text = str(actual_reroll_price)
 	
 	
 	var ball_created : BallRuntimeState = GameState.object_pool_database.ball_pool_definition.get_random_ball()
@@ -87,16 +95,11 @@ func reroll() -> void:
 	UiEventBus.deactivate_descriptions.emit()
 
 
-func recharge_ball_spot(ball_elem: BallElement)->void:
-	var ball_created : BallRuntimeState = GameState.object_pool_database.ball_pool_definition.get_random_ball()
-	ball_created.final_price = ball_created.ball_definition.base_price
-	ball_elem._assign_data_model(ball_created)
-	
-
 
 func on_map_button_pressed()->void:
 	#PlayerUiEvents.change_book_page.emit(Constants.BOOK_PAGE.MAP)
 	#preload()
 	GameState.temp_scene_changed_value +=1
-	UiEventBus.change_scente_to.emit("res://scenes/combat/battle_scene_1.tscn")
+	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.MAP)
+	#UiEventBus.change_scene_to.emit("res://scenes/combat/battle_scene_1.tscn")
 	

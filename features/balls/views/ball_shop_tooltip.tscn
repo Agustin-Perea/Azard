@@ -4,18 +4,14 @@
 [ext_resource type="ArrayMesh" uid="uid://4bqascxvfmr" path="res://resources/3d_UI/ball_shop_tooltip.res" id="1_jnr1a"]
 [ext_resource type="Script" uid="uid://b6cxjgxn43435" path="res://features/balls/views/ball_description.gd" id="2_6h2u0"]
 [ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="3_axujv"]
-[ext_resource type="Shader" uid="uid://ds6wg4tjmy4t1" path="res://resources/materials/shaders/2D/aura_lava.gdshader" id="4_vj6k8"]
-[ext_resource type="Texture2D" uid="uid://c4bqu455x1cry" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/star_05.png" id="5_jdxq7"]
+[ext_resource type="Material" uid="uid://bcdxfalxkidfj" path="res://resources/materials/auras/common_aura_material.tres" id="5_6h2u0"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="6_6h2u0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ugj2k"]
 size = Vector3(0.30163574, 0.10809326, 0.13198853)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o2ihi"]
 size = Vector3(0.2831421, 0.10668945, 0.28125)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hlx4"]
-render_priority = 0
-shader = ExtResource("4_vj6k8")
 
 [node name="BallDescription" type="MeshInstance3D" unique_id=313159008]
 physics_interpolation_mode = 2
@@ -78,14 +74,9 @@ disabled = true
 
 [node name="aura" type="Sprite3D" parent="." unique_id=1265007134]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_8hlx4")
-instance_shader_parameters/color_aura = Color(0.86, 0.91366667, 1, 0.6627451)
-instance_shader_parameters/intensidad_lava = 0.0630000029925
-instance_shader_parameters/radio_base = 0.25300000875761997
-instance_shader_parameters/suavizado = 0.10000000149012
-instance_shader_parameters/velocidad_giro = 1.0000005225000006
-pixel_size = 0.0008
-texture = ExtResource("5_jdxq7")
+material_override = ExtResource("5_6h2u0")
+pixel_size = 0.004
+texture = ExtResource("6_6h2u0")
 
 [connection signal="input_event" from="Spin_Button3D" to="Spin_Button3D" method="_on_input_event"]
 [connection signal="mouse_entered" from="Spin_Button3D" to="Spin_Button3D" method="_on_mouse_entered"]

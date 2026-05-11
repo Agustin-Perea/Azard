@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dfvun3xa6nboq"]
+
+[ext_resource type="Shader" uid="uid://dgnx50hrx2vun" path="res://resources/map/materials/map_material.gdshader" id="1_16m8o"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_16m8o")
+shader_parameter/is_left_side = true

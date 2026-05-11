@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
 [ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
+[ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="8_jvpr3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsid0"]
 bg_color = Color(0, 0, 0, 0.27450982)
@@ -250,6 +251,25 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 script = null
+
+[node name="FPS_Control" type="Control" parent="." unique_id=1786962755]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("8_jvpr3")
+
+[node name="FPS" type="Label" parent="FPS_Control" unique_id=1327704655]
+texture_filter = 2
+layout_mode = 0
+offset_left = 67.0
+offset_top = 49.0
+offset_right = 107.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 36
+text = "FPS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

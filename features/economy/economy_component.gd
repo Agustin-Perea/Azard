@@ -1,8 +1,9 @@
 class_name EconomyComponent
 
 
-var run_gold
-var last_combat_gold_reward
+var run_gold : int 
+var initial_run_gold : int = 5000
+var last_combat_gold_reward : int 
 
 var combat_max_multiplier
 
@@ -35,10 +36,11 @@ func _init()->void:
 	reload()
 
 func reload()->void:
-	run_gold = 0
+	run_gold = initial_run_gold
 	last_combat_gold_reward = 0
 	combat_turns_taken = 0
 	combat_max_multiplier = 1.0
+	
 
 
 func add_run_gold(amount: int) -> void:

@@ -6,11 +6,12 @@ var scene_to_load : String
 var color_rect_tween : Tween
 
 func _ready() -> void:
-	UiEventBus.change_scente_to.connect(_change_scente_to)
+	UiEventBus.change_scene_to.connect(_change_scene_to)
+	UiEventBus.change_scene_to_packed.connect(_change_scene_to_packed)
 	visible = true
 	color_rect.modulate.a = 0.0
 
-func _change_scente_to(scene : String)->void:
+func _change_scene_to(scene : String)->void:
 	if color_rect_tween:
 		color_rect_tween.kill()
 	
@@ -20,13 +21,15 @@ func _change_scente_to(scene : String)->void:
 	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",_load_new_scene)
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)
 
-func _change_scene_to(scene : PackedScene)->void:
+func _change_scene_to_packed(scene : PackedScene)->void:
 	
 	if color_rect_tween:
 		color_rect_tween.kill()
 
 	color_rect_tween = create_tween().set_trans(Tween.TRANS_SINE)
-	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",func(): get_tree().call_deferred("change_scene_to_packed",scene))
+	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",func(): 
+		get_tree().call_deferred("change_scene_to_packed",scene)
+		UiEventBus.scene_changed.emit())
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 1.0,0.3)
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)
 

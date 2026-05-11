@@ -33,8 +33,7 @@ func assign_ball_model(new_model : BallElement)->void:
 	update_labels()
 	
 func update_labels()->void:
-	aura_description.set_instance_shader_parameter("color_aura",
-	ball_element.aura.get_instance_shader_parameter("color_aura"))
+	aura_description.material_override = ball_element.aura.material_override
 	button.collision_shape.disabled = false
 	deactivate_button.collision_shape.disabled = false
 
@@ -44,9 +43,12 @@ func update_labels()->void:
 
 @warning_ignore("unused_parameter")
 func add_ball()->void:
-	self.visible = false
-	GameState.add_ball(ball_element.ball_data)
-	ball_element._assign_data_model(null)
+
+	if GameState.economy_component.can_afford(ball_element.ball_data.ball_definition.base_price):
+		GameState.economy_component.spend_run_gold(ball_element.ball_data.ball_definition.base_price)
+		self.visible = false
+		GameState.add_ball(ball_element.ball_data)
+		ball_element._assign_data_model(null)
 
 @warning_ignore("unused_parameter")
 func spin_with_ball()->void:

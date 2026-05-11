@@ -19,7 +19,9 @@
 [ext_resource type="ArrayMesh" uid="uid://d1lqjlfn3aqk1" path="res://resources/book/model/bet_field.tres" id="11_wal6i"]
 [ext_resource type="PackedScene" uid="uid://pwvj2b7jvycd" path="res://features/book/chips/views/bet_chip.tscn" id="12_mpnxt"]
 [ext_resource type="Script" uid="uid://olyep6uxfgnp" path="res://features/book/table/view/table_fields.gd" id="12_ve5xc"]
+[ext_resource type="Material" uid="uid://1crwyi8fnf3x" path="res://resources/materials/reroll_button_shader_material.tres" id="13_8qbf8"]
 [ext_resource type="Script" uid="uid://c1y5qrg5q2yos" path="res://features/book/table/controllers/static_body_table_.gd" id="13_mpnxt"]
+[ext_resource type="Material" uid="uid://br1godntcyydv" path="res://resources/materials/finish_button_shader_material.tres" id="15_2w6kk"]
 [ext_resource type="Script" uid="uid://dwk0uil3sfst5" path="res://features/balls/views/balls_container.gd" id="15_4a5wc"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
 [ext_resource type="PackedScene" uid="uid://wat314uoi0bg" path="res://features/balls/views/ball_spot.tscn" id="15_vh2hp"]
@@ -30,7 +32,6 @@
 [ext_resource type="PackedScene" uid="uid://bisvvkie0uri" path="res://features/balls/views/ball_description.tscn" id="19_8qbf8"]
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="19_khsg3"]
 [ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
-[ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="27_344oo"]
 [ext_resource type="Script" uid="uid://boor88jdqe04t" path="res://features/items/passive_items/views/passive_item_element.gd" id="35_hnjqa"]
 [ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
 [ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
@@ -818,8 +819,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3852596, 0, -1.3056993)
 script = ExtResource("11_vvjhm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/RerollButton" unique_id=100792153]
-instance_shader_parameters/palette_offset = 0.0
-instance_shader_parameters/palette_offset_y = 0.0
+material_override = ExtResource("13_8qbf8")
 mesh = ExtResource("11_nq47p")
 
 [node name="Label3D" type="Label3D" parent="left_cover/RerollButton/MeshInstance3D" unique_id=1480586477]
@@ -836,9 +836,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.30929124, 0, -1.3056993)
 script = ExtResource("11_vvjhm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="left_cover/FinishMoveButton" unique_id=1834467383]
+material_override = ExtResource("15_2w6kk")
 gi_mode = 0
-instance_shader_parameters/palette_offset = 0.6
-instance_shader_parameters/palette_offset_y = 0.8
 mesh = ExtResource("11_nq47p")
 
 [node name="Label3D" type="Label3D" parent="left_cover/FinishMoveButton/MeshInstance3D" unique_id=1443492601]
@@ -1318,27 +1317,6 @@ mesh = ExtResource("19_5lkav")
 [node name="Camera3D" type="Camera3D" parent="Temp" unique_id=2058904043]
 transform = Transform3D(1, 0, 0, 0, 0.028759047, 0.9995864, 0, -0.9995864, 0.028759047, 0, 4.361888, -0.93015957)
 fov = 30.0
-
-[node name="UI" type="CanvasLayer" parent="Temp" unique_id=2108080054]
-
-[node name="Control" type="Control" parent="Temp/UI" unique_id=886354619]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("27_344oo")
-
-[node name="FPS" type="Label" parent="Temp/UI/Control" unique_id=729665360]
-texture_filter = 2
-layout_mode = 0
-offset_left = 67.0
-offset_top = 49.0
-offset_right = 107.0
-offset_bottom = 70.0
-theme_override_font_sizes/font_size = 36
-text = "FPS"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Node3D" type="StaticBody3D" parent="Temp" unique_id=365811749 node_paths=PackedStringArray("add_collision", "item_collision")]
 physics_interpolation_mode = 1

@@ -1,6 +1,10 @@
 extends Node
 
 var object_pool_database : ObjectPoolDatabase
+var map_generator : MapGenerator
+
+
+
 var master_seed: int = 123456789
 
 var bet_field_definition: BetFieldsDefinition
@@ -45,6 +49,8 @@ var temp_scene_changed_value : int
 func _ready():
 	economy_component = EconomyComponent.new()
 	object_pool_database = ObjectPoolDatabase.new()
+	map_generator = MapGenerator.new()
+	
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
 #	CombatEventBus.reload.connect(reload)
@@ -57,6 +63,9 @@ func reload():
 	#BookEventBus.reload.emit()
 	temp_scene_changed_value = 0
 	master_seed = randi() % 999999999 + 1
+	
+	
+	map_generator.on_reload()
 	
 	object_pool_database.set_seed(master_seed)
 	object_pool_database.reload()

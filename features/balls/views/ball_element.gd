@@ -19,9 +19,15 @@ var description_active : bool = false
 var shop_price: int = 0
 
 @onready var aura : Sprite3D = $Sprite3D_aura
-#pueden no estar
-#aura
-#price_chart
+
+const AURA_MATERIALS : Array[ShaderMaterial] = [
+	preload(Constants.RARITY_MATERIAL_ROUTES[Constants.RARITY.COMMON]),
+	preload(Constants.RARITY_MATERIAL_ROUTES[Constants.RARITY.RARE]),
+	preload(Constants.RARITY_MATERIAL_ROUTES[Constants.RARITY.EPIC]),
+	preload(Constants.RARITY_MATERIAL_ROUTES[Constants.RARITY.LEGENDARY])
+]
+
+
 
 func _ready() -> void:
 	super()
@@ -45,13 +51,13 @@ func _assign_data_model(new_data:BallRuntimeState)->void:
 		
 		match ball_data.ball_definition.rarity:
 			Constants.RARITY.COMMON:
-				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.COMMON])
+				aura.material_override = AURA_MATERIALS[0]
 			Constants.RARITY.RARE:
-				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.RARE])
+				aura.material_override = AURA_MATERIALS[1]
 			Constants.RARITY.EPIC:
-				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.EPIC])
+				aura.material_override = AURA_MATERIALS[2]
 			Constants.RARITY.LEGENDARY:
-				aura.set_instance_shader_parameter("color_aura",Constants.RARITY_COLORS[Constants.RARITY.LEGENDARY])
+				aura.material_override = AURA_MATERIALS[3]
 	
 		#if ball_mesh and ball_mesh.material_override:
 			#ball_mesh.material_override.next_pass = aura_material

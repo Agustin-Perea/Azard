@@ -4,7 +4,7 @@ class_name BooksController
 @onready var book_none : Node3D = $"../ModelVisualComponent/mage/bro_rig/Skeleton3D/stats_left_cover_001"
 @onready var book_case : Node3D = $CaseBook
 @onready var book_roulette : Node3D = $Book
-#@onready var book_map : Node3D = $MapBook
+@onready var book_map : Node3D = $MapBook
 
 @onready var audio_stream : AudioStreamPlayer = $"../Sounds/AudioStreamPlayer"
 var sonidos = {
@@ -21,7 +21,7 @@ func _ready() -> void:
 	actual_page = book_roulette
 	pages_dictionary = {
 	Constants.BOOK_PAGE.ROULETTE : book_roulette,
-	#Constants.BOOK_PAGE.MAP : book_map,
+	Constants.BOOK_PAGE.MAP : book_map,
 	Constants.BOOK_PAGE.CASE : book_case,
 	Constants.BOOK_PAGE.NONE : book_none
 	}

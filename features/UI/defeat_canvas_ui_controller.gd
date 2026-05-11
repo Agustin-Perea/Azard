@@ -17,7 +17,7 @@ func set_up()->void:
 
 func _on_button_button_down() -> void:
 	GameState.reload()
-	UiEventBus.change_scente_to.emit("res://scenes/combat/battle_scene_1.tscn")
+	UiEventBus.change_scene_to.emit("res://scenes/combat/battle_scene_1.tscn")
 	#TransitionLayer._change_scente_to(Constants.MAP_SCENE)
 	pass
 

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="NodeScene" format=3 uid="uid://c4ac74ojx6en0"]
+
+[ext_resource type="Script" uid="uid://b4maixbgowy3i" path="res://features/map/node_pool/node_scene.gd" id="1_0tjh7"]
+
+[resource]
+script = ExtResource("1_0tjh7")
+weight = 10
+battle_scene_path = "uid://ljs75i2re1r6"
+metadata/_custom_type_script = "uid://b4maixbgowy3i"
