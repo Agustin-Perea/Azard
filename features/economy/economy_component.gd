@@ -40,6 +40,7 @@ func reload()->void:
 	last_combat_gold_reward = 0
 	combat_turns_taken = 0
 	combat_max_multiplier = 1.0
+
 	
 
 

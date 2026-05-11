@@ -10,6 +10,7 @@ func _ready() -> void:
 	UiEventBus.selection_button_visible.connect(on_selection_button_visible)
 	UiEventBus.book_button_visible.connect(on_book_button_visible)
 	GameState.economy_component.gold_changed.connect(_on_gold_changed)
+	_on_gold_changed(GameState.economy_component.run_gold)
 
 func _on_selection_button_pressed() -> void:
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)#esto va al placeholder
