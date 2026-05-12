@@ -45,7 +45,8 @@ enum BOOK_PAGE {
 	ROULETTE,
 	CASE,
 	MAP,
-	NONE
+	NONE,
+	HELP
 }
 
 #betfields colors

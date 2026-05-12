@@ -27,6 +27,8 @@ signal deactivate_status_view_component
 signal activate_status_view_component
 
 signal change_book_page(arg : Constants.BOOK_PAGE)
+signal book_page_change_started(arg : Constants.BOOK_PAGE)
+signal book_page_change_finished(arg : Constants.BOOK_PAGE)
 
 signal change_target(target : Unit)
 
