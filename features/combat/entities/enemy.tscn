@@ -113,12 +113,13 @@ mesh = NodePath("bat/Bat")
 physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
-[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0019792, 0, 0, 0, 0.9968333, 0, 0, 0, 1, 0, 1.7970276, 0)
+[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=1352704274]
+transform = Transform3D(1.0332079, 0, 0, 0, 0.94686735, 0, 0, 0, 1, 0, 1.6833849, 0)
 material_override = SubResource("ShaderMaterial_d2kjj")
-"blend_shapes/Key 2" = 1.0
+"blend_shapes/Key 2" = 0.08247415
+"blend_shapes/Key 4" = 0.9175258
 
-[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
+[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=501119537]
 active = false
 libraries/bat_animations = ExtResource("4_iy404")
 playback_default_blend_time = 0.2

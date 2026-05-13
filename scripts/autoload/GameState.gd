@@ -5,7 +5,7 @@ var map_generator : MapGenerator
 
 
 
-var master_seed: int = 123456789
+var master_seed: int = 627357
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []

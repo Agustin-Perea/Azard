@@ -147,6 +147,9 @@ script = ExtResource("7_6b2ki")
 script = ExtResource("7_6b2ki")
 
 [node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("4_b6bnk")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.99431086, 0, 4.5207515)
+
+[node name="Enemy2" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=704330891 instance=ExtResource("4_b6bnk")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.2810414, 0, 4.5207515)
 
 [editable path="Environment/EntornoArena"]

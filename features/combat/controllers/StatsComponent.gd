@@ -9,6 +9,8 @@ class_name StatsComponent
 
 @export var attack : int = 1 #esto en realidad deberia ser dado por el ataque
 
+@export var reset_shield_on_battle_init : bool = false
+
 signal death #deberia saber quien murio
 signal health_changed
 
@@ -18,7 +20,13 @@ signal health_changed
 func set_up()->void:
 	current_healt = max_healt #esto cambia cuando estamos ingame
 	health_changed.emit()
-	
+	if reset_shield_on_battle_init:
+		BookEventBus.battle_init.connect(reset_shield)
+
+func reset_shield()->void:
+	shield = 0
+	health_changed.emit()
+
 func _substract_life(life:int) -> void:
 	shield -= life
 	

@@ -13,8 +13,8 @@ class_name BallDefinition
 @export var base_price: int = 5
 
 #datos del ataque 
-@export var attack_type: int
+@export var attack_type : Constants.ATTACK_TYPE
 
-@export var rarity: Constants.RARITY = Constants.RARITY.COMMON
+@export var rarity : Constants.RARITY = Constants.RARITY.COMMON
 
 @export var ball_effect: BallEffect

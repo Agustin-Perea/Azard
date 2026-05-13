@@ -19,6 +19,8 @@ signal unit_death(unit : Unit)
 @warning_ignore("unused_signal")
 signal reroll(RouletteController)
 
+signal battle_init
+
 signal player_turn
 
 signal enemy_turn

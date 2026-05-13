@@ -42,29 +42,33 @@ func on_change_target(new_target : Unit):
 
 func _do_attacK()->void:
 	#cambiar de estado
-	
-	if target:
-		# Orientamos el personaje hacia el objetivo
-		# Usamos global_position para evitar problemas con la jerarquía
-		attacker.look_at(target.global_position, Vector3.UP,true)
-		#target.shaders._deactivate_selection_aura()
-		
-		# Opcional: Bloquear la rotación en el eje X para que no se incline hacia arriba/abajo
-		attacker.rotation.x = 0 
-		attacker.rotation.z = 0
-		actual_attacK_Info.target = target
-		actual_attacK_Info.damage = roulette_controller.score
-	
-	attack_beginning.emit()
-
-	
 	#cerrar libro y cambiarlo a placeholder(quitar visibilidad)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
-	
-	
-	#inicio de animacion de ataque
 
+	#espera a que termine la animacion
 	var ev = GameEvent.new({
+		"paralel": false,
+		"action": func():
+			if target:
+				# Orientamos el personaje hacia el objetivo
+				# Usamos global_position para evitar problemas con la jerarquía
+				attacker.look_at(target.global_position, Vector3.UP,true)
+				#target.shaders._deactivate_selection_aura()
+				
+				# Opcional: Bloquear la rotación en el eje X para que no se incline hacia arriba/abajo
+				attacker.rotation.x = 0 
+				attacker.rotation.z = 0
+				actual_attacK_Info.target = target
+				actual_attacK_Info.damage = roulette_controller.score
+				
+				actual_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
+			
+			attack_beginning.emit()
+			return true
+	})
+	EventManager.add_event(EventManager.QueueType.GAME, ev)
+	#inicio de animacion de ataque
+	ev = GameEvent.new({
 		"paralel": false,
 		"action": func():
 			UiEventBus.deactivate_status_view_component.emit()
@@ -82,6 +86,15 @@ func _do_attacK()->void:
 			return anim_finished
 	})
 	
+	#es mejor usar un tween
+	EventManager.add_event(EventManager.QueueType.GAME, ev)
+	#espera a que termine la animacion
+	ev = GameEvent.new({
+		"paralel": false,
+		"action": func():
+			attacker.rotation = Vector3.ZERO
+			return true
+	})
 	EventManager.add_event(EventManager.QueueType.GAME, ev)
 	ev = GameEvent.new({
 		"paralel": false,
@@ -90,7 +103,6 @@ func _do_attacK()->void:
 			return true
 	})
 	EventManager.add_event(EventManager.QueueType.GAME, ev)
-
 
 func _perform_attack()->void:
 	#pasa el atkInfo actual hacia el manager que le da a los enemigos

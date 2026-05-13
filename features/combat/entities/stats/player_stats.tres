@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_n48ti")
 current_healt = 100
+reset_shield_on_battle_init = true
 metadata/_custom_type_script = "uid://bisiegiye7v2a"

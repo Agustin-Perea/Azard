@@ -102,26 +102,20 @@ func _play_animation(anim_name : String)-> void:
 func _show_damaged(damage: float) -> void:
 	status_view_component._show_damaged(damage)
 
-
 func _recieve_attack(damage : int)-> void:
 	animation_state_machine.travel("hurt")
 	stats._substract_life(damage)
 	status_view_component._show_damaged(damage)
 
 func _death()-> void:
+	print("death")
+	print(animation_state_machine)
 	status_view_component.health_sprite_viewport.visible = false
 	status_view_component.damage_text.visible = false
 	animation_state_machine.start("death")
 	anim_finished = false
 	
-	EventManager.add_event(
-	EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			queue_free()
-			return true
-	}))
+
 	EventManager.add_event(
 	EventManager.QueueType.GAME, 
 	GameEvent.new({
@@ -131,7 +125,14 @@ func _death()-> void:
 	}), 
 	true)
 
-
+	EventManager.add_event(
+	EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			queue_free()
+			return true
+	}))
 #area para ser seleccionado por inputs como target
 #@warning_ignore("unused_parameter")
 #func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
