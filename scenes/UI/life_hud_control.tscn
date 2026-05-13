@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://r1b7s32mtkp2"]
+
+[ext_resource type="Script" uid="uid://cggu03chhmfvi" path="res://scenes/UI/stats_hud.gd" id="1_uvvwk"]
+[ext_resource type="Texture2D" uid="uid://d2x3dibo04wjw" path="res://resources/hud_icons/shield_icon.svg" id="2_huu7m"]
+[ext_resource type="Texture2D" uid="uid://ot0uxc85qbxo" path="res://resources/hud_icons/sword_icon.svg" id="3_huu7m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bfxq"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+border_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgltv"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+anti_aliasing = false
+
+[node name="LifeHudControl" type="Control" unique_id=1383549522]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 590.0
+offset_top = 458.0
+offset_right = 630.0
+offset_bottom = 498.0
+script = ExtResource("1_uvvwk")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=292182595]
+layout_mode = 0
+offset_left = -127.0
+offset_top = -15.0
+offset_right = 131.98999
+offset_bottom = 14.434998
+color = Color(0.47699997, 0.52381665, 0.53, 1)
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=2141291848]
+texture_filter = 1
+layout_mode = 0
+offset_left = -123.0
+offset_top = -8.0
+offset_right = 125.0
+offset_bottom = 7.300003
+theme_override_styles/background = SubResource("StyleBoxFlat_6bfxq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kgltv")
+value = 50.0
+show_percentage = false
+
+[node name="ShieldTextureRect" type="TextureRect" parent="." unique_id=130067610]
+texture_filter = 2
+layout_mode = 0
+offset_left = -232.0
+offset_top = -67.0
+offset_right = 20.0
+offset_bottom = 185.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_huu7m")
+
+[node name="Label" type="Label" parent="." unique_id=1934142126]
+texture_filter = 2
+layout_mode = 0
+offset_left = -60.0
+offset_top = -85.0
+offset_right = 60.0
+offset_bottom = -6.25
+pivot_offset = Vector2(59.19, 33.4)
+theme_override_font_sizes/font_size = 54
+text = "800"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ShieldLabel" type="Label" parent="." unique_id=781888608]
+texture_filter = 2
+layout_mode = 0
+offset_left = -229.0
+offset_top = -35.0
+offset_right = -109.0
+offset_bottom = 43.75
+pivot_offset = Vector2(59.19, 33.4)
+theme_override_font_sizes/font_size = 54
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="AttackTextureRect" type="TextureRect" parent="." unique_id=1073072383]
+texture_filter = 2
+layout_mode = 0
+offset_left = 47.0
+offset_top = -151.0
+offset_right = 299.0
+offset_bottom = 101.0
+rotation = -0.5358161
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(126, 126)
+texture = ExtResource("3_huu7m")
+
+[node name="AttackLabel" type="Label" parent="." unique_id=1094554821]
+texture_filter = 2
+layout_mode = 0
+offset_left = 215.0
+offset_top = -22.0
+offset_right = 335.0
+offset_bottom = 56.75
+pivot_offset = Vector2(59.19, 33.4)
+theme_override_font_sizes/font_size = 54
+text = "10"
+vertical_alignment = 2

@@ -60,6 +60,33 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="UI" type="CanvasLayer" unique_id=153793616]
 
+[node name="PassiveItemsControl" type="Control" parent="." unique_id=780785938]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_topx2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 1.0
+offset_right = 178.0
+offset_bottom = 1197.0
+
+[node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(128, 140.8)
+layout_mode = 2
+
+[node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
+visible = false
+layout_mode = 2
+script = null
+
 [node name="Control" type="Control" parent="." unique_id=1176285555]
 texture_filter = 2
 layout_mode = 3
@@ -224,33 +251,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
-
-[node name="PassiveItemsControl" type="Control" parent="." unique_id=780785938]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("5_topx2")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 1.0
-offset_right = 178.0
-offset_bottom = 1197.0
-
-[node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
-self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(128, 140.8)
-layout_mode = 2
-
-[node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
-visible = false
-layout_mode = 2
-script = null
 
 [node name="FPS_Control" type="Control" parent="." unique_id=1786962755]
 layout_mode = 3

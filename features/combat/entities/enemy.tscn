@@ -11,8 +11,9 @@
 [ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="5_fo5sc"]
 [ext_resource type="Texture2D" uid="uid://cv67dupj6c4qq" path="res://resources/enemies/bat/bat_bat_texture.png" id="6_gqviy"]
 [ext_resource type="PackedScene" uid="uid://0xpa0e35mojk" path="res://resources/particles/gpu_particles_3d.tscn" id="9_ayqks"]
-[ext_resource type="Animation" uid="uid://cusvp3u4p138k" path="res://resources/enemies/bat/animations/camera_animations/CameraBat_Attack.res" id="10_gqviy"]
-[ext_resource type="Animation" uid="uid://bampai4lbvq04" path="res://resources/enemies/bat/animations/camera_animations/CameraEnemyAtack.res" id="11_d2kjj"]
+[ext_resource type="Animation" uid="uid://uyj8m5hmhknb" path="res://resources/enemies/bat/animations/camera_animations/CameraBat_Attack.res" id="10_gqviy"]
+[ext_resource type="PackedScene" uid="uid://r1b7s32mtkp2" path="res://scenes/UI/life_hud_control.tscn" id="10_xxll8"]
+[ext_resource type="Animation" uid="uid://b1x38ki852oqk" path="res://resources/enemies/bat/animations/camera_animations/CameraEnemyAtack.res" id="11_d2kjj"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
 noise_type = 2
@@ -25,7 +26,7 @@ cellular_return_type = 5
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
 noise = SubResource("FastNoiseLite_lfkuk")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ayqks"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2kjj"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_fo5sc")
@@ -113,8 +114,9 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
-material_override = SubResource("ShaderMaterial_ayqks")
+transform = Transform3D(1.0259565, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8598398, 0)
+material_override = SubResource("ShaderMaterial_d2kjj")
+"blend_shapes/Key 2" = 1.0
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
 active = false
@@ -139,6 +141,7 @@ show_percentage = false
 
 [node name="LifeView" type="Sprite3D" parent="ModelVisualComponent/StatsView" unique_id=1532637649]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.472694, 0)
+visible = false
 pixel_size = 0.007
 billboard = 1
 double_sided = false
@@ -148,6 +151,7 @@ texture = SubResource("ViewportTexture_fldkf")
 
 [node name="LifeText" type="Label3D" parent="ModelVisualComponent/StatsView" unique_id=1446167081]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6412225, 0)
+visible = false
 pixel_size = 0.0015
 billboard = 1
 double_sided = false
@@ -186,6 +190,8 @@ scroll_active = false
 shortcut_keys_enabled = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LifeHudControl" parent="ModelVisualComponent/StatsView" unique_id=1383549522 instance=ExtResource("10_xxll8")]
 
 [node name="ConfusionGizmo" type="Label3D" parent="ModelVisualComponent" unique_id=1328174519]
 transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)

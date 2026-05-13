@@ -1,25 +1,37 @@
 extends Node
 class_name StatusViewComponent
 
+@export var show_next_attack_icon : bool = true
+
 @onready var damage_viewport : Sprite3D = $"../ModelVisualComponent/StatsView/DamageView"
 @onready var damage_text : RichTextLabel = $"../ModelVisualComponent/StatsView/DamageSubViewport/RichTextLabel"
 
 
 #en realidad deberia crearlos a traves de un prefab
-@onready var health_sprite_viewport : Sprite3D = $"../ModelVisualComponent/StatsView/LifeView"
-@onready var health_progress_bar : ProgressBar = $"../ModelVisualComponent/StatsView/SubViewport/ProgressBar"
-@onready var health_label_text : Label3D = $"../ModelVisualComponent/StatsView/LifeText"
+@onready var health_sprite_viewport : Control = $"../ModelVisualComponent/StatsView/LifeHudControl"
+@onready var health_progress_bar : ProgressBar = $"../ModelVisualComponent/StatsView/LifeHudControl/ProgressBar" #$"../ModelVisualComponent/StatsView/SubViewport/ProgressBar"
+@onready var health_label_text : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/Label" #$"../ModelVisualComponent/StatsView/LifeText"
+
+@onready var shield_icon : TextureRect = $"../ModelVisualComponent/StatsView/LifeHudControl/ShieldTextureRect"
+@onready var shield_bar : ColorRect = $"../ModelVisualComponent/StatsView/LifeHudControl/ColorRect"
+@onready var shield_label : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/ShieldLabel"
+
+@onready var attack_icon : TextureRect = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackTextureRect"
+@onready var attack_label : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackLabel"
 
 
 var stats : StatsComponent
 
 var health_tween : Tween
 var displayed_health : float = 0.0
+var displayed_shield : float = 0.0
 
 func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
 	
 	displayed_health = stats.current_healt
+	displayed_shield = stats.shield
+	shield_label.text = str(int(round(displayed_shield)))
 	
 	stats.health_changed.connect(_update_health)
 	_update_health()
@@ -32,6 +44,7 @@ func _show_health() -> void:
 	
 func _update_health() -> void:
 	health_progress_bar.max_value = stats.max_healt
+	
 	
 	show_life_drop_animation()
 	
@@ -72,26 +85,74 @@ func _show_damaged(damage: float) -> void:
 func activate()->void:
 	health_label_text.visible = true
 	health_sprite_viewport.visible = true
+	
+	if displayed_shield > 0:
+		activate_shield_hud()
+	else:
+		deactivate_shield_hud()
+		
+	if show_next_attack_icon:
+		attack_icon.visible = true
+		attack_label.visible = true
+	else:
+		attack_icon.visible = false
+		attack_label.visible = false
+	
 
 func deactivate()->void:
 	health_label_text.visible = false
 	health_sprite_viewport.visible = false
 
+	deactivate_shield_hud()
+		
+	attack_icon.visible = false
+	attack_label.visible = false
+
+func deactivate_shield_hud()->void:
+	shield_icon.visible = false
+	shield_bar.visible = false
+	shield_label.visible = false
+	
+func activate_shield_hud()->void:
+	shield_icon.visible = true
+	shield_bar.visible = true
+	shield_label.visible = true
+	
 func show_life_drop_animation() -> void:
 	activate()
 
-	# evitar tweens acumulados
 	if health_tween:
 		health_tween.kill()
 
 	var target_health = stats.current_healt
+	var target_shield = stats.shield
 
 	health_progress_bar.max_value = stats.max_healt
 
 	health_tween = create_tween()
-	health_tween.set_parallel(true)
 
-	# barra
+	# 1. Escudo (solo si hay o hubo cambio relevante)
+	if displayed_shield != target_shield:
+		if target_shield > 0:
+			activate_shield_hud()
+
+		health_tween.tween_method(
+			func(value):
+				displayed_shield = value
+				shield_label.text = str(int(round(value))),
+			displayed_shield,
+			target_shield,
+			0.25
+		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+		# después del escudo, decidir si se apaga HUD
+		health_tween.tween_callback(func():
+			if target_shield <= 0:
+				deactivate_shield_hud()
+		)
+
+	health_tween.chain().set_parallel(true)
+	# 2. Vida (siempre después del escudo)
 	health_tween.tween_property(
 		health_progress_bar,
 		"value",
@@ -99,7 +160,6 @@ func show_life_drop_animation() -> void:
 		0.5
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-	# numero
 	health_tween.tween_method(
 		func(value):
 			displayed_health = value

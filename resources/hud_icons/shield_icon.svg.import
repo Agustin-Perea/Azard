@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfvr3vepcdvf7"
-path="res://.godot/imported/event_icon.svg-0b3fcb21e206d88b6d083a1073ee0f27.ctex"
+uid="uid://d2x3dibo04wjw"
+path.s3tc="res://.godot/imported/shield_icon.svg-3f0f228b09e0039049bfe05c2f39f6f8.s3tc.ctex"
+path.etc2="res://.godot/imported/shield_icon.svg-3f0f228b09e0039049bfe05c2f39f6f8.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://resources/map/map_icons/event_icon.svg"
-dest_files=["res://.godot/imported/event_icon.svg-0b3fcb21e206d88b6d083a1073ee0f27.ctex"]
+source_file="res://resources/hud_icons/shield_icon.svg"
+dest_files=["res://.godot/imported/shield_icon.svg-3f0f228b09e0039049bfe05c2f39f6f8.s3tc.ctex", "res://.godot/imported/shield_icon.svg-3f0f228b09e0039049bfe05c2f39f6f8.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +25,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,7 +39,7 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
 svg/scale=0.26
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

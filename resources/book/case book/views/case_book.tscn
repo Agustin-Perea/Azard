@@ -47,15 +47,15 @@ script = ExtResource("1_qblis")
 mesh = ExtResource("1_abdhi")
 
 [node name="Ball_Spot" parent="left_cover" unique_id=1548367600 instance=ExtResource("2_c2n12")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3811272, 0.07352896, -1.7205057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3811272, 0.09495455, -1.7205057)
 offset_description_canvas = Vector3(0, 0, 0)
 
 [node name="Ball_Spot2" parent="left_cover" unique_id=1698720685 instance=ExtResource("2_c2n12")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85193837, 0.07352896, -1.7205057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85193837, 0.09495455, -1.7205057)
 offset_description_canvas = Vector3(0, 0, 0)
 
 [node name="Ball_Spot3" parent="left_cover" unique_id=1698349077 instance=ExtResource("2_c2n12")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33400056, 0.07352896, -1.7205057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33400056, 0.09495455, -1.7205057)
 offset_description_canvas = Vector3(0, 0, 0)
 
 [node name="BallDescription" parent="left_cover" unique_id=313159008 instance=ExtResource("4_vh2v0")]
