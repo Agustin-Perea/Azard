@@ -114,7 +114,7 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0259565, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8598398, 0)
+transform = Transform3D(1.0019792, 0, 0, 0, 0.9968333, 0, 0, 0, 1, 0, 1.7970276, 0)
 material_override = SubResource("ShaderMaterial_d2kjj")
 "blend_shapes/Key 2" = 1.0
 

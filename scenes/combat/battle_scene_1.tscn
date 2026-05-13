@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="5_0u8xs"]
 [ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="5_4aapt"]
 [ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_6b2ki"]
-[ext_resource type="ArrayOccluder3D" uid="uid://34i4psnw2g8w" path="res://scenes/combat/battle_scene_1.occ" id="10_4aapt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
 sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
@@ -149,8 +148,5 @@ script = ExtResource("7_6b2ki")
 
 [node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("4_b6bnk")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.5207515)
-
-[node name="OccluderInstance3D" type="OccluderInstance3D" parent="." unique_id=287020783]
-occluder = ExtResource("10_4aapt")
 
 [editable path="Environment/EntornoArena"]
