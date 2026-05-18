@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://vcsa5d2tf3c0"]
+
+[ext_resource type="Texture2D" uid="uid://b4clgexvcpfqo" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/trace_07.png" id="1_n0e8e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0lsfn"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_n0e8e")
+billboard_keep_scale = true
+
+[sub_resource type="Curve" id="Curve_5nhia"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6980393, 1), 0.0, 0.0, 0, 0, Vector2(0.7686275, 1), -0.074167095, -0.074167095, 0, 0, Vector2(1, 0), -5.044014, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_0lsfn"]
+curve = SubResource("Curve_5nhia")
+
+[sub_resource type="Curve" id="Curve_bae2l"]
+_data = [Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="Curve" id="Curve_pgrmi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_n0e8e"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_lv24w"]
+curve_x = SubResource("Curve_bae2l")
+curve_y = SubResource("Curve_pgrmi")
+curve_z = SubResource("Curve_n0e8e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_obwmi"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 0.01
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.2351742e-06
+radial_accel_max = 0.009997765
+attractor_interaction_enabled = false
+scale_min = 0.21
+scale_max = 0.5
+scale_curve = SubResource("CurveXYZTexture_lv24w")
+alpha_curve = SubResource("CurveTexture_0lsfn")
+turbulence_noise_strength = 20.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_o87ky"]
+size = Vector2(1, 2)
+center_offset = Vector3(0, 0.515, 0)
+
+[node name="Item_Shine" type="GPUParticles3D" unique_id=527518781]
+material_override = SubResource("StandardMaterial3D_0lsfn")
+cast_shadow = 0
+gi_mode = 0
+amount = 16
+lifetime = 4.0
+speed_scale = 4.0
+interpolate = false
+fract_delta = false
+local_coords = true
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_obwmi")
+draw_pass_1 = SubResource("QuadMesh_o87ky")

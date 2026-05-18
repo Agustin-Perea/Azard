@@ -53,17 +53,23 @@ func _process(delta):
 
 	var pitch = -normalized.y * max_angle_rad
 	var yaw = -normalized.x * max_angle_rad
-	var target_mouse_quat = Quaternion.from_euler(Vector3(pitch, yaw, 0))
+	var target_mouse_quat = Quaternion.from_euler(Vector3(pitch, yaw, 0)).normalized() # Aseguramos normalización
 
-	# 2. Suavizar el offset del ratón de forma independiente
-	current_mouse_offset_quat = current_mouse_offset_quat.slerp(target_mouse_quat, delta * smoothing)
+	# 2. Suavizado matemáticamente correcto e independiente de FPS
+	# Esta fórmula con exponente (1 - exp(-smoothing * delta)) nunca supera el 1.0 
+	# y se adapta perfectamente a los lagazos o cambios de velocidad del motor.
+	var blend = 1.0 - exp(-smoothing * delta)
+	
+	# Hacemos el slerp y OBLIGATORIAMENTE le clavamos un .normalized() al final
+	current_mouse_offset_quat = current_mouse_offset_quat.slerp(target_mouse_quat, blend).normalized()
 
 	# 3. COMBINAR: Aplicamos el offset de ratón SOBRE el target_transform
-	# Multiplicar el Basis del target por el Quat del ratón genera la rotación combinada
-	var final_basis = target_transform.basis * Basis(current_mouse_offset_quat)
+	# Aseguramos que la base del target también esté limpia
+	var clean_target_basis = target_transform.basis.orthonormalized()
+	var final_basis = clean_target_basis * Basis(current_mouse_offset_quat)
 	
 	# 4. Aplicar al global_transform
-	global_transform.origin = target_transform.origin + shake_offset # Sumamos el shake
+	global_transform.origin = target_transform.origin + shake_offset
 	global_transform.basis = final_basis
 
 	

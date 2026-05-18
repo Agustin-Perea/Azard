@@ -32,10 +32,6 @@
 [ext_resource type="PackedScene" uid="uid://bisvvkie0uri" path="res://features/balls/views/ball_description.tscn" id="19_8qbf8"]
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="19_khsg3"]
 [ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
-[ext_resource type="Script" uid="uid://boor88jdqe04t" path="res://features/items/passive_items/views/passive_item_element.gd" id="35_hnjqa"]
-[ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="36_n0767"]
-[ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="36_w3wlc"]
-[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="38_f2bku"]
 [ext_resource type="Animation" uid="uid://da2vuocd4vrog" path="res://resources/book/animations/RESET.res" id="39_vh2hp"]
 [ext_resource type="Animation" uid="uid://ugkukrqx7tr" path="res://resources/book/animations/book_close.res" id="40_2w6kk"]
 [ext_resource type="Animation" uid="uid://csb3peqf73yhh" path="res://resources/book/animations/book_open.res" id="41_eh1d0"]
@@ -493,17 +489,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_aledu")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_padf7"]
-shading_mode = 0
-diffuse_mode = 3
-specular_mode = 2
-albedo_color = Color(0.84705883, 0.85882354, 0.68235296, 1)
-
-[sub_resource type="QuadMesh" id="QuadMesh_hnjqa"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_w3wlc"]
-size = Vector3(0.28585815, 0.124938965, 0.17980957)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8qbf8"]
 _data = {
@@ -1318,57 +1303,6 @@ mesh = ExtResource("19_5lkav")
 transform = Transform3D(1, 0, 0, 0, 0.028759047, 0.9995864, 0, -0.9995864, 0.028759047, 0, 4.361888, -0.93015957)
 fov = 30.0
 
-[node name="Node3D" type="StaticBody3D" parent="Temp" unique_id=365811749 node_paths=PackedStringArray("add_collision", "item_collision")]
-physics_interpolation_mode = 1
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0808461)
-visible = false
-script = ExtResource("35_hnjqa")
-passive_item_data = ExtResource("36_n0767")
-add_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
-item_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
-
-[node name="PassiveItemDescription" type="MeshInstance3D" parent="Temp/Node3D" unique_id=422495397]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.15121174, 0)
-material_override = SubResource("StandardMaterial3D_padf7")
-mesh = SubResource("QuadMesh_hnjqa")
-script = ExtResource("36_w3wlc")
-
-[node name="ItemName" type="Label3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=961391753]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45020282, 0.4436127, 0.0025392473)
-modulate = Color(0, 0, 0, 1)
-text = "Name"
-font_size = 16
-horizontal_alignment = 0
-vertical_alignment = 0
-
-[node name="Description" type="Label3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=1361476025]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002363205, 0.020713568, 0.0025392175)
-modulate = Color(0, 0, 0, 1)
-text = "description"
-font_size = 16
-vertical_alignment = 0
-autowrap_mode = 3
-width = 200.0
-
-[node name="SB_Button3D" type="StaticBody3D" parent="Temp/Node3D/PassiveItemDescription" unique_id=488367436]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.40345514, 0.025100127)
-script = ExtResource("11_vvjhm")
-metadata/_custom_type_script = "uid://b82ivoeru5iay"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Temp/Node3D/PassiveItemDescription/SB_Button3D" unique_id=338846584]
-shape = SubResource("BoxShape3D_w3wlc")
-
-[node name="Add" type="Label3D" parent="Temp/Node3D/PassiveItemDescription/SB_Button3D" unique_id=1298210309]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
-modulate = Color(0.36234, 0.61, 0.25620002, 1)
-text = "Add"
-font_size = 21
-
-[node name="Sprite3D" type="Sprite3D" parent="Temp/Node3D" unique_id=23593940]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.007839918, 0.15605372, -0.16048932)
-pixel_size = 0.001
-texture = ExtResource("38_f2bku")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=917025914]
 libraries/ = SubResource("AnimationLibrary_8qbf8")
 libraries/book_animations = ExtResource("42_0bnx2")
@@ -1396,6 +1330,3 @@ libraries/book_animations = ExtResource("42_0bnx2")
 [connection signal="input_event" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/BetTable/SBTZero" to="right_cover/BetTable/SBTZero" method="_on_mouse_exited"]
-[connection signal="input_event" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_input_event"]
-[connection signal="mouse_entered" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Temp/Node3D/PassiveItemDescription/SB_Button3D" to="Temp/Node3D/PassiveItemDescription/SB_Button3D" method="_on_mouse_exited"]

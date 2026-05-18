@@ -1,14 +1,14 @@
-[gd_scene format=3 uid="uid://ljs75i2re1r6"]
+[gd_scene format=3 uid="uid://cmlewt18hg8i0"]
 
-[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_b6bnk"]
-[ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_02vyu"]
-[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="2_isoin"]
-[ext_resource type="Script" uid="uid://bkkwhauk12crs" path="res://features/camera/virtual_camera.gd" id="3_jsid0"]
-[ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="4_b6bnk"]
-[ext_resource type="Script" uid="uid://cigvuflhblnyd" path="res://features/combat/controllers/combat state machine/combat_state_machine.gd" id="4_pq3st"]
-[ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="5_0u8xs"]
-[ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="5_4aapt"]
-[ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_6b2ki"]
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_ncg0x"]
+[ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_d00sj"]
+[ext_resource type="Script" uid="uid://bkkwhauk12crs" path="res://features/camera/virtual_camera.gd" id="3_iwufc"]
+[ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="4_rxvrv"]
+[ext_resource type="Script" uid="uid://cigvuflhblnyd" path="res://features/combat/controllers/combat state machine/combat_state_machine.gd" id="5_t82or"]
+[ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="6_8h6ba"]
+[ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_suric"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="8_5gghg"]
+[ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="9_n3oo6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
 sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
@@ -53,11 +53,11 @@ visible = false
 material_override = SubResource("StandardMaterial3D_isoin")
 mesh = SubResource("PlaneMesh_b6bnk")
 
-[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_b6bnk")]
+[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_ncg0x")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
 
 [node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407 node_paths=PackedStringArray("selected_camera")]
-script = ExtResource("2_02vyu")
+script = ExtResource("2_d00sj")
 selected_camera = NodePath("CombatCameras/BookCamera")
 
 [node name="VirtualCamera" type="Camera3D" parent="CameraContainer" unique_id=1107707823]
@@ -65,7 +65,7 @@ physics_interpolation_mode = 2
 transform = Transform3D(-0.95731944, 0, -0.2890319, 0, 1, 0, 0.2890319, 0, -0.95731944, -1.5797986, 1.6798961, -1.6191579)
 current = true
 fov = 45.0
-script = ExtResource("3_jsid0")
+script = ExtResource("3_iwufc")
 max_angle = 1.0
 
 [node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
@@ -91,62 +91,65 @@ fov = 30.0
 [node name="BattleManager" type="Node" parent="." unique_id=669596202]
 
 [node name="CombatGroups" type="Node" parent="BattleManager" unique_id=370919649 node_paths=PackedStringArray("Player", "EnemyGroup")]
-script = ExtResource("5_4aapt")
+script = ExtResource("4_rxvrv")
 Player = NodePath("PlayerGroup")
 EnemyGroup = NodePath("EnemyGroup")
 
 [node name="CombatStateMachine" type="Node" parent="BattleManager/CombatGroups" unique_id=569869291 node_paths=PackedStringArray("default_state")]
-script = ExtResource("4_pq3st")
+script = ExtResource("5_t82or")
 default_state = NodePath("SelectionState")
 
 [node name="SelectionState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1470090554 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
 disable_moveable_collisions = true
 ui_book_button = true
 
 [node name="BookState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=715524440 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
 disable_book_inputs = false
 ui_selection_button = true
 
 [node name="RouletteState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2082908531 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/RouletteCamera")
 disable_moveable_collisions = true
 
 [node name="BetResolve" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1208368497 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
 disable_moveable_collisions = true
 
 [node name="StandBy" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=32333335 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 change_camera = false
 camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
 disable_moveable_collisions = true
 
 [node name="BookCase" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2025596019 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
 disable_book_inputs = false
 
 [node name="Defeat" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1188575509 node_paths=PackedStringArray("camera")]
-script = ExtResource("5_0u8xs")
+script = ExtResource("6_8h6ba")
 camera = NodePath("../../../../CameraContainer/CombatCameras/DefeatCamera")
 fixed_time = 2.0
 disable_moveable_collisions = true
 
 [node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
-script = ExtResource("7_6b2ki")
+script = ExtResource("7_suric")
 
-[node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("2_isoin")]
+[node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("8_5gghg")]
 
 [node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
-script = ExtResource("7_6b2ki")
+script = ExtResource("7_suric")
 
-[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("4_b6bnk")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.521)
+[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("9_n3oo6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.99431086, 0, 4.5207515)
+
+[node name="Enemy2" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=704330891 instance=ExtResource("9_n3oo6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.2810414, 0, 4.5207515)
 
 [editable path="Environment/EntornoArena"]

@@ -1,12 +1,11 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://cg5xvxt06rwwx"]
 
-[ext_resource type="Texture2D" uid="uid://c7ectin4hpjsc" path="res://resources/environment/test/EntornoArena_Escenario.png" id="1_phrqq"]
+[ext_resource type="Texture2D" uid="uid://0a4fnc33iwf5" path="res://resources/chest/Chest_EntornoArena_Escenario.png" id="1_phrqq"]
 
 [resource]
 cull_mode = 2
+shading_mode = 0
 diffuse_mode = 3
 specular_mode = 1
 albedo_texture = ExtResource("1_phrqq")
-metallic_specular = 0.0
-roughness = 0.0
 texture_filter = 0

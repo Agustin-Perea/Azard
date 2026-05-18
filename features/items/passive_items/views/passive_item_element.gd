@@ -12,12 +12,11 @@ class_name PassiveItemElement
 @export var add_collision : CollisionShape3D
 @export var item_collision : CollisionShape3D
 
-@export var next_camera : Camera3D
 
 func _ready() -> void:
 	super()
 
-	#data = ObjectPoolsDataBase.passive_item_pool_definition.get_random_item()
+	passive_item_data = GameState.object_pool_database.passive_item_pool_definition.get_random_item()
 	#sprite3d.texture = data.image_texture
 	activate()
 	description_canvas.add_button.pressed.connect(_on_button_add_pressed)
@@ -75,7 +74,7 @@ func activate()->void:
 	add_collision.disabled = false
 	description_canvas.description.text = passive_item_data.passive_item_effect.description
 	description_canvas.name_label.text = passive_item_data.passive_item_effect.name
-	description_canvas.visible = true
+	#description_canvas.visible = true
 	
 
 func deactivate()->void:

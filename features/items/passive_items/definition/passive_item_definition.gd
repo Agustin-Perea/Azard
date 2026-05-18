@@ -7,3 +7,5 @@ class_name PassiveItemDefinition
 @export var passive_item_effect : PassiveItemEffect
 
 @export var cumulative : bool = true 
+
+@export var weight : int = 10 

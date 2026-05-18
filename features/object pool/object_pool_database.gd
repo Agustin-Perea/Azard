@@ -4,9 +4,7 @@ var master_seed : int = 12345678
 
 var ball_pool_definition : BallsDatabase
 var bingo_chips_constructor : BingoChipConstructor
-#@onready var passive_item_pool_definition : PoolDefinition = preload("res://Scripts/BetTable/ObjectPools/passive_item_pool.tres")
-
-
+var passive_item_pool_definition : PassiveItemDatabase
 
 
 ##battlepool
@@ -28,9 +26,11 @@ func _ready() -> void:
 
 func reload()->void:
 	ball_pool_definition = load("res://features/balls/database/balls_unlocked_database.tres").duplicate()
+	passive_item_pool_definition = load("res://features/items/passive_items/database/passive_items_pool.tres").duplicate()
+	
 	ball_pool_definition.set_seed(master_seed)
 	bingo_chips_constructor.set_seed(master_seed)
-	#passive_item_pool_definition.set_seed(master_seed)
+	passive_item_pool_definition.set_seed(master_seed)
 	#enemy_pool_definition.setup()
 	
 func set_seed(rng_seed : int)->void:

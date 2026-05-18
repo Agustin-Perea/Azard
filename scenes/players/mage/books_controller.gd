@@ -18,7 +18,7 @@ var actual_page : Node3D
 var last_position : Vector3
 
 func _ready() -> void:
-	actual_page = book_roulette
+	actual_page = book_none
 	pages_dictionary = {
 	Constants.BOOK_PAGE.ROULETTE : book_roulette,
 	Constants.BOOK_PAGE.MAP : book_map,

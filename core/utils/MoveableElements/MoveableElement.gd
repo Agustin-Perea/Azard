@@ -66,11 +66,15 @@ func _on_mouse_exited():
 func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if not global_input_enabled:
 		return
-	if event is InputEventMouseButton and event.pressed:
-		pressed.emit()
-		on_press()
-	if event is InputEventMouseButton and event.is_released():
-		released.emit()
+		
+	if event is InputEventMouseButton:
+		# Filtramos para que SÓLO responda al click izquierdo
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				pressed.emit()
+				on_press()
+			elif event.is_released(): # Un 'elif' acá queda más limpio
+				released.emit()
 
 
 func _on_change_collision_detection(value : bool):

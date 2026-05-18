@@ -27,6 +27,7 @@ func spawn_chips(chips: Array[ChipModel]):
 			add_chip_to_container(new_chip)
 		else:
 			new_chip.global_position = new_chip.data.last_position
+			new_chip.global_position.y += 200 # esto porque arranca con el libro 200 arriba
 		# Posicionamiento ordenado: i * offset
 		
 		new_chip.audio_stream = audio_stream
