@@ -8,6 +8,9 @@ extends Node
 var combat_finished : bool = false
 
 func _ready() -> void:
+	var music_manager := get_node_or_null("/root/MusicManager")
+	if music_manager != null:
+		music_manager.call("play_combat_music")
 	##iniciar nivel
 	BookEventBus.battle_init.emit()
 	combat_finished = false

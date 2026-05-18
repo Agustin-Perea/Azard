@@ -33,10 +33,16 @@ const HELP_SECTION_COLORS := {
 @onready var help_body: VBoxContainer = $HelpOverlay/Panel/Margin/Content/Body/Scroll/HelpBody
 @onready var click_player: AudioStreamPlayer = $ClickPlayer
 
+const CLICK_VOLUME_DB := -17.0
+
 var active_help_section := "Como jugar"
 var help_section_buttons: Dictionary = {}
 
 func _ready() -> void:
+	var music_manager := get_node_or_null("/root/MusicManager")
+	if music_manager != null:
+		music_manager.call("play_menu_music")
+	click_player.volume_db = CLICK_VOLUME_DB
 	if has_node("/root/UiHud"):
 		UiHud.visible = false
 	UiEventBus.selection_button_visible.emit(false)

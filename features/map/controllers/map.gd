@@ -24,6 +24,9 @@ var min_camera_x := 0.0
 var max_camera_x := 0.0
 
 func _ready() -> void:
+	var music_manager := get_node_or_null("/root/MusicManager")
+	if music_manager != null:
+		music_manager.call("play_menu_music")
 	map_generator = GameState.map_generator
 	camera_edge_x = map_generator.layer_distance * (map_generator.layers) - get_viewport_rect().size.x
 	geerate_new_map()
