@@ -2,6 +2,7 @@ extends Control
 
 @onready var selection_button  : Button = $SelectionButton
 @onready var book_button : Button = $BookButton
+@onready var menu_button : Button = $MenuButton
 
 
 @onready var gold_label: Label = $GoldHUD/HBoxContainer/Label
@@ -34,6 +35,12 @@ func _on_book_button_pressed() -> void:
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.ROULETTE)
 			return true
 	}))
+
+func _on_menu_button_pressed() -> void:
+	GameState.save_run(GameState.get_current_scene_path())
+	UiEventBus.selection_button_visible.emit(false)
+	UiEventBus.book_button_visible.emit(false)
+	UiEventBus.change_scene_to.emit(GameState.MAIN_MENU_SCENE_PATH)
 
 func on_selection_button_visible(value: bool)-> void:
 	selection_button.visible = value

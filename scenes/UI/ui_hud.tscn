@@ -131,6 +131,21 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
 text = "book
 "
 
+[node name="MenuButton" type="Button" parent="Control"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 140.0
+offset_right = -32.0
+offset_bottom = 212.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
+text = "Menu"
+
 [node name="GoldHUD" type="PanelContainer" parent="Control" unique_id=1773533231]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -229,7 +244,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_7r1ju")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_guf56")
 theme_override_styles/hover = SubResource("StyleBoxFlat_sae1u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_lnyru")
-text = "Restart"
+text = "Menu"
 
 [node name="TransitionControl" type="Control" parent="." unique_id=588496759]
 visible = false
@@ -273,3 +288,4 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]
+[connection signal="pressed" from="Control/MenuButton" to="Control" method="_on_menu_button_pressed"]

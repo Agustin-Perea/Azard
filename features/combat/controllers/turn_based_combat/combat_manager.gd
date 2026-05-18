@@ -20,6 +20,14 @@ func _ready() -> void:
 	Player.defeat.connect(_defeat)
 	EnemyGroup.defeat.connect(_victory)	
 	
+	GameState.apply_combat_snapshot(GameState.get_current_scene_path(), Player, EnemyGroup)
+	if EnemyGroup.group.is_empty():
+		_victory()
+		return
+	if Player.group.is_empty():
+		_defeat()
+		return
+	GameState.save_combat_snapshot(GameState.get_current_scene_path(), Player, EnemyGroup)
 	
 	
 	## Comenzar Turnos
@@ -49,6 +57,7 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 		attack_info.target._recieve_attack(attack_info.damage)
 
 	await get_tree().create_timer(0.05).timeout
+	GameState.save_combat_snapshot(GameState.get_current_scene_path(), Player, EnemyGroup)
 	UiEventBus.apply_camera_shake.emit(.1,.5,15)
 	UiEventBus.frame_freeze.emit(.1,.333)
 	#debe chequear por tipo de ataque y dar su ataque y efecto o todo el atkinfo en si a las unidades correspondientes
@@ -65,6 +74,7 @@ func _victory()->void:
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
+			GameState.clear_combat_snapshot()
 			BookEventBus.victory.emit()
 			print("victory")
 			return true
@@ -76,7 +86,8 @@ func _defeat()->void:
 		"paralel": false,
 		"action": func():
 			print("defeat")
-			#BookEventBus.defeat.emit()
+			GameState.end_run()
+			BookEventBus.defeat.emit()
 			EventManager.call_deferred("clear_queue",EventManager.QueueType.GAME)
 			combat_finished = true
 			return true

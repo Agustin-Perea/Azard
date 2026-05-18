@@ -16,10 +16,8 @@ func set_up()->void:
 	
 
 func _on_button_button_down() -> void:
-	GameState.reload()
-	UiEventBus.change_scene_to.emit("res://scenes/combat/battle_scene_1.tscn")
-	#TransitionLayer._change_scente_to(Constants.MAP_SCENE)
-	pass
+	GameState.end_run()
+	UiEventBus.change_scene_to.emit(GameState.MAIN_MENU_SCENE_PATH)
 
 func _on_defeat()->void:
 	self.visible = true

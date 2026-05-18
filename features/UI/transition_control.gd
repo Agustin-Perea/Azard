@@ -34,7 +34,7 @@ func _change_scene_to_packed(scene : PackedScene)->void:
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)
 
 func _load_new_scene()->void:
-	
+	GameState.set_current_scene_path(scene_to_load)
 	get_tree().call_deferred("change_scene_to_file",scene_to_load)
 	UiEventBus.scene_changed.emit()
 	

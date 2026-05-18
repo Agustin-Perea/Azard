@@ -1,11 +1,20 @@
 extends Node
 
+const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"
+const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
+const SAVE_PATH := "user://savegame.json"
+const SAVE_VERSION := 1
+
 var object_pool_database : ObjectPoolDatabase
 var map_generator : MapGenerator
 
 
 
 var master_seed: int = 627357
+var current_scene_path: String = MAP_SCENE_PATH
+var auto_save_enabled := false
+var _is_loading_run := false
+var combat_snapshot: Dictionary = {}
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -50,6 +59,7 @@ func _ready():
 	economy_component = EconomyComponent.new()
 	object_pool_database = ObjectPoolDatabase.new()
 	map_generator = MapGenerator.new()
+	economy_component.gold_changed.connect(_on_persistent_state_changed)
 	
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
@@ -63,8 +73,12 @@ func reload():
 	#BookEventBus.reload.emit()
 	temp_scene_changed_value = 0
 	master_seed = randi() % 999999999 + 1
-	
-	
+	_rebuild_run_from_current_seed()
+
+func _rebuild_run_from_current_seed() -> void:
+	if economy_component != null:
+		economy_component.reload()
+
 	map_generator.on_reload()
 	
 	object_pool_database.set_seed(master_seed)
@@ -81,6 +95,7 @@ func reload():
 	Bets.clear()
 	
 	field_by_chip.clear()
+	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
 	
@@ -209,7 +224,418 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control
+	_on_persistent_state_changed()
 
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
+	_on_persistent_state_changed()
+
+func new_run() -> void:
+	delete_save()
+	auto_save_enabled = true
+	current_scene_path = MAP_SCENE_PATH
+	combat_snapshot.clear()
+	reload()
+	save_run(MAP_SCENE_PATH)
+
+func end_run() -> void:
+	auto_save_enabled = false
+	combat_snapshot.clear()
+	current_scene_path = MAP_SCENE_PATH
+	delete_save()
+
+func has_save() -> bool:
+	return FileAccess.file_exists(SAVE_PATH)
+
+func delete_save() -> void:
+	auto_save_enabled = false
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
+
+func set_current_scene_path(scene_path: String, persist := true) -> void:
+	if scene_path == "" or scene_path == MAIN_MENU_SCENE_PATH:
+		return
+	current_scene_path = scene_path
+	if persist:
+		save_run(scene_path)
+
+func get_current_scene_path() -> String:
+	if current_scene_path == "":
+		return MAP_SCENE_PATH
+	return current_scene_path
+
+func save_run(scene_path: String = "") -> bool:
+	if _is_loading_run:
+		return false
+	if scene_path != "" and scene_path != MAIN_MENU_SCENE_PATH:
+		current_scene_path = scene_path
+	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file == null:
+		push_error("No se pudo guardar partida: %s" % FileAccess.get_open_error())
+		return false
+	file.store_string(JSON.stringify(_build_save_data(), "\t"))
+	return true
+
+func load_run() -> bool:
+	if not FileAccess.file_exists(SAVE_PATH):
+		return false
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if file == null:
+		push_error("No se pudo abrir partida guardada: %s" % FileAccess.get_open_error())
+		return false
+	var parsed = JSON.parse_string(file.get_as_text())
+	if typeof(parsed) != TYPE_DICTIONARY:
+		push_error("La partida guardada no tiene formato valido.")
+		return false
+	if int(parsed.get("version", 0)) != SAVE_VERSION:
+		push_error("Version de partida guardada no soportada: %s" % parsed.get("version", 0))
+		return false
+	_is_loading_run = true
+	_apply_save_data(parsed)
+	_is_loading_run = false
+	auto_save_enabled = true
+	return true
+
+func _on_persistent_state_changed(_arg = null) -> void:
+	if auto_save_enabled and not _is_loading_run:
+		save_run()
+
+func _build_save_data() -> Dictionary:
+	return {
+		"version": SAVE_VERSION,
+		"current_scene": get_current_scene_path(),
+		"master_seed": master_seed,
+		"rerolls": {
+			"current": current_reroll,
+			"max": max_reroll,
+		},
+		"economy": _build_economy_save_data(),
+		"player_stats": _build_player_stats_save_data(),
+		"map": _build_map_save_data(),
+		"combat": combat_snapshot.duplicate(true),
+		"balls_deck": _build_balls_save_data(),
+		"passive_items": _build_passive_items_save_data(),
+		"bet_fields": _build_bet_fields_save_data(),
+		"bets": _build_bets_save_data(),
+	}
+
+func _apply_save_data(data: Dictionary) -> void:
+	master_seed = int(data.get("master_seed", master_seed))
+	current_scene_path = str(data.get("current_scene", MAP_SCENE_PATH))
+	_rebuild_run_from_current_seed()
+	_apply_rerolls_save_data(data.get("rerolls", {}))
+	_apply_economy_save_data(data.get("economy", {}))
+	_apply_player_stats_save_data(data.get("player_stats", {}))
+	_apply_map_save_data(data.get("map", {}))
+	combat_snapshot = data.get("combat", {}).duplicate(true)
+	_apply_balls_save_data(data.get("balls_deck", []))
+	_apply_passive_items_save_data(data.get("passive_items", []))
+	_apply_bet_fields_save_data(data.get("bet_fields", []))
+	_apply_bets_save_data(data.get("bets", []))
+	initialized.emit()
+	table_ready.emit()
+
+func _build_economy_save_data() -> Dictionary:
+	return {
+		"run_gold": economy_component.run_gold,
+		"last_combat_gold_reward": economy_component.last_combat_gold_reward,
+		"current_encounter_type": economy_component.current_encounter_type,
+		"current_act": economy_component.current_act,
+	}
+
+func _apply_economy_save_data(data: Dictionary) -> void:
+	economy_component.run_gold = int(data.get("run_gold", economy_component.initial_run_gold))
+	economy_component.last_combat_gold_reward = int(data.get("last_combat_gold_reward", 0))
+	economy_component.current_encounter_type = str(data.get("current_encounter_type", "normal"))
+	economy_component.current_act = int(data.get("current_act", 1))
+	economy_component.gold_changed.emit(economy_component.run_gold)
+
+func _build_player_stats_save_data() -> Dictionary:
+	if player_stats == null:
+		return {}
+	return {
+		"current_healt": player_stats.current_healt,
+		"max_healt": player_stats.max_healt,
+		"shield": player_stats.shield,
+		"attack": player_stats.attack,
+	}
+
+func _apply_player_stats_save_data(data: Dictionary) -> void:
+	if player_stats == null:
+		return
+	player_stats.max_healt = int(data.get("max_healt", player_stats.max_healt))
+	player_stats.current_healt = int(data.get("current_healt", player_stats.current_healt))
+	player_stats.shield = int(data.get("shield", player_stats.shield))
+	player_stats.attack = int(data.get("attack", player_stats.attack))
+	player_stats.health_changed.emit()
+
+func _apply_rerolls_save_data(data: Dictionary) -> void:
+	current_reroll = int(data.get("current", current_reroll))
+	max_reroll = int(data.get("max", max_reroll))
+
+func _build_map_save_data() -> Dictionary:
+	var selected_nodes: Array = []
+	for row in map_generator.map_data:
+		for map_node: MapNode in row:
+			if map_node.selected or map_node.disabled:
+				selected_nodes.append({
+					"row": map_node.row,
+					"column": map_node.column,
+					"selected": map_node.selected,
+					"disabled": map_node.disabled,
+				})
+	var last_node_data = null
+	if map_generator.last_node != null:
+		last_node_data = {
+			"row": map_generator.last_node.row,
+			"column": map_generator.last_node.column,
+		}
+	return {
+		"last_node": last_node_data,
+		"nodes": selected_nodes,
+	}
+
+func _apply_map_save_data(data: Dictionary) -> void:
+	for node_data in data.get("nodes", []):
+		if typeof(node_data) != TYPE_DICTIONARY:
+			continue
+		var map_node := _get_map_node(int(node_data.get("row", -1)), int(node_data.get("column", -1)))
+		if map_node == null:
+			continue
+		map_node.selected = bool(node_data.get("selected", false))
+		map_node.disabled = bool(node_data.get("disabled", false))
+	map_generator.last_node = null
+	var last_node_data = data.get("last_node", null)
+	if typeof(last_node_data) == TYPE_DICTIONARY:
+		map_generator.last_node = _get_map_node(int(last_node_data.get("row", -1)), int(last_node_data.get("column", -1)))
+
+func save_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_group: UnitGroup) -> void:
+	if scene_path == "":
+		scene_path = get_current_scene_path()
+	current_scene_path = scene_path
+	combat_snapshot = {
+		"scene_path": scene_path,
+		"players": _build_unit_group_save_data(player_group),
+		"enemies": _build_unit_group_save_data(enemy_group),
+	}
+	save_run(scene_path)
+
+func clear_combat_snapshot() -> void:
+	combat_snapshot.clear()
+	_on_persistent_state_changed()
+
+func has_combat_snapshot(scene_path: String) -> bool:
+	return not combat_snapshot.is_empty() and str(combat_snapshot.get("scene_path", "")) == scene_path
+
+func apply_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_group: UnitGroup) -> void:
+	if not has_combat_snapshot(scene_path):
+		return
+	_apply_unit_group_save_data(player_group, combat_snapshot.get("players", []))
+	_apply_unit_group_save_data(enemy_group, combat_snapshot.get("enemies", []))
+
+func _build_unit_group_save_data(unit_group: UnitGroup) -> Array:
+	var result: Array = []
+	if unit_group == null:
+		return result
+	for child in unit_group.get_children():
+		if child is Unit:
+			var unit := child as Unit
+			result.append({
+				"name": unit.name,
+				"current_healt": unit.stats.current_healt,
+				"max_healt": unit.stats.max_healt,
+				"shield": unit.stats.shield,
+				"attack": unit.stats.attack,
+				"alive": unit.stats.current_healt > 0,
+			})
+	return result
+
+func _apply_unit_group_save_data(unit_group: UnitGroup, units_data: Array) -> void:
+	if unit_group == null:
+		return
+	var data_by_name := {}
+	for unit_data in units_data:
+		if typeof(unit_data) == TYPE_DICTIONARY:
+			data_by_name[str(unit_data.get("name", ""))] = unit_data
+	unit_group.group.clear()
+	for child in unit_group.get_children():
+		if not child is Unit:
+			continue
+		var unit := child as Unit
+		var unit_data: Dictionary = data_by_name.get(unit.name, {})
+		if unit_data.is_empty():
+			unit_group.group.append(unit)
+			continue
+		unit.stats.max_healt = int(unit_data.get("max_healt", unit.stats.max_healt))
+		unit.stats.current_healt = int(unit_data.get("current_healt", unit.stats.current_healt))
+		unit.stats.shield = int(unit_data.get("shield", unit.stats.shield))
+		unit.stats.attack = int(unit_data.get("attack", unit.stats.attack))
+		unit.stats.health_changed.emit()
+		if bool(unit_data.get("alive", true)) and unit.stats.current_healt > 0:
+			unit_group.group.append(unit)
+		else:
+			unit.queue_free()
+
+func _get_map_node(row: int, column: int) -> MapNode:
+	if row < 0 or row >= map_generator.map_data.size():
+		return null
+	var map_row: Array = map_generator.map_data[row]
+	if column < 0 or column >= map_row.size():
+		return null
+	return map_row[column]
+
+func _build_balls_save_data() -> Array:
+	var result: Array = []
+	if balls_deck == null:
+		return result
+	for ball: BallRuntimeState in balls_deck.all_balls:
+		if ball == null or ball.ball_definition == null:
+			continue
+		result.append({
+			"definition_path": ball.ball_definition.resource_path,
+			"level_upgrade": ball.level_upgrade,
+			"used": ball.used,
+			"final_price": ball.final_price,
+		})
+	return result
+
+func _apply_balls_save_data(data: Array) -> void:
+	balls_deck.all_balls.clear()
+	for ball_data in data:
+		if typeof(ball_data) != TYPE_DICTIONARY:
+			continue
+		var definition_path := str(ball_data.get("definition_path", ""))
+		if definition_path == "" or not ResourceLoader.exists(definition_path):
+			continue
+		var ball := BallRuntimeState.new()
+		ball.ball_definition = load(definition_path)
+		ball.level_upgrade = int(ball_data.get("level_upgrade", 1))
+		ball.used = bool(ball_data.get("used", false))
+		ball.final_price = int(ball_data.get("final_price", 0))
+		balls_deck.all_balls.append(ball)
+
+func _build_passive_items_save_data() -> Array:
+	var result: Array = []
+	for item: PassiveItemRuntimeState in passiveItems_collection:
+		if item == null or item.passive_item_definition == null:
+			continue
+		result.append({
+			"definition_path": item.passive_item_definition.resource_path,
+			"quantity": item.quantity,
+		})
+	return result
+
+func _apply_passive_items_save_data(data: Array) -> void:
+	passiveItems_collection.clear()
+	for item_data in data:
+		if typeof(item_data) != TYPE_DICTIONARY:
+			continue
+		var definition_path := str(item_data.get("definition_path", ""))
+		if definition_path == "" or not ResourceLoader.exists(definition_path):
+			continue
+		var item := PassiveItemRuntimeState.new()
+		item.passive_item_definition = load(definition_path)
+		item.quantity = int(item_data.get("quantity", 1))
+		passiveItems_collection.append(item)
+		item.on_item_added()
+
+func _build_bet_fields_save_data() -> Array:
+	var result: Array = []
+	for i in bet_field_models.size():
+		var field := bet_field_models[i]
+		result.append({
+			"index": i,
+			"number": field.number,
+			"multiplier": field.multiplier,
+			"multiplier_by_level": field.multiplier_by_level,
+			"color": int(field.color),
+			"parity": int(field.parity),
+			"half_table": int(field.half_table),
+			"column": int(field.column),
+			"row": int(field.row),
+			"modifiable": field.modifiable,
+			"condition": _condition_to_name(field.ConditionStrategy),
+		})
+	return result
+
+func _apply_bet_fields_save_data(data: Array) -> void:
+	for field_data in data:
+		if typeof(field_data) != TYPE_DICTIONARY:
+			continue
+		var index := int(field_data.get("index", -1))
+		if index < 0 or index >= bet_field_models.size():
+			continue
+		var field := bet_field_models[index]
+		field.number = int(field_data.get("number", field.number))
+		field.multiplier = float(field_data.get("multiplier", field.multiplier))
+		field.multiplier_by_level = float(field_data.get("multiplier_by_level", field.multiplier_by_level))
+		field.color = int(field_data.get("color", field.color)) as Constants.BET_FIELD_COLOR
+		field.parity = int(field_data.get("parity", field.parity)) as Constants.BET_FIELD_PARITY
+		field.half_table = int(field_data.get("half_table", field.half_table)) as Constants.BET_FIELD_HALF_TABLE
+		field.column = int(field_data.get("column", field.column)) as Constants.BET_FIELD_COLUMN
+		field.row = int(field_data.get("row", field.row)) as Constants.BET_FIELD_ROW
+		field.modifiable = bool(field_data.get("modifiable", field.modifiable))
+		field.ConditionStrategy = _condition_from_name(str(field_data.get("condition", _condition_to_name(field.ConditionStrategy))))
+		field.fieldChanged.emit()
+
+func _build_bets_save_data() -> Array:
+	var result: Array = []
+	for field_id in Bets.keys():
+		result.append({
+			"field_id": int(field_id),
+			"chip_ids": Bets[field_id].duplicate(),
+		})
+	return result
+
+func _apply_bets_save_data(data: Array) -> void:
+	Bets.clear()
+	field_by_chip.clear()
+	for bet_data in data:
+		if typeof(bet_data) != TYPE_DICTIONARY:
+			continue
+		var field_id := int(bet_data.get("field_id", -1))
+		if field_id < 0:
+			continue
+		var chip_ids: Array = bet_data.get("chip_ids", [])
+		for chip_id_value in chip_ids:
+			var chip_id := int(chip_id_value)
+			if not Bets.has(field_id):
+				Bets[field_id] = []
+			Bets[field_id].append(chip_id)
+			field_by_chip[chip_id] = field_id
+		bet_updated.emit(field_id, Bets.get(field_id, []))
+
+func _condition_to_name(condition: BetCondition) -> String:
+	if condition == null or condition.get_script() == null:
+		return "StraightUpCondition"
+	return condition.get_script().resource_path.get_file().get_basename()
+
+func _condition_from_name(condition_name: String) -> BetCondition:
+	match condition_name:
+		"BlackCondition":
+			return BlackCondition.new()
+		"EvenCondition":
+			return EvenCondition.new()
+		"FirstColumnCondition":
+			return FirstColumnCondition.new()
+		"FirstHalfCondition":
+			return FirstHalfCondition.new()
+		"FirstRowCondition":
+			return FirstRowCondition.new()
+		"OddCondition":
+			return OddCondition.new()
+		"RedCondition":
+			return RedCondition.new()
+		"SecondColumnCondition":
+			return SecondColumnCondition.new()
+		"SecondHalfCondition":
+			return SecondHalfCondition.new()
+		"SecondRowCondition":
+			return SecondRowCondition.new()
+		"ThirdColumnCondition":
+			return ThirdColumnCondition.new()
+		"ThirdRowCondition":
+			return ThirdRowCondition.new()
+		_:
+			return StraightUpCondition.new()
 	
