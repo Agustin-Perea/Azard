@@ -1,0 +1,441 @@
+[gd_scene format=3 uid="uid://chr3voicimmpr"]
+
+[ext_resource type="Script" uid="uid://com032lxy5dlb" path="res://features/main_menu/controllers/main_menu_controller.gd" id="1_menu"]
+[ext_resource type="FontFile" uid="uid://dk8qd4ll5xlvx" path="res://resources/fonts/FuzzyBubbles-Bold.ttf" id="2_font"]
+[ext_resource type="AudioStream" uid="uid://t5w7kqusfyuv" path="res://resources/sounds/click menu.wav" id="3_click"]
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.247059, 0.117647, 0.223529, 1, 0.431373, 0.207843, 0.345098, 1, 0.913725, 0.356863, 0.360784, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill = 1
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bg"]
+texture = SubResource("GradientTexture2D_bg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.16)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.09)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_help_panel"]
+content_margin_left = 26.0
+content_margin_top = 24.0
+content_margin_right = 26.0
+content_margin_bottom = 24.0
+bg_color = Color(0.247059, 0.117647, 0.223529, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.18)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_confirm"]
+content_margin_left = 34.0
+content_margin_top = 28.0
+content_margin_right = 34.0
+content_margin_bottom = 28.0
+bg_color = Color(0.247059, 0.117647, 0.223529, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.18)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MainMenu" type="Control" unique_id=359583470]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="Panel" parent="." unique_id=545184633]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_bg")
+
+[node name="Moon" type="ColorRect" parent="Background" unique_id=799888966]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.11
+anchor_right = 0.87
+anchor_bottom = 0.37
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.18
+color = Color(0.937255, 0.929412, 0.733333, 0.18)
+
+[node name="Horizon" type="ColorRect" parent="Background" unique_id=1259146066]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -202.0
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -0.06
+color = Color(0.913725, 0.929412, 0.733333, 0.22)
+
+[node name="MenuContent" type="VBoxContainer" parent="." unique_id=7134171]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -238.0
+offset_right = 290.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="MenuContent" unique_id=70473735]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.45)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 150
+text = "AZARD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MenuContent" unique_id=877427476]
+self_modulate = Color(1, 1, 1, 0.7)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "ruleta, apuestas y destino"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="MenuContent" unique_id=1923703209]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="MenuContent" unique_id=1564345146]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="MenuContent/Buttons" unique_id=1486138013]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Play"
+flat = true
+
+[node name="ContinueButton" type="Button" parent="MenuContent/Buttons" unique_id=1706257543]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0.38)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Continuar"
+flat = true
+
+[node name="HelpButton" type="Button" parent="MenuContent/Buttons" unique_id=1841138384]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.86)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Ayuda"
+flat = true
+
+[node name="QuitButton" type="Button" parent="MenuContent/Buttons" unique_id=1410834982]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.72)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Salir"
+flat = true
+
+[node name="VersionLabel" type="Label" parent="." unique_id=2130182087]
+self_modulate = Color(1, 1, 1, 0.3)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -42.0
+offset_right = 240.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+text = "Azard prototype"
+horizontal_alignment = 1
+
+[node name="HelpOverlay" type="Control" parent="." unique_id=905770239]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="HelpOverlay" unique_id=393161864]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03, 0.02, 0.04, 0.66)
+
+[node name="Panel" type="PanelContainer" parent="HelpOverlay" unique_id=241924245]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08
+anchor_top = 0.08
+anchor_right = 0.92
+anchor_bottom = 0.92
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_help_panel")
+
+[node name="Margin" type="MarginContainer" parent="HelpOverlay/Panel" unique_id=1058135140]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="Content" type="VBoxContainer" parent="HelpOverlay/Panel/Margin" unique_id=515048535]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Header" type="HBoxContainer" parent="HelpOverlay/Panel/Margin/Content" unique_id=1442504030]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="HelpOverlay/Panel/Margin/Content/Header" unique_id=882438952]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 44
+text = "Como jugar"
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="HelpOverlay/Panel/Margin/Content/Header" unique_id=1511563176]
+custom_minimum_size = Vector2(145, 54)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.88)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Volver"
+flat = true
+
+[node name="Body" type="HBoxContainer" parent="HelpOverlay/Panel/Margin/Content" unique_id=1962827390]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 34
+
+[node name="Sections" type="VBoxContainer" parent="HelpOverlay/Panel/Margin/Content/Body" unique_id=624887274]
+custom_minimum_size = Vector2(310, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Scroll" type="ScrollContainer" parent="HelpOverlay/Panel/Margin/Content/Body" unique_id=1836408439]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HelpBody" type="VBoxContainer" parent="HelpOverlay/Panel/Margin/Content/Body/Scroll" unique_id=1229810124]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="ConfirmOverlay" type="Control" parent="." unique_id=358455677]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="ConfirmOverlay" unique_id=1501389472]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.52)
+
+[node name="Panel" type="PanelContainer" parent="ConfirmOverlay" unique_id=1260878082]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -145.0
+offset_right = 310.0
+offset_bottom = 145.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_confirm")
+
+[node name="Content" type="VBoxContainer" parent="ConfirmOverlay/Panel" unique_id=1242861095]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="ConfirmOverlay/Panel/Content" unique_id=2090178253]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "Empezar nueva partida"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="ConfirmOverlay/Panel/Content" unique_id=1915603690]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.78)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "Esto borra la partida que podes continuar."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="ConfirmOverlay/Panel/Content" unique_id=1210977643]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="CancelNewRunButton" type="Button" parent="ConfirmOverlay/Panel/Content/Buttons" unique_id=209021025]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.78)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Cancelar"
+flat = true
+
+[node name="ConfirmNewRunButton" type="Button" parent="ConfirmOverlay/Panel/Content/Buttons" unique_id=1016279158]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Empezar"
+flat = true
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="." unique_id=398642997]
+stream = ExtResource("3_click")
+
+[connection signal="pressed" from="MenuContent/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="HelpOverlay/Panel/Margin/Content/Header/BackButton" to="." method="_on_help_back_button_pressed"]
+[connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/CancelNewRunButton" to="." method="_on_cancel_new_run_button_pressed"]
+[connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/ConfirmNewRunButton" to="." method="_on_confirm_new_run_button_pressed"]

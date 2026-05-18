@@ -139,6 +139,7 @@ func _on_map_node_selected(map_node :MapNode)->void:
 	map_node.disabled = false	
 	map_node.selected = true		
 	map_generator.last_node = map_node
+	GameState.save_run(GameState.MAP_SCENE_PATH)
 	
 
 
