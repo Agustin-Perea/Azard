@@ -34,6 +34,7 @@ var animation_state_machine : AnimationNodeStateMachinePlayback
 
 var poison_damage_per_turn: int = 0
 var poison_turns_remaining: int = 0
+var mute_turns_remaining: int = 0
 
 
 func _ready() -> void:
@@ -112,6 +113,15 @@ func _recieve_attack(damage : int)-> void:
 func apply_poison(damage: int, turns: int) -> void:
 	poison_damage_per_turn = max(poison_damage_per_turn, damage)
 	poison_turns_remaining = max(poison_turns_remaining, turns)
+
+func apply_mute(turns: int) -> void:
+	mute_turns_remaining = max(mute_turns_remaining, turns)
+
+func consume_mute_turn() -> bool:
+	if mute_turns_remaining <= 0:
+		return false
+	mute_turns_remaining -= 1
+	return true
 
 func apply_turn_start_effects() -> void:
 	if poison_damage_per_turn <= 0 or poison_turns_remaining <= 0:

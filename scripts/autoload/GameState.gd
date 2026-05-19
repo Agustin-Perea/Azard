@@ -503,6 +503,7 @@ func _build_unit_group_save_data(unit_group: UnitGroup) -> Array:
 				"attack": unit.stats.attack,
 				"poison_damage_per_turn": unit.poison_damage_per_turn,
 				"poison_turns_remaining": unit.poison_turns_remaining,
+				"mute_turns_remaining": unit.mute_turns_remaining,
 				"alive": unit.stats.current_healt > 0,
 			})
 	return result
@@ -529,6 +530,7 @@ func _apply_unit_group_save_data(unit_group: UnitGroup, units_data: Array) -> vo
 		unit.stats.attack = int(unit_data.get("attack", unit.stats.attack))
 		unit.poison_damage_per_turn = int(unit_data.get("poison_damage_per_turn", 0))
 		unit.poison_turns_remaining = int(unit_data.get("poison_turns_remaining", 0))
+		unit.mute_turns_remaining = int(unit_data.get("mute_turns_remaining", 0))
 		unit.stats.health_changed.emit()
 		if bool(unit_data.get("alive", true)) and unit.stats.current_healt > 0:
 			unit_group.group.append(unit)

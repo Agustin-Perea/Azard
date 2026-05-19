@@ -27,6 +27,8 @@ func _begin_turn() -> void:
 		unit.apply_turn_start_effects()
 		if not group.has(unit):
 			continue
+		if unit.consume_mute_turn():
+			continue
 		#current_unit = unit
 		unit.action_controller.perform_movement()
 		

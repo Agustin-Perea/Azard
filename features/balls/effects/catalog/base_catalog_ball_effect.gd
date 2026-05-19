@@ -19,6 +19,9 @@ func _heal(amount: int) -> void:
 func _shield(amount: int) -> void:
 	GameState.add_player_shield(amount)
 
+func _add_base(roulette_controller: RouletteController, amount: float) -> void:
+	roulette_controller.add_base(amount)
+
 func _add_mult(roulette_controller: RouletteController, amount: float) -> void:
 	roulette_controller.add_multiplier(amount)
 

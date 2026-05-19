@@ -65,6 +65,7 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 
 	_apply_attack_status_effects(attack_info)
 	_apply_attack_leech(attack_info, actual_damage_dealt)
+	_apply_attack_bank_reward(attack_info)
 	await get_tree().create_timer(0.05).timeout
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		GameState.clear_pending_roulette_attack(false)
@@ -126,11 +127,18 @@ func _apply_attack_status_effects(attack_info: AttackInfo) -> void:
 		return
 	if attack_info.poison_damage > 0 and attack_info.poison_turns > 0:
 		attack_info.target.apply_poison(attack_info.poison_damage, attack_info.poison_turns)
+	if attack_info.mute_turns > 0:
+		attack_info.target.apply_mute(attack_info.mute_turns)
 
 func _apply_attack_leech(attack_info: AttackInfo, actual_damage_dealt: int) -> void:
 	if attack_info.leech_percent <= 0.0 or actual_damage_dealt <= 0:
 		return
 	GameState.heal_player(int(ceil(float(actual_damage_dealt) * attack_info.leech_percent)))
+
+func _apply_attack_bank_reward(attack_info: AttackInfo) -> void:
+	if attack_info.bank_gold_reward <= 0:
+		return
+	GameState.economy_component.add_run_gold(attack_info.bank_gold_reward)
 
 func _apply_damage_to_enemy(enemy: Unit, damage: int) -> int:
 	if enemy == null or enemy.stats == null or damage <= 0:

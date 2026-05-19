@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/uncommon/ball_14_bank_ball_effect.gd" id="1_bank_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_bank_effect"]
+script = ExtResource("1_bank_effect")
+name = "BankBall"
+description = "Gana oro al ejecutar el ataque."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bank_ball"]
+shading_mode = 0
+albedo_color = Color(0.23464456, 0.65031934, 0.2674075, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 3
+ball_material = SubResource("StandardMaterial3D_bank_ball")
+weight = 80
+base_price = 6
+attack_type = 0
+rarity = 1
+ball_effect = SubResource("Resource_bank_effect")
