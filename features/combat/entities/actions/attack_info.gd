@@ -10,6 +10,8 @@ var target : Unit
 
 var type : Constants.ATTACK_TYPE
 
+var splash_percent: float = 0.0
+
 #effectos A ENVIAR
 
 #animacion a iniciar, cuando llega a un punto se llama a una funcion local que busca al controller para procesar este ataque

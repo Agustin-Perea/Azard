@@ -55,6 +55,8 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 	if attack_info.type == Constants.ATTACK_TYPE.ALL:
 		for enemy in EnemyGroup.group.duplicate():
 			enemy._recieve_attack(attack_info.damage)
+	elif attack_info.type == Constants.ATTACK_TYPE.HALF:
+		_apply_half_attack(attack_info)
 	else:
 		attack_info.target._recieve_attack(attack_info.damage)
 
@@ -66,6 +68,30 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 	UiEventBus.frame_freeze.emit(.1,.333)
 	#debe chequear por tipo de ataque y dar su ataque y efecto o todo el atkinfo en si a las unidades correspondientes
 	
+
+func _apply_half_attack(attack_info: AttackInfo) -> void:
+	if attack_info.target == null:
+		return
+	var splash_targets := _get_adjacent_targets(attack_info.target)
+	attack_info.target._recieve_attack(attack_info.damage)
+	var splash_damage := int(floor(float(attack_info.damage) * attack_info.splash_percent))
+	if splash_damage <= 0:
+		return
+	for enemy in splash_targets:
+		if enemy != null:
+			enemy._recieve_attack(splash_damage)
+
+func _get_adjacent_targets(target: Unit) -> Array[Unit]:
+	var targets: Array[Unit] = []
+	var target_index := EnemyGroup.group.find(target)
+	if target_index == -1:
+		return targets
+	for neighbor_index in [target_index - 1, target_index + 1]:
+		if neighbor_index >= 0 and neighbor_index < EnemyGroup.group.size():
+			var enemy := EnemyGroup.group[neighbor_index]
+			if enemy != null and enemy != target:
+				targets.append(enemy)
+	return targets
 
 
 func _victory()->void:

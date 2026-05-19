@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/common/ball_04_fire_ball_effect.gd" id="1_fire_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_fire_effect"]
+script = ExtResource("1_fire_effect")
+name = "FireBall"
+description = "Dano al objetivo y splash a vecinos."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fire_ball"]
+shading_mode = 0
+albedo_color = Color(0.90728045, 0.5140454, 0.17557585, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 3
+ball_material = SubResource("StandardMaterial3D_fire_ball")
+weight = 125
+base_price = 5
+attack_type = 1
+rarity = 0
+ball_effect = SubResource("Resource_fire_effect")

@@ -31,6 +31,7 @@ var result_field_id : int = 0
 var last_ball_used : BallRuntimeState = null
 var attack_context_attacker_name := ""
 var attack_context_target_name := ""
+var attack_modifiers: Dictionary = {}
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
@@ -62,6 +63,15 @@ func set_attack_context(attacker_name: String, target_name: String) -> void:
 	attack_context_attacker_name = attacker_name
 	attack_context_target_name = target_name
 
+func set_attack_modifier(key: StringName, value: Variant) -> void:
+	attack_modifiers[key] = value
+
+func get_attack_modifier(key: StringName, fallback: Variant = null) -> Variant:
+	return attack_modifiers.get(key, fallback)
+
+func clear_attack_modifiers() -> void:
+	attack_modifiers.clear()
+
 func multiply_mult_score(add_mult : float)->void:
 	#agrega un evento que multiplica el mult
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -80,6 +90,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	if _has_resolved_pending_attack():
 		return
 	
+	clear_attack_modifiers()
 	last_ball_used = ball
 	BookEventBus.turn_log_reset.emit()
 	BookEventBus.turn_log_entry.emit("Bola: " + _get_ball_log_name(ball) + " | Base +" + str(ball.ball_definition.base_damage), Color(0.45, 0.72, 1.0, 1.0))
@@ -254,6 +265,7 @@ func changeScore()->void:
 					"base": base,
 					"multiplier": multiplier,
 					"score": score,
+					"attack_modifiers": attack_modifiers.duplicate(true),
 					"attacker_name": attack_context_attacker_name,
 					"target_name": attack_context_target_name,
 				})
@@ -336,6 +348,7 @@ func reset_score()->void:
 	score = 0
 	multiplier = 0
 	base = 0
+	clear_attack_modifiers()
 	if roulette_control != null:
 		roulette_control.set_ball_visible(false)
 	baseChanged.emit()
@@ -368,6 +381,7 @@ func _resume_pending_attack() -> void:
 	attack_context_target_name = str(pending.get("target_name", attack_context_target_name))
 	if str(pending.get("phase", "")) == "resolved":
 		last_ball_used = ball
+		attack_modifiers = pending.get("attack_modifiers", {}).duplicate(true)
 		result_field_id = int(pending.get("result_field_id", 0))
 		winner_betfield_model = GameState.bet_field_models[result_field_id]
 		number_winner = int(pending.get("number_winner", winner_betfield_model.number))
