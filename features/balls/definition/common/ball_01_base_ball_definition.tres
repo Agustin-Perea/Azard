@@ -17,6 +17,6 @@ base_damage = 6
 ball_material = SubResource("StandardMaterial3D_base_ball")
 weight = 140
 base_price = 5
-attack_type = 1
+attack_type = 0
 rarity = 0
 ball_effect = SubResource("Resource_base_effect")

@@ -1,5 +1,5 @@
 extends "res://features/balls/effects/catalog/base_catalog_ball_effect.gd"
-class_name BaseBallCatalogEffect
+class_name HealtBallCatalogEffect
 
 func on_post_resolved(_roulette_controller: RouletteController) -> void:
-	pass
+	_heal(_scale_int(10, 14, 18))

@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="1_im5jw"]
 [ext_resource type="Script" uid="uid://cvuh12b4ukh7w" path="res://features/balls/database/balls_database.gd" id="2_04sma"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_01_base_ball_definition.tres" id="2_i0oqi"]
-[ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="2_refb4"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_02_duball_definition.tres" id="2_refb4"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_03_healt_ball_definition.tres" id="3_healt"]
 
 [resource]
 script = ExtResource("2_04sma")
-all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4")])
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt")])
 metadata/_custom_type_script = "uid://cvuh12b4ukh7w"
