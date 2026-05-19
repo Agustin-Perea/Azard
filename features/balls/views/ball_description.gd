@@ -58,6 +58,7 @@ func spin_with_ball()->void:
 
 func deactivate()->void:
 	deactivate_canvas.emit()
+	BookEventBus.bet_value_labels_visible.emit(true)
 	button.collision_shape.disabled = true
 	deactivate_button.collision_shape.disabled = true
 	self.visible = false

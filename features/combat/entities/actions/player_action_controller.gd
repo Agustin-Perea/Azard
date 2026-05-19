@@ -5,9 +5,12 @@ class_name PlayerActionController
 
 @onready var roulette_controller : RouletteController = $"../Books/Book"
 
+var lethal_preview_target: Unit = null
+
 func _ready() -> void:
 	super()
 	roulette_controller.finish_button.pressed.connect(_do_attacK)
+	roulette_controller.totalChanged.connect(_refresh_lethal_preview)
 	actual_attacK_Info = AttackInfo.new()
 	actual_attacK_Info.attacker = $".."
 	
@@ -28,8 +31,11 @@ func perform_movement() -> void:
 		on_change_target(target)
 	
 	#reset del attack info y la ruleta y su visual
-	
-	roulette_controller.reset_score()
+	_apply_pending_target_if_needed()
+	_update_roulette_attack_context()
+	if not GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
+		roulette_controller.reset_score()
+	_refresh_lethal_preview()
 
 
 func on_change_target(new_target : Unit):
@@ -37,10 +43,14 @@ func on_change_target(new_target : Unit):
 		#target.shaders._deactivate_selection_aura()
 
 	target = new_target
+	_update_roulette_attack_context()
+	_refresh_lethal_preview()
 	#if new_target:
 		#target.shaders._activate_selection_aura()
 
 func _do_attacK()->void:
+	_apply_pending_target_if_needed()
+	_update_roulette_attack_context()
 	#cambiar de estado
 	#cerrar libro y cambiarlo a placeholder(quitar visibilidad)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
@@ -108,3 +118,70 @@ func _perform_attack()->void:
 	#pasa el atkInfo actual hacia el manager que le da a los enemigos
 	#podria ser una señal emitida, y el combat controller se suscribe a esta señal de las units
 	perform_attack.emit(actual_attacK_Info)
+
+func _update_roulette_attack_context() -> void:
+	if roulette_controller == null:
+		return
+	var target_name := ""
+	if target != null:
+		target_name = target.name
+	roulette_controller.set_attack_context(attacker.name, target_name)
+
+func _apply_pending_target_if_needed() -> void:
+	var pending := GameState.get_pending_roulette_attack(GameState.get_current_scene_path())
+	if pending.is_empty():
+		return
+	var pending_target_name := str(pending.get("target_name", ""))
+	if pending_target_name == "":
+		return
+	var restored_target := _find_enemy_by_name(pending_target_name)
+	if restored_target != null:
+		on_change_target(restored_target)
+
+func _find_enemy_by_name(unit_name: String) -> Unit:
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if enemy is Unit and enemy.name == unit_name:
+			return enemy as Unit
+	return null
+
+func _refresh_lethal_preview() -> void:
+	var damage := int(round(roulette_controller.score))
+	var active := _is_attack_lethal(damage)
+	if lethal_preview_target != null and lethal_preview_target != target and lethal_preview_target.status_view_component != null:
+		lethal_preview_target.status_view_component.set_lethal_preview(false)
+	if _is_current_attack_all_enemies():
+		for enemy in get_tree().get_nodes_in_group("enemy"):
+			if enemy is Unit and enemy.status_view_component != null:
+				enemy.status_view_component.set_lethal_preview(active and _unit_would_die(enemy as Unit, damage))
+		lethal_preview_target = null
+	elif target != null and target.stats != null and damage > 0:
+		if target.status_view_component != null:
+			target.status_view_component.set_lethal_preview(active)
+		lethal_preview_target = target
+	elif lethal_preview_target != null and lethal_preview_target.status_view_component != null:
+		lethal_preview_target.status_view_component.set_lethal_preview(false)
+		lethal_preview_target = null
+	BookEventBus.lethal_preview_changed.emit(active)
+
+func _is_attack_lethal(damage: int) -> bool:
+	if damage <= 0:
+		return false
+	if _is_current_attack_all_enemies():
+		var enemies := get_tree().get_nodes_in_group("enemy")
+		if enemies.is_empty():
+			return false
+		for enemy in enemies:
+			if enemy is Unit and _unit_would_die(enemy as Unit, damage):
+				return true
+		return false
+	if target == null:
+		return false
+	return _unit_would_die(target, damage)
+
+func _is_current_attack_all_enemies() -> bool:
+	return roulette_controller.last_ball_used != null \
+		and roulette_controller.last_ball_used.ball_definition != null \
+		and roulette_controller.last_ball_used.ball_definition.attack_type == Constants.ATTACK_TYPE.ALL
+
+func _unit_would_die(unit: Unit, damage: int) -> bool:
+	return unit != null and unit.stats != null and damage >= unit.stats.current_healt + unit.stats.shield

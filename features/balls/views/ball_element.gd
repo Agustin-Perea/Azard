@@ -110,6 +110,7 @@ func activate_ball_desctiption()->void:
 	if ball_description_canvas.ball_element != self:
 			ball_description_canvas.assign_ball_model(self)
 	
+	BookEventBus.bet_value_labels_visible.emit(false)
 	_activate_selection_aura()
 	ball_description_canvas.update_labels()
 	ball_description_canvas.position =  self.position + offset_description_canvas
@@ -119,6 +120,7 @@ func activate_ball_desctiption()->void:
 func deactivate_ball_desctiption()->void:
 	_deactivate_selection_aura()
 	ball_description_canvas.visible = false
+	BookEventBus.bet_value_labels_visible.emit(true)
 	description_active = false
 
 
@@ -164,6 +166,8 @@ func _on_chip_dropped():
 	##falta que si vuelve al container se elimine la bet y se  ordene
 
 func use_ball()->void:
+	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
+		return
 	#agrega eventos de la bola
 	BookEventBus.turn_log_close_requested.emit()
 	BookEventBus.start_spin.emit(ball_data)

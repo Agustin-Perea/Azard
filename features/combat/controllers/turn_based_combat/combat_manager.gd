@@ -60,6 +60,8 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 		attack_info.target._recieve_attack(attack_info.damage)
 
 	await get_tree().create_timer(0.05).timeout
+	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
+		GameState.clear_pending_roulette_attack(false)
 	GameState.save_combat_snapshot(GameState.get_current_scene_path(), Player, EnemyGroup)
 	UiEventBus.apply_camera_shake.emit(.1,.5,15)
 	UiEventBus.frame_freeze.emit(.1,.333)

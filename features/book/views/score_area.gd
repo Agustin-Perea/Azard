@@ -34,6 +34,8 @@ var player_stats : StatsComponent
 
 const TURN_LOG_MAX_LINES := 4
 const LABEL_ROTATION := Vector3(-90.0, 0.0, 0.0)
+const LETHAL_SKULL_REST_SCALE := Vector3.ONE * 0.36
+const LETHAL_SKULL_PULSE_SCALE := Vector3.ONE * 0.42
 
 var turn_log_title_label: Label3D
 var turn_log_labels: Array[Label3D] = []
@@ -45,9 +47,14 @@ var turn_log_tooltip_panel: MeshInstance3D
 var damage_caption_label: Label3D
 var turn_log_ignore_next_click := false
 var turn_log_empty_entry := {"text": "Aun no hay datos del tiro", "color": Color(1, 1, 1, 0.70)}
+var lethal_preview_tween: Tween
+var total_damage_rest_scale := Vector3.ONE
+var lethal_skull_icon: Label3D
 
 func _ready() -> void:
 	_setup_qol_labels()
+	_create_lethal_skull_icon()
+	total_damage_rest_scale = total_damage.scale
 
 	roulette_controller.baseChanged.connect(_on_change_base)
 	roulette_controller.multiplicatorChanged.connect(_on_change_mult)
@@ -57,6 +64,8 @@ func _ready() -> void:
 	BookEventBus.turn_log_reset.connect(_on_turn_log_reset)
 	BookEventBus.turn_log_entry.connect(_on_turn_log_entry)
 	BookEventBus.turn_log_close_requested.connect(_close_turn_log)
+	BookEventBus.lethal_preview_changed.connect(set_lethal_preview)
+	BookEventBus.pending_attack_restored.connect(_on_pending_attack_restored)
 	for label in Labels:
 		# Guardamos la posición local original de cada label
 		posiciones_iniciales[label] = label.position
@@ -221,6 +230,26 @@ func _create_qol_label(label_name: String, local_position: Vector3, label_text: 
 	add_child(label)
 	return label
 
+func _create_lethal_skull_icon() -> void:
+	lethal_skull_icon = Label3D.new()
+	lethal_skull_icon.name = "LethalSkullIcon"
+	lethal_skull_icon.text = "☠"
+	lethal_skull_icon.font_size = 60
+	lethal_skull_icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lethal_skull_icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lethal_skull_icon.outline_size = 4
+	lethal_skull_icon.outline_modulate = Color(0.05, 0.18, 0.12, 1.0)
+	lethal_skull_icon.width = 120.0
+	lethal_skull_icon.position = total_damage.position + Vector3(0.26, 0.018, -0.020)
+	lethal_skull_icon.rotation_degrees = LABEL_ROTATION
+	lethal_skull_icon.scale = LETHAL_SKULL_REST_SCALE
+	lethal_skull_icon.modulate = Color(0.50, 1.0, 0.68, 1.0)
+	lethal_skull_icon.no_depth_test = true
+	lethal_skull_icon.render_priority = 32
+	lethal_skull_icon.visible = false
+	add_child(lethal_skull_icon)
+	posiciones_iniciales[lethal_skull_icon] = lethal_skull_icon.position
+
 func _on_turn_log_reset() -> void:
 	turn_log_entries.clear()
 	turn_log_open = false
@@ -288,6 +317,11 @@ func _process(delta: float) -> void:
 			# IMPORTANTE: Sumamos el movimiento a la posición original
 			# en lugar de reemplazarla por completo
 			label.position.z = posiciones_iniciales[label].z + movimiento
+
+	if lethal_skull_icon != null and lethal_skull_icon.visible and posiciones_iniciales.has(lethal_skull_icon):
+		var skull_desfase = lethal_skull_icon.global_position.x * 2
+		var skull_movimiento = sin((tiempo * velocidad) + skull_desfase) * amplitud
+		lethal_skull_icon.position.z = posiciones_iniciales[lethal_skull_icon].z + skull_movimiento
 
 var tween : Tween
 func number_appear()->void:
@@ -361,12 +395,12 @@ func _on_reroll_pressed()->void:
 	if rerolls_count > 0:
 		rerolls_count -= 1
 		rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
+		GameState.current_reroll = rerolls_count
 		
 		roulette_controller.reroll()
 		
 	if rerolls_count <= 0:
 		disable_reroll()
-	GameState.current_reroll = rerolls_count
 
 func disable_reroll()->void:
 	reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset",1.9)
@@ -389,3 +423,32 @@ func enable_finish_button()->void:
 	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset",0.6)
 	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0.8)
 	finish_button.enabled = true
+
+func _on_pending_attack_restored() -> void:
+	enable_finish_button()
+	enable_reroll()
+
+func set_lethal_preview(active: bool) -> void:
+	if lethal_preview_tween != null:
+		lethal_preview_tween.kill()
+		lethal_preview_tween = null
+	total_damage.scale = total_damage_rest_scale
+	if lethal_skull_icon != null and posiciones_iniciales.has(lethal_skull_icon):
+		lethal_skull_icon.position = posiciones_iniciales[lethal_skull_icon]
+	if not active:
+		total_damage.modulate = Color(1, 1, 1, 1)
+		if lethal_skull_icon != null:
+			lethal_skull_icon.visible = false
+		return
+	total_damage.modulate = Color(0.18, 0.95, 0.50, 1.0)
+	if lethal_skull_icon != null:
+		lethal_skull_icon.visible = true
+		lethal_skull_icon.scale = LETHAL_SKULL_REST_SCALE
+	lethal_preview_tween = create_tween()
+	lethal_preview_tween.set_parallel(true)
+	lethal_preview_tween.tween_property(total_damage, "scale", total_damage_rest_scale * 1.08, 0.24).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if lethal_skull_icon != null:
+		lethal_preview_tween.tween_property(lethal_skull_icon, "scale", LETHAL_SKULL_PULSE_SCALE, 0.24).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	lethal_preview_tween.chain().tween_property(total_damage, "scale", total_damage_rest_scale, 0.32).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	if lethal_skull_icon != null:
+		lethal_preview_tween.chain().tween_property(lethal_skull_icon, "scale", LETHAL_SKULL_REST_SCALE, 0.32).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)

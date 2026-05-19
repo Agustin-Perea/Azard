@@ -36,6 +36,8 @@ signal change_scene_to_packed(scene : PackedScene)
 signal scene_changed
 
 signal add_passive_item(data_model : PassiveItemDefinition)
+
+signal autosave_feedback_requested
 func disableClickableAreas()->void:
 	#ClickableArea.global_input_enabled = false
 	#PlayerUiEvents.disable_camera_buttons.emit()

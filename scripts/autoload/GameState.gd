@@ -15,6 +15,7 @@ var current_scene_path: String = MAP_SCENE_PATH
 var auto_save_enabled := false
 var _is_loading_run := false
 var combat_snapshot: Dictionary = {}
+var pending_roulette_attack: Dictionary = {}
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -235,12 +236,14 @@ func new_run() -> void:
 	auto_save_enabled = true
 	current_scene_path = MAP_SCENE_PATH
 	combat_snapshot.clear()
+	pending_roulette_attack.clear()
 	reload()
 	save_run(MAP_SCENE_PATH)
 
 func end_run() -> void:
 	auto_save_enabled = false
 	combat_snapshot.clear()
+	pending_roulette_attack.clear()
 	current_scene_path = MAP_SCENE_PATH
 	delete_save()
 
@@ -274,6 +277,8 @@ func save_run(scene_path: String = "") -> bool:
 		push_error("No se pudo guardar partida: %s" % FileAccess.get_open_error())
 		return false
 	file.store_string(JSON.stringify(_build_save_data(), "\t"))
+	if auto_save_enabled:
+		UiEventBus.autosave_feedback_requested.emit()
 	return true
 
 func load_run() -> bool:
@@ -313,6 +318,7 @@ func _build_save_data() -> Dictionary:
 		"player_stats": _build_player_stats_save_data(),
 		"map": _build_map_save_data(),
 		"combat": combat_snapshot.duplicate(true),
+		"pending_roulette_attack": pending_roulette_attack.duplicate(true),
 		"balls_deck": _build_balls_save_data(),
 		"passive_items": _build_passive_items_save_data(),
 		"bet_fields": _build_bet_fields_save_data(),
@@ -328,6 +334,7 @@ func _apply_save_data(data: Dictionary) -> void:
 	_apply_player_stats_save_data(data.get("player_stats", {}))
 	_apply_map_save_data(data.get("map", {}))
 	combat_snapshot = data.get("combat", {}).duplicate(true)
+	pending_roulette_attack = data.get("pending_roulette_attack", {}).duplicate(true)
 	_apply_balls_save_data(data.get("balls_deck", []))
 	_apply_passive_items_save_data(data.get("passive_items", []))
 	_apply_bet_fields_save_data(data.get("bet_fields", []))
@@ -419,6 +426,42 @@ func save_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_gro
 		"enemies": _build_unit_group_save_data(enemy_group),
 	}
 	save_run(scene_path)
+
+func begin_pending_roulette_attack(scene_path: String, pending_data: Dictionary) -> void:
+	if scene_path == "":
+		scene_path = get_current_scene_path()
+	current_scene_path = scene_path
+	pending_roulette_attack = pending_data.duplicate(true)
+	pending_roulette_attack["scene_path"] = scene_path
+	pending_roulette_attack["phase"] = str(pending_roulette_attack.get("phase", "spinning"))
+	save_run(scene_path)
+
+func mark_pending_roulette_resolved(resolved_data: Dictionary) -> void:
+	if pending_roulette_attack.is_empty():
+		return
+	for key in resolved_data.keys():
+		pending_roulette_attack[key] = resolved_data[key]
+	pending_roulette_attack["phase"] = "resolved"
+	save_run(str(pending_roulette_attack.get("scene_path", get_current_scene_path())))
+
+func clear_pending_roulette_attack(persist := true) -> void:
+	if pending_roulette_attack.is_empty():
+		return
+	pending_roulette_attack.clear()
+	if persist:
+		_on_persistent_state_changed()
+
+func has_pending_roulette_attack(scene_path: String = "") -> bool:
+	if pending_roulette_attack.is_empty():
+		return false
+	if scene_path == "":
+		scene_path = get_current_scene_path()
+	return str(pending_roulette_attack.get("scene_path", "")) == scene_path
+
+func get_pending_roulette_attack(scene_path: String = "") -> Dictionary:
+	if not has_pending_roulette_attack(scene_path):
+		return {}
+	return pending_roulette_attack.duplicate(true)
 
 func clear_combat_snapshot() -> void:
 	combat_snapshot.clear()

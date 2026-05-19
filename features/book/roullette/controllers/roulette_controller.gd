@@ -29,9 +29,12 @@ var result_field_id : int = 0
 
 
 var last_ball_used : BallRuntimeState = null
+var attack_context_attacker_name := ""
+var attack_context_target_name := ""
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
+	call_deferred("_resume_pending_attack")
 	
 
 	#rng.seed = ObjectPoolsDataBase.master_seed
@@ -54,6 +57,10 @@ func update_base_score(new_base : int)->void:
 			return true
 	}))
 
+func set_attack_context(attacker_name: String, target_name: String) -> void:
+	attack_context_attacker_name = attacker_name
+	attack_context_target_name = target_name
+
 func multiply_mult_score(add_mult : float)->void:
 	#agrega un evento que multiplica el mult
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -67,6 +74,8 @@ func multiply_mult_score(add_mult : float)->void:
 	
 
 func on_start_spin(ball : BallRuntimeState) -> void:
+	if ball == null or ball.ball_definition == null:
+		return
 	
 	last_ball_used = ball
 	BookEventBus.turn_log_reset.emit()
@@ -84,7 +93,20 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	
 	## Elegimos un field ganador al azar
-	result_field_id = rng.randi_range(0, 36)
+	var pending := GameState.get_pending_roulette_attack(GameState.get_current_scene_path())
+	if not pending.is_empty() and str(pending.get("phase", "")) == "spinning":
+		result_field_id = int(pending.get("result_field_id", 0))
+	else:
+		result_field_id = rng.randi_range(0, 36)
+		GameState.begin_pending_roulette_attack(GameState.get_current_scene_path(), {
+			"phase": "spinning",
+			"result_field_id": result_field_id,
+			"ball_definition_path": ball.ball_definition.resource_path,
+			"ball_level_upgrade": ball.level_upgrade,
+			"ball_final_price": ball.final_price,
+			"attacker_name": attack_context_attacker_name,
+			"target_name": attack_context_target_name,
+		})
 
 	# 2. Obtenemos el BetFieldModel ganador
 	winner_betfield_model = GameState.bet_field_models[result_field_id]
@@ -220,6 +242,16 @@ func changeScore()->void:
 		"action": func():
 			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
 			totalChanged.emit() 
+			if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
+				GameState.mark_pending_roulette_resolved({
+					"result_field_id": result_field_id,
+					"number_winner": number_winner,
+					"base": base,
+					"multiplier": multiplier,
+					"score": score,
+					"attacker_name": attack_context_attacker_name,
+					"target_name": attack_context_target_name,
+				})
 			BookEventBus.turn_log_entry.emit("Daño final: " + str(int(round(score))), Color(0.95, 0.36, 0.42, 1.0))
 			return true
 	}))
@@ -308,10 +340,59 @@ func reroll()->void:
 	if last_ball_used:
 		##CombatEventBus.reroll.emit(self)
 		reset_score()
+		GameState.clear_pending_roulette_attack()
 		#cambio de visuals o animacion
 		
 		#llama al estado de Spin de Ruleta
 		on_start_spin(last_ball_used)
+
+func _resume_pending_attack() -> void:
+	await get_tree().process_frame
+	var pending := GameState.get_pending_roulette_attack(GameState.get_current_scene_path())
+	if pending.is_empty():
+		return
+	var ball := _get_pending_ball(pending)
+	if ball == null:
+		GameState.clear_pending_roulette_attack()
+		return
+	attack_context_attacker_name = str(pending.get("attacker_name", attack_context_attacker_name))
+	attack_context_target_name = str(pending.get("target_name", attack_context_target_name))
+	if str(pending.get("phase", "")) == "resolved":
+		last_ball_used = ball
+		result_field_id = int(pending.get("result_field_id", 0))
+		winner_betfield_model = GameState.bet_field_models[result_field_id]
+		number_winner = int(pending.get("number_winner", winner_betfield_model.number))
+		base = float(pending.get("base", ball.ball_definition.base_damage))
+		multiplier = float(pending.get("multiplier", 0))
+		score = float(pending.get("score", 0))
+		if ball.ball_definition.ball_material:
+			ball_mesh.material_override = ball.ball_definition.ball_material
+		numberChanged.emit()
+		baseChanged.emit()
+		multiplicatorChanged.emit(0)
+		totalChanged.emit()
+		BookEventBus.turn_log_reset.emit()
+		BookEventBus.turn_log_entry.emit("Tiro pendiente recuperado", Color(1.0, 0.72, 0.24, 1.0))
+		BookEventBus.turn_log_entry.emit("Resultado: " + str(number_winner), Color(0.32, 0.78, 0.38, 1.0))
+		BookEventBus.turn_log_entry.emit("Daño final: " + str(int(round(score))), Color(0.95, 0.36, 0.42, 1.0))
+		BookEventBus.pending_attack_restored.emit()
+	else:
+		on_start_spin(ball)
+
+func _get_pending_ball(pending: Dictionary) -> BallRuntimeState:
+	var ball_path := str(pending.get("ball_definition_path", ""))
+	for ball_raw in GameState.balls_deck.all_balls:
+		var ball := ball_raw as BallRuntimeState
+		if ball != null and ball.ball_definition != null and ball.ball_definition.resource_path == ball_path:
+			return ball
+	if ball_path == "" or not ResourceLoader.exists(ball_path):
+		return null
+	var restored_ball := BallRuntimeState.new()
+	restored_ball.ball_definition = load(ball_path)
+	restored_ball.level_upgrade = int(pending.get("ball_level_upgrade", 1))
+	restored_ball.final_price = int(pending.get("ball_final_price", 0))
+	restored_ball.used = true
+	return restored_ball
 
 func _get_ball_log_name(ball: BallRuntimeState) -> String:
 	if ball == null or ball.ball_definition == null or ball.ball_definition.ball_effect == null:

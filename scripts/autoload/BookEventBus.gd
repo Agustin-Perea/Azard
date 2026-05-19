@@ -18,6 +18,9 @@ signal turn_log_reset
 signal turn_log_entry(text: String, color: Color)
 signal turn_log_close_requested
 signal bet_chip_activated(chip_id: int)
+signal lethal_preview_changed(active: bool)
+signal pending_attack_restored
+signal bet_value_labels_visible(value: bool)
 
 signal unit_death(unit : Unit)
 @warning_ignore("unused_signal")

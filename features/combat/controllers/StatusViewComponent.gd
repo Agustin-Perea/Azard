@@ -25,6 +25,7 @@ var stats : StatsComponent
 var health_tween : Tween
 var displayed_health : float = 0.0
 var displayed_shield : float = 0.0
+var lethal_preview_tween : Tween
 
 func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
@@ -168,3 +169,20 @@ func show_life_drop_animation() -> void:
 		target_health,
 		0.5
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+func set_lethal_preview(active: bool) -> void:
+	if lethal_preview_tween != null:
+		lethal_preview_tween.kill()
+		lethal_preview_tween = null
+	health_sprite_viewport.modulate = Color(1, 1, 1, 1)
+	health_label_text.modulate = Color(1, 1, 1, 1)
+	if not active:
+		return
+	lethal_preview_tween = create_tween()
+	lethal_preview_tween.set_loops()
+	lethal_preview_tween.set_parallel(true)
+	lethal_preview_tween.tween_property(health_sprite_viewport, "modulate", Color(1.0, 0.55, 0.38, 1.0), 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	lethal_preview_tween.tween_property(health_label_text, "modulate", Color(1.0, 0.85, 0.20, 1.0), 0.28).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	lethal_preview_tween.chain().set_parallel(true)
+	lethal_preview_tween.tween_property(health_sprite_viewport, "modulate", Color(1, 1, 1, 1), 0.32).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	lethal_preview_tween.tween_property(health_label_text, "modulate", Color(1, 1, 1, 1), 0.32).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
