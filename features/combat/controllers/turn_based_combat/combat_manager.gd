@@ -66,6 +66,7 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 	_apply_attack_status_effects(attack_info)
 	_apply_attack_leech(attack_info, actual_damage_dealt)
 	_apply_attack_bank_reward(attack_info)
+	_apply_attack_self_damage(attack_info)
 	await get_tree().create_timer(0.05).timeout
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		GameState.clear_pending_roulette_attack(false)
@@ -139,6 +140,11 @@ func _apply_attack_bank_reward(attack_info: AttackInfo) -> void:
 	if attack_info.bank_gold_reward <= 0:
 		return
 	GameState.economy_component.add_run_gold(attack_info.bank_gold_reward)
+
+func _apply_attack_self_damage(attack_info: AttackInfo) -> void:
+	if attack_info.self_damage <= 0 or attack_info.attacker == null:
+		return
+	attack_info.attacker._recieve_attack(attack_info.self_damage)
 
 func _apply_damage_to_enemy(enemy: Unit, damage: int) -> int:
 	if enemy == null or enemy.stats == null or damage <= 0:
