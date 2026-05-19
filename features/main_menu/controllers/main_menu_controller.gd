@@ -24,6 +24,12 @@ const HELP_SECTION_COLORS := {
 	"Mejoras": Color(1.0, 0.72, 0.24, 1.0),
 	"Economia": Color(1.0, 0.84, 0.20, 1.0),
 }
+const GLASS_BUTTON_NORMAL := Color(1.0, 1.0, 1.0, 0.07)
+const GLASS_BUTTON_HOVER := Color(1.0, 1.0, 1.0, 0.15)
+const GLASS_BUTTON_PRESSED := Color(0.0, 0.0, 0.0, 0.24)
+const GLASS_BORDER := Color(0.913725, 0.929412, 0.733333, 0.24)
+const GLASS_CARD := Color(0.035, 0.018, 0.040, 0.38)
+const GLASS_CARD_PLANNED := Color(0.050, 0.030, 0.060, 0.26)
 
 @onready var continue_button: Button = $MenuContent/Buttons/ContinueButton
 @onready var confirm_overlay: Control = $ConfirmOverlay
@@ -31,6 +37,9 @@ const HELP_SECTION_COLORS := {
 @onready var help_tabs: VBoxContainer = $HelpOverlay/Panel/Margin/Content/Body/Sections
 @onready var help_title: Label = $HelpOverlay/Panel/Margin/Content/Header/Title
 @onready var help_body: VBoxContainer = $HelpOverlay/Panel/Margin/Content/Body/Scroll/HelpBody
+@onready var help_back_button: Button = $HelpOverlay/Panel/Margin/Content/Header/BackButton
+@onready var cancel_new_run_button: Button = $ConfirmOverlay/Panel/Content/Buttons/CancelNewRunButton
+@onready var confirm_new_run_button: Button = $ConfirmOverlay/Panel/Content/Buttons/ConfirmNewRunButton
 @onready var click_player: AudioStreamPlayer = $ClickPlayer
 
 const CLICK_VOLUME_DB := -17.0
@@ -51,6 +60,7 @@ func _ready() -> void:
 	continue_button.modulate.a = 1.0 if GameState.has_save() else 0.45
 	confirm_overlay.visible = false
 	help_overlay.visible = false
+	_setup_modal_button_styles()
 	_setup_help()
 
 func _on_play_button_pressed() -> void:
@@ -120,9 +130,9 @@ func _setup_help() -> void:
 		button.add_theme_color_override("font_color", Color(1, 1, 1, 0.86))
 		button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
 		button.add_theme_color_override("font_pressed_color", HELP_SECTION_COLORS.get(section, Color.WHITE))
-		button.add_theme_stylebox_override("normal", _make_button_style(Color(1, 1, 1, 0.07), Color(1, 1, 1, 0.20)))
-		button.add_theme_stylebox_override("hover", _make_button_style(Color(1, 1, 1, 0.15), Color(1, 1, 1, 0.34)))
-		button.add_theme_stylebox_override("pressed", _make_button_style(Color(0, 0, 0, 0.24), HELP_SECTION_COLORS.get(section, Color.WHITE)))
+		button.add_theme_stylebox_override("normal", _make_button_style(GLASS_BUTTON_NORMAL, GLASS_BORDER))
+		button.add_theme_stylebox_override("hover", _make_button_style(GLASS_BUTTON_HOVER, Color(0.913725, 0.929412, 0.733333, 0.42)))
+		button.add_theme_stylebox_override("pressed", _make_button_style(GLASS_BUTTON_PRESSED, HELP_SECTION_COLORS.get(section, Color.WHITE)))
 		button.pressed.connect(_on_help_section_pressed.bind(section))
 		help_tabs.add_child(button)
 		help_section_buttons[section] = button
@@ -139,7 +149,7 @@ func _show_help_section(section: String) -> void:
 		var button := help_section_buttons[button_section] as Button
 		var active := str(button_section) == section
 		button.add_theme_color_override("font_color", Color(1, 1, 1, 1) if active else Color(1, 1, 1, 0.68))
-		button.add_theme_stylebox_override("normal", _make_button_style(Color(1, 1, 1, 0.20) if active else Color(1, 1, 1, 0.07), HELP_SECTION_COLORS.get(str(button_section), Color(1, 1, 1, 0.18)) if active else Color(1, 1, 1, 0.20)))
+		button.add_theme_stylebox_override("normal", _make_button_style(Color(1, 1, 1, 0.18) if active else GLASS_BUTTON_NORMAL, HELP_SECTION_COLORS.get(str(button_section), GLASS_BORDER) if active else GLASS_BORDER))
 	for child in help_body.get_children():
 		child.queue_free()
 	match section:
@@ -217,7 +227,7 @@ func _render_item_entries() -> void:
 func _add_help_entry(title: String, body: String, color: Color, planned := false) -> void:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", _make_card_style(Color(0.12, 0.06, 0.12, 0.42)))
+	panel.add_theme_stylebox_override("panel", _make_card_style(GLASS_CARD_PLANNED if planned else GLASS_CARD))
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 18)
@@ -304,6 +314,26 @@ func _get_rarity_text(rarity: int) -> String:
 func _get_rarity_color(rarity: int) -> Color:
 	return Constants.RARITY_COLORS.get(rarity, Color(1, 1, 1, 1))
 
+func _setup_modal_button_styles() -> void:
+	_style_modal_button(help_back_button, false)
+	_style_modal_button(cancel_new_run_button, false)
+	_style_modal_button(confirm_new_run_button, true)
+
+func _style_modal_button(button: Button, primary: bool) -> void:
+	if button == null:
+		return
+	button.flat = false
+	button.custom_minimum_size = Vector2(176, 62)
+	button.add_theme_color_override("font_color", Color(1, 1, 1, 0.96) if primary else Color(1, 1, 1, 0.78))
+	button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
+	button.add_theme_color_override("font_pressed_color", Color(0.913725, 0.929412, 0.733333, 1.0))
+	var accent := Color(0.95, 0.36, 0.42, 0.54) if primary else GLASS_BORDER
+	var normal_color := Color(0.95, 0.36, 0.42, 0.18) if primary else GLASS_BUTTON_NORMAL
+	var hover_color := Color(0.95, 0.36, 0.42, 0.28) if primary else GLASS_BUTTON_HOVER
+	button.add_theme_stylebox_override("normal", _make_button_style(normal_color, accent))
+	button.add_theme_stylebox_override("hover", _make_button_style(hover_color, Color(0.913725, 0.929412, 0.733333, 0.46)))
+	button.add_theme_stylebox_override("pressed", _make_button_style(GLASS_BUTTON_PRESSED, accent))
+
 func _make_button_style(color: Color, border_color := Color(1, 1, 1, 0.13)) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
@@ -316,16 +346,16 @@ func _make_button_style(color: Color, border_color := Color(1, 1, 1, 0.13)) -> S
 	style.corner_radius_top_right = 8
 	style.corner_radius_bottom_right = 8
 	style.corner_radius_bottom_left = 8
-	style.content_margin_left = 18
-	style.content_margin_top = 12
-	style.content_margin_right = 18
-	style.content_margin_bottom = 12
+	style.content_margin_left = 22
+	style.content_margin_top = 14
+	style.content_margin_right = 22
+	style.content_margin_bottom = 14
 	return style
 
 func _make_card_style(color: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
-	style.border_color = Color(1, 1, 1, 0.13)
+	style.border_color = Color(0.913725, 0.929412, 0.733333, 0.16)
 	style.border_width_left = 2
 	style.border_width_top = 2
 	style.border_width_right = 2
