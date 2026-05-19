@@ -10,8 +10,9 @@
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_06_shield_ball_definition.tres" id="6_shield"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_07_red_ball_definition.tres" id="7_red"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_08_black_ball_definition.tres" id="8_black"]
+[ext_resource type="Resource" path="res://features/balls/definition/uncommon/ball_09_bounce_ball_definition.tres" id="9_bounce"]
 
 [resource]
 script = ExtResource("2_04sma")
-all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison"), ExtResource("6_shield"), ExtResource("7_red"), ExtResource("8_black")])
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison"), ExtResource("6_shield"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_bounce")])
 metadata/_custom_type_script = "uid://cvuh12b4ukh7w"

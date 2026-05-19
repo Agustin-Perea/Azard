@@ -75,6 +75,7 @@ func _do_attacK()->void:
 				actual_attacK_Info.splash_percent = float(roulette_controller.get_attack_modifier(&"splash_percent", 0.0))
 				actual_attacK_Info.poison_damage = int(roulette_controller.get_attack_modifier(&"poison_damage", 0))
 				actual_attacK_Info.poison_turns = int(roulette_controller.get_attack_modifier(&"poison_turns", 0))
+				actual_attacK_Info.bounce_hits = int(roulette_controller.get_attack_modifier(&"bounce_hits", 0))
 			
 			attack_beginning.emit()
 			return true

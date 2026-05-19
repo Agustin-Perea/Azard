@@ -52,7 +52,9 @@ func game_loop() -> void:
 
 func _on_perform_attack(attack_info : AttackInfo)->void:
 
-	if attack_info.type == Constants.ATTACK_TYPE.ALL:
+	if attack_info.bounce_hits > 0:
+		_apply_bounce_attack(attack_info)
+	elif attack_info.type == Constants.ATTACK_TYPE.ALL:
 		for enemy in EnemyGroup.group.duplicate():
 			enemy._recieve_attack(attack_info.damage)
 	elif attack_info.type == Constants.ATTACK_TYPE.HALF:
@@ -92,6 +94,25 @@ func _get_adjacent_targets(target: Unit) -> Array[Unit]:
 			var enemy := EnemyGroup.group[neighbor_index]
 			if enemy != null and enemy != target:
 				targets.append(enemy)
+	return targets
+
+func _apply_bounce_attack(attack_info: AttackInfo) -> void:
+	var targets := _get_bounce_targets(attack_info.target, attack_info.bounce_hits)
+	for enemy in targets:
+		if enemy != null:
+			enemy._recieve_attack(attack_info.damage)
+
+func _get_bounce_targets(target: Unit, hit_count: int) -> Array[Unit]:
+	var targets: Array[Unit] = []
+	if hit_count <= 0 or EnemyGroup.group.is_empty():
+		return targets
+	var start_index := EnemyGroup.group.find(target)
+	if start_index == -1:
+		start_index = 0
+	for i in range(hit_count):
+		var enemy := EnemyGroup.group[(start_index + i) % EnemyGroup.group.size()]
+		if enemy != null:
+			targets.append(enemy)
 	return targets
 
 func _apply_attack_status_effects(attack_info: AttackInfo) -> void:
