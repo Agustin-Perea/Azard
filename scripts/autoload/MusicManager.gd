@@ -1,7 +1,7 @@
 extends Node
 
-const MENU_MUSIC_PATH := "res://resources/music/menu_dark_fantasy.mp3"
-const COMBAT_MUSIC_PATH := "res://resources/music/combat_one_last_day_loop.wav"
+const MENU_MUSIC_PATH := "res://resources/music/Ghosts of Void.mp3" #"res://resources/music/frontier-home.mp3"
+const COMBAT_MUSIC_PATH :="res://resources/music/Balatro.mp3" #"res://resources/music/sunshire-theme.mp3"#
 
 const MENU_VOLUME_DB := -14.0
 const COMBAT_VOLUME_DB := -20.0
@@ -26,10 +26,10 @@ func _ready() -> void:
 	_configure_loop(_combat_music)
 
 func play_menu_music() -> void:
-	_play_music(_menu_music, "menu", MENU_VOLUME_DB)
+	_play_music(_menu_music, "menu", MENU_VOLUME_DB,55)
 
 func play_combat_music() -> void:
-	_play_music(_combat_music, "combat", COMBAT_VOLUME_DB)
+	_play_music(_combat_music, "combat", COMBAT_VOLUME_DB,18)
 
 func stop_music() -> void:
 	if _fade_tween:
@@ -41,7 +41,7 @@ func stop_music() -> void:
 		_current_track = ""
 	)
 
-func _play_music(stream: AudioStream, track_name: String, target_volume_db: float) -> void:
+func _play_music(stream: AudioStream, track_name: String, target_volume_db: float, offset: float = 0) -> void:
 	if _player == null or stream == null:
 		return
 	if _current_track == track_name and _player.playing:
@@ -53,17 +53,17 @@ func _play_music(stream: AudioStream, track_name: String, target_volume_db: floa
 		_fade_tween = create_tween()
 		_fade_tween.tween_property(_player, "volume_db", -80.0, FADE_SECONDS * 0.5)
 		_fade_tween.finished.connect(func():
-			_start_track(stream, track_name, target_volume_db)
+			_start_track(stream, track_name, target_volume_db, offset)
 		)
 		return
 
-	_start_track(stream, track_name, target_volume_db)
+	_start_track(stream, track_name, target_volume_db, offset)
 
-func _start_track(stream: AudioStream, track_name: String, target_volume_db: float) -> void:
+func _start_track(stream: AudioStream, track_name: String, target_volume_db: float, offset: float = 0) -> void:
 	_configure_loop(stream)
 	_player.stream = stream
 	_player.volume_db = -80.0
-	_player.play()
+	_player.play(offset)
 	_current_track = track_name
 	_fade_tween = create_tween()
 	_fade_tween.tween_property(_player, "volume_db", target_volume_db, FADE_SECONDS)
