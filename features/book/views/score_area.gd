@@ -32,13 +32,31 @@ var player_stats : StatsComponent
 @onready var health_progress_bar : ProgressBar = $"../SubViewport/ProgressBar"
 @onready var info : Label3D = $"../LifeText"
 
+const TURN_LOG_MAX_LINES := 4
+const LABEL_ROTATION := Vector3(-90.0, 0.0, 0.0)
+
+var turn_log_title_label: Label3D
+var turn_log_labels: Array[Label3D] = []
+var turn_log_entries: Array = []
+var turn_log_open := false
+var turn_log_button: SB_Button3D
+var turn_log_button_label: Label3D
+var turn_log_tooltip_panel: MeshInstance3D
+var damage_caption_label: Label3D
+var turn_log_ignore_next_click := false
+var turn_log_empty_entry := {"text": "Aun no hay datos del tiro", "color": Color(1, 1, 1, 0.70)}
+
 func _ready() -> void:
+	_setup_qol_labels()
 
 	roulette_controller.baseChanged.connect(_on_change_base)
 	roulette_controller.multiplicatorChanged.connect(_on_change_mult)
 	
 	roulette_controller.totalChanged.connect(_on_change_total)
 	roulette_controller.betResolved.connect(_on_bet_resolved)
+	BookEventBus.turn_log_reset.connect(_on_turn_log_reset)
+	BookEventBus.turn_log_entry.connect(_on_turn_log_entry)
+	BookEventBus.turn_log_close_requested.connect(_close_turn_log)
 	for label in Labels:
 		# Guardamos la posición local original de cada label
 		posiciones_iniciales[label] = label.position
@@ -99,6 +117,161 @@ func _on_bet_completed() -> void:
 func _on_bet_resolved() -> void:
 	multiplicator.text = str(1)
 	total_damage.text = str(0)
+
+func _setup_qol_labels() -> void:
+	damage_caption_label = _create_qol_label("DamageCaption", Vector3(-1.66, 0.025, -0.66), "Daño", 20, Color(0.3529412, 0.1764706, 0.2784314, 1.0), 500.0)
+	turn_log_tooltip_panel = _create_turn_log_tooltip_panel()
+	turn_log_title_label = _create_qol_label("TurnLogTitle", Vector3(0.08, 0.115, -1.25), "Ultimo tiro", 11, Color(1.0, 0.72, 0.24, 1.0), 800.0)
+	turn_log_title_label.visible = false
+	for i in range(TURN_LOG_MAX_LINES):
+		var line := _create_qol_label("TurnLogLine" + str(i), Vector3(-0.08, 0.115, -1.15 + (i * 0.10)), "", 9, Color(1, 1, 1, 0.82), 1200.0)
+		line.visible = false
+		turn_log_labels.append(line)
+	_create_turn_log_button()
+
+func _create_turn_log_button() -> void:
+	turn_log_button = SB_Button3D.new()
+	turn_log_button.name = "TurnLogInfoButton"
+	turn_log_button.position = Vector3(-0.17, 0.04, -0.69)
+
+	var mesh_instance := MeshInstance3D.new()
+	mesh_instance.name = "ButtonRing"
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = 0.105
+	mesh.bottom_radius = 0.105
+	mesh.height = 0.035
+	mesh.radial_segments = 28
+	mesh_instance.mesh = mesh
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.34, 0.16, 0.28, 1.0)
+	mesh_instance.material_override = material
+	turn_log_button.add_child(mesh_instance)
+
+	var center_mesh_instance := MeshInstance3D.new()
+	center_mesh_instance.name = "ButtonCenter"
+	var center_mesh := CylinderMesh.new()
+	center_mesh.top_radius = 0.073
+	center_mesh.bottom_radius = 0.073
+	center_mesh.height = 0.041
+	center_mesh.radial_segments = 28
+	center_mesh_instance.mesh = center_mesh
+	var center_material := StandardMaterial3D.new()
+	center_material.albedo_color = Color(0.97, 0.0, 0.45, 1.0)
+	center_mesh_instance.material_override = center_material
+	turn_log_button.add_child(center_mesh_instance)
+
+	var collision := CollisionShape3D.new()
+	collision.name = "CollisionShape3D"
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(0.32, 0.12, 0.32)
+	collision.shape = shape
+	turn_log_button.add_child(collision)
+	add_child(turn_log_button)
+	turn_log_button.collision_shape = collision
+	turn_log_button.input_event.connect(turn_log_button._on_input_event)
+	turn_log_button.pressed.connect(_on_turn_log_button_pressed)
+
+	turn_log_button_label = Label3D.new()
+	turn_log_button_label.name = "TurnLogInfoLabel"
+	turn_log_button_label.text = "i"
+	turn_log_button_label.font_size = 19
+	turn_log_button_label.modulate = Color(0.99, 0.99, 0.95, 1.0)
+	turn_log_button_label.outline_size = 2
+	turn_log_button_label.outline_modulate = Color(0.12, 0.06, 0.10, 0.92)
+	turn_log_button_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	turn_log_button_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	turn_log_button_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	turn_log_button_label.width = 180.0
+	turn_log_button_label.no_depth_test = true
+	turn_log_button_label.position = Vector3(-0.008, 0.032, 0.015)
+	turn_log_button_label.rotation_degrees = LABEL_ROTATION
+	turn_log_button.add_child(turn_log_button_label)
+
+func _create_turn_log_tooltip_panel() -> MeshInstance3D:
+	var panel := MeshInstance3D.new()
+	panel.name = "TurnLogTooltipPanel"
+	panel.position = Vector3(0.24, 0.075, -1.03)
+	var mesh := BoxMesh.new()
+	mesh.size = Vector3(0.82, 0.025, 0.58)
+	panel.mesh = mesh
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.70, 0.72, 0.48, 0.96)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	panel.material_override = material
+	panel.visible = false
+	add_child(panel)
+	return panel
+
+func _create_qol_label(label_name: String, local_position: Vector3, label_text: String, label_font_size: int, color: Color, label_width: float) -> Label3D:
+	var label := Label3D.new()
+	label.name = label_name
+	label.text = label_text
+	label.font_size = label_font_size
+	label.modulate = color
+	label.outline_size = 2
+	label.outline_modulate = Color(0.12, 0.06, 0.10, 0.92)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.width = label_width
+	label.no_depth_test = true
+	label.render_priority = 30
+	label.position = local_position
+	label.rotation_degrees = LABEL_ROTATION
+	add_child(label)
+	return label
+
+func _on_turn_log_reset() -> void:
+	turn_log_entries.clear()
+	turn_log_open = false
+	turn_log_ignore_next_click = false
+	_refresh_turn_log()
+
+func _on_turn_log_entry(text: String, color: Color) -> void:
+	turn_log_entries.append({"text": text, "color": color})
+	while turn_log_entries.size() > TURN_LOG_MAX_LINES:
+		turn_log_entries.pop_front()
+	_refresh_turn_log()
+
+func _refresh_turn_log() -> void:
+	var visible_entries := turn_log_entries
+	if turn_log_open and visible_entries.is_empty():
+		visible_entries = [turn_log_empty_entry]
+	if turn_log_tooltip_panel != null:
+		turn_log_tooltip_panel.visible = turn_log_open
+	if turn_log_title_label != null:
+		turn_log_title_label.visible = turn_log_open
+	for i in range(turn_log_labels.size()):
+		var label := turn_log_labels[i]
+		if turn_log_open and i < visible_entries.size():
+			var entry := visible_entries[i] as Dictionary
+			label.text = str(entry.get("text", ""))
+			label.modulate = entry.get("color", Color(1, 1, 1, 0.82))
+			label.visible = true
+		else:
+			label.text = ""
+			label.visible = false
+
+func _on_turn_log_button_pressed() -> void:
+	turn_log_open = not turn_log_open
+	turn_log_ignore_next_click = turn_log_open
+	_refresh_turn_log()
+
+func _close_turn_log() -> void:
+	if not turn_log_open:
+		return
+	turn_log_open = false
+	turn_log_ignore_next_click = false
+	_refresh_turn_log()
+
+func _input(event: InputEvent) -> void:
+	if not turn_log_open:
+		return
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if turn_log_ignore_next_click:
+			turn_log_ignore_next_click = false
+			return
+		_close_turn_log()
 	
 	
 #animacion de las labels

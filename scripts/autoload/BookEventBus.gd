@@ -14,6 +14,9 @@ signal bet_resolved(RouletteController)
 signal bet_post_resolved(RouletteController)
 
 signal popuptext(spot_global_postion :Vector3, text : String)
+signal turn_log_reset
+signal turn_log_entry(text: String, color: Color)
+signal turn_log_close_requested
 
 signal unit_death(unit : Unit)
 @warning_ignore("unused_signal")

@@ -165,6 +165,7 @@ func _on_chip_dropped():
 
 func use_ball()->void:
 	#agrega eventos de la bola
+	BookEventBus.turn_log_close_requested.emit()
 	BookEventBus.start_spin.emit(ball_data)
 	##desactivacion de la bola
 	_assign_data_model(null)
@@ -175,4 +176,5 @@ func use_ball()->void:
 
 func _on_mouse_entered():
 	if DragService.dragged == null && ball_data:
+		BookEventBus.turn_log_close_requested.emit()
 		activate_ball_desctiption()

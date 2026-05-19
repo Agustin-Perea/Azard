@@ -69,6 +69,8 @@ func multiply_mult_score(add_mult : float)->void:
 func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	last_ball_used = ball
+	BookEventBus.turn_log_reset.emit()
+	BookEventBus.turn_log_entry.emit("Bola: " + _get_ball_log_name(ball) + " | Base +" + str(ball.ball_definition.base_damage), Color(0.45, 0.72, 1.0, 1.0))
 	BookEventBus.spin_started.emit()
 	
 	#agregar el base de la bola
@@ -102,6 +104,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	#espera que el spin de la ruleta termine
 	await roulette_control.spin_finished
 	BookEventBus.spin_finished.emit()
+	BookEventBus.turn_log_entry.emit("Resultado: " + str(number_winner), Color(0.32, 0.78, 0.38, 1.0))
 	#muestra el numero ganador y sus equals
 	table_meshes.activate_highlight_field(result_field_id)
 	
@@ -217,6 +220,7 @@ func changeScore()->void:
 		"action": func():
 			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
 			totalChanged.emit() 
+			BookEventBus.turn_log_entry.emit("Daño final: " + str(int(round(score))), Color(0.95, 0.36, 0.42, 1.0))
 			return true
 	}))
 
@@ -240,12 +244,15 @@ func _resolve_bets(result_field_id: int) -> float:
 		# Verificamos si este campo cumple la condición ganadora
 		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
 			for i in range(0, chip_stack.size()):
+				var multiplier_added := field.multiplier
+				var log_text := _get_field_log_name(field) + ": +" + _format_number(multiplier_added) + " mult"
 				EventManager.add_event(EventManager.QueueType.GAME, 
 				GameEvent.new({
 					"paralel": false,
 					"action": func():
 						multiplier += field.multiplier
 						multiplicatorChanged.emit(0)#esto modifica globalmente el mult
+						BookEventBus.turn_log_entry.emit(log_text, Color(1.0, 0.72, 0.24, 1.0))
 						return true
 				}))
 				table_meshes.call_mult_anim(field_id)
@@ -260,6 +267,8 @@ func _resolve_bets(result_field_id: int) -> float:
 			count+=1#tambien deberia aumentar la velocidad de enimacion
 			delta = multiplier
 	
+	if count == 0:
+		BookEventBus.turn_log_entry.emit("Sin fichas activadas", Color(1, 1, 1, 0.60))
 	BookEventBus.bet_post_resolved.emit(self)
 	#m
 	return delta
@@ -301,3 +310,46 @@ func reroll()->void:
 		
 		#llama al estado de Spin de Ruleta
 		on_start_spin(last_ball_used)
+
+func _get_ball_log_name(ball: BallRuntimeState) -> String:
+	if ball == null or ball.ball_definition == null or ball.ball_definition.ball_effect == null:
+		return "Bola"
+	if ball.ball_definition.ball_effect.name == "":
+		return "Bola"
+	return ball.ball_definition.ball_effect.name
+
+func _get_field_log_name(field: BetFieldModel) -> String:
+	if field == null or field.ConditionStrategy == null:
+		return "Ficha"
+	if field.ConditionStrategy is StraightUpCondition:
+		return "Individual " + str(field.number)
+	if field.ConditionStrategy is RedCondition:
+		return "Rojo"
+	if field.ConditionStrategy is BlackCondition:
+		return "Negro"
+	if field.ConditionStrategy is EvenCondition:
+		return "Par"
+	if field.ConditionStrategy is OddCondition:
+		return "Impar"
+	if field.ConditionStrategy is FirstHalfCondition:
+		return "1-18"
+	if field.ConditionStrategy is SecondHalfCondition:
+		return "19-36"
+	if field.ConditionStrategy is FirstRowCondition:
+		return "1st 12"
+	if field.ConditionStrategy is SecondRowCondition:
+		return "2nd 12"
+	if field.ConditionStrategy is ThirdRowCondition:
+		return "3rd 12"
+	if field.ConditionStrategy is FirstColumnCondition:
+		return "Columna 1"
+	if field.ConditionStrategy is SecondColumnCondition:
+		return "Columna 2"
+	if field.ConditionStrategy is ThirdColumnCondition:
+		return "Columna 3"
+	return "Ficha"
+
+func _format_number(value: float) -> String:
+	if is_equal_approx(value, round(value)):
+		return str(int(round(value)))
+	return str(value)
