@@ -14,6 +14,7 @@ var splash_percent: float = 0.0
 var poison_damage: int = 0
 var poison_turns: int = 0
 var bounce_hits: int = 0
+var leech_percent: float = 0.0
 
 #effectos A ENVIAR
 
