@@ -12,6 +12,8 @@ var _fade_tween: Tween
 var _current_track := ""
 var _menu_music: AudioStream
 var _combat_music: AudioStream
+var _music_volume_multiplier := 1.0
+var _current_base_volume_db := MENU_VOLUME_DB
 
 func _ready() -> void:
 	_player = AudioStreamPlayer.new()
@@ -24,6 +26,10 @@ func _ready() -> void:
 	_combat_music = load(COMBAT_MUSIC_PATH)
 	_configure_loop(_menu_music)
 	_configure_loop(_combat_music)
+	var settings_manager := get_node_or_null("/root/SettingsManager")
+	if settings_manager != null:
+		_music_volume_multiplier = float(settings_manager.get("music_volume"))
+		settings_manager.music_volume_changed.connect(set_music_volume_multiplier)
 
 func play_menu_music() -> void:
 	_play_music(_menu_music, "menu", MENU_VOLUME_DB,55)
@@ -65,8 +71,23 @@ func _start_track(stream: AudioStream, track_name: String, target_volume_db: flo
 	_player.volume_db = -80.0
 	_player.play(offset)
 	_current_track = track_name
+	_current_base_volume_db = target_volume_db
 	_fade_tween = create_tween()
-	_fade_tween.tween_property(_player, "volume_db", target_volume_db, FADE_SECONDS)
+	_fade_tween.tween_property(_player, "volume_db", _scaled_volume_db(target_volume_db), FADE_SECONDS)
+
+func set_music_volume_multiplier(value: float) -> void:
+	_music_volume_multiplier = clampf(value, 0.0, 1.0)
+	if _player == null or not _player.playing:
+		return
+	if _fade_tween != null and _fade_tween.is_running():
+		_fade_tween.kill()
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(_player, "volume_db", _scaled_volume_db(_current_base_volume_db), 0.16)
+
+func _scaled_volume_db(base_volume_db: float) -> float:
+	if _music_volume_multiplier <= 0.0:
+		return -80.0
+	return base_volume_db + linear_to_db(_music_volume_multiplier)
 
 func _configure_loop(stream: AudioStream) -> void:
 	if stream == null:

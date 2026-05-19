@@ -21,9 +21,6 @@ fill_to = Vector2(0.5, 1)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bg"]
 texture = SubResource("GradientTexture2D_bg")
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2u6di"]
-load_path = "res://.godot/imported/menupng.png-60aeead36021a2b6ae9c166aceed0922.ctex"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 28.0
 content_margin_top = 8.0
@@ -139,7 +136,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("CompressedTexture2D_2u6di")
 
 [node name="Moon" type="ColorRect" parent="Background" unique_id=799888966]
 visible = false
@@ -490,7 +486,7 @@ stream = ExtResource("3_click")
 [node name="EntornoArena" parent="Node3D" unique_id=1168665643 instance=ExtResource("6_7g3qg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05552146, 0, 0.61894584)
 
-[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2126568144]
+[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=108828214]
 material_override = ExtResource("7_2u6di")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]

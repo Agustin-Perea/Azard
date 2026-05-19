@@ -32,6 +32,7 @@ const GLASS_CARD := Color(0.035, 0.018, 0.040, 0.38)
 const GLASS_CARD_PLANNED := Color(0.050, 0.030, 0.060, 0.26)
 
 @onready var continue_button: Button = $MenuContent/Buttons/ContinueButton
+@onready var menu_buttons: VBoxContainer = $MenuContent/Buttons
 @onready var confirm_overlay: Control = $ConfirmOverlay
 @onready var help_overlay: Control = $HelpOverlay
 @onready var help_tabs: VBoxContainer = $HelpOverlay/Panel/Margin/Content/Body/Sections
@@ -46,12 +47,23 @@ const CLICK_VOLUME_DB := -17.0
 
 var active_help_section := "Como jugar"
 var help_section_buttons: Dictionary = {}
+var options_overlay: Control
+var options_panel: PanelContainer
+var options_button: Button
+var options_back_button: Button
+var music_slider: HSlider
+var sfx_slider: HSlider
+var music_value_label: Label
+var sfx_value_label: Label
+var fullscreen_button: Button
 
 func _ready() -> void:
 	var music_manager := get_node_or_null("/root/MusicManager")
 	if music_manager != null:
 		music_manager.call("play_menu_music")
-	click_player.volume_db = CLICK_VOLUME_DB
+	_apply_click_volume()
+	if has_node("/root/SettingsManager"):
+		SettingsManager.sfx_volume_changed.connect(_on_sfx_volume_changed)
 	if has_node("/root/UiHud"):
 		UiHud.visible = false
 	UiEventBus.selection_button_visible.emit(false)
@@ -60,8 +72,10 @@ func _ready() -> void:
 	continue_button.modulate.a = 1.0 if GameState.has_save() else 0.45
 	confirm_overlay.visible = false
 	help_overlay.visible = false
+	_setup_options()
 	_setup_modal_button_styles()
 	_setup_help()
+	resized.connect(_layout_options_panel)
 
 func _on_play_button_pressed() -> void:
 	_play_click()
@@ -100,6 +114,8 @@ func _on_quit_button_pressed() -> void:
 func _on_help_button_pressed() -> void:
 	_play_click()
 	confirm_overlay.visible = false
+	if options_overlay != null:
+		options_overlay.visible = false
 	help_overlay.visible = true
 	_show_help_section(active_help_section)
 
@@ -115,6 +131,220 @@ func _go_to_scene(scene_path: String) -> void:
 func _play_click() -> void:
 	if click_player != null:
 		click_player.play()
+
+func _on_sfx_volume_changed(_value: float) -> void:
+	_apply_click_volume()
+
+func _apply_click_volume() -> void:
+	if click_player == null:
+		return
+	if has_node("/root/SettingsManager"):
+		click_player.volume_db = SettingsManager.get_sfx_volume_db(CLICK_VOLUME_DB)
+	else:
+		click_player.volume_db = CLICK_VOLUME_DB
+
+func _setup_options() -> void:
+	options_button = Button.new()
+	options_button.text = "Opciones"
+	options_button.focus_mode = Control.FOCUS_NONE
+	options_button.flat = true
+	options_button.add_theme_font_override("font", HELP_FONT)
+	options_button.add_theme_font_size_override("font_size", 34)
+	options_button.add_theme_color_override("font_color", Color(1, 1, 1, 0.80))
+	options_button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
+	options_button.add_theme_color_override("font_pressed_color", Color(0.913725, 0.929412, 0.733333, 1))
+	options_button.add_theme_stylebox_override("normal", _make_menu_button_style(Color(0, 0, 0, 0)))
+	options_button.add_theme_stylebox_override("hover", _make_menu_button_style(Color(1, 1, 1, 0.09)))
+	options_button.add_theme_stylebox_override("pressed", _make_menu_button_style(Color(0, 0, 0, 0.16)))
+	options_button.pressed.connect(_on_options_button_pressed)
+	menu_buttons.add_child(options_button)
+	menu_buttons.move_child(options_button, max(0, menu_buttons.get_child_count() - 2))
+	_create_options_overlay()
+
+func _create_options_overlay() -> void:
+	options_overlay = Control.new()
+	options_overlay.name = "OptionsOverlay"
+	options_overlay.visible = false
+	options_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(options_overlay)
+
+	var dim := ColorRect.new()
+	dim.name = "Dim"
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.color = Color(0.0156863, 0.0117647, 0.0235294, 0.48)
+	options_overlay.add_child(dim)
+
+	options_panel = PanelContainer.new()
+	options_panel.name = "Panel"
+	options_panel.add_theme_stylebox_override("panel", _make_modal_panel_style())
+	options_overlay.add_child(options_panel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 34)
+	margin.add_theme_constant_override("margin_top", 30)
+	margin.add_theme_constant_override("margin_right", 34)
+	margin.add_theme_constant_override("margin_bottom", 30)
+	options_panel.add_child(margin)
+
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 26)
+	margin.add_child(content)
+
+	var title := Label.new()
+	title.text = "Opciones"
+	title.add_theme_font_override("font", HELP_FONT)
+	title.add_theme_font_size_override("font_size", 46)
+	title.add_theme_color_override("font_color", Color(0.913725, 0.929412, 0.733333, 1))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	content.add_child(title)
+
+	content.add_child(_create_slider_row("Musica", true))
+	content.add_child(_create_slider_row("Efectos", false))
+
+	fullscreen_button = Button.new()
+	fullscreen_button.focus_mode = Control.FOCUS_NONE
+	fullscreen_button.custom_minimum_size = Vector2(0, 76)
+	fullscreen_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fullscreen_button.add_theme_font_override("font", HELP_FONT)
+	fullscreen_button.add_theme_font_size_override("font_size", 30)
+	fullscreen_button.pressed.connect(_on_fullscreen_button_pressed)
+	_style_modal_button(fullscreen_button, false)
+	content.add_child(fullscreen_button)
+
+	options_back_button = Button.new()
+	options_back_button.text = "Volver"
+	options_back_button.focus_mode = Control.FOCUS_NONE
+	options_back_button.custom_minimum_size = Vector2(0, 76)
+	options_back_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	options_back_button.add_theme_font_override("font", HELP_FONT)
+	options_back_button.add_theme_font_size_override("font_size", 30)
+	options_back_button.pressed.connect(_on_options_back_button_pressed)
+	_style_modal_button(options_back_button, false)
+	content.add_child(options_back_button)
+
+	_refresh_options_values()
+	_layout_options_panel()
+
+func _create_slider_row(title: String, music: bool) -> Control:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_card_style(GLASS_CARD))
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 20)
+	margin.add_theme_constant_override("margin_top", 16)
+	margin.add_theme_constant_override("margin_right", 20)
+	margin.add_theme_constant_override("margin_bottom", 16)
+	panel.add_child(margin)
+
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 10)
+	margin.add_child(content)
+
+	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 16)
+	content.add_child(header)
+
+	var title_label := Label.new()
+	title_label.text = title
+	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_label.add_theme_font_override("font", HELP_FONT)
+	title_label.add_theme_font_size_override("font_size", 30)
+	title_label.add_theme_color_override("font_color", Color(1, 1, 1, 0.92))
+	header.add_child(title_label)
+
+	var value_label := Label.new()
+	value_label.custom_minimum_size = Vector2(110, 0)
+	value_label.add_theme_font_override("font", HELP_FONT)
+	value_label.add_theme_font_size_override("font_size", 28)
+	value_label.add_theme_color_override("font_color", Color(0.913725, 0.929412, 0.733333, 1))
+	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	header.add_child(value_label)
+
+	var slider := HSlider.new()
+	slider.custom_minimum_size = Vector2(0, 58)
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.min_value = 0
+	slider.max_value = 100
+	slider.step = 1
+	slider.focus_mode = Control.FOCUS_NONE
+	content.add_child(slider)
+
+	if music:
+		music_slider = slider
+		music_value_label = value_label
+		slider.value_changed.connect(_on_music_slider_changed)
+	else:
+		sfx_slider = slider
+		sfx_value_label = value_label
+		slider.value_changed.connect(_on_sfx_slider_changed)
+
+	return panel
+
+func _on_options_button_pressed() -> void:
+	_play_click()
+	confirm_overlay.visible = false
+	help_overlay.visible = false
+	options_overlay.visible = true
+	_refresh_options_values()
+	_layout_options_panel()
+
+func _on_options_back_button_pressed() -> void:
+	_play_click()
+	options_overlay.visible = false
+
+func _on_music_slider_changed(value: float) -> void:
+	if music_value_label != null:
+		music_value_label.text = str(int(round(value))) + "%"
+	if has_node("/root/SettingsManager"):
+		SettingsManager.set_music_volume(value / 100.0)
+
+func _on_sfx_slider_changed(value: float) -> void:
+	if sfx_value_label != null:
+		sfx_value_label.text = str(int(round(value))) + "%"
+	if has_node("/root/SettingsManager"):
+		SettingsManager.set_sfx_volume(value / 100.0)
+
+func _on_fullscreen_button_pressed() -> void:
+	_play_click()
+	if has_node("/root/SettingsManager"):
+		SettingsManager.set_fullscreen(not SettingsManager.fullscreen)
+	_refresh_options_values()
+
+func _refresh_options_values() -> void:
+	if not has_node("/root/SettingsManager"):
+		return
+	if music_slider != null:
+		music_slider.set_value_no_signal(SettingsManager.get_music_volume_percent())
+	if sfx_slider != null:
+		sfx_slider.set_value_no_signal(SettingsManager.get_sfx_volume_percent())
+	if music_value_label != null:
+		music_value_label.text = str(SettingsManager.get_music_volume_percent()) + "%"
+	if sfx_value_label != null:
+		sfx_value_label.text = str(SettingsManager.get_sfx_volume_percent()) + "%"
+	if fullscreen_button != null:
+		fullscreen_button.text = "Pantalla completa: " + ("Si" if SettingsManager.fullscreen else "No")
+
+func _layout_options_panel() -> void:
+	if options_panel == null:
+		return
+	var viewport_size: Vector2 = get_viewport_rect().size
+	var aspect: float = viewport_size.x / maxf(viewport_size.y, 1.0)
+	var narrow: bool = viewport_size.x < 1200.0 or aspect < 1.45
+	if narrow:
+		options_panel.anchor_left = 0.04
+		options_panel.anchor_top = 0.06
+		options_panel.anchor_right = 0.96
+		options_panel.anchor_bottom = 0.94
+	else:
+		options_panel.anchor_left = 0.24
+		options_panel.anchor_top = 0.16
+		options_panel.anchor_right = 0.76
+		options_panel.anchor_bottom = 0.84
+	options_panel.offset_left = 0
+	options_panel.offset_top = 0
+	options_panel.offset_right = 0
+	options_panel.offset_bottom = 0
 
 func _setup_help() -> void:
 	help_section_buttons.clear()
@@ -334,6 +564,19 @@ func _style_modal_button(button: Button, primary: bool) -> void:
 	button.add_theme_stylebox_override("hover", _make_button_style(hover_color, Color(0.913725, 0.929412, 0.733333, 0.46)))
 	button.add_theme_stylebox_override("pressed", _make_button_style(GLASS_BUTTON_PRESSED, accent))
 
+func _make_menu_button_style(color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	style.content_margin_left = 28
+	style.content_margin_top = 8
+	style.content_margin_right = 28
+	style.content_margin_bottom = 8
+	return style
+
 func _make_button_style(color: Color, border_color := Color(1, 1, 1, 0.13)) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
@@ -356,6 +599,20 @@ func _make_card_style(color: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = color
 	style.border_color = Color(0.913725, 0.929412, 0.733333, 0.16)
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	return style
+
+func _make_modal_panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.0627451, 0.027451, 0.0705882, 0.76)
+	style.border_color = Color(0.913725, 0.929412, 0.733333, 0.32)
 	style.border_width_left = 2
 	style.border_width_top = 2
 	style.border_width_right = 2

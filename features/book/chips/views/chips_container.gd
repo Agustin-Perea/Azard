@@ -6,6 +6,7 @@ class_name ChipContainer
 @export var offset_z: float = 0.2 # Espacio entre fichas sobre el eje z
 @export var chip_scale: float = 1
 
+@onready var bet_table: TableFieldsController = $"../BetTable"
 
 var chip_elements_in_container : Array[ChipElement]
 var all_chip_elements : Array[ChipElement]
@@ -15,6 +16,7 @@ var all_chip_elements : Array[ChipElement]
 func _ready() -> void:
 
 	spawn_chips(GameState.chips)
+	call_deferred("_restore_saved_bet_positions")
 	BookEventBus.bet_chip_activated.connect(_on_bet_chip_activated)
 
 func spawn_chips(chips: Array[ChipModel]):
@@ -49,6 +51,27 @@ func add_chip_to_container(new_chip : ChipElement)->void:
 func chip_moved(chip : ChipElement)->void:
 	chip.chip_moved.disconnect(chip_moved)
 	chip_elements_in_container.erase(chip)
+	reorder_chips()
+
+func _restore_saved_bet_positions() -> void:
+	if bet_table == null:
+		return
+	for chip in all_chip_elements:
+		if chip == null:
+			continue
+		if not GameState.field_by_chip.has(chip.chip_id):
+			continue
+		var field_id := int(GameState.field_by_chip[chip.chip_id])
+		var field_center := bet_table.get_center_for_index(field_id)
+		if field_center == Vector3.ZERO:
+			continue
+		if chip_elements_in_container.has(chip):
+			chip_elements_in_container.erase(chip)
+		if chip.chip_moved.is_connected(chip_moved):
+			chip.chip_moved.disconnect(chip_moved)
+		chip.data.last_position = field_center
+		chip.global_position = field_center
+		chip.update_bet_value_label()
 	reorder_chips()
 
 func _on_bet_chip_activated(chip_id: int) -> void:

@@ -87,12 +87,19 @@ func _ready() -> void:
 	_initialize_geometry()
 	_initialize_physics()
 	_calculate_target()
+	set_physics_process(false)
+	set_ball_visible(false)
 
 
 func spin(number_winner: int) -> void:
 	if number_winner >= 0 and number_winner < FIELD_COUNT:
 		set_target_field(number_winner)
 	reset_simulation()
+
+
+func set_ball_visible(value: bool) -> void:
+	if ball != null:
+		ball.visible = value
 
 
 func _initialize_geometry() -> void:
@@ -211,7 +218,6 @@ func _process_adjust(delta: float) -> void:
 
 	if finish_radius_reached and position_reached:
 		spin_finished.emit()
-		print("Han finalizado, dist: ", dist_to_target)
 		ball.global_position.x = finish_pos.x
 		ball.global_position.z = finish_pos.z
 		ball.global_position.y = self.global_position.y + _finish_y_s
@@ -259,9 +265,7 @@ func _transition_to(new_phase: Phase) -> void:
 	_current_phase = new_phase
 	_phase_time = 0.0
 
-	if new_phase == Phase.DROPPING:
-		print("Iniciando fase de encaje en campo: ", choosed_field)
-	elif new_phase == Phase.FINISHED:
+	if new_phase == Phase.FINISHED:
 		_finish_movement()
 
 
@@ -290,6 +294,7 @@ func reset_simulation() -> void:
 	ball.global_position = ball_origin_transform.global_position
 
 	_initialize_physics()
+	set_ball_visible(true)
 	set_physics_process(true)
 	spin_initialized.emit()
 	play_and_slow_down()

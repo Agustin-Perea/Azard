@@ -40,7 +40,6 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 		
 		# 6. Número final 1-36
 		var numero_celda = (fila * 3) + col
-		print(numero_celda)
 		# 7. Solo emitir/cambiar si es una celda nueva (para no saturar)
 		if numero_celda != last_field_entered:
 			if last_field_entered >= 0 and last_field_entered < 36:

@@ -91,7 +91,6 @@ func calculate_combat_gold_reward() -> Dictionary:
 	}
 	
 func grant_combat_victory_gold() -> int:
-	print("queso")
 	var breakdown := calculate_combat_gold_reward()
 	var total := int(breakdown.get("total", 0))
 	last_combat_gold_reward = total

@@ -42,10 +42,6 @@ func _ready() -> void:
 			camera_2D.position.x = node_camera_pos_x
 		else:
 			camera_2D.position.x = camera_edge_x
-#mover el mapa
-# Variables para el dibujo de debug
-var debug_current_pos: Vector2 = Vector2.ZERO
-# Dentro del script del Mapa
 # Dentro del script del Mapa (asegúrate de que is_dragging sea accesible)
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -64,16 +60,10 @@ func _input(event: InputEvent) -> void:
 			# Aplicamos el movimiento a la cámara del mapa
 			camera_2D.position.x = clamp(new_x, min_camera_x, max_camera_x)
 
-		#queue_redraw() # Actualizar dibujo mientras mueves el mouse
 
-func _draw() -> void:
 	# 1. Dibujar un círculo donde está el mouse actualmente (Verde)
-	draw_circle(debug_current_pos, 5, Color.GREEN)
 	
 	# 2. Si estamos arrastrando, dibujar el punto de inicio (Rojo) y una línea
-	if is_dragging:
-		draw_circle(drag_start_pos, 8, Color.RED)
-		draw_line(drag_start_pos, debug_current_pos, Color.YELLOW, 2)
 
 
 func _on_sub_viewport_container_mouse_exited() -> void:

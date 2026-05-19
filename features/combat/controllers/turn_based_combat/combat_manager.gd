@@ -47,7 +47,6 @@ func game_loop() -> void:
 		if combat_finished: break
 		EnemyGroup._begin_turn()
 		await EnemyGroup.turn_complete
-	print("combate terminado")
 	
 
 
@@ -81,7 +80,6 @@ func _victory()->void:
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
 			GameState.clear_combat_snapshot()
 			BookEventBus.victory.emit()
-			print("victory")
 			return true
 	}))
 
@@ -90,7 +88,6 @@ func _defeat()->void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
-			print("defeat")
 			GameState.end_run()
 			BookEventBus.defeat.emit()
 			EventManager.call_deferred("clear_queue",EventManager.QueueType.GAME)

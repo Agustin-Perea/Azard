@@ -121,8 +121,6 @@ func _on_chip_dropped():
 
 func activate_chip_info()->void:
 	if data and info_canvas.bingo_chip_element != self:
-			print(info_canvas.bingo_chip_element)
-			print(self )
 			info_canvas.deactivate()
 			info_canvas.assign_bingo_chip_element(self)
 			info_canvas.position =  self.position + offset_description_canvas

@@ -13,7 +13,7 @@ func calculate_total_weight()->void:
 		if item is PassiveItemDefinition: # Validación de tipo en tiempo de ejecución
 			total_weight += item.weight
 		else:
-			print("Error: Un elemento en all_items no es DataModel o es null" + item.to_string())
+			push_warning("Un elemento en all_items no es PassiveItemDefinition o es null: " + str(item))
 
 func set_seed(master_seed : int)->void:
 	pool_seed = master_seed

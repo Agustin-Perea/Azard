@@ -426,7 +426,7 @@ func enable_finish_button()->void:
 
 func _on_pending_attack_restored() -> void:
 	enable_finish_button()
-	enable_reroll()
+	disable_reroll()
 
 func set_lethal_preview(active: bool) -> void:
 	if lethal_preview_tween != null:

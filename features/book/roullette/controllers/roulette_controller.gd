@@ -34,6 +34,7 @@ var attack_context_target_name := ""
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
+	ball_mesh.visible = false
 	call_deferred("_resume_pending_attack")
 	
 
@@ -75,6 +76,8 @@ func multiply_mult_score(add_mult : float)->void:
 
 func on_start_spin(ball : BallRuntimeState) -> void:
 	if ball == null or ball.ball_definition == null:
+		return
+	if _has_resolved_pending_attack():
 		return
 	
 	last_ball_used = ball
@@ -171,6 +174,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	
 	
 func spin() -> void:
+	if _has_resolved_pending_attack():
+		return
 
 	#aca sucede el reroll?	
 	#CombatEventBus.changeToState.emit("RouletteState")
@@ -331,12 +336,16 @@ func reset_score()->void:
 	score = 0
 	multiplier = 0
 	base = 0
+	if roulette_control != null:
+		roulette_control.set_ball_visible(false)
 	baseChanged.emit()
 	multiplicatorChanged.emit(0)
 	totalChanged.emit() 
 
 #reroll
 func reroll()->void:
+	if _has_resolved_pending_attack():
+		return
 	if last_ball_used:
 		##CombatEventBus.reroll.emit(self)
 		reset_score()
@@ -367,6 +376,7 @@ func _resume_pending_attack() -> void:
 		score = float(pending.get("score", 0))
 		if ball.ball_definition.ball_material:
 			ball_mesh.material_override = ball.ball_definition.ball_material
+		roulette_control.set_ball_visible(false)
 		numberChanged.emit()
 		baseChanged.emit()
 		multiplicatorChanged.emit(0)
@@ -378,6 +388,10 @@ func _resume_pending_attack() -> void:
 		BookEventBus.pending_attack_restored.emit()
 	else:
 		on_start_spin(ball)
+
+func _has_resolved_pending_attack() -> bool:
+	var pending := GameState.get_pending_roulette_attack(GameState.get_current_scene_path())
+	return not pending.is_empty() and str(pending.get("phase", "")) == "resolved"
 
 func _get_pending_ball(pending: Dictionary) -> BallRuntimeState:
 	var ball_path := str(pending.get("ball_definition_path", ""))

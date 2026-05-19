@@ -109,7 +109,6 @@ func start_drag(moveable: StaticBody3D, can_drag_height : bool = true) -> void:
 
 	# ---------- VALIDATION ----------
 	if not active or dragging or dragged != null:
-		print("1st return")
 		return
 	
 	if dragged:
