@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/uncommon/ball_10_mirror_ball_effect.gd" id="1_mirror_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_mirror_effect"]
+script = ExtResource("1_mirror_effect")
+name = "MirrorBall"
+description = "Replica el efecto de la otra bola visible con 70% de efectividad."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mirror_ball"]
+shading_mode = 0
+albedo_color = Color(0.5686275, 1, 1, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 4
+ball_material = SubResource("StandardMaterial3D_mirror_ball")
+weight = 85
+base_price = 6
+attack_type = 0
+rarity = 1
+ball_effect = SubResource("Resource_mirror_effect")

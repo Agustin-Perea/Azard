@@ -4,11 +4,14 @@ class_name BaseCatalogBallEffect
 func _level() -> int:
 	return int(get_meta("runtime_level", 1))
 
+func _effect_power() -> float:
+	return float(get_meta("effect_power", 1.0))
+
 func _scale_int(v1: int, _v2: int, _v3: int) -> int:
-	return v1
+	return int(floor(float(v1) * _effect_power()))
 
 func _scale_float(v1: float, _v2: float, _v3: float) -> float:
-	return v1
+	return v1 * _effect_power()
 
 func _heal(amount: int) -> void:
 	GameState.heal_player(amount)

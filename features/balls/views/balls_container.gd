@@ -42,3 +42,13 @@ func _on_spin_started()->void:
 
 func reset_balls()->void:
 	GameState.balls_deck.shuffle_balls()
+
+func get_mirror_source_for(ball_element: BallElement) -> BallDefinition:
+	var source_element: BallElement = null
+	if ball_element == ball_spot:
+		source_element = ball_spot_2
+	elif ball_element == ball_spot_2:
+		source_element = ball_spot
+	if source_element == null or source_element.ball_data == null:
+		return null
+	return source_element.ball_data.ball_definition

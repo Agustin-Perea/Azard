@@ -118,6 +118,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 			"ball_definition_path": ball.ball_definition.resource_path,
 			"ball_level_upgrade": ball.level_upgrade,
 			"ball_final_price": ball.final_price,
+			"mirror_source_definition_path": _get_mirror_source_definition_path(ball),
 			"attacker_name": attack_context_attacker_name,
 			"target_name": attack_context_target_name,
 		})
@@ -414,6 +415,7 @@ func _get_pending_ball(pending: Dictionary) -> BallRuntimeState:
 	for ball_raw in GameState.balls_deck.all_balls:
 		var ball := ball_raw as BallRuntimeState
 		if ball != null and ball.ball_definition != null and ball.ball_definition.resource_path == ball_path:
+			_apply_pending_mirror_source(ball, pending)
 			return ball
 	if ball_path == "" or not ResourceLoader.exists(ball_path):
 		return null
@@ -422,7 +424,26 @@ func _get_pending_ball(pending: Dictionary) -> BallRuntimeState:
 	restored_ball.level_upgrade = int(pending.get("ball_level_upgrade", 1))
 	restored_ball.final_price = int(pending.get("ball_final_price", 0))
 	restored_ball.used = true
+	_apply_pending_mirror_source(restored_ball, pending)
 	return restored_ball
+
+func _get_mirror_source_definition_path(ball: BallRuntimeState) -> String:
+	if ball == null or not ball.has_meta("mirror_source_definition"):
+		return ""
+	var source := ball.get_meta("mirror_source_definition", null) as BallDefinition
+	if source == null:
+		return ""
+	return source.resource_path
+
+func _apply_pending_mirror_source(ball: BallRuntimeState, pending: Dictionary) -> void:
+	if ball == null:
+		return
+	var source_path := str(pending.get("mirror_source_definition_path", ""))
+	if source_path == "" or not ResourceLoader.exists(source_path):
+		if ball.has_meta("mirror_source_definition"):
+			ball.remove_meta("mirror_source_definition")
+		return
+	ball.set_meta("mirror_source_definition", load(source_path))
 
 func _get_ball_log_name(ball: BallRuntimeState) -> String:
 	if ball == null or ball.ball_definition == null or ball.ball_definition.ball_effect == null:

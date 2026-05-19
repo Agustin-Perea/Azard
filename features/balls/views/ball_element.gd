@@ -168,6 +168,7 @@ func _on_chip_dropped():
 func use_ball()->void:
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		return
+	_prepare_mirror_source()
 	#agrega eventos de la bola
 	BookEventBus.turn_log_close_requested.emit()
 	BookEventBus.start_spin.emit(ball_data)
@@ -182,3 +183,25 @@ func _on_mouse_entered():
 	if DragService.dragged == null && ball_data:
 		BookEventBus.turn_log_close_requested.emit()
 		activate_ball_desctiption()
+
+func _prepare_mirror_source() -> void:
+	if ball_data == null or ball_data.ball_definition == null or ball_data.ball_definition.ball_effect == null:
+		return
+	if ball_data.ball_definition.ball_effect.name != "MirrorBall":
+		_clear_mirror_source()
+		return
+	var source_definition := _get_mirror_source_definition()
+	if source_definition == null:
+		_clear_mirror_source()
+		return
+	ball_data.set_meta("mirror_source_definition", source_definition)
+
+func _get_mirror_source_definition() -> BallDefinition:
+	var container := get_parent()
+	if container != null and container.has_method("get_mirror_source_for"):
+		return container.get_mirror_source_for(self)
+	return null
+
+func _clear_mirror_source() -> void:
+	if ball_data != null and ball_data.has_meta("mirror_source_definition"):
+		ball_data.remove_meta("mirror_source_definition")

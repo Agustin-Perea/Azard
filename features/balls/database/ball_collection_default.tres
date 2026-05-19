@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="BallsRuntimeCollection" format=3 uid="uid://07tu5oy5nwny"]
 
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_7ik2x"]
-[ext_resource type="Resource" path="res://features/balls/definition/uncommon/ball_09_bounce_ball_definition.tres" id="2_ghtjb"]
+[ext_resource type="Resource" path="res://features/balls/definition/uncommon/ball_10_mirror_ball_definition.tres" id="2_ghtjb"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
-[ext_resource type="Resource" path="res://features/balls/definition/common/ball_01_base_ball_definition.tres" id="3_373ir"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_02_duball_definition.tres" id="3_373ir"]
 
 [sub_resource type="Resource" id="Resource_fagvn"]
 script = ExtResource("1_7ik2x")
