@@ -24,6 +24,8 @@ var number_labels : Array[Label3D]
 
 @export var group_labels : Array[Label3D]
 
+var temporary_highlighted_ids: Array[int] = []
+
 
 
 
@@ -166,6 +168,56 @@ func reset_field(id : int)->void:
 				"chip_data",
 				Vector3.ZERO
 			)
+
+func clear_temporary_highlights() -> void:
+	for id in temporary_highlighted_ids:
+		reset_field(id)
+	temporary_highlighted_ids.clear()
+
+func preview_coverage(field_id: int) -> void:
+	clear_temporary_highlights()
+	if not _is_valid_bet_field_id(field_id):
+		return
+	_add_temporary_highlight(field_id)
+	var preview_field := GameState.bet_field_models[field_id] as BetFieldModel
+	if preview_field == null or preview_field.ConditionStrategy == null:
+		return
+	if field_id > 36:
+		for i in range(1, min(37, GameState.bet_field_models.size())):
+			var candidate := GameState.bet_field_models[i] as BetFieldModel
+			if candidate != null and preview_field.ConditionStrategy.matches(candidate, preview_field):
+				_add_temporary_highlight(i)
+	elif field_id > 0:
+		var number := preview_field.number
+		var color := preview_field.color
+		for i in range(1, min(37, GameState.bet_field_models.size())):
+			var candidate := GameState.bet_field_models[i] as BetFieldModel
+			if candidate != null and candidate.number == number and candidate.color == color:
+				_add_temporary_highlight(i)
+
+func highlight_winning_result(result_field_id: int) -> void:
+	clear_temporary_highlights()
+	if not _is_valid_bet_field_id(result_field_id):
+		return
+	_add_temporary_highlight(result_field_id)
+	if result_field_id == 0:
+		return
+	var winner := GameState.bet_field_models[result_field_id] as BetFieldModel
+	if winner == null:
+		return
+	for i in range(37, GameState.bet_field_models.size()):
+		var group_field := GameState.bet_field_models[i] as BetFieldModel
+		if group_field != null and group_field.ConditionStrategy != null and group_field.ConditionStrategy.matches(winner, group_field):
+			_add_temporary_highlight(i)
+
+func _add_temporary_highlight(id: int) -> void:
+	if temporary_highlighted_ids.has(id):
+		return
+	highlight_field(id)
+	temporary_highlighted_ids.append(id)
+
+func _is_valid_bet_field_id(id: int) -> bool:
+	return id >= 0 and id < GameState.bet_field_models.size()
 		
 func highlight_equals_field(id : int)->void:
 	var number := GameState.bet_field_models[id].number

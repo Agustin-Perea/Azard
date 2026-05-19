@@ -106,7 +106,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	BookEventBus.spin_finished.emit()
 	BookEventBus.turn_log_entry.emit("Resultado: " + str(number_winner), Color(0.32, 0.78, 0.38, 1.0))
 	#muestra el numero ganador y sus equals
-	table_meshes.activate_highlight_field(result_field_id)
+	table_meshes.highlight_winning_result(result_field_id)
 	
 	#cambia de estado, ahora pasa el estado de muestra de cambios
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -244,6 +244,7 @@ func _resolve_bets(result_field_id: int) -> float:
 		# Verificamos si este campo cumple la condición ganadora
 		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
 			for i in range(0, chip_stack.size()):
+				var activated_chip_id := int(chip_stack[i])
 				var multiplier_added := field.multiplier
 				var log_text := _get_field_log_name(field) + ": +" + _format_number(multiplier_added) + " mult"
 				EventManager.add_event(EventManager.QueueType.GAME, 
@@ -252,6 +253,7 @@ func _resolve_bets(result_field_id: int) -> float:
 					"action": func():
 						multiplier += field.multiplier
 						multiplicatorChanged.emit(0)#esto modifica globalmente el mult
+						BookEventBus.bet_chip_activated.emit(activated_chip_id)
 						BookEventBus.turn_log_entry.emit(log_text, Color(1.0, 0.72, 0.24, 1.0))
 						return true
 				}))

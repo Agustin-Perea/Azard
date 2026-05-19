@@ -19,12 +19,15 @@ func _ready() -> void:
 func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	# Solo procesamos si el mouse está entrando o moviéndose DENTRO
 	if event is InputEventMouseMotion or (event is InputEventMouseButton and event.pressed):
+		if not (DragService.dragged is ChipElement):
+			_limpiar_highlight()
+			return
 		var numero_celda = calcular_indice_desde_posicion(event_position)
 		
 		if numero_celda != last_field_entered:
 			_limpiar_highlight() # Limpiamos el anterior antes de marcar el nuevo
 			last_field_entered = numero_celda
-			table_fields.highlight_equals_field(numero_celda)
+			table_fields.preview_coverage(numero_celda)
 
 # Esta función detecta eventos en CUALQUIER parte de la pantalla
 func _input(event: InputEvent) -> void:
@@ -46,8 +49,8 @@ func _activate_highlight(numero_celda : int) -> void:
 
 func _limpiar_highlight() -> void:
 	if last_field_entered != -1:
-		table_fields.reset_equals_field(last_field_entered)
 		last_field_entered = -1
+	table_fields.clear_temporary_highlights()
 
 func calcular_indice_desde_posicion(global_pos: Vector3) -> int:
 	var col_node = $CollisionShape3D

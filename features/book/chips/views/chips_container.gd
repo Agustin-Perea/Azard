@@ -8,18 +8,21 @@ class_name ChipContainer
 
 
 var chip_elements_in_container : Array[ChipElement]
+var all_chip_elements : Array[ChipElement]
 
 @onready var  audio_stream : AudioStreamPlayer = $"../../AudioStreamPlayer"
 
 func _ready() -> void:
 
 	spawn_chips(GameState.chips)
+	BookEventBus.bet_chip_activated.connect(_on_bet_chip_activated)
 
 func spawn_chips(chips: Array[ChipModel]):
 	for i in range(chips.size()):
 		var new_chip = chip_scene.instantiate() as ChipElement
 		# Configuramos la ficha con su data
 		new_chip.assignChipId(i)
+		all_chip_elements.append(new_chip)
 		
 		chip_origin.add_child(new_chip)#son los child
 		
@@ -47,3 +50,9 @@ func chip_moved(chip : ChipElement)->void:
 	chip.chip_moved.disconnect(chip_moved)
 	chip_elements_in_container.erase(chip)
 	reorder_chips()
+
+func _on_bet_chip_activated(chip_id: int) -> void:
+	for chip in all_chip_elements:
+		if chip != null and chip.chip_id == chip_id:
+			chip.pulse_activated()
+			return

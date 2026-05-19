@@ -33,7 +33,11 @@ func activate_highlight_field(index :int)->void:
 	elif index ==  zero_field.first_index:
 		zero_field._activate_highlight(index)
 
+func highlight_winning_result(index: int) -> void:
+	table_fields.table_fields.highlight_winning_result(index)
+
 func deactivate_highlight_field()->void:
+		table_fields.table_fields.clear_temporary_highlights()
 		column_fields._limpiar_highlight()
 		row_fields._limpiar_highlight()
 		parity_fields._limpiar_highlight()

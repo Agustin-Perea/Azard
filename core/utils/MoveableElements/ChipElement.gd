@@ -8,6 +8,10 @@ class_name ChipElement
 signal chip_moved(chip : ChipElement)
 
 var  audio_stream : AudioStreamPlayer
+@onready var chip_mesh : MeshInstance3D = $MeshInstance3D
+var activation_tween : Tween
+var activation_rest_scale := Vector3.ZERO
+var activation_rest_mesh_y := 0.0
 
 func _ready() -> void:
 	super()
@@ -57,6 +61,22 @@ func stop_drag()->void:
 		#desactivacion
 	else:
 		DragService._return_to_origin()
+
+func pulse_activated() -> void:
+	if activation_rest_scale == Vector3.ZERO:
+		activation_rest_scale = scale
+		activation_rest_mesh_y = chip_mesh.position.y
+	if activation_tween != null and activation_tween.is_running():
+		activation_tween.kill()
+		scale = activation_rest_scale
+		chip_mesh.position.y = activation_rest_mesh_y
+	activation_tween = create_tween()
+	activation_tween.set_parallel(true)
+	activation_tween.tween_property(self, "scale", activation_rest_scale * 1.22, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	activation_tween.tween_property(chip_mesh, "position:y", activation_rest_mesh_y + 0.025, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	activation_tween.set_parallel(false)
+	activation_tween.tween_property(self, "scale", activation_rest_scale, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	activation_tween.tween_property(chip_mesh, "position:y", activation_rest_mesh_y, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
