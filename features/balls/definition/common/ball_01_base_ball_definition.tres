@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/common/ball_01_base_ball_effect.gd" id="1_base_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_base_effect"]
+script = ExtResource("1_base_effect")
+name = "BaseBall"
+description = "Bola basica con mucho dano base."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_base_ball"]
+shading_mode = 0
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 6
+ball_material = SubResource("StandardMaterial3D_base_ball")
+weight = 140
+base_price = 5
+attack_type = 1
+rarity = 0
+ball_effect = SubResource("Resource_base_effect")
