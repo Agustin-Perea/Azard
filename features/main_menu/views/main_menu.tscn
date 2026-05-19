@@ -2,7 +2,11 @@
 
 [ext_resource type="Script" uid="uid://com032lxy5dlb" path="res://features/main_menu/controllers/main_menu_controller.gd" id="1_menu"]
 [ext_resource type="FontFile" uid="uid://dk8qd4ll5xlvx" path="res://resources/fonts/FuzzyBubbles-Bold.ttf" id="2_font"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="2_hje3k"]
 [ext_resource type="AudioStream" uid="uid://t5w7kqusfyuv" path="res://resources/sounds/click menu.wav" id="3_click"]
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="6_7g3qg"]
+[ext_resource type="Material" uid="uid://cg5xvxt06rwwx" path="res://resources/environment/test/escenario.tres" id="7_2u6di"]
+[ext_resource type="Script" uid="uid://bbrp1q78cfth1" path="res://features/main_menu/views/camera_3d.gd" id="8_y70nx"]
 
 [sub_resource type="Gradient" id="Gradient_bg"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -16,6 +20,9 @@ fill_to = Vector2(0.5, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bg"]
 texture = SubResource("GradientTexture2D_bg")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2u6di"]
+load_path = "res://.godot/imported/menupng.png-60aeead36021a2b6ae9c166aceed0922.ctex"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 28.0
@@ -85,7 +92,26 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7g3qg"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_7g3qg")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_2u6di"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.5
+reflected_light_source = 1
+
 [node name="MainMenu" type="Control" unique_id=359583470]
+texture_filter = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -95,6 +121,7 @@ grow_vertical = 2
 script = ExtResource("1_menu")
 
 [node name="Background" type="Panel" parent="." unique_id=545184633]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -104,7 +131,18 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_bg")
 
+[node name="TextureRect" type="TextureRect" parent="Background" unique_id=700883327]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CompressedTexture2D_2u6di")
+
 [node name="Moon" type="ColorRect" parent="Background" unique_id=799888966]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.73
@@ -117,6 +155,7 @@ rotation = -0.18
 color = Color(0.937255, 0.929412, 0.733333, 0.18)
 
 [node name="Horizon" type="ColorRect" parent="Background" unique_id=1259146066]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -128,6 +167,32 @@ grow_vertical = 0
 rotation = -0.06
 color = Color(0.913725, 0.929412, 0.733333, 0.22)
 
+[node name="Title" type="RichTextLabel" parent="." unique_id=770756657]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -290.0
+offset_top = 169.0
+offset_right = 290.0
+offset_bottom = 282.0
+grow_horizontal = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.45)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 27
+theme_override_fonts/normal_font = ExtResource("2_hje3k")
+theme_override_font_sizes/normal_font_size = 268
+bbcode_enabled = true
+text = "[wave amp=50.0]AZARD[/wave]"
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="MenuContent" type="VBoxContainer" parent="." unique_id=7134171]
 layout_mode = 1
 anchors_preset = 8
@@ -136,24 +201,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -290.0
-offset_top = -238.0
+offset_top = -152.0
 offset_right = 290.0
-offset_bottom = 210.0
+offset_bottom = 296.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
-
-[node name="Title" type="Label" parent="MenuContent" unique_id=70473735]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.45)
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 0
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 150
-text = "AZARD"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MenuContent" unique_id=877427476]
 self_modulate = Color(1, 1, 1, 0.7)
@@ -432,6 +485,33 @@ flat = true
 [node name="ClickPlayer" type="AudioStreamPlayer" parent="." unique_id=398642997]
 stream = ExtResource("3_click")
 
+[node name="Node3D" type="Node3D" parent="." unique_id=878754541]
+
+[node name="EntornoArena" parent="Node3D" unique_id=1168665643 instance=ExtResource("6_7g3qg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05552146, 0, 0.61894584)
+
+[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2126568144]
+material_override = ExtResource("7_2u6di")
+
+[node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]
+transform = Transform3D(1, 0, 0, 0, 0.9808533, 0.19474795, 0, -0.19474795, 0.9808533, 0, 4.237, 14.522)
+fov = 45.0
+script = ExtResource("8_y70nx")
+amplitud_rotacion = Vector3(0, 0, 0)
+velocidad = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D" unique_id=860281570]
+environment = SubResource("Environment_2u6di")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D" unique_id=240624610]
+transform = Transform3D(-0.9868331, 0.0711565, -0.14524856, -1.30202205e-08, 0.8980276, 0.43993917, 0.16174173, 0.43414652, -0.8862034, 0, 5.866068, 0)
+light_energy = 0.5
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
 [connection signal="pressed" from="MenuContent/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MenuContent/Buttons/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="MenuContent/Buttons/HelpButton" to="." method="_on_help_button_pressed"]
@@ -439,3 +519,5 @@ stream = ExtResource("3_click")
 [connection signal="pressed" from="HelpOverlay/Panel/Margin/Content/Header/BackButton" to="." method="_on_help_back_button_pressed"]
 [connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/CancelNewRunButton" to="." method="_on_cancel_new_run_button_pressed"]
 [connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/ConfirmNewRunButton" to="." method="_on_confirm_new_run_button_pressed"]
+
+[editable path="Node3D/EntornoArena"]
