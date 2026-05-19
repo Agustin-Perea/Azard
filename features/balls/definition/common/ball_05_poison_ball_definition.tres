@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/common/ball_05_poison_ball_effect.gd" id="1_poison_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_poison_effect"]
+script = ExtResource("1_poison_effect")
+name = "PoisonBall"
+description = "Aplica veneno al objetivo."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_poison_ball"]
+shading_mode = 0
+albedo_color = Color(0.19341749, 0.24681231, 0.063265875, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 2
+ball_material = SubResource("StandardMaterial3D_poison_ball")
+weight = 125
+base_price = 5
+attack_type = 0
+rarity = 0
+ball_effect = SubResource("Resource_poison_effect")

@@ -60,6 +60,7 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 	else:
 		attack_info.target._recieve_attack(attack_info.damage)
 
+	_apply_attack_status_effects(attack_info)
 	await get_tree().create_timer(0.05).timeout
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		GameState.clear_pending_roulette_attack(false)
@@ -92,6 +93,12 @@ func _get_adjacent_targets(target: Unit) -> Array[Unit]:
 			if enemy != null and enemy != target:
 				targets.append(enemy)
 	return targets
+
+func _apply_attack_status_effects(attack_info: AttackInfo) -> void:
+	if attack_info.target == null:
+		return
+	if attack_info.poison_damage > 0 and attack_info.poison_turns > 0:
+		attack_info.target.apply_poison(attack_info.poison_damage, attack_info.poison_turns)
 
 
 func _victory()->void:

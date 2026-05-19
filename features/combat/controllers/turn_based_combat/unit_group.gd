@@ -21,7 +21,12 @@ func _begin_turn() -> void:
 	#for unit in group:
 		#unit.damage_view.health_sprite_viewport.visible = false
 		
-	for unit in group:
+	for unit in group.duplicate():
+		if not group.has(unit):
+			continue
+		unit.apply_turn_start_effects()
+		if not group.has(unit):
+			continue
 		#current_unit = unit
 		unit.action_controller.perform_movement()
 		

@@ -32,6 +32,8 @@ var animation_state_machine : AnimationNodeStateMachinePlayback
 #como obtengo al target?
 @export var target : Node3D
 
+var poison_damage_per_turn: int = 0
+var poison_turns_remaining: int = 0
 
 
 func _ready() -> void:
@@ -106,6 +108,19 @@ func _recieve_attack(damage : int)-> void:
 	animation_state_machine.travel("hurt")
 	stats._substract_life(damage)
 	status_view_component._show_damaged(damage)
+
+func apply_poison(damage: int, turns: int) -> void:
+	poison_damage_per_turn = max(poison_damage_per_turn, damage)
+	poison_turns_remaining = max(poison_turns_remaining, turns)
+
+func apply_turn_start_effects() -> void:
+	if poison_damage_per_turn <= 0 or poison_turns_remaining <= 0:
+		return
+	var poison_damage := poison_damage_per_turn
+	poison_turns_remaining -= 1
+	if poison_turns_remaining <= 0:
+		poison_damage_per_turn = 0
+	_recieve_attack(poison_damage)
 
 func _death()-> void:
 	status_view_component.health_sprite_viewport.visible = false
