@@ -382,6 +382,12 @@ func heal_player(amount: int) -> void:
 	player_stats.current_healt = min(player_stats.max_healt, player_stats.current_healt + amount)
 	player_stats.health_changed.emit()
 
+func add_player_shield(amount: int) -> void:
+	if amount <= 0 or player_stats == null:
+		return
+	player_stats.shield += amount
+	player_stats.health_changed.emit()
+
 func _apply_rerolls_save_data(data: Dictionary) -> void:
 	current_reroll = int(data.get("current", current_reroll))
 	max_reroll = int(data.get("max", max_reroll))

@@ -7,8 +7,9 @@
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_03_healt_ball_definition.tres" id="3_healt"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_04_fire_ball_definition.tres" id="4_fire"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_05_poison_ball_definition.tres" id="5_poison"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_06_shield_ball_definition.tres" id="6_shield"]
 
 [resource]
 script = ExtResource("2_04sma")
-all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison")])
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison"), ExtResource("6_shield")])
 metadata/_custom_type_script = "uid://cvuh12b4ukh7w"

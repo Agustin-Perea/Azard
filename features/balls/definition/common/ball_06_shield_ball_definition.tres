@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/common/ball_06_shield_ball_effect.gd" id="1_shield_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_shield_effect"]
+script = ExtResource("1_shield_effect")
+name = "ShieldBall"
+description = "Otorga shield despues de golpear."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shield_ball"]
+shading_mode = 0
+albedo_color = Color(0.023529412, 1, 1, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 1
+ball_material = SubResource("StandardMaterial3D_shield_ball")
+weight = 125
+base_price = 5
+attack_type = 0
+rarity = 0
+ball_effect = SubResource("Resource_shield_effect")

@@ -69,7 +69,7 @@ func _do_attacK()->void:
 				attacker.rotation.x = 0 
 				attacker.rotation.z = 0
 				actual_attacK_Info.target = target
-				actual_attacK_Info.damage = roulette_controller.score
+				actual_attacK_Info.damage = int(round(roulette_controller.score))
 				
 				actual_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
 				actual_attacK_Info.splash_percent = float(roulette_controller.get_attack_modifier(&"splash_percent", 0.0))
