@@ -83,9 +83,8 @@ func _ready() -> void:
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
-	GameState.current_reroll = rerolls_count
-	
-	rerolls_count = GameState.max_reroll
+	rerolls_count = clamp(GameState.current_reroll, 0, GameState.max_reroll)
+	rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 	
 	player_stats = GameState.player_stats
 	player_stats.health_changed.connect(_on_health_changed)
@@ -392,7 +391,7 @@ func number_disappear()->void:
 	 
 
 func _on_reroll_pressed()->void:
-	if rerolls_count > 0:
+	if rerolls_count > 0 and roulette_controller.can_reroll():
 		rerolls_count -= 1
 		rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 		GameState.current_reroll = rerolls_count
@@ -409,10 +408,12 @@ func disable_reroll()->void:
 	reroll_button.enabled = false
 	
 func enable_reroll()->void:
-	if rerolls_count > 0:
+	if rerolls_count > 0 and roulette_controller.can_reroll():
 		reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset",0)
 		reroll_mesh.get_active_material(0).set_shader_parameter("palette_offset_y",0)
-	reroll_button.enabled = true
+		reroll_button.enabled = true
+	else:
+		disable_reroll()
 
 func disable_finish_button()->void:
 	finish_button_mesh.get_active_material(0).set_shader_parameter("palette_offset",1.9)

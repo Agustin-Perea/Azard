@@ -357,16 +357,18 @@ func reset_score()->void:
 
 #reroll
 func reroll()->void:
-	if _has_resolved_pending_attack():
+	if not can_reroll():
 		return
-	if last_ball_used:
-		##CombatEventBus.reroll.emit(self)
-		reset_score()
-		GameState.clear_pending_roulette_attack()
-		#cambio de visuals o animacion
-		
-		#llama al estado de Spin de Ruleta
-		on_start_spin(last_ball_used)
+	##CombatEventBus.reroll.emit(self)
+	reset_score()
+	GameState.clear_pending_roulette_attack()
+	#cambio de visuals o animacion
+
+	#llama al estado de Spin de Ruleta
+	on_start_spin(last_ball_used)
+
+func can_reroll() -> bool:
+	return last_ball_used != null
 
 func _resume_pending_attack() -> void:
 	await get_tree().process_frame
