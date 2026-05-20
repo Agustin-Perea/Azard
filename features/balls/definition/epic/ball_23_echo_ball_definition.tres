@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/epic/ball_23_echo_ball_effect.gd" id="1_echo_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_echo_effect"]
+script = ExtResource("1_echo_effect")
+name = "EchoBall"
+description = "Agrega a la base la mitad del dano final del tiro anterior."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_echo_ball"]
+shading_mode = 0
+albedo_color = Color(0.62, 0.42, 0.95, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 0
+ball_material = SubResource("StandardMaterial3D_echo_ball")
+weight = 24
+base_price = 8
+attack_type = 0
+rarity = 2
+ball_effect = SubResource("Resource_echo_effect")

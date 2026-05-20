@@ -258,6 +258,7 @@ func changeScore()->void:
 		"paralel": false,
 		"action": func():
 			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
+			GameState.record_resolved_roulette_score(score)
 			if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 				GameState.mark_pending_roulette_resolved({
 					"result_field_id": result_field_id,

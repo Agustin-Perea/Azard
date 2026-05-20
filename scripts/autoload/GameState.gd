@@ -16,6 +16,7 @@ var auto_save_enabled := false
 var _is_loading_run := false
 var combat_snapshot: Dictionary = {}
 var pending_roulette_attack: Dictionary = {}
+var last_resolved_roulette_score: float = 0.0
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -96,6 +97,7 @@ func _rebuild_run_from_current_seed() -> void:
 	Bets.clear()
 	
 	field_by_chip.clear()
+	last_resolved_roulette_score = 0.0
 	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
@@ -237,6 +239,7 @@ func new_run() -> void:
 	current_scene_path = MAP_SCENE_PATH
 	combat_snapshot.clear()
 	pending_roulette_attack.clear()
+	last_resolved_roulette_score = 0.0
 	reload()
 	save_run(MAP_SCENE_PATH)
 
@@ -244,6 +247,7 @@ func end_run() -> void:
 	auto_save_enabled = false
 	combat_snapshot.clear()
 	pending_roulette_attack.clear()
+	last_resolved_roulette_score = 0.0
 	current_scene_path = MAP_SCENE_PATH
 	delete_save()
 
@@ -319,6 +323,7 @@ func _build_save_data() -> Dictionary:
 		"map": _build_map_save_data(),
 		"combat": combat_snapshot.duplicate(true),
 		"pending_roulette_attack": pending_roulette_attack.duplicate(true),
+		"last_resolved_roulette_score": last_resolved_roulette_score,
 		"balls_deck": _build_balls_save_data(),
 		"passive_items": _build_passive_items_save_data(),
 		"bet_fields": _build_bet_fields_save_data(),
@@ -335,6 +340,7 @@ func _apply_save_data(data: Dictionary) -> void:
 	_apply_map_save_data(data.get("map", {}))
 	combat_snapshot = data.get("combat", {}).duplicate(true)
 	pending_roulette_attack = data.get("pending_roulette_attack", {}).duplicate(true)
+	last_resolved_roulette_score = float(data.get("last_resolved_roulette_score", 0.0))
 	_apply_balls_save_data(data.get("balls_deck", []))
 	_apply_passive_items_save_data(data.get("passive_items", []))
 	_apply_bet_fields_save_data(data.get("bet_fields", []))
@@ -455,6 +461,12 @@ func mark_pending_roulette_resolved(resolved_data: Dictionary) -> void:
 		pending_roulette_attack[key] = resolved_data[key]
 	pending_roulette_attack["phase"] = "resolved"
 	save_run(str(pending_roulette_attack.get("scene_path", get_current_scene_path())))
+
+func record_resolved_roulette_score(value: float) -> void:
+	last_resolved_roulette_score = max(0.0, value)
+
+func get_last_resolved_roulette_score() -> float:
+	return last_resolved_roulette_score
 
 func clear_pending_roulette_attack(persist := true) -> void:
 	if pending_roulette_attack.is_empty():

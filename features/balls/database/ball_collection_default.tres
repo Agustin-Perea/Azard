@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BallsRuntimeCollection" format=3 uid="uid://07tu5oy5nwny"]
 
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_7ik2x"]
-[ext_resource type="Resource" path="res://features/balls/definition/epic/ball_22_rig_ball_definition.tres" id="2_ghtjb"]
+[ext_resource type="Resource" path="res://features/balls/definition/epic/ball_23_echo_ball_definition.tres" id="2_echo"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
 [ext_resource type="Resource" path="res://features/balls/definition/common/ball_01_base_ball_definition.tres" id="3_373ir"]
 
@@ -12,7 +12,7 @@ metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
 [sub_resource type="Resource" id="Resource_rc2d2"]
 script = ExtResource("1_7ik2x")
-ball_definition = ExtResource("2_ghtjb")
+ball_definition = ExtResource("2_echo")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
 [resource]
