@@ -22,6 +22,7 @@ var curse_vulnerable_percent: float = 0.0
 var curse_turns: int = 0
 var storm_chain_targets: int = 0
 var ignore_shield: bool = false
+var grave_execute_threshold: float = 0.0
 
 #effectos A ENVIAR
 

@@ -59,11 +59,11 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 		actual_damage_dealt = _apply_bounce_attack(attack_info)
 	elif attack_info.type == Constants.ATTACK_TYPE.ALL:
 		for enemy in EnemyGroup.group.duplicate():
-			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield)
+			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 	elif attack_info.type == Constants.ATTACK_TYPE.HALF:
 		actual_damage_dealt = _apply_half_attack(attack_info)
 	else:
-		actual_damage_dealt = _apply_damage_to_enemy(attack_info.target, attack_info.damage, attack_info.ignore_shield)
+		actual_damage_dealt = _apply_damage_to_enemy(attack_info.target, attack_info.damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 
 	_apply_attack_status_effects(attack_info)
 	_apply_attack_leech(attack_info, actual_damage_dealt)
@@ -83,13 +83,13 @@ func _apply_half_attack(attack_info: AttackInfo) -> int:
 		return 0
 	var actual_damage_dealt := 0
 	var splash_targets := _get_adjacent_targets(attack_info.target)
-	actual_damage_dealt += _apply_damage_to_enemy(attack_info.target, attack_info.damage, attack_info.ignore_shield)
+	actual_damage_dealt += _apply_damage_to_enemy(attack_info.target, attack_info.damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 	var splash_damage := int(floor(float(attack_info.damage) * attack_info.splash_percent))
 	if splash_damage <= 0:
 		return actual_damage_dealt
 	for enemy in splash_targets:
 		if enemy != null:
-			actual_damage_dealt += _apply_damage_to_enemy(enemy, splash_damage, attack_info.ignore_shield)
+			actual_damage_dealt += _apply_damage_to_enemy(enemy, splash_damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 	return actual_damage_dealt
 
 func _get_adjacent_targets(target: Unit) -> Array[Unit]:
@@ -109,7 +109,7 @@ func _apply_bounce_attack(attack_info: AttackInfo) -> int:
 	var actual_damage_dealt := 0
 	for enemy in targets:
 		if enemy != null:
-			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield)
+			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 	return actual_damage_dealt
 
 func _apply_storm_attack(attack_info: AttackInfo) -> int:
@@ -117,7 +117,7 @@ func _apply_storm_attack(attack_info: AttackInfo) -> int:
 	var actual_damage_dealt := 0
 	for enemy in targets:
 		if enemy != null:
-			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield)
+			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage, attack_info.ignore_shield, attack_info.grave_execute_threshold)
 	return actual_damage_dealt
 
 func _get_bounce_targets(target: Unit, hit_count: int) -> Array[Unit]:
@@ -172,7 +172,7 @@ func _apply_attack_self_damage(attack_info: AttackInfo) -> void:
 		return
 	attack_info.attacker._recieve_attack(attack_info.self_damage)
 
-func _apply_damage_to_enemy(enemy: Unit, damage: int, ignore_shield := false) -> int:
+func _apply_damage_to_enemy(enemy: Unit, damage: int, ignore_shield := false, grave_execute_threshold := 0.0) -> int:
 	if enemy == null or enemy.stats == null or damage <= 0:
 		return 0
 	var final_damage := enemy.get_cursed_damage(damage)
@@ -181,8 +181,18 @@ func _apply_damage_to_enemy(enemy: Unit, damage: int, ignore_shield := false) ->
 		enemy._recieve_piercing_attack(final_damage)
 	else:
 		enemy._recieve_attack(final_damage)
+	_apply_grave_execute_if_needed(enemy, grave_execute_threshold)
 	var after_total := _remaining_effective_health(enemy)
 	return max(0, before_total - after_total)
+
+func _apply_grave_execute_if_needed(enemy: Unit, grave_execute_threshold: float) -> void:
+	if grave_execute_threshold <= 0.0 or enemy == null or enemy.stats == null:
+		return
+	if enemy.stats.current_healt <= 0 or enemy.stats.max_healt <= 0:
+		return
+	var health_ratio := float(enemy.stats.current_healt) / float(enemy.stats.max_healt)
+	if health_ratio <= grave_execute_threshold:
+		enemy._execute()
 
 func _remaining_effective_health(unit: Unit) -> int:
 	if unit == null or unit.stats == null:

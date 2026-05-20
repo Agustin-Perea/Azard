@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/epic/ball_26_grave_ball_effect.gd" id="1_grave_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_grave_effect"]
+script = ExtResource("1_grave_effect")
+name = "GraveBall"
+description = "Ejecuta al enemigo si queda con poca vida."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grave_ball"]
+shading_mode = 0
+albedo_color = Color(0.22, 0.42, 0.32, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 5
+ball_material = SubResource("StandardMaterial3D_grave_ball")
+weight = 20
+base_price = 8
+attack_type = 0
+rarity = 2
+ball_effect = SubResource("Resource_grave_effect")

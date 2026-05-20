@@ -119,6 +119,9 @@ func _recieve_piercing_attack(damage: int) -> void:
 	if status_view_component != null:
 		status_view_component._show_damaged(damage)
 
+func _execute() -> void:
+	stats.execute()
+
 func apply_poison(damage: int, turns: int) -> void:
 	poison_damage_per_turn = max(poison_damage_per_turn, damage)
 	poison_turns_remaining = max(poison_turns_remaining, turns)
