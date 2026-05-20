@@ -39,3 +39,7 @@ func _is_black(roulette_controller: RouletteController) -> bool:
 func _is_green(roulette_controller: RouletteController) -> bool:
 	return roulette_controller.winner_betfield_model != null \
 		and roulette_controller.winner_betfield_model.color == Constants.BET_FIELD_COLOR.GREEN
+
+func _is_zero_family(roulette_controller: RouletteController) -> bool:
+	return roulette_controller.winner_betfield_model != null \
+		and roulette_controller.winner_betfield_model.number == 0

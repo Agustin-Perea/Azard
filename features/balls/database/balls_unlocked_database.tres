@@ -22,8 +22,9 @@
 [ext_resource type="Resource" path="res://features/balls/definition/rare/ball_18_crystal_ball_definition.tres" id="18_crystal"]
 [ext_resource type="Resource" path="res://features/balls/definition/rare/ball_19_curse_ball_definition.tres" id="19_curse"]
 [ext_resource type="Resource" path="res://features/balls/definition/rare/ball_20_storm_ball_definition.tres" id="20_storm"]
+[ext_resource type="Resource" path="res://features/balls/definition/epic/ball_21_zero_ball_definition.tres" id="21_zero"]
 
 [resource]
 script = ExtResource("2_04sma")
-all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison"), ExtResource("6_shield"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_bounce"), ExtResource("10_mirror"), ExtResource("11_leech"), ExtResource("12_prime"), ExtResource("13_random"), ExtResource("14_bank"), ExtResource("15_mute"), ExtResource("16_gold"), ExtResource("17_risk"), ExtResource("18_crystal"), ExtResource("19_curse"), ExtResource("20_storm")])
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("3_healt"), ExtResource("4_fire"), ExtResource("5_poison"), ExtResource("6_shield"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_bounce"), ExtResource("10_mirror"), ExtResource("11_leech"), ExtResource("12_prime"), ExtResource("13_random"), ExtResource("14_bank"), ExtResource("15_mute"), ExtResource("16_gold"), ExtResource("17_risk"), ExtResource("18_crystal"), ExtResource("19_curse"), ExtResource("20_storm"), ExtResource("21_zero")])
 metadata/_custom_type_script = "uid://cvuh12b4ukh7w"
