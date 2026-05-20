@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Resource_ascend_effect"]
 script = ExtResource("1_ascend_effect")
 name = "AscendBall"
-description = "Suma base igual a las veces que se jugo esta pelota."
+description = "Suma +0.20 mult por cada tipo distinto de bola usado en el combate."
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ascend_ball"]
 shading_mode = 0

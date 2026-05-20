@@ -17,6 +17,7 @@ var _is_loading_run := false
 var combat_snapshot: Dictionary = {}
 var pending_roulette_attack: Dictionary = {}
 var last_resolved_roulette_score: float = 0.0
+var combat_used_ball_types: Array[String] = []
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -98,6 +99,7 @@ func _rebuild_run_from_current_seed() -> void:
 	
 	field_by_chip.clear()
 	last_resolved_roulette_score = 0.0
+	combat_used_ball_types.clear()
 	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
@@ -240,6 +242,7 @@ func new_run() -> void:
 	combat_snapshot.clear()
 	pending_roulette_attack.clear()
 	last_resolved_roulette_score = 0.0
+	combat_used_ball_types.clear()
 	reload()
 	save_run(MAP_SCENE_PATH)
 
@@ -248,6 +251,7 @@ func end_run() -> void:
 	combat_snapshot.clear()
 	pending_roulette_attack.clear()
 	last_resolved_roulette_score = 0.0
+	combat_used_ball_types.clear()
 	current_scene_path = MAP_SCENE_PATH
 	delete_save()
 
@@ -442,8 +446,24 @@ func save_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_gro
 		"scene_path": scene_path,
 		"players": _build_unit_group_save_data(player_group),
 		"enemies": _build_unit_group_save_data(enemy_group),
+		"used_ball_types": combat_used_ball_types.duplicate(),
 	}
 	save_run(scene_path)
+
+func reset_combat_ball_usage() -> void:
+	combat_used_ball_types.clear()
+
+func record_combat_ball_used(ball_definition: BallDefinition) -> void:
+	if ball_definition == null:
+		return
+	var ball_type := ball_definition.resource_path
+	if ball_type == "":
+		ball_type = str(ball_definition.get_instance_id())
+	if not combat_used_ball_types.has(ball_type):
+		combat_used_ball_types.append(ball_type)
+
+func get_combat_used_ball_type_count() -> int:
+	return combat_used_ball_types.size()
 
 func begin_pending_roulette_attack(scene_path: String, pending_data: Dictionary) -> void:
 	if scene_path == "":
@@ -497,6 +517,7 @@ func has_combat_snapshot(scene_path: String) -> bool:
 func apply_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_group: UnitGroup) -> void:
 	if not has_combat_snapshot(scene_path):
 		return
+	combat_used_ball_types.assign(combat_snapshot.get("used_ball_types", []))
 	_apply_unit_group_save_data(player_group, combat_snapshot.get("players", []))
 	_apply_unit_group_save_data(enemy_group, combat_snapshot.get("enemies", []))
 
@@ -573,7 +594,6 @@ func _build_balls_save_data() -> Array:
 			"level_upgrade": ball.level_upgrade,
 			"used": ball.used,
 			"final_price": ball.final_price,
-			"times_played": ball.times_played,
 		})
 	return result
 
@@ -590,7 +610,6 @@ func _apply_balls_save_data(data: Array) -> void:
 		ball.level_upgrade = int(ball_data.get("level_upgrade", 1))
 		ball.used = bool(ball_data.get("used", false))
 		ball.final_price = int(ball_data.get("final_price", 0))
-		ball.times_played = int(ball_data.get("times_played", 0))
 		balls_deck.all_balls.append(ball)
 
 func _build_passive_items_save_data() -> Array:

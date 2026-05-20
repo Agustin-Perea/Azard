@@ -161,6 +161,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	score = delta_score#bad
 	
 	#eventos finales post resolve, bolas y pasivos
+	GameState.record_combat_ball_used(ball.ball_definition)
 	ball.ball_definition.ball_effect.on_post_resolved(self)
 	
 	#cambio de score

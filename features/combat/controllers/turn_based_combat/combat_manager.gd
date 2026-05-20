@@ -23,6 +23,8 @@ func _ready() -> void:
 	Player.defeat.connect(_defeat)
 	EnemyGroup.defeat.connect(_victory)	
 	
+	if not GameState.has_combat_snapshot(GameState.get_current_scene_path()):
+		GameState.reset_combat_ball_usage()
 	GameState.apply_combat_snapshot(GameState.get_current_scene_path(), Player, EnemyGroup)
 	if EnemyGroup.group.is_empty():
 		_victory()

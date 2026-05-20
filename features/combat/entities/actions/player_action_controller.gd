@@ -85,6 +85,8 @@ func _do_attacK()->void:
 				actual_attacK_Info.storm_chain_targets = int(roulette_controller.get_attack_modifier(&"storm_chain_targets", 0))
 				actual_attacK_Info.ignore_shield = bool(roulette_controller.get_attack_modifier(&"ignore_shield", false))
 				actual_attacK_Info.grave_execute_threshold = float(roulette_controller.get_attack_modifier(&"grave_execute_threshold", 0.0))
+				if bool(roulette_controller.get_attack_modifier(&"jackpot_attack_all", false)):
+					actual_attacK_Info.type = Constants.ATTACK_TYPE.ALL
 			
 			attack_beginning.emit()
 			return true
