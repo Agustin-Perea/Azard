@@ -25,6 +25,8 @@ func on_pre_resolve()->void:
 	pass
 func on_bet_resolved()->void:
 	pass
+func adjust_result_field(_roulette_controller: RouletteController, result_field_id: int) -> int:
+	return result_field_id
 func on_post_resolved(roullette_controller : RouletteController)->void:
 	pass
 	

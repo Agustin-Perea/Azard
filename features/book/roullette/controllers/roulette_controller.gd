@@ -111,7 +111,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	if not pending.is_empty() and str(pending.get("phase", "")) == "spinning":
 		result_field_id = int(pending.get("result_field_id", 0))
 	else:
-		result_field_id = rng.randi_range(0, 36)
+		result_field_id = _get_adjusted_result_field(ball, rng.randi_range(0, 36))
 		GameState.begin_pending_roulette_attack(GameState.get_current_scene_path(), {
 			"phase": "spinning",
 			"result_field_id": result_field_id,
@@ -451,6 +451,14 @@ func _get_ball_log_name(ball: BallRuntimeState) -> String:
 	if ball.ball_definition.ball_effect.name == "":
 		return "Bola"
 	return ball.ball_definition.ball_effect.name
+
+func _get_adjusted_result_field(ball: BallRuntimeState, initial_result_field_id: int) -> int:
+	if ball == null or ball.ball_definition == null or ball.ball_definition.ball_effect == null:
+		return initial_result_field_id
+	var adjusted_result := ball.ball_definition.ball_effect.adjust_result_field(self, initial_result_field_id)
+	if adjusted_result < 0 or adjusted_result >= min(37, GameState.bet_field_models.size()):
+		return initial_result_field_id
+	return adjusted_result
 
 func _get_field_log_name(field: BetFieldModel) -> String:
 	if field == null or field.ConditionStrategy == null:
