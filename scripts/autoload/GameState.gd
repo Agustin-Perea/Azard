@@ -573,6 +573,7 @@ func _build_balls_save_data() -> Array:
 			"level_upgrade": ball.level_upgrade,
 			"used": ball.used,
 			"final_price": ball.final_price,
+			"times_played": ball.times_played,
 		})
 	return result
 
@@ -589,6 +590,7 @@ func _apply_balls_save_data(data: Array) -> void:
 		ball.level_upgrade = int(ball_data.get("level_upgrade", 1))
 		ball.used = bool(ball_data.get("used", false))
 		ball.final_price = int(ball_data.get("final_price", 0))
+		ball.times_played = int(ball_data.get("times_played", 0))
 		balls_deck.all_balls.append(ball)
 
 func _build_passive_items_save_data() -> Array:

@@ -4,5 +4,6 @@ class_name BallRuntimeState
 @export var level_upgrade: int = 1
 @export var used: bool = false
 @export var final_price: int
+@export var times_played: int = 0
 
 @export var ball_definition : BallDefinition

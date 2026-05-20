@@ -169,6 +169,7 @@ func use_ball()->void:
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		return
 	_prepare_mirror_source()
+	ball_data.times_played += 1
 	#agrega eventos de la bola
 	BookEventBus.turn_log_close_requested.emit()
 	BookEventBus.start_spin.emit(ball_data)
