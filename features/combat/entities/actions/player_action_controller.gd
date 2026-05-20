@@ -83,6 +83,7 @@ func _do_attacK()->void:
 				actual_attacK_Info.curse_vulnerable_percent = float(roulette_controller.get_attack_modifier(&"curse_vulnerable_percent", 0.0))
 				actual_attacK_Info.curse_turns = int(roulette_controller.get_attack_modifier(&"curse_turns", 0))
 				actual_attacK_Info.storm_chain_targets = int(roulette_controller.get_attack_modifier(&"storm_chain_targets", 0))
+				actual_attacK_Info.ignore_shield = bool(roulette_controller.get_attack_modifier(&"ignore_shield", false))
 			
 			attack_beginning.emit()
 			return true
@@ -157,13 +158,14 @@ func _find_enemy_by_name(unit_name: String) -> Unit:
 
 func _refresh_lethal_preview() -> void:
 	var damage := int(round(roulette_controller.score))
+	var ignore_shield := bool(roulette_controller.get_attack_modifier(&"ignore_shield", false))
 	var active := _is_attack_lethal(damage)
 	if lethal_preview_target != null and lethal_preview_target != target and lethal_preview_target.status_view_component != null:
 		lethal_preview_target.status_view_component.set_lethal_preview(false)
 	if _is_current_attack_all_enemies():
 		for enemy in get_tree().get_nodes_in_group("enemy"):
 			if enemy is Unit and enemy.status_view_component != null:
-				enemy.status_view_component.set_lethal_preview(active and _unit_would_die(enemy as Unit, damage))
+				enemy.status_view_component.set_lethal_preview(active and _unit_would_die(enemy as Unit, damage, ignore_shield))
 		lethal_preview_target = null
 	elif target != null and target.stats != null and damage > 0:
 		if target.status_view_component != null:
@@ -177,22 +179,27 @@ func _refresh_lethal_preview() -> void:
 func _is_attack_lethal(damage: int) -> bool:
 	if damage <= 0:
 		return false
+	var ignore_shield := bool(roulette_controller.get_attack_modifier(&"ignore_shield", false))
 	if _is_current_attack_all_enemies():
 		var enemies := get_tree().get_nodes_in_group("enemy")
 		if enemies.is_empty():
 			return false
 		for enemy in enemies:
-			if enemy is Unit and _unit_would_die(enemy as Unit, damage):
+			if enemy is Unit and _unit_would_die(enemy as Unit, damage, ignore_shield):
 				return true
 		return false
 	if target == null:
 		return false
-	return _unit_would_die(target, damage)
+	return _unit_would_die(target, damage, ignore_shield)
 
 func _is_current_attack_all_enemies() -> bool:
 	return roulette_controller.last_ball_used != null \
 		and roulette_controller.last_ball_used.ball_definition != null \
 		and roulette_controller.last_ball_used.ball_definition.attack_type == Constants.ATTACK_TYPE.ALL
 
-func _unit_would_die(unit: Unit, damage: int) -> bool:
-	return unit != null and unit.stats != null and damage >= unit.stats.current_healt + unit.stats.shield
+func _unit_would_die(unit: Unit, damage: int, ignore_shield := false) -> bool:
+	if unit == null or unit.stats == null:
+		return false
+	if ignore_shield:
+		return damage >= unit.stats.current_healt
+	return damage >= unit.stats.current_healt + unit.stats.shield

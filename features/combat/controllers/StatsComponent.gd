@@ -38,6 +38,12 @@ func _substract_life(life:int) -> void:
 	if(current_healt < 1):
 		death.emit()
 
+func _substract_life_ignore_shield(life: int) -> void:
+	current_healt -= max(0, life)
+	health_changed.emit()
+	if current_healt < 1:
+		death.emit()
+
 func add_life(pv : int)->void:
 	current_healt += pv
 	health_changed.emit()

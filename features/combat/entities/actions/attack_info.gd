@@ -21,6 +21,7 @@ var self_damage: int = 0
 var curse_vulnerable_percent: float = 0.0
 var curse_turns: int = 0
 var storm_chain_targets: int = 0
+var ignore_shield: bool = false
 
 #effectos A ENVIAR
 

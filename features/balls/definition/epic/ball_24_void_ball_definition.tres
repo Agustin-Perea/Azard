@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/epic/ball_24_void_ball_effect.gd" id="1_void_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_void_effect"]
+script = ExtResource("1_void_effect")
+name = "VoidBall"
+description = "Atraviesa el shield del objetivo."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_void_ball"]
+shading_mode = 0
+albedo_color = Color(0.20, 0.10, 0.30, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 6
+ball_material = SubResource("StandardMaterial3D_void_ball")
+weight = 22
+base_price = 8
+attack_type = 0
+rarity = 2
+ball_effect = SubResource("Resource_void_effect")

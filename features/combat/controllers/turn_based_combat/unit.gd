@@ -112,6 +112,13 @@ func _recieve_attack(damage : int)-> void:
 	stats._substract_life(damage)
 	status_view_component._show_damaged(damage)
 
+func _recieve_piercing_attack(damage: int) -> void:
+	if animation_state_machine != null:
+		animation_state_machine.travel("hurt")
+	stats._substract_life_ignore_shield(damage)
+	if status_view_component != null:
+		status_view_component._show_damaged(damage)
+
 func apply_poison(damage: int, turns: int) -> void:
 	poison_damage_per_turn = max(poison_damage_per_turn, damage)
 	poison_turns_remaining = max(poison_turns_remaining, turns)
