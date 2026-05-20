@@ -80,6 +80,8 @@ func _do_attacK()->void:
 				actual_attacK_Info.bank_gold_reward = int(roulette_controller.get_attack_modifier(&"bank_gold_reward", 0))
 				actual_attacK_Info.mute_turns = int(roulette_controller.get_attack_modifier(&"mute_turns", 0))
 				actual_attacK_Info.self_damage = int(roulette_controller.get_attack_modifier(&"self_damage", 0))
+				actual_attacK_Info.curse_vulnerable_percent = float(roulette_controller.get_attack_modifier(&"curse_vulnerable_percent", 0.0))
+				actual_attacK_Info.curse_turns = int(roulette_controller.get_attack_modifier(&"curse_turns", 0))
 			
 			attack_beginning.emit()
 			return true

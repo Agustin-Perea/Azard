@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/rare/ball_19_curse_ball_effect.gd" id="1_curse_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_curse_effect"]
+script = ExtResource("1_curse_effect")
+name = "CurseBall"
+description = "Deja al enemigo vulnerable para que los proximos ataques hagan mas dano."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_curse_ball"]
+shading_mode = 0
+albedo_color = Color(0.42, 0.12, 0.58, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 2
+ball_material = SubResource("StandardMaterial3D_curse_ball")
+weight = 45
+base_price = 7
+attack_type = 0
+rarity = 1
+ball_effect = SubResource("Resource_curse_effect")

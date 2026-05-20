@@ -130,6 +130,8 @@ func _apply_attack_status_effects(attack_info: AttackInfo) -> void:
 		attack_info.target.apply_poison(attack_info.poison_damage, attack_info.poison_turns)
 	if attack_info.mute_turns > 0:
 		attack_info.target.apply_mute(attack_info.mute_turns)
+	if attack_info.curse_vulnerable_percent > 0.0 and attack_info.curse_turns > 0:
+		attack_info.target.apply_curse(attack_info.curse_vulnerable_percent, attack_info.curse_turns)
 
 func _apply_attack_leech(attack_info: AttackInfo, actual_damage_dealt: int) -> void:
 	if attack_info.leech_percent <= 0.0 or actual_damage_dealt <= 0:
@@ -149,8 +151,9 @@ func _apply_attack_self_damage(attack_info: AttackInfo) -> void:
 func _apply_damage_to_enemy(enemy: Unit, damage: int) -> int:
 	if enemy == null or enemy.stats == null or damage <= 0:
 		return 0
+	var final_damage := enemy.get_cursed_damage(damage)
 	var before_total := _remaining_effective_health(enemy)
-	enemy._recieve_attack(damage)
+	enemy._recieve_attack(final_damage)
 	var after_total := _remaining_effective_health(enemy)
 	return max(0, before_total - after_total)
 

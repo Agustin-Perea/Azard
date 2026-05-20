@@ -35,6 +35,8 @@ var animation_state_machine : AnimationNodeStateMachinePlayback
 var poison_damage_per_turn: int = 0
 var poison_turns_remaining: int = 0
 var mute_turns_remaining: int = 0
+var curse_vulnerable_percent: float = 0.0
+var curse_turns_remaining: int = 0
 
 
 func _ready() -> void:
@@ -117,6 +119,15 @@ func apply_poison(damage: int, turns: int) -> void:
 func apply_mute(turns: int) -> void:
 	mute_turns_remaining = max(mute_turns_remaining, turns)
 
+func apply_curse(vulnerable_percent: float, turns: int) -> void:
+	curse_vulnerable_percent = max(curse_vulnerable_percent, vulnerable_percent)
+	curse_turns_remaining = max(curse_turns_remaining, turns)
+
+func get_cursed_damage(damage: int) -> int:
+	if damage <= 0 or curse_turns_remaining <= 0 or curse_vulnerable_percent <= 0.0:
+		return damage
+	return int(ceil(float(damage) * (1.0 + curse_vulnerable_percent)))
+
 func consume_mute_turn() -> bool:
 	if mute_turns_remaining <= 0:
 		return false
@@ -124,13 +135,16 @@ func consume_mute_turn() -> bool:
 	return true
 
 func apply_turn_start_effects() -> void:
-	if poison_damage_per_turn <= 0 or poison_turns_remaining <= 0:
-		return
-	var poison_damage := poison_damage_per_turn
-	poison_turns_remaining -= 1
-	if poison_turns_remaining <= 0:
-		poison_damage_per_turn = 0
-	_recieve_attack(poison_damage)
+	if curse_turns_remaining > 0:
+		curse_turns_remaining -= 1
+		if curse_turns_remaining <= 0:
+			curse_vulnerable_percent = 0.0
+	if poison_damage_per_turn > 0 and poison_turns_remaining > 0:
+		var poison_damage := poison_damage_per_turn
+		poison_turns_remaining -= 1
+		if poison_turns_remaining <= 0:
+			poison_damage_per_turn = 0
+		_recieve_attack(poison_damage)
 
 func _death()-> void:
 	status_view_component.health_sprite_viewport.visible = false
