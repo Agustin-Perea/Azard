@@ -398,6 +398,16 @@ func add_player_shield(amount: int) -> void:
 	player_stats.shield += amount
 	player_stats.health_changed.emit()
 
+func consume_player_shield() -> int:
+	if player_stats == null:
+		return 0
+	var shield := int(max(0, player_stats.shield))
+	if shield <= 0:
+		return 0
+	player_stats.shield = 0
+	player_stats.health_changed.emit()
+	return shield
+
 func _apply_rerolls_save_data(data: Dictionary) -> void:
 	current_reroll = int(data.get("current", current_reroll))
 	max_reroll = int(data.get("max", max_reroll))
