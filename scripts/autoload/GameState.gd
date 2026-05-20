@@ -18,6 +18,7 @@ var combat_snapshot: Dictionary = {}
 var pending_roulette_attack: Dictionary = {}
 var last_resolved_roulette_score: float = 0.0
 var combat_used_ball_types: Array[String] = []
+var combat_ball_history: Array[String] = []
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -100,6 +101,7 @@ func _rebuild_run_from_current_seed() -> void:
 	field_by_chip.clear()
 	last_resolved_roulette_score = 0.0
 	combat_used_ball_types.clear()
+	combat_ball_history.clear()
 	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
@@ -243,6 +245,7 @@ func new_run() -> void:
 	pending_roulette_attack.clear()
 	last_resolved_roulette_score = 0.0
 	combat_used_ball_types.clear()
+	combat_ball_history.clear()
 	reload()
 	save_run(MAP_SCENE_PATH)
 
@@ -252,6 +255,7 @@ func end_run() -> void:
 	pending_roulette_attack.clear()
 	last_resolved_roulette_score = 0.0
 	combat_used_ball_types.clear()
+	combat_ball_history.clear()
 	current_scene_path = MAP_SCENE_PATH
 	delete_save()
 
@@ -457,11 +461,13 @@ func save_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_gro
 		"players": _build_unit_group_save_data(player_group),
 		"enemies": _build_unit_group_save_data(enemy_group),
 		"used_ball_types": combat_used_ball_types.duplicate(),
+		"ball_history": combat_ball_history.duplicate(),
 	}
 	save_run(scene_path)
 
 func reset_combat_ball_usage() -> void:
 	combat_used_ball_types.clear()
+	combat_ball_history.clear()
 
 func record_combat_ball_used(ball_definition: BallDefinition) -> void:
 	if ball_definition == null:
@@ -471,9 +477,25 @@ func record_combat_ball_used(ball_definition: BallDefinition) -> void:
 		ball_type = str(ball_definition.get_instance_id())
 	if not combat_used_ball_types.has(ball_type):
 		combat_used_ball_types.append(ball_type)
+	combat_ball_history.append(ball_type)
 
 func get_combat_used_ball_type_count() -> int:
 	return combat_used_ball_types.size()
+
+func get_recent_combat_ball_paths(count: int, current_ball_definition: BallDefinition = null) -> Array[String]:
+	var history := combat_ball_history.duplicate()
+	if current_ball_definition != null and not history.is_empty():
+		var current_path := current_ball_definition.resource_path
+		if current_path == "":
+			current_path = str(current_ball_definition.get_instance_id())
+		if history[history.size() - 1] == current_path:
+			history.remove_at(history.size() - 1)
+	var result: Array[String] = []
+	var index := history.size() - 1
+	while index >= 0 and result.size() < count:
+		result.append(str(history[index]))
+		index -= 1
+	return result
 
 func begin_pending_roulette_attack(scene_path: String, pending_data: Dictionary) -> void:
 	if scene_path == "":
@@ -528,6 +550,7 @@ func apply_combat_snapshot(scene_path: String, player_group: UnitGroup, enemy_gr
 	if not has_combat_snapshot(scene_path):
 		return
 	combat_used_ball_types.assign(combat_snapshot.get("used_ball_types", []))
+	combat_ball_history.assign(combat_snapshot.get("ball_history", []))
 	_apply_unit_group_save_data(player_group, combat_snapshot.get("players", []))
 	_apply_unit_group_save_data(enemy_group, combat_snapshot.get("enemies", []))
 

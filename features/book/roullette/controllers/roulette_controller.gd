@@ -294,7 +294,7 @@ func _resolve_bets(result_field_id: int) -> float:
 		var field := GameState.get_bet_field_model(field_id) as BetFieldModel
 		var chip_stack: Array = active_bets[field_id]
 		# Verificamos si este campo cumple la condición ganadora
-		if (chip_stack.size() > 0 and field.ConditionStrategy.matches(winner_model, field)):
+		if (chip_stack.size() > 0 and _active_ball_matches_bet_field(winner_model, field)):
 			for i in range(0, chip_stack.size()):
 				var activated_chip_id := int(chip_stack[i])
 				var multiplier_added := field.multiplier
@@ -326,6 +326,14 @@ func _resolve_bets(result_field_id: int) -> float:
 	BookEventBus.bet_post_resolved.emit(self)
 	#m
 	return delta
+
+func _active_ball_matches_bet_field(winner_model: BetFieldModel, field: BetFieldModel) -> bool:
+	if field == null or field.ConditionStrategy == null:
+		return false
+	var default_match := field.ConditionStrategy.matches(winner_model, field)
+	if last_ball_used == null or last_ball_used.ball_definition == null or last_ball_used.ball_definition.ball_effect == null:
+		return default_match
+	return last_ball_used.ball_definition.ball_effect.matches_bet_field(winner_model, field, default_match)
 
 func add_multiplier(mult: float)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 

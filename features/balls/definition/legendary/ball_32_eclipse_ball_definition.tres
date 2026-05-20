@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/legendary/ball_32_eclipse_ball_effect.gd" id="1_eclipse_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_eclipse_effect"]
+script = ExtResource("1_eclipse_effect")
+name = "EclipseBall"
+description = "El resultado cuenta como rojo y negro a la vez."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eclipse_ball"]
+shading_mode = 0
+albedo_color = Color(0.12, 0.08, 0.18, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 9
+ball_material = SubResource("StandardMaterial3D_eclipse_ball")
+weight = 5
+base_price = 10
+attack_type = 0
+rarity = 3
+ball_effect = SubResource("Resource_eclipse_effect")

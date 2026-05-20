@@ -26,7 +26,6 @@ func recharge_balls()->void:
 		ball_spot._assign_data_model(get_not_used_ball())
 	if !ball_spot_2.ball_data:
 		ball_spot_2._assign_data_model(get_not_used_ball())
-	
 	ball_spot.drop_active = true
 	ball_spot_2.drop_active = true
 	
@@ -44,11 +43,7 @@ func reset_balls()->void:
 	GameState.balls_deck.shuffle_balls()
 
 func get_mirror_source_for(ball_element: BallElement) -> BallDefinition:
-	var source_element: BallElement = null
-	if ball_element == ball_spot:
-		source_element = ball_spot_2
-	elif ball_element == ball_spot_2:
-		source_element = ball_spot
-	if source_element == null or source_element.ball_data == null:
-		return null
-	return source_element.ball_data.ball_definition
+	for source_element: BallElement in [ball_spot, ball_spot_2]:
+		if source_element != ball_element and source_element.ball_data != null:
+			return source_element.ball_data.ball_definition
+	return null
