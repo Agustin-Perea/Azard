@@ -258,7 +258,6 @@ func changeScore()->void:
 		"paralel": false,
 		"action": func():
 			score = int(round(base)) * int(round(multiplier))#actualmente es solo esto
-			totalChanged.emit() 
 			if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 				GameState.mark_pending_roulette_resolved({
 					"result_field_id": result_field_id,
@@ -270,6 +269,7 @@ func changeScore()->void:
 					"attacker_name": attack_context_attacker_name,
 					"target_name": attack_context_target_name,
 				})
+			totalChanged.emit()
 			BookEventBus.turn_log_entry.emit("Daño final: " + str(int(round(score))), Color(0.95, 0.36, 0.42, 1.0))
 			return true
 	}))
@@ -370,6 +370,9 @@ func reroll()->void:
 
 func can_reroll() -> bool:
 	return last_ball_used != null
+
+func can_finish_attack() -> bool:
+	return _has_resolved_pending_attack()
 
 func _resume_pending_attack() -> void:
 	await get_tree().process_frame

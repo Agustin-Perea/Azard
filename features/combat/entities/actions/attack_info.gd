@@ -20,6 +20,7 @@ var mute_turns: int = 0
 var self_damage: int = 0
 var curse_vulnerable_percent: float = 0.0
 var curse_turns: int = 0
+var storm_chain_targets: int = 0
 
 #effectos A ENVIAR
 

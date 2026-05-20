@@ -53,7 +53,9 @@ func game_loop() -> void:
 func _on_perform_attack(attack_info : AttackInfo)->void:
 	var actual_damage_dealt := 0
 
-	if attack_info.bounce_hits > 0:
+	if attack_info.storm_chain_targets > 0:
+		actual_damage_dealt = _apply_storm_attack(attack_info)
+	elif attack_info.bounce_hits > 0:
 		actual_damage_dealt = _apply_bounce_attack(attack_info)
 	elif attack_info.type == Constants.ATTACK_TYPE.ALL:
 		for enemy in EnemyGroup.group.duplicate():
@@ -110,6 +112,14 @@ func _apply_bounce_attack(attack_info: AttackInfo) -> int:
 			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage)
 	return actual_damage_dealt
 
+func _apply_storm_attack(attack_info: AttackInfo) -> int:
+	var targets := _get_chain_targets(attack_info.target, attack_info.storm_chain_targets)
+	var actual_damage_dealt := 0
+	for enemy in targets:
+		if enemy != null:
+			actual_damage_dealt += _apply_damage_to_enemy(enemy, attack_info.damage)
+	return actual_damage_dealt
+
 func _get_bounce_targets(target: Unit, hit_count: int) -> Array[Unit]:
 	var targets: Array[Unit] = []
 	if hit_count <= 0 or EnemyGroup.group.is_empty():
@@ -120,6 +130,20 @@ func _get_bounce_targets(target: Unit, hit_count: int) -> Array[Unit]:
 	for i in range(hit_count):
 		var enemy := EnemyGroup.group[(start_index + i) % EnemyGroup.group.size()]
 		if enemy != null:
+			targets.append(enemy)
+	return targets
+
+func _get_chain_targets(target: Unit, target_count: int) -> Array[Unit]:
+	var targets: Array[Unit] = []
+	if target_count <= 0 or EnemyGroup.group.is_empty():
+		return targets
+	var start_index := EnemyGroup.group.find(target)
+	if start_index == -1:
+		start_index = 0
+	var max_targets = min(target_count, EnemyGroup.group.size())
+	for i in range(max_targets):
+		var enemy := EnemyGroup.group[(start_index + i) % EnemyGroup.group.size()]
+		if enemy != null and not targets.has(enemy):
 			targets.append(enemy)
 	return targets
 

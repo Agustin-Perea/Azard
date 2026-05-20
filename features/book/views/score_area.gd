@@ -76,7 +76,7 @@ func _ready() -> void:
 	BookEventBus.player_turn.connect(disable_reroll)
 	BookEventBus.player_turn.connect(disable_finish_button)
 	BookEventBus.spin_started.connect(enable_reroll)
-	BookEventBus.spin_started.connect(enable_finish_button)
+	BookEventBus.spin_started.connect(disable_finish_button)
 	
 	
 	
@@ -110,6 +110,10 @@ func _on_change_mult(mult : float) -> void:
 
 func _on_change_total() -> void:
 	total_damage.text = str(int(round(roulette_controller.score)))
+	if roulette_controller.can_finish_attack():
+		enable_finish_button()
+	else:
+		disable_finish_button()
 	
 func _on_change_number() -> void:
 	number.text = str(int(round(roulette_controller.number_winner)))

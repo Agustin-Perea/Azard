@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/balls/effects/catalog/rare/ball_20_storm_ball_effect.gd" id="1_storm_effect"]
+[ext_resource type="Script" path="res://features/balls/definition/ball_definition.gd" id="2_ball_definition"]
+
+[sub_resource type="Resource" id="Resource_storm_effect"]
+script = ExtResource("1_storm_effect")
+name = "StormBall"
+description = "Golpea enemigos sucesivos en cadena."
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_storm_ball"]
+shading_mode = 0
+albedo_color = Color(1, 1, 0.06666667, 1)
+
+[resource]
+script = ExtResource("2_ball_definition")
+base_damage = 2
+ball_material = SubResource("StandardMaterial3D_storm_ball")
+weight = 45
+base_price = 7
+attack_type = 0
+rarity = 1
+ball_effect = SubResource("Resource_storm_effect")
