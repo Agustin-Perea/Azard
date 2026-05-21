@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_clqkf")
-weight = 10
+weight = 5
 battle_scene_path = "uid://d20s0g7r2peq4"
 metadata/_custom_type_script = "uid://b4maixbgowy3i"

@@ -3,10 +3,12 @@
 [ext_resource type="Script" uid="uid://c1cxhyudnll5p" path="res://features/items/passive_items/views/passive_item_panel.gd" id="1_eb5ee"]
 [ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="1_s4ac8"]
 
-[node name="PassiveItemPanel" type="Panel" unique_id=1912728531]
+[node name="PassiveItemPanel" type="Button" unique_id=146585730]
 self_modulate = Color(1, 1, 1, 0)
 texture_filter = 2
-custom_minimum_size = Vector2(128, 140.8)
+custom_minimum_size = Vector2(128, 134.4)
+offset_right = 128.0
+offset_bottom = 134.4
 script = ExtResource("1_eb5ee")
 
 [node name="PassiveItemSprite" type="Sprite2D" parent="." unique_id=1266355935]

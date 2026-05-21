@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cyixiifjvlul4" path="res://features/combat/controllers/UI controllers/combat_buttons_UI.gd" id="1_kdbiy"]
 [ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="2_31jtf"]
 [ext_resource type="Script" uid="uid://cbuhan4nyq3m5" path="res://features/UI/defeat_canvas_ui_controller.gd" id="2_e3xy8"]
+[ext_resource type="Script" uid="uid://c5oc3w8c31xik" path="res://features/UI/2d_shop_description_chart.gd" id="3_6dbbq"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="3_topx2"]
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
@@ -72,20 +73,62 @@ script = ExtResource("5_topx2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
 layout_mode = 0
-offset_left = 50.0
+offset_left = 7.0
 offset_top = 1.0
-offset_right = 178.0
+offset_right = 135.0
 offset_bottom = 1197.0
+mouse_filter = 2
 
 [node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
 self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(128, 140.8)
+custom_minimum_size = Vector2(128, 134.4)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
 visible = false
 layout_mode = 2
 script = null
+
+[node name="PassiveItemDescritpion" type="Control" parent="PassiveItemsControl" unique_id=1138692068]
+visible = false
+texture_filter = 2
+anchors_preset = 0
+offset_top = 138.0
+offset_right = 360.0
+offset_bottom = 438.0
+mouse_filter = 2
+script = ExtResource("3_6dbbq")
+
+[node name="Panel" type="Panel" parent="PassiveItemsControl/PassiveItemDescritpion" unique_id=775033461]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 143.0
+offset_top = -46.0
+offset_right = 143.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel" unique_id=346602011]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 44.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 32
+text = "Name"
+
+[node name="Desctiption" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel" unique_id=1354041584]
+layout_mode = 0
+offset_top = 59.0
+offset_right = 360.0
+offset_bottom = 191.0
+theme_override_font_sizes/font_size = 32
+text = "Descripcion"
+autowrap_mode = 3
 
 [node name="Control" type="Control" parent="." unique_id=1176285555]
 texture_filter = 2
@@ -99,6 +142,7 @@ mouse_filter = 2
 script = ExtResource("1_kdbiy")
 
 [node name="SelectionButton" type="Button" parent="Control" unique_id=1151124999]
+visible = false
 texture_filter = 2
 layout_mode = 1
 anchors_preset = 2
@@ -113,6 +157,7 @@ theme_override_font_sizes/font_size = 32
 text = "selection"
 
 [node name="BookButton" type="Button" parent="Control" unique_id=1334060315]
+visible = false
 texture_filter = 2
 layout_mode = 1
 anchors_preset = 3

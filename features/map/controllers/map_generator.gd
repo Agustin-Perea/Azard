@@ -207,14 +207,14 @@ func _set_node_scene(map_node : MapNode)->void:
 		MapNode.Type.ENEMY:
 			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
 		MapNode.Type.MINIBOSS:
-			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
+			map_node.node_scene = scene_pool_database.mini_boss_pool._get_random_battle_for_tier(0)
 		MapNode.Type.BOSS:
-			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
+			map_node.node_scene = scene_pool_database.boss_pool._get_random_battle_for_tier(0)
 		MapNode.Type.REWARD:
 			map_node.node_scene = scene_pool_database.reward_pool._get_random_battle_for_tier(0)
 		MapNode.Type.EVENT:
-			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
+			map_node.node_scene = scene_pool_database.event_pool._get_random_battle_for_tier(0)
 		MapNode.Type.SHOP:
-			map_node.node_scene = scene_pool_database.reward_pool._get_random_battle_for_tier(0)
+			map_node.node_scene = scene_pool_database.shop_pool._get_random_battle_for_tier(0)
 		_:
 			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
