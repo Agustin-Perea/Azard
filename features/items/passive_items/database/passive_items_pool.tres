@@ -7,8 +7,9 @@
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/spare_wheel_item_definition.tres" id="5_spare"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/copper_lens_item_definition.tres" id="6_copper"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/red_ribbon_item_definition.tres" id="7_red"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/black_ribbon_item_definition.tres" id="8_black"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"

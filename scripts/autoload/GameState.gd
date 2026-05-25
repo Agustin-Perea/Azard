@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/red_ribbon_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/black_ribbon_item_definition.tres"),
 ]
 
 var object_pool_database : ObjectPoolDatabase

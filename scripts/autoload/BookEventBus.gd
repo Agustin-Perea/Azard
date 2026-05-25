@@ -25,6 +25,7 @@ signal bet_value_labels_visible(value: bool)
 signal unit_death(unit : Unit)
 @warning_ignore("unused_signal")
 signal reroll(RouletteController)
+signal attack_committed(RouletteController)
 
 signal battle_init
 
