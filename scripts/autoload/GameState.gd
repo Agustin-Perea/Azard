@@ -4,6 +4,9 @@ const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"
 const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
+const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
+	preload("res://features/items/passive_items/definition/omega_roll_item_definition.tres"),
+]
 
 var object_pool_database : ObjectPoolDatabase
 var map_generator : MapGenerator
@@ -102,9 +105,10 @@ func _rebuild_run_from_current_seed() -> void:
 	last_resolved_roulette_score = 0.0
 	combat_used_ball_types.clear()
 	combat_ball_history.clear()
-	passiveItems_collection.clear()
+	_clear_passive_items_runtime()
 	#limpieza a default
 	load_from_definition()
+	_add_default_passive_items()
 	
 	#balls.shuffle_balls()
 	initialized.emit()
@@ -232,6 +236,22 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		#existing_item.animate.emit()
 		#agregar el panel al control
 	_on_persistent_state_changed()
+
+func _add_default_passive_items() -> void:
+	for passive_definition: PassiveItemDefinition in DEFAULT_PASSIVE_ITEM_DEFINITIONS:
+		if passive_definition == null:
+			continue
+		var item := PassiveItemRuntimeState.new()
+		item.passive_item_definition = passive_definition
+		item.quantity = 1
+		passiveItems_collection.append(item)
+		item.on_item_added()
+
+func _clear_passive_items_runtime() -> void:
+	for item: PassiveItemRuntimeState in passiveItems_collection:
+		if item != null:
+			item.on_item_removed()
+	passiveItems_collection.clear()
 
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
@@ -657,7 +677,10 @@ func _build_passive_items_save_data() -> Array:
 	return result
 
 func _apply_passive_items_save_data(data: Array) -> void:
-	passiveItems_collection.clear()
+	_clear_passive_items_runtime()
+	if data.is_empty():
+		_add_default_passive_items()
+		return
 	for item_data in data:
 		if typeof(item_data) != TYPE_DICTIONARY:
 			continue

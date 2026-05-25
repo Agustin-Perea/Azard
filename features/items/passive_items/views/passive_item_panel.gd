@@ -1,5 +1,9 @@
 extends Panel
 class_name PassiveItemPanel
+
+signal tooltip_requested(panel: PassiveItemPanel, data_model: PassiveItemDefinition)
+signal tooltip_closed(panel: PassiveItemPanel)
+
 @onready var sprite : Sprite2D = $PassiveItemSprite
 @onready var cant : Label = $Label
 var dataModel : PassiveItemDefinition #esto va a ser agregado por el tableState
@@ -10,11 +14,22 @@ var active_tween : Tween
 @export var default_sprite_alpha : float = 0.7
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	if dataModel:
 		#dataModel.animate.connect(_animate) quiza agregarlo en el runtime
 		sprite.texture = dataModel.image_texture
 
-	
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		tooltip_requested.emit(self, dataModel)
+
+func _on_mouse_entered() -> void:
+	tooltip_requested.emit(self, dataModel)
+
+func _on_mouse_exited() -> void:
+	tooltip_closed.emit(self)
 
 func _animate() -> void:
 	#al no esperar que termine la animacion se agregan n eventos bloqueados por el siguiente evento al llamar este metodo

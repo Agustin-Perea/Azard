@@ -24,9 +24,9 @@ EventManager="*uid://dbw18b0bf5ody"
 BookEventBus="*uid://b2hortd7cvbwd"
 UiEventBus="*uid://clqbq1cyir7sx"
 UiHud="*uid://doguotrnk170t"
-MCPRuntime="*uid://cpmx27n8vfexi"
 MusicManager="*res://scripts/autoload/MusicManager.gd"
 SettingsManager="*res://scripts/autoload/SettingsManager.gd"
+MCPRuntimeProbe="*res://addons/godot_mcp/runtime/mcp_runtime_probe.gd"
 
 [display]
 

@@ -32,6 +32,11 @@ var last_ball_used : BallRuntimeState = null
 var attack_context_attacker_name := ""
 var attack_context_target_name := ""
 var attack_modifiers: Dictionary = {}
+var reroll_carryover_base := 0.0
+var reroll_carryover_multiplier := 0.0
+var reroll_carryover_active := false
+var reroll_carryover_applied_this_spin := false
+var spin_resolution_in_progress := false
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
@@ -72,6 +77,32 @@ func get_attack_modifier(key: StringName, fallback: Variant = null) -> Variant:
 func clear_attack_modifiers() -> void:
 	attack_modifiers.clear()
 
+func queue_reroll_carryover(base_amount: float, multiplier_amount: float) -> void:
+	reroll_carryover_base += max(0.0, base_amount)
+	reroll_carryover_multiplier += max(0.0, multiplier_amount)
+	reroll_carryover_active = reroll_carryover_base > 0.0 or reroll_carryover_multiplier > 0.0
+	reroll_carryover_applied_this_spin = false
+
+func _apply_reroll_carryover() -> void:
+	if not reroll_carryover_active or reroll_carryover_applied_this_spin:
+		return
+	var base_amount := reroll_carryover_base
+	var multiplier_amount := reroll_carryover_multiplier
+	if base_amount > 0.0:
+		base += base_amount
+		baseChanged.emit()
+	if multiplier_amount > 0.0:
+		multiplier += multiplier_amount
+		multiplicatorChanged.emit(multiplier_amount)
+	reroll_carryover_applied_this_spin = true
+	BookEventBus.turn_log_entry.emit("OmegaRoll: +" + _format_number(base_amount) + " base | +" + _format_number(multiplier_amount) + " mult", Color(0.75, 0.52, 1.0, 1.0))
+
+func _clear_reroll_carryover() -> void:
+	reroll_carryover_base = 0.0
+	reroll_carryover_multiplier = 0.0
+	reroll_carryover_active = false
+	reroll_carryover_applied_this_spin = false
+
 func multiply_mult_score(add_mult : float)->void:
 	#agrega un evento que multiplica el mult
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -91,6 +122,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 		return
 	
 	clear_attack_modifiers()
+	spin_resolution_in_progress = true
+	reroll_carryover_applied_this_spin = false
 	last_ball_used = ball
 	BookEventBus.turn_log_reset.emit()
 	BookEventBus.turn_log_entry.emit("Bola: " + _get_ball_log_name(ball) + " | Base +" + str(ball.ball_definition.base_damage), Color(0.45, 0.72, 1.0, 1.0))
@@ -141,6 +174,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	#espera que el spin de la ruleta termine
 	await roulette_control.spin_finished
 	BookEventBus.spin_finished.emit()
+	_apply_reroll_carryover()
 	BookEventBus.turn_log_entry.emit("Resultado: " + str(number_winner), Color(0.32, 0.78, 0.38, 1.0))
 	#muestra el numero ganador y sus equals
 	table_meshes.highlight_winning_result(result_field_id)
@@ -271,6 +305,7 @@ func changeScore()->void:
 					"attacker_name": attack_context_attacker_name,
 					"target_name": attack_context_target_name,
 				})
+			spin_resolution_in_progress = false
 			totalChanged.emit()
 			BookEventBus.turn_log_entry.emit("Daño final: " + str(int(round(score))), Color(0.95, 0.36, 0.42, 1.0))
 			return true
@@ -355,11 +390,14 @@ func add_base(base_added: float)->void:
 	}))
 
 #reset_score
-func reset_score()->void:
+func reset_score(preserve_reroll_carryover := false)->void:
 	score = 0
 	multiplier = 0
 	base = 0
+	spin_resolution_in_progress = false
 	clear_attack_modifiers()
+	if not preserve_reroll_carryover:
+		_clear_reroll_carryover()
 	if roulette_control != null:
 		roulette_control.set_ball_visible(false)
 	baseChanged.emit()
@@ -370,8 +408,8 @@ func reset_score()->void:
 func reroll()->void:
 	if not can_reroll():
 		return
-	##CombatEventBus.reroll.emit(self)
-	reset_score()
+	BookEventBus.reroll.emit(self)
+	reset_score(true)
 	GameState.clear_pending_roulette_attack()
 	#cambio de visuals o animacion
 
@@ -379,7 +417,7 @@ func reroll()->void:
 	on_start_spin(last_ball_used)
 
 func can_reroll() -> bool:
-	return last_ball_used != null
+	return last_ball_used != null and not spin_resolution_in_progress
 
 func can_finish_attack() -> bool:
 	return _has_resolved_pending_attack()
