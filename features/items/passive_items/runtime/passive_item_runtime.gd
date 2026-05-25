@@ -19,6 +19,7 @@ func on_item_added()->void:
 		return
 	passive_item_definition.passive_item_effect.item_use.connect(on_signal_used)
 	passive_item_definition.passive_item_effect.on_item_added()
+	on_quantity_changed()
 	
 func on_item_removed()->void:
 	if passive_item_definition == null or passive_item_definition.passive_item_effect == null:
@@ -26,3 +27,9 @@ func on_item_removed()->void:
 	if passive_item_definition.passive_item_effect.item_use.is_connected(on_signal_used):
 		passive_item_definition.passive_item_effect.item_use.disconnect(on_signal_used)
 	passive_item_definition.passive_item_effect.on_item_removed()
+
+func on_quantity_changed() -> void:
+	if passive_item_definition == null or passive_item_definition.passive_item_effect == null:
+		return
+	if passive_item_definition.passive_item_effect.has_method("on_runtime_quantity_changed"):
+		passive_item_definition.passive_item_effect.on_runtime_quantity_changed(quantity)

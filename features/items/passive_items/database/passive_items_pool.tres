@@ -12,8 +12,9 @@
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/quiet_purse_item_definition.tres" id="10_quiet"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/first_aid_tape_item_definition.tres" id="11_first_aid"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/felt_gloves_item_definition.tres" id="12_felt"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/lucky_charm_item_definition.tres" id="13_lucky"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime"), ExtResource("10_quiet"), ExtResource("11_first_aid"), ExtResource("12_felt")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime"), ExtResource("10_quiet"), ExtResource("11_first_aid"), ExtResource("12_felt"), ExtResource("13_lucky")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"

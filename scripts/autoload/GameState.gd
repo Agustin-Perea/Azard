@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/felt_gloves_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/lucky_charm_item_definition.tres"),
 ]
 
 var object_pool_database : ObjectPoolDatabase
@@ -52,6 +52,7 @@ var field_by_chip: Dictionary[int, int] = {}
 
 var max_reroll : int = 3
 var current_reroll : int = 3
+var luck : int = 0
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -106,6 +107,7 @@ func _rebuild_run_from_current_seed() -> void:
 	combat_used_ball_types.clear()
 	combat_ball_history.clear()
 	_clear_passive_items_runtime()
+	luck = 0
 	max_reroll = 3
 	current_reroll = max_reroll
 	#limpieza a default
@@ -224,6 +226,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	
 	if existing_item:
 		existing_item.quantity += 1
+		existing_item.on_quantity_changed()
 		existing_item.animate.emit()
 		#existing_item.on_item_added() 
 	else:
@@ -258,6 +261,12 @@ func _clear_passive_items_runtime() -> void:
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
 	_on_persistent_state_changed()
+
+func add_luck(amount: int) -> void:
+	luck = max(0, luck + amount)
+
+func get_luck() -> int:
+	return luck
 
 func new_run() -> void:
 	delete_save()
