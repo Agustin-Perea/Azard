@@ -97,6 +97,12 @@ func grant_combat_victory_gold() -> int:
 	add_run_gold(total)
 	combat_gold_reward_granted.emit(total, breakdown)
 	return total
+
+func grant_passive_combat_gold(amount: int, _source_name: String) -> void:
+	if amount <= 0:
+		return
+	last_combat_gold_reward += amount
+	add_run_gold(amount)
 	
 func _health_gold_bonus() -> int:
 	var hp : int

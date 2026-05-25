@@ -9,8 +9,9 @@
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/red_ribbon_item_definition.tres" id="7_red"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/black_ribbon_item_definition.tres" id="8_black"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/prime_chalk_item_definition.tres" id="9_prime"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/quiet_purse_item_definition.tres" id="10_quiet"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime"), ExtResource("10_quiet")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"
