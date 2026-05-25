@@ -87,6 +87,7 @@ func _do_attacK()->void:
 				actual_attacK_Info.grave_execute_threshold = float(roulette_controller.get_attack_modifier(&"grave_execute_threshold", 0.0))
 				if bool(roulette_controller.get_attack_modifier(&"jackpot_attack_all", false)):
 					actual_attacK_Info.type = Constants.ATTACK_TYPE.ALL
+				BookEventBus.attack_info_prepared.emit(actual_attacK_Info)
 				BookEventBus.attack_committed.emit(roulette_controller)
 			
 			attack_beginning.emit()

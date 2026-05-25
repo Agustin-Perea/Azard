@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_7ik2x"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
 [ext_resource type="Resource" path="res://features/balls/definition/legendary/ball_32_eclipse_ball_definition.tres" id="2_eclipse"]
-[ext_resource type="Resource" path="res://features/balls/definition/common/ball_01_base_ball_definition.tres" id="3_373ir"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_05_poison_ball_definition.tres" id="3_poison"]
 
 [sub_resource type="Resource" id="Resource_fagvn"]
 script = ExtResource("1_7ik2x")
-ball_definition = ExtResource("3_373ir")
+ball_definition = ExtResource("3_poison")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
 [sub_resource type="Resource" id="Resource_rc2d2"]
