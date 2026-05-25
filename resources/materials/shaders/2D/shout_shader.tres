@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cem72am8pgdx4"]
+
+[ext_resource type="Shader" uid="uid://csumo4bhc6g6q" path="res://resources/materials/shaders/2D/shout_shader.gdshader" id="1_bn666"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_tl2qu"]
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u7k43"]
+noise = SubResource("FastNoiseLite_tl2qu")
+as_normal_map = true
+bump_strength = 32.0
+
+[resource]
+shader = ExtResource("1_bn666")
+shader_parameter/noise = SubResource("NoiseTexture2D_u7k43")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/time = 0.0
+shader_parameter/max_rings = 16
+shader_parameter/rings_per_second = 7.00000032924012
+shader_parameter/ring_lifetime = 0.30000001099011997
+shader_parameter/start_scale = -1.0
+shader_parameter/max_scale = 2.5
+shader_parameter/inner_radius = 0.243
+shader_parameter/outer_radius = 0.347
+shader_parameter/line_count = 1.5
+shader_parameter/line_density = 1.0
+shader_parameter/line_falloff = 0.13
+shader_parameter/line_color = Vector4(1, 1, 1, 0.5)

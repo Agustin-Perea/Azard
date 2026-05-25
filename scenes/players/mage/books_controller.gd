@@ -26,8 +26,12 @@ func _ready() -> void:
 	Constants.BOOK_PAGE.NONE : book_none
 	}
 	UiEventBus.change_book_page.connect(change_book)
+	BookEventBus.victory.connect(on_victory)
 
-	
+
+func on_victory()->void:
+	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
+	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)	
 
 #deberia iniciar la animacion
 func change_book(book_page : Constants.BOOK_PAGE)->void:

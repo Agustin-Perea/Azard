@@ -1,5 +1,5 @@
 extends Node
-
+class_name CombatManager
 @onready var combatStateMachine:  = $CombatStateMachine
 
 @export var Player:UnitGroup 
@@ -7,9 +7,14 @@ extends Node
 
 var combat_finished : bool = false
 
+@export var paused : bool = false
+@export var boss : bool = false
+
+signal boss_defeated
+
 func _ready() -> void:
 	##iniciar nivel
-	BookEventBus.battle_init.emit()
+	
 	combat_finished = false
 	for player in Player.group:
 		player.action_controller.perform_attack.connect(_on_perform_attack)
@@ -28,15 +33,16 @@ func _ready() -> void:
 	
 	
 func game_loop() -> void:
-	
-	while(true):
-		if combat_finished: break
-		Player._begin_turn()
-		await Player.turn_complete
-		if combat_finished: break
-		EnemyGroup._begin_turn()
-		await EnemyGroup.turn_complete
-	print("combate terminado")
+	if !paused:
+		BookEventBus.battle_init.emit()
+		while(true):
+			if combat_finished: break
+			Player._begin_turn()
+			await Player.turn_complete
+			if combat_finished: break
+			EnemyGroup._begin_turn()
+			await EnemyGroup.turn_complete
+		print("combate terminado")
 	
 
 
@@ -62,10 +68,11 @@ func _victory()->void:
 		"action": func():
 			combat_finished = true
 			EnemyGroup.turn_complete.emit()
-			#es mejor que esto sea un estado con una secuencia de sucesos particular
-			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
-			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
-			BookEventBus.victory.emit()
+	
+			if boss:
+				boss_defeated.emit()
+			else:
+				BookEventBus.victory.emit()
 			print("victory")
 			return true
 	}))

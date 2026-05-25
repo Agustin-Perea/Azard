@@ -12,7 +12,7 @@ class_name PassiveItemShopElement
 
 func _ready() -> void:
 	passive_item_data = GameState.object_pool_database.passive_item_pool_definition.get_random_item()
-	price_label.text = str(passive_item_data.base_price)
+	price_label.text = "$" + str(passive_item_data.base_price)
 	activate()
 	
 

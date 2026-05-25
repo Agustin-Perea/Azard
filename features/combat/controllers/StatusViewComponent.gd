@@ -34,10 +34,15 @@ func set_up(view_stats : StatsComponent)->void:
 	shield_label.text = str(int(round(displayed_shield)))
 	
 	stats.health_changed.connect(_update_health)
-	_update_health()
-	#activate()
+
 	UiEventBus.deactivate_status_view_component.connect(deactivate)
 	UiEventBus.activate_status_view_component.connect(activate)
+
+
+	health_progress_bar.max_value = stats.max_healt
+	health_progress_bar.value = stats.current_healt
+	health_label_text.text = str(int(round(stats.current_healt)))
+	shield_label.text = str(int(round(stats.shield)))
 
 func _show_health() -> void:
 	health_sprite_viewport.visible = true
@@ -97,6 +102,8 @@ func activate()->void:
 	else:
 		attack_icon.visible = false
 		attack_label.visible = false
+	
+
 	
 
 func deactivate()->void:
@@ -168,3 +175,6 @@ func show_life_drop_animation() -> void:
 		target_health,
 		0.5
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+
+	

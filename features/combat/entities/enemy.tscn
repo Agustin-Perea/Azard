@@ -114,9 +114,8 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0078667, 0, 0, 0, 0.98741317, 0, 0, 0, 1, 0, 2.0032084, 0)
+transform = Transform3D(1, -8.922768e-17, 1.8716728e-17, 8.922768e-17, 1, 0, -1.8716728e-17, 1.6700504e-33, 1, 0, 2.06, 0)
 material_override = SubResource("ShaderMaterial_d2kjj")
-"blend_shapes/Key 1" = 0.26089135
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
 active = false
@@ -192,6 +191,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LifeHudControl" parent="ModelVisualComponent/StatsView" unique_id=1383549522 instance=ExtResource("10_xxll8")]
+visible = false
 
 [node name="ConfusionGizmo" type="Label3D" parent="ModelVisualComponent" unique_id=1328174519]
 transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)

@@ -446,6 +446,7 @@ fov = 45.0
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 5.786)
 
 [node name="PassiveItemShopDescritpion" type="Control" parent="ShopSceneController/Shop" unique_id=574376104 node_paths=PackedStringArray("target")]
+visible = false
 texture_filter = 2
 layout_mode = 3
 anchors_preset = 0
