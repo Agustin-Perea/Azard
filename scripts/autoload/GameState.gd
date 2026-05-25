@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/omega_roll_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/spare_wheel_item_definition.tres"),
 ]
 
 var object_pool_database : ObjectPoolDatabase
@@ -106,6 +106,8 @@ func _rebuild_run_from_current_seed() -> void:
 	combat_used_ball_types.clear()
 	combat_ball_history.clear()
 	_clear_passive_items_runtime()
+	max_reroll = 3
+	current_reroll = max_reroll
 	#limpieza a default
 	load_from_definition()
 	_add_default_passive_items()

@@ -4,8 +4,9 @@
 [ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="2_f08rv"]
 [ext_resource type="Script" uid="uid://cgtluppvfk3ac" path="res://features/items/passive_items/database/passive_item_database.gd" id="3_art03"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/omega_roll_item_definition.tres" id="4_omega"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/spare_wheel_item_definition.tres" id="5_spare"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"
