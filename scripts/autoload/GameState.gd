@@ -5,8 +5,9 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/lucky_charm_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/ball_pouch_item_definition.tres"),
 ]
+const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
 var object_pool_database : ObjectPoolDatabase
 var map_generator : MapGenerator
@@ -53,6 +54,7 @@ var field_by_chip: Dictionary[int, int] = {}
 var max_reroll : int = 3
 var current_reroll : int = 3
 var luck : int = 0
+var max_ball_slots : int = 2
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -108,6 +110,7 @@ func _rebuild_run_from_current_seed() -> void:
 	combat_ball_history.clear()
 	_clear_passive_items_runtime()
 	luck = 0
+	max_ball_slots = 2
 	max_reroll = 3
 	current_reroll = max_reroll
 	#limpieza a default
@@ -258,15 +261,45 @@ func _clear_passive_items_runtime() -> void:
 			item.on_item_removed()
 	passiveItems_collection.clear()
 
-func add_ball(new_ball : BallRuntimeState)->void:
+func add_ball(new_ball : BallRuntimeState, persist := true)->void:
 	balls_deck.all_balls.push_back(new_ball)
-	_on_persistent_state_changed()
+	if persist:
+		_on_persistent_state_changed()
 
 func add_luck(amount: int) -> void:
 	luck = max(0, luck + amount)
 
 func get_luck() -> int:
 	return luck
+
+func add_ball_slot_bonus(amount: int, emit_changed := true) -> void:
+	max_ball_slots = max(1, max_ball_slots + amount)
+	if emit_changed:
+		notify_ball_slots_changed()
+
+func get_ball_slot_count() -> int:
+	return max_ball_slots
+
+func notify_ball_slots_changed() -> void:
+	UiEventBus.ball_slots_changed.emit(max_ball_slots)
+
+func ensure_random_balls_for_active_slots(persist := true) -> void:
+	if balls_deck == null:
+		return
+	while balls_deck.all_balls.size() < max_ball_slots:
+		var random_ball := _create_random_ball_for_extra_slot()
+		if random_ball == null:
+			return
+		add_ball(random_ball, false)
+	if persist:
+		_on_persistent_state_changed()
+
+func _create_random_ball_for_extra_slot() -> BallRuntimeState:
+	if object_pool_database != null and object_pool_database.ball_pool_definition != null:
+		return object_pool_database.ball_pool_definition.get_random_ball()
+	var fallback_pool := BALLS_UNLOCKED_DATABASE.duplicate()
+	fallback_pool.set_seed(master_seed)
+	return fallback_pool.get_random_ball()
 
 func new_run() -> void:
 	delete_save()

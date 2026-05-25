@@ -38,6 +38,7 @@ signal scene_changed
 signal add_passive_item(data_model : PassiveItemDefinition)
 
 signal autosave_feedback_requested
+signal ball_slots_changed(slot_count: int)
 func disableClickableAreas()->void:
 	#ClickableArea.global_input_enabled = false
 	#PlayerUiEvents.disable_camera_buttons.emit()
