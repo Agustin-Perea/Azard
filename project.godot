@@ -24,6 +24,7 @@ EventManager="*uid://dbw18b0bf5ody"
 BookEventBus="*uid://b2hortd7cvbwd"
 UiEventBus="*uid://clqbq1cyir7sx"
 UiHud="*uid://doguotrnk170t"
+MusicManager="*res://scripts/autoload/MusicManager.gd"
 
 [display]
 
