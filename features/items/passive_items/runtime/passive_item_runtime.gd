@@ -2,6 +2,7 @@ extends Resource
 class_name PassiveItemRuntimeState
 
 @export var quantity: int = 1
+@export var final_price: int
 
 @export var passive_item_definition : PassiveItemDefinition
 

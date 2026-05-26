@@ -31,6 +31,6 @@ func get_random_item() -> PassiveItemDefinition:
 	for item in all_items:
 		current_sum += item.weight
 		if roll < current_sum:
-			return item.duplicate(true)
+			return item
 				
 	return all_items.back() # Fallback por si acaso

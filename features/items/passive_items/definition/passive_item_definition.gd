@@ -9,3 +9,5 @@ class_name PassiveItemDefinition
 @export var cumulative : bool = true 
 
 @export var weight : int = 10 
+
+@export var base_price: int = 10
