@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/loaded_dice_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/third_chip_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -176,6 +176,20 @@ func get_bet_field_model(id: int) -> BetFieldModel:
 	
 func get_chip(id: int) -> ChipModel:
 	return chips[id]
+
+func add_extra_chip() -> int:
+	var chip := ChipModel.new()
+	chip.chipID = chips.size()
+	chips.append(chip)
+	return chip.chipID
+
+func remove_extra_chip(chip_id: int) -> void:
+	if chip_id < 0 or chip_id >= chips.size():
+		return
+	remove_bet(chip_id)
+	if chip_id != chips.size() - 1:
+		return
+	chips.remove_at(chip_id)
 
 func get_Bets() -> Dictionary[int, Array]:
 	return Bets
