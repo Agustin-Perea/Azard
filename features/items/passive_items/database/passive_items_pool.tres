@@ -17,8 +17,11 @@
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/safety_net_item_definition.tres" id="15_safety_net"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/echo_pin_item_definition.tres" id="16_echo_pin"]
 [ext_resource type="Resource" path="res://features/items/passive_items/definition/toxic_ink_item_definition.tres" id="17_toxic_ink"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/chain_coil_item_definition.tres" id="18_chain_coil"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/table_sigil_item_definition.tres" id="19_table_sigil"]
+[ext_resource type="Resource" path="res://features/items/passive_items/definition/vital_thread_item_definition.tres" id="20_vital_thread"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime"), ExtResource("10_quiet"), ExtResource("11_first_aid"), ExtResource("12_felt"), ExtResource("13_lucky"), ExtResource("14_ball_pouch"), ExtResource("15_safety_net"), ExtResource("16_echo_pin"), ExtResource("17_toxic_ink")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("4_omega"), ExtResource("5_spare"), ExtResource("6_copper"), ExtResource("7_red"), ExtResource("8_black"), ExtResource("9_prime"), ExtResource("10_quiet"), ExtResource("11_first_aid"), ExtResource("12_felt"), ExtResource("13_lucky"), ExtResource("14_ball_pouch"), ExtResource("15_safety_net"), ExtResource("16_echo_pin"), ExtResource("17_toxic_ink"), ExtResource("18_chain_coil"), ExtResource("19_table_sigil"), ExtResource("20_vital_thread")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"
