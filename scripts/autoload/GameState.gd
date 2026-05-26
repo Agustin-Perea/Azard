@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/high_roller_badge_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/blood_contract_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
