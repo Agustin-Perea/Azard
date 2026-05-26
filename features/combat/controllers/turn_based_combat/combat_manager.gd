@@ -179,12 +179,15 @@ func _apply_damage_to_enemy(enemy: Unit, damage: int, ignore_shield := false, gr
 		return 0
 	var final_damage := enemy.get_cursed_damage(damage)
 	var before_total := _remaining_effective_health(enemy)
+	var lethal_threshold := _remaining_damage_to_kill(enemy, ignore_shield)
 	if ignore_shield:
 		enemy._recieve_piercing_attack(final_damage)
 	else:
 		enemy._recieve_attack(final_damage)
 	_apply_grave_execute_if_needed(enemy, grave_execute_threshold)
 	var after_total := _remaining_effective_health(enemy)
+	if before_total > 0 and enemy.stats.current_healt <= 0:
+		BookEventBus.enemy_killed.emit(enemy, max(0, final_damage - lethal_threshold))
 	return max(0, before_total - after_total)
 
 func _apply_grave_execute_if_needed(enemy: Unit, grave_execute_threshold: float) -> void:
@@ -200,6 +203,13 @@ func _remaining_effective_health(unit: Unit) -> int:
 	if unit == null or unit.stats == null:
 		return 0
 	return max(0, unit.stats.current_healt) + max(0, unit.stats.shield)
+
+func _remaining_damage_to_kill(unit: Unit, ignore_shield := false) -> int:
+	if unit == null or unit.stats == null:
+		return 0
+	if ignore_shield:
+		return max(0, unit.stats.current_healt)
+	return _remaining_effective_health(unit)
 
 func _victory()->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
