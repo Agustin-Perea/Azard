@@ -220,13 +220,18 @@ func _input(event: InputEvent) -> void:
 
 		pending_drop = true
 
-	# ---------- DESCRIPTIONS ----------
+func _unhandled_input(event): # <-- ¡Ojo aquí! Es mejor usar _unhandled_input
 	if event is InputEventMouseButton \
 	and event.pressed \
 	and event.button_index == MOUSE_BUTTON_LEFT:
 
+		# 1. Si la UI ya manejó este evento, nos salimos inmediatamente
+		if get_viewport().is_input_handled():
+			return
+
 		var container = _get_any_container_under_mouse()
 
+		# 2. Si no hay contenedor, o lo que tocamos no es lo que buscamos
 		if !container \
 		or (!(container.get("collider") is MoveableElement) \
 		and !(container.get("collider") is SB_Button3D)):

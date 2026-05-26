@@ -187,7 +187,7 @@ func remove_bet(chip_id: int) -> void:
 	field_by_chip.erase(chip_id)
 
 func add_passive_item(new_passive : PassiveItemDefinition)->void:
-	var existing_item = null
+	var existing_item : PassiveItemRuntimeState = null 
 	
 	for item in passiveItems_collection:
 		if (item.passive_item_definition == new_passive): 
@@ -196,8 +196,9 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	
 	if existing_item:
 		existing_item.quantity += 1
-		existing_item.animate.emit()
-		#existing_item.on_item_added() 
+		UiEventBus.add_passive_item.emit(existing_item)
+		#existing_item.animate.emit()
+
 	else:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
@@ -205,10 +206,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		passiveItems_collection.append(existing_item)
 		existing_item.on_item_added()
 		
-		UiEventBus.add_passive_item.emit(new_passive)
-		#PassiveItemLayer.add_passive_item_panel(new_passive)
-		#existing_item.animate.emit()
-		#agregar el panel al control
+		UiEventBus.add_passive_item.emit(existing_item)
 
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
