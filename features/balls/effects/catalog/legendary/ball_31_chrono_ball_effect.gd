@@ -21,10 +21,11 @@ func on_post_resolved(roulette_controller: RouletteController) -> void:
 		_repeat_ball(previous_definition, roulette_controller)
 		repeated += 1
 	if repeated > 0:
-		BookEventBus.turn_log_entry.emit("ChronoBall: repite " + str(repeated) + " bola(s) al 80%", Color(0.68, 0.46, 1.0, 1.0))
+		BookEventBus.turn_log_entry.emit("ChronoBall: repite " + str(repeated) + " bola(s) al " + str(int(round(_repeat_power() * 100.0))) + "%", Color(0.68, 0.46, 1.0, 1.0))
 
 func _repeat_ball(ball_definition: BallDefinition, roulette_controller: RouletteController) -> void:
-	var repeated_base := int(floor(float(ball_definition.base_damage) * REPEAT_POWER))
+	var repeat_power := _repeat_power()
+	var repeated_base := int(floor(float(ball_definition.base_damage) * repeat_power))
 	if repeated_base > 0:
 		_add_base(roulette_controller, repeated_base)
 	var effect := ball_definition.ball_effect
@@ -32,9 +33,12 @@ func _repeat_ball(ball_definition: BallDefinition, roulette_controller: Roulette
 	var previous_power: Variant = null
 	if had_previous_power:
 		previous_power = effect.get_meta("effect_power")
-	effect.set_meta("effect_power", REPEAT_POWER)
+	effect.set_meta("effect_power", repeat_power)
 	effect.on_post_resolved(roulette_controller)
 	if not had_previous_power:
 		effect.remove_meta("effect_power")
 	else:
 		effect.set_meta("effect_power", previous_power)
+
+func _repeat_power() -> float:
+	return REPEAT_POWER * _copy_repeat_effect_power()

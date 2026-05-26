@@ -12,7 +12,7 @@ func on_post_resolved(roulette_controller: RouletteController) -> void:
 	var source_effect := source_definition.ball_effect
 	var had_power := source_effect.has_meta("effect_power")
 	var previous_power = source_effect.get_meta("effect_power", 1.0)
-	source_effect.set_meta("effect_power", _scale_float(0.70, 1.0, 1.30))
+	source_effect.set_meta("effect_power", _scale_float(0.70, 1.0, 1.30) * _copy_repeat_effect_power())
 	source_effect.on_post_resolved(roulette_controller)
 	if had_power:
 		source_effect.set_meta("effect_power", previous_power)

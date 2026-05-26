@@ -3,7 +3,7 @@ class_name EchoBallCatalogEffect
 
 func on_post_resolved(roulette_controller: RouletteController) -> void:
 	var previous_score := GameState.get_last_resolved_roulette_score()
-	var echo_base := int(floor(previous_score * _scale_float(0.50, 0.75, 1.0)))
+	var echo_base := int(floor(previous_score * _scale_float(0.50, 0.75, 1.0) * _copy_repeat_effect_power()))
 	if echo_base <= 0:
 		return
 	_add_base(roulette_controller, echo_base)

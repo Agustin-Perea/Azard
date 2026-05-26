@@ -13,6 +13,11 @@ func _scale_int(v1: int, _v2: int, _v3: int) -> int:
 func _scale_float(v1: float, _v2: float, _v3: float) -> float:
 	return v1 * _effect_power()
 
+func _copy_repeat_effect_power() -> float:
+	if GameState != null and GameState.has_method("get_copy_repeat_effect_power"):
+		return GameState.get_copy_repeat_effect_power()
+	return 1.0
+
 func _heal(amount: int) -> void:
 	GameState.heal_player(amount)
 

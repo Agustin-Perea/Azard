@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/weighted_wheel_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/twin_fuse_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -55,6 +55,7 @@ var max_reroll : int = 3
 var current_reroll : int = 3
 var luck : int = 0
 var max_ball_slots : int = 2
+var copy_repeat_effect_power_bonus := 0.0
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -112,6 +113,7 @@ func _rebuild_run_from_current_seed() -> void:
 	_clear_passive_items_runtime()
 	luck = 0
 	max_ball_slots = 2
+	copy_repeat_effect_power_bonus = 0.0
 	max_reroll = 3
 	current_reroll = max_reroll
 	#limpieza a default
@@ -291,6 +293,12 @@ func add_ball_slot_bonus(amount: int, emit_changed := true) -> void:
 	max_ball_slots = max(1, max_ball_slots + amount)
 	if emit_changed:
 		notify_ball_slots_changed()
+
+func add_copy_repeat_effect_power_bonus(amount: float) -> void:
+	copy_repeat_effect_power_bonus = maxf(0.0, copy_repeat_effect_power_bonus + amount)
+
+func get_copy_repeat_effect_power() -> float:
+	return maxf(0.0, 1.0 + copy_repeat_effect_power_bonus)
 
 func get_ball_slot_count() -> int:
 	return max_ball_slots
