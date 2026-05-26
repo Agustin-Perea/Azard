@@ -37,6 +37,8 @@ var reroll_carryover_multiplier := 0.0
 var reroll_carryover_active := false
 var reroll_carryover_applied_this_spin := false
 var spin_resolution_in_progress := false
+var queued_result_correction_range := 0
+var queued_result_correction_source := ""
 
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
@@ -82,6 +84,11 @@ func queue_reroll_carryover(base_amount: float, multiplier_amount: float) -> voi
 	reroll_carryover_multiplier += max(0.0, multiplier_amount)
 	reroll_carryover_active = reroll_carryover_base > 0.0 or reroll_carryover_multiplier > 0.0
 	reroll_carryover_applied_this_spin = false
+
+func queue_result_field_correction(correction_range: int, source_name: String) -> void:
+	queued_result_correction_range = maxi(queued_result_correction_range, correction_range)
+	if source_name != "":
+		queued_result_correction_source = source_name
 
 func _apply_reroll_carryover() -> void:
 	if not reroll_carryover_active or reroll_carryover_applied_this_spin:
@@ -504,12 +511,56 @@ func _get_ball_log_name(ball: BallRuntimeState) -> String:
 	return ball.ball_definition.ball_effect.name
 
 func _get_adjusted_result_field(ball: BallRuntimeState, initial_result_field_id: int) -> int:
+	var adjusted_result := initial_result_field_id
 	if ball == null or ball.ball_definition == null or ball.ball_definition.ball_effect == null:
-		return initial_result_field_id
-	var adjusted_result := ball.ball_definition.ball_effect.adjust_result_field(self, initial_result_field_id)
+		return _consume_queued_result_field_correction(adjusted_result)
+	adjusted_result = ball.ball_definition.ball_effect.adjust_result_field(self, initial_result_field_id)
 	if adjusted_result < 0 or adjusted_result >= min(37, GameState.bet_field_models.size()):
-		return initial_result_field_id
-	return adjusted_result
+		adjusted_result = initial_result_field_id
+	return _consume_queued_result_field_correction(adjusted_result)
+
+func _consume_queued_result_field_correction(result_field_id: int) -> int:
+	var correction_range := queued_result_correction_range
+	var source_name := queued_result_correction_source
+	queued_result_correction_range = 0
+	queued_result_correction_source = ""
+	if correction_range <= 0:
+		return result_field_id
+	var best_field_id := result_field_id
+	var best_score := _score_result_candidate(result_field_id)
+	for offset in range(-correction_range, correction_range + 1):
+		var candidate_id := result_field_id + offset
+		if candidate_id < 0 or candidate_id >= min(37, GameState.bet_field_models.size()):
+			continue
+		var candidate_score := _score_result_candidate(candidate_id)
+		if candidate_score > best_score:
+			best_score = candidate_score
+			best_field_id = candidate_id
+	if best_field_id != result_field_id:
+		var winner := GameState.bet_field_models[best_field_id] as BetFieldModel
+		var result_text := str(best_field_id)
+		if winner != null:
+			result_text = str(winner.number)
+		var label := source_name if source_name != "" else "Correccion"
+		BookEventBus.turn_log_entry.emit(label + ": corrige a " + result_text, Color(0.72, 0.52, 1.0, 1.0))
+	return best_field_id
+
+func _score_result_candidate(candidate_id: int) -> float:
+	if candidate_id < 0 or candidate_id >= min(37, GameState.bet_field_models.size()):
+		return 0.0
+	var winner := GameState.bet_field_models[candidate_id] as BetFieldModel
+	if winner == null:
+		return 0.0
+	var score := 0.0
+	var active_bets := GameState.get_Bets()
+	for field_id in active_bets:
+		var chip_stack: Array = active_bets[field_id]
+		if chip_stack.is_empty():
+			continue
+		var field := GameState.get_bet_field_model(int(field_id)) as BetFieldModel
+		if field != null and _active_ball_matches_bet_field(winner, field):
+			score += field.multiplier * chip_stack.size()
+	return score
 
 func _get_field_log_name(field: BetFieldModel) -> String:
 	if field == null or field.ConditionStrategy == null:
