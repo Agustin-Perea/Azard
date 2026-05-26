@@ -1,0 +1,292 @@
+[gd_scene format=3 uid="uid://dwnr2au4eibgj"]
+
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_jcorw"]
+[ext_resource type="PackedScene" uid="uid://cgk1ayfhfqelw" path="res://resources/enemies/golem/Boss_Fence.glb" id="2_0yb2g"]
+[ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_rwknv"]
+[ext_resource type="Material" uid="uid://cg5xvxt06rwwx" path="res://resources/environment/test/escenario.tres" id="3_demr1"]
+[ext_resource type="Script" uid="uid://bkkwhauk12crs" path="res://features/camera/virtual_camera.gd" id="3_kirfs"]
+[ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="4_268x4"]
+[ext_resource type="Script" uid="uid://c6dgp4x02muhi" path="res://scenes/combat/boss_scene_script.gd" id="4_kirfs"]
+[ext_resource type="Script" uid="uid://csm8gub18gp8g" path="res://scenes/combat/dialogue_box.gd" id="4_rwknv"]
+[ext_resource type="Script" uid="uid://cigvuflhblnyd" path="res://features/combat/controllers/combat state machine/combat_state_machine.gd" id="5_0yb2g"]
+[ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="6_demr1"]
+[ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_2hamy"]
+[ext_resource type="Material" uid="uid://byfutrut70f64" path="res://resources/materials/shaders/2D/portal.tres" id="8_demr1"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="8_dfuf6"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="9_2hamy"]
+[ext_resource type="PackedScene" uid="uid://cm3xb3yn5ff2r" path="res://features/combat/entities/boss.tscn" id="9_jcorw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_8ibt7")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_njiuf"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(0.8089983, 0.8089983, 0.80899835, 1)
+reflected_light_source = 1
+
+[sub_resource type="Gradient" id="Gradient_jcorw"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.6834734, 1)
+colors = PackedColorArray(0, 0, 0, 0.73333335, 0, 0, 0, 0.6509804, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rwknv"]
+gradient = SubResource("Gradient_jcorw")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hamy"]
+bg_color = Color(0.072842635, 0.072842635, 0.072842635, 0.5921569)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfuf6"]
+bg_color = Color(0, 0, 0, 0.627451)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t37hw"]
+bg_color = Color(0.1728327, 0.17283267, 0.17283267, 0.49411765)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2hamy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dfuf6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t37hw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhh4u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0eisl"]
+
+[node name="BattleScene1" type="Node3D" unique_id=536595362]
+
+[node name="Environment" type="Node" parent="." unique_id=1416635751]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1431979176]
+environment = SubResource("Environment_njiuf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
+transform = Transform3D(0.8737722, -0.213958, 0.4367426, 0, 0.8980276, 0.43993917, -0.4863354, -0.38440663, 0.78467155, 0, 5.866068, 0)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
+[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_jcorw")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
+
+[node name="Boss_Fence" parent="Environment" unique_id=570544537 instance=ExtResource("2_0yb2g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13624775, 0)
+
+[node name="CercaBackup_001" parent="Environment/Boss_Fence" index="0" unique_id=1080754638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.027, 4.381)
+material_override = ExtResource("3_demr1")
+
+[node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407 node_paths=PackedStringArray("selected_camera")]
+script = ExtResource("2_rwknv")
+selected_camera = NodePath("CombatCameras/GolemTalk")
+
+[node name="VirtualCamera" type="Camera3D" parent="CameraContainer" unique_id=1107707823]
+physics_interpolation_mode = 2
+transform = Transform3D(-1, 0, -8.742278e-08, -1.714063e-08, 0.9805907, 0.19606595, 8.5725965e-08, 0.19606595, -0.9805907, 0, 2.3727188, -2.744173)
+current = true
+fov = 45.0
+script = ExtResource("3_kirfs")
+max_angle = 1.0
+
+[node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
+
+[node name="BookCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=233727052]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.57823, 0.32839847)
+fov = 45.0
+
+[node name="RouletteCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1655470664]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.26101086, 1.3490415, 0.45209107)
+fov = 45.0
+
+[node name="EnemySelectCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1450840542]
+transform = Transform3D(-0.957, 0.295, -0.289, 0, 1, 0, 0.289, 0, -0.957, -1.58, 1.975, -1.619)
+rotation_edit_mode = 2
+fov = 45.0
+
+[node name="GolemTalk" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=884288864]
+transform = Transform3D(-0.91975, -0.033352487, 0.39108533, -3.892716e-09, 0.99638325, 0.08497341, -0.39250493, 0.07815429, -0.9164234, 1.8975546, 1.6945711, -1.423707)
+rotation_edit_mode = 2
+fov = 40.0
+
+[node name="DefeatCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1892104669]
+transform = Transform3D(0.24512559, 0.078623, -0.96629804, 0.061418407, 0.99344486, 0.09641211, 0.967544, -0.08298156, 0.23868985, -1.7503628, 0.6074704, 0.8997381)
+fov = 30.0
+
+[node name="BossNodeController" type="Node" parent="." unique_id=1603717315 node_paths=PackedStringArray("camera")]
+script = ExtResource("4_kirfs")
+camera = NodePath("../CameraContainer/CombatCameras/EnemySelectCamera")
+
+[node name="Control" type="Control" parent="BossNodeController" unique_id=1231679078]
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_rwknv")
+
+[node name="TextureRect" type="TextureRect" parent="BossNodeController/Control" unique_id=467364469]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -271.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_rwknv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BossNodeController/Control" unique_id=1879647975]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 144.0
+offset_top = -183.0
+offset_right = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 47
+bbcode_enabled = true
+text = "quieres retarme? jejejejje
+2 lineas
+3 lineas"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="ButtonOption" type="Button" parent="BossNodeController/Control" unique_id=1471121644]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 637.0
+offset_top = -314.0
+offset_right = 929.0
+offset_bottom = -215.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_2hamy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dfuf6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t37hw")
+text = "Retar"
+
+[node name="ButtonNext" type="Button" parent="BossNodeController/Control" unique_id=658285505]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -323.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 45
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2hamy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dfuf6")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_t37hw")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_lhh4u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0eisl")
+
+[node name="Timer" type="Timer" parent="BossNodeController/Control" unique_id=1400419433]
+
+[node name="Sprite3D" type="Sprite3D" parent="BossNodeController" unique_id=870841460]
+transform = Transform3D(-0.99999976, 0, -0.00071561337, 0, 1, 0, 0.00071561337, 0, -0.99999976, 0, 2.42135, 6.826529)
+material_override = ExtResource("8_demr1")
+pixel_size = 0.03
+billboard = 1
+texture_filter = 1
+texture = ExtResource("9_2hamy")
+
+[node name="BattleManager" type="Node" parent="." unique_id=669596202]
+
+[node name="CombatGroups" type="Node" parent="BattleManager" unique_id=370919649 node_paths=PackedStringArray("Player", "EnemyGroup")]
+script = ExtResource("4_268x4")
+Player = NodePath("PlayerGroup")
+EnemyGroup = NodePath("EnemyGroup")
+paused = true
+boss = true
+
+[node name="CombatStateMachine" type="Node" parent="BattleManager/CombatGroups" unique_id=569869291 node_paths=PackedStringArray("default_state")]
+script = ExtResource("5_0yb2g")
+default_state = NodePath("StandBy")
+
+[node name="SelectionState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1470090554 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
+ui_book_button = true
+
+[node name="BookState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=715524440 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_book_inputs = false
+ui_selection_button = true
+
+[node name="RouletteState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2082908531 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/RouletteCamera")
+disable_moveable_collisions = true
+
+[node name="BetResolve" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1208368497 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_moveable_collisions = true
+
+[node name="StandBy" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=32333335 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+change_camera = false
+camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
+
+[node name="BookCase" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2025596019 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_book_inputs = false
+
+[node name="Defeat" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1188575509 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_demr1")
+camera = NodePath("../../../../CameraContainer/CombatCameras/DefeatCamera")
+fixed_time = 2.0
+disable_moveable_collisions = true
+
+[node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
+script = ExtResource("7_2hamy")
+
+[node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("8_dfuf6")]
+
+[node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
+script = ExtResource("7_2hamy")
+
+[node name="EnemyEntity" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("9_jcorw")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0.008576393, 0.16602388, 4.4052224)
+
+[editable path="Environment/EntornoArena"]
+[editable path="Environment/Boss_Fence"]

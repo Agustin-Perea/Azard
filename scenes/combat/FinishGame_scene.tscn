@@ -1,0 +1,155 @@
+[gd_scene format=3 uid="uid://chpk0gnpsdfef"]
+
+[ext_resource type="Shader" uid="uid://d1qvvj1lp2tm7" path="res://resources/materials/starfield.tres" id="1_yjbpl"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="7_6qi3r"]
+[ext_resource type="Material" uid="uid://bvqgr2sa8flk2" path="res://resources/materials/shaders/2D/portal_2d.tres" id="7_bi4i0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yjbpl"]
+shader = ExtResource("1_yjbpl")
+shader_parameter/density = 11.0
+shader_parameter/speed_x = 0.05
+shader_parameter/speed_y = 0.01
+shader_parameter/star_size = 1.5
+shader_parameter/background_color = Color(0.019607844, 0.039215688, 0.12156863, 1)
+
+[sub_resource type="Gradient" id="Gradient_ekr2e"]
+offsets = PackedFloat32Array(0.7907692, 1)
+colors = PackedColorArray(0.1764706, 0.06666667, 0.06666667, 0.1882353, 0.34136, 0.19379999, 0.51, 0.25882354)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygcga"]
+gradient = SubResource("Gradient_ekr2e")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gabfn"]
+texture = SubResource("GradientTexture2D_ygcga")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cc8oo"]
+bg_color = Color(0.3882353, 0.8, 0.3529412, 1)
+border_width_bottom = 20
+border_color = Color(0.2508333, 0.7, 0.21000001, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dry85"]
+bg_color = Color(0.2509804, 0.7019608, 0.21176471, 1)
+border_width_top = 20
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mfjg"]
+bg_color = Color(0.47206664, 0.97, 0.4268, 1)
+border_width_bottom = 20
+border_color = Color(0.39281663, 0.91, 0.3458, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjrv1"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="BattleScene1" type="Node3D" unique_id=536595362]
+
+[node name="DefeatCanvas" type="Control" parent="." unique_id=709134555]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="DefeatCanvas" unique_id=2090501872]
+material = SubResource("ShaderMaterial_yjbpl")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="DefeatCanvas" unique_id=1151819672]
+material = ExtResource("7_bi4i0")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -915.0
+offset_right = 512.0
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Panel" type="Panel" parent="DefeatCanvas" unique_id=957345577]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_gabfn")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="DefeatCanvas" unique_id=541034031]
+texture_filter = 2
+clip_contents = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -544.0
+offset_top = 180.0
+offset_right = 544.0
+offset_bottom = 744.0
+grow_horizontal = 2
+theme_override_colors/default_color = Color(0.3882353, 0.8, 0.3529412, 1)
+theme_override_colors/font_outline_color = Color(0.3882353, 0.8, 0.3529412, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 65
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 25
+theme_override_fonts/normal_font = ExtResource("7_6qi3r")
+theme_override_font_sizes/normal_font_size = 150
+bbcode_enabled = true
+text = "[wave amp=150 freq=2]Thanks For Playing[/wave]
+
+"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="DefeatCanvas" unique_id=1733742052]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -215.0
+offset_top = -280.0
+offset_right = 215.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_cc8oo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dry85")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1mfjg")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kjrv1")
+text = "Menu"
