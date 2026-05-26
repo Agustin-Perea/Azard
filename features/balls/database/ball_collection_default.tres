@@ -4,10 +4,11 @@
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
 [ext_resource type="Resource" path="res://features/balls/definition/legendary/ball_32_eclipse_ball_definition.tres" id="2_eclipse"]
 [ext_resource type="Resource" path="res://features/balls/definition/uncommon/ball_09_bounce_ball_definition.tres" id="3_bounce"]
+[ext_resource type="Resource" path="res://features/balls/definition/common/ball_06_shield_ball_definition.tres" id="4_shield"]
 
 [sub_resource type="Resource" id="Resource_fagvn"]
 script = ExtResource("1_7ik2x")
-ball_definition = ExtResource("3_bounce")
+ball_definition = ExtResource("4_shield")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
 [sub_resource type="Resource" id="Resource_rc2d2"]

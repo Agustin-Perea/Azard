@@ -16,8 +16,8 @@ func _scale_float(v1: float, _v2: float, _v3: float) -> float:
 func _heal(amount: int) -> void:
 	GameState.heal_player(amount)
 
-func _shield(amount: int) -> void:
-	GameState.add_player_shield(amount)
+func _shield(amount: int, roulette_controller: RouletteController = null) -> void:
+	GameState.add_player_shield(amount, roulette_controller)
 
 func _add_base(roulette_controller: RouletteController, amount: float) -> void:
 	roulette_controller.add_base(amount)

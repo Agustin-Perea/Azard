@@ -10,6 +10,6 @@ func on_post_resolved(roulette_controller: RouletteController) -> void:
 	elif roll == 1:
 		_heal(heal_value)
 	elif roll == 2:
-		_shield(value)
+		_shield(value, roulette_controller)
 	else:
 		_add_mult(roulette_controller, _scale_float(1.0, 1.25, 1.5))

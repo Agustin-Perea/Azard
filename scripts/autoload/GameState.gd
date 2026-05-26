@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/lucky_clover_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/iron_shell_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -58,6 +58,7 @@ var max_ball_slots : int = 2
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
+signal player_shield_added(amount: int, roulette_controller: RouletteController)
 
 #playerStats
 var player_stats : StatsComponent
@@ -460,11 +461,12 @@ func heal_player(amount: int) -> void:
 	player_stats.current_healt = min(player_stats.max_healt, player_stats.current_healt + amount)
 	player_stats.health_changed.emit()
 
-func add_player_shield(amount: int) -> void:
+func add_player_shield(amount: int, roulette_controller: RouletteController = null) -> void:
 	if amount <= 0 or player_stats == null:
 		return
 	player_stats.shield += amount
 	player_stats.health_changed.emit()
+	player_shield_added.emit(amount, roulette_controller)
 
 func consume_player_shield() -> int:
 	if player_stats == null:
