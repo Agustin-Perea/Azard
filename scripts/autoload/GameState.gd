@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/fortune_idol_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/mitosis_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -56,6 +56,7 @@ var current_reroll : int = 3
 var luck : int = 0
 var max_ball_slots : int = 2
 var copy_repeat_effect_power_bonus := 0.0
+var healing_effect_bonus := 0
 
 signal initialized
 signal bet_updated(field_id: int, chip_stack: Array)
@@ -114,6 +115,7 @@ func _rebuild_run_from_current_seed() -> void:
 	luck = 0
 	max_ball_slots = 2
 	copy_repeat_effect_power_bonus = 0.0
+	healing_effect_bonus = 0
 	max_reroll = 3
 	current_reroll = max_reroll
 	#limpieza a default
@@ -300,6 +302,12 @@ func add_copy_repeat_effect_power_bonus(amount: float) -> void:
 func get_copy_repeat_effect_power() -> float:
 	return maxf(0.0, 1.0 + copy_repeat_effect_power_bonus)
 
+func add_healing_effect_bonus(amount: int) -> void:
+	healing_effect_bonus = max(0, healing_effect_bonus + amount)
+
+func get_healing_effect_bonus() -> int:
+	return healing_effect_bonus
+
 func get_ball_slot_count() -> int:
 	return max_ball_slots
 
@@ -480,7 +488,8 @@ func _apply_player_stats_save_data(data: Dictionary) -> void:
 func heal_player(amount: int) -> void:
 	if amount <= 0 or player_stats == null:
 		return
-	player_stats.current_healt = min(player_stats.max_healt, player_stats.current_healt + amount)
+	var effective_amount := amount + healing_effect_bonus
+	player_stats.current_healt = min(player_stats.max_healt, player_stats.current_healt + effective_amount)
 	player_stats.health_changed.emit()
 
 func add_player_shield(amount: int, roulette_controller: RouletteController = null) -> void:
