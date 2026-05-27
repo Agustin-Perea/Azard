@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/house_win_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/roba_almas_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -490,6 +490,12 @@ func heal_player(amount: int) -> void:
 		return
 	var effective_amount := amount + healing_effect_bonus
 	player_stats.current_healt = min(player_stats.max_healt, player_stats.current_healt + effective_amount)
+	player_stats.health_changed.emit()
+
+func add_player_max_health(amount: int) -> void:
+	if amount <= 0 or player_stats == null:
+		return
+	player_stats.max_healt += amount
 	player_stats.health_changed.emit()
 
 func add_player_shield(amount: int, roulette_controller: RouletteController = null) -> void:
