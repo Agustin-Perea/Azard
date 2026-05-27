@@ -681,6 +681,8 @@ font_size = 25
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopSceneController/SB_Button3D" unique_id=441493578]
 shape = SubResource("BoxShape3D_onuhe")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1258084923]
+
 [connection signal="input_event" from="ShopSceneController/Shop/PassiveItemChart" to="ShopSceneController/Shop/PassiveItemChart" method="_on_input_event"]
 [connection signal="input_event" from="ShopSceneController/Shop/PassiveItemChart2" to="ShopSceneController/Shop/PassiveItemChart2" method="_on_input_event"]
 [connection signal="input_event" from="ShopSceneController/Shop/PassiveItemChart3" to="ShopSceneController/Shop/PassiveItemChart3" method="_on_input_event"]

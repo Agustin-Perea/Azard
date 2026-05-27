@@ -95,7 +95,7 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 [node name="Boss_Fence" parent="Environment" unique_id=570544537 instance=ExtResource("2_0yb2g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13624775, 0)
 
-[node name="CercaBackup_001" parent="Environment/Boss_Fence" index="0" unique_id=1080754638]
+[node name="CercaBackup_001" parent="Environment/Boss_Fence" index="0" unique_id=127650262]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.027, 4.381)
 material_override = ExtResource("3_demr1")
 
