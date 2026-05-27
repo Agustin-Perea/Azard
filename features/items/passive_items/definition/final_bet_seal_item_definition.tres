@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/items/passive_items/effects/final_bet_seal_item_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_image"]
+[ext_resource type="Script" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="3_definition"]
+
+[sub_resource type="Resource" id="Resource_final_bet_seal_effect"]
+script = ExtResource("1_effect")
+name = "FinalBetSeal"
+description = "Si el ataque actual puede rematar a un enemigo con +2 mult, gana +2 mult antes de calcular el dano final."
+
+[resource]
+script = ExtResource("3_definition")
+image_texture = ExtResource("2_image")
+passive_item_effect = SubResource("Resource_final_bet_seal_effect")
+cumulative = false
+weight = 5
