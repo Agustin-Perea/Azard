@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_0tjh7")
 weight = 10
-battle_scene_path = "uid://ljs75i2re1r6"
+battle_scene_path = "res://scenes/combat/battle_scene_1.tscn"
 metadata/_custom_type_script = "uid://b4maixbgowy3i"

@@ -4,10 +4,12 @@ const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"
 const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
+const START_WITH_FULL_PASSIVE_ITEM_CATALOG_FOR_TEST := true
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
 	preload("res://features/items/passive_items/definition/house_always_wins_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
+const PASSIVE_ITEMS_DATABASE := preload("res://features/items/passive_items/database/passive_items_pool.tres")
 
 var object_pool_database : ObjectPoolDatabase
 var map_generator : MapGenerator
@@ -265,14 +267,24 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	_on_persistent_state_changed()
 
 func _add_default_passive_items() -> void:
+	if START_WITH_FULL_PASSIVE_ITEM_CATALOG_FOR_TEST:
+		for passive_definition in PASSIVE_ITEMS_DATABASE.all_items:
+			if passive_definition == null:
+				continue
+			var test_quantity := 2 if passive_definition.cumulative else 1
+			_add_default_passive_item(passive_definition, test_quantity)
+		return
 	for passive_definition: PassiveItemDefinition in DEFAULT_PASSIVE_ITEM_DEFINITIONS:
 		if passive_definition == null:
 			continue
-		var item := PassiveItemRuntimeState.new()
-		item.passive_item_definition = passive_definition
-		item.quantity = 1
-		passiveItems_collection.append(item)
-		item.on_item_added()
+		_add_default_passive_item(passive_definition)
+
+func _add_default_passive_item(passive_definition, quantity := 1) -> void:
+	var item := PassiveItemRuntimeState.new()
+	item.passive_item_definition = passive_definition
+	item.quantity = max(1, quantity)
+	passiveItems_collection.append(item)
+	item.on_item_added()
 
 func _clear_passive_items_runtime() -> void:
 	for item: PassiveItemRuntimeState in passiveItems_collection:

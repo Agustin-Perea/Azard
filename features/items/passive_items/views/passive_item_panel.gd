@@ -7,6 +7,7 @@ signal tooltip_closed(panel: PassiveItemPanel)
 @onready var sprite : Sprite2D = $PassiveItemSprite
 @onready var cant : Label = $Label
 var dataModel : PassiveItemDefinition #esto va a ser agregado por el tableState
+var quantity := 1
 
 var active_tween : Tween
 @export var animate_time : float = 0.5
@@ -20,10 +21,21 @@ func _ready() -> void:
 	if dataModel:
 		#dataModel.animate.connect(_animate) quiza agregarlo en el runtime
 		sprite.texture = dataModel.image_texture
+	_update_quantity_label()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		tooltip_requested.emit(self, dataModel)
+
+func set_quantity(value: int) -> void:
+	quantity = max(1, value)
+	_update_quantity_label()
+
+func _update_quantity_label() -> void:
+	if cant == null:
+		return
+	cant.visible = quantity > 1
+	cant.text = "x" + str(quantity)
 
 func _on_mouse_entered() -> void:
 	tooltip_requested.emit(self, dataModel)
@@ -37,9 +49,8 @@ func _animate() -> void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
-		"action": func():
-			if dataModel.quantity > 1:
-				cant.text = "x" + str(dataModel.quantity)
+			"action": func():
+			_update_quantity_label()
 			if active_tween:
 				active_tween.kill()
 

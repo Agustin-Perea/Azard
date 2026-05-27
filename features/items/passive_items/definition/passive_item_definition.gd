@@ -8,4 +8,8 @@ class_name PassiveItemDefinition
 
 @export var cumulative : bool = true 
 
+@export var rarity: Constants.RARITY = Constants.RARITY.COMMON
+
 @export var weight: int = 50
+
+@export var base_price: int = 10

@@ -1,0 +1,68 @@
+[gd_resource type="Shader" format=3 uid="uid://d1qvvj1lp2tm7"]
+
+[resource]
+code = "shader_type canvas_item;
+
+// Reducido a los parámetros mínimos absolutos
+uniform float density : hint_range(10.0, 50.0, 1.0) = 25.0;
+uniform float speed_x : hint_range(-2.0, 2.0, 0.05) = 0.05;
+uniform float speed_y : hint_range(-2.0, 2.0, 0.05) = 0.01;
+uniform float star_size : hint_range(0.1, 5.0, 0.1) = 1.5;
+
+uniform vec3 background_color : source_color = vec3(0.01, 0.02, 0.06);
+
+// El random más barato matemáticamente posible para GPUs viejas
+float fast_rand(vec2 co) {
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+void fragment() {
+    // lowp en colores = Máxima velocidad en pantallas antiguas
+    lowp vec3 final_color = background_color;
+
+    // Ajuste de aspecto ultra simple sin divisiones vectoriales complejas
+    vec2 st = SCREEN_UV;
+    st.x *= (SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x);
+
+    // Movimiento lineal simple
+    vec2 uv = (st * density) - (TIME * vec2(speed_x, speed_y));
+    
+    vec2 grid_id = floor(uv);
+    vec2 grid_st = fract(uv);
+
+    // Un solo cálculo de random por celda
+    float rand = fast_rand(grid_id);
+
+    // Posición fija pseudo-aleatoria (Sin usar sin/cos para moverla)
+    // Usamos el fractal del mismo random para posicionarla dentro de la celda
+    vec2 star_pos = vec2(
+        0.1 + 0.8 * fract(rand * 21.53),
+        0.1 + 0.8 * fract(rand * 97.71)
+    );
+
+    // Distancia usando producto punto (dot), es 10 veces más rápido que distance() o length()
+    vec2 delta = grid_st - star_pos;
+    float dist_sq = dot(delta, delta);
+
+    // Tamaño de la estrella optimizado
+    float current_size = star_size * 0.001 * (0.5 + 0.5 * rand);
+
+    // Destello de la estrella puramente lineal (Reemplaza a exp() y getI())
+    // 1.0 / dist_sq genera un brillo con forma de estrella natural por puro comportamiento matemático
+    float glow = current_size / (dist_sq + 0.00001);
+    
+    // Suavizado ultra rápido para que no parpadee con artefactos negros
+    glow = clamp(glow, 0.0, 2.0) * 0.15;
+
+    // Efecto twinkle (parpadeo) usando una sola onda matemática barata
+    float twinkle = 0.4 + 0.6 * sin(rand * 50.0 + TIME * 2.0);
+    glow *=(twinkle * rand); // Las estrellas menos brillantes parpadean diferente gracias a 'rand'
+
+    // Color de la estrella directo, sin tres llamadas a random()
+    vec3 star_color = vec3(0.8, 0.9, 1.0) * glow;
+
+    // Suma directa (Sin usar max, que requiere lógica de comparación de hardware)
+    final_color += star_color;
+
+    COLOR = vec4(final_color, 1.0);
+}"

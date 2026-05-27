@@ -68,7 +68,11 @@ func _on_button_add_pressed()->void:
 	deactivate()
 	
 func activate()->void:
-	#data = ObjectPoolsDataBase.passive_item_pool_definition.get_random_item()
+	if passive_item_data == null and GameState.object_pool_database != null and GameState.object_pool_database.passive_item_pool_definition != null:
+		passive_item_data = GameState.object_pool_database.passive_item_pool_definition.get_random_item()
+	if passive_item_data == null:
+		deactivate()
+		return
 	sprite3d.texture = passive_item_data.image_texture
 	
 	item_collision.disabled = true

@@ -13,7 +13,7 @@ func on_item_removed() -> void:
 		return
 	_disconnect_signal_safe(GameState.economy_component.combat_gold_reward_granted, _on_combat_gold_reward_granted)
 
-func _on_combat_gold_reward_granted(_amount: int, breakdown: Dictionary) -> void:
+func _on_combat_gold_reward_granted(_amount: int, breakdown: Dictionary, _combat_stats: Dictionary = {}) -> void:
 	if not _player_is_below_threshold():
 		return
 	var variable_gold := _variable_gold_from_breakdown(breakdown)

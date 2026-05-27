@@ -6,6 +6,15 @@ extends Node
 @export var EnemyGroup:UnitGroup 
 
 var combat_finished : bool = false
+var combat_final_overkill: int = 0
+var combat_turns_taken: int = 0
+var combat_damage_dealt: int = 0
+var combat_damage_received: int = 0
+
+@export var paused: bool = false
+@export var boss: bool = false
+
+signal boss_defeated
 
 func _ready() -> void:
 	var music_manager := get_node_or_null("/root/MusicManager")
@@ -14,6 +23,7 @@ func _ready() -> void:
 	##iniciar nivel
 	BookEventBus.battle_init.emit()
 	combat_finished = false
+	_reset_combat_stats()
 	for player in Player.group:
 		player.action_controller.perform_attack.connect(_on_perform_attack)
 	for enemy in EnemyGroup.group:
@@ -36,14 +46,18 @@ func _ready() -> void:
 	
 	
 	## Comenzar Turnos
-	game_loop()
+	if not paused:
+		game_loop()
 
 	
 	
 func game_loop() -> void:
+	if paused:
+		return
 	
 	while(true):
 		if combat_finished: break
+		_record_player_turn()
 		Player._begin_turn()
 		await Player.turn_complete
 		if combat_finished: break
@@ -71,6 +85,7 @@ func _on_perform_attack(attack_info : AttackInfo)->void:
 	_apply_attack_leech(attack_info, actual_damage_dealt)
 	_apply_attack_bank_reward(attack_info)
 	_apply_attack_self_damage(attack_info)
+	_record_combat_damage(attack_info, actual_damage_dealt)
 	await get_tree().create_timer(0.05).timeout
 	if GameState.has_pending_roulette_attack(GameState.get_current_scene_path()):
 		GameState.clear_pending_roulette_attack(false)
@@ -177,17 +192,20 @@ func _apply_attack_self_damage(attack_info: AttackInfo) -> void:
 func _apply_damage_to_enemy(enemy: Unit, damage: int, ignore_shield := false, grave_execute_threshold := 0.0) -> int:
 	if enemy == null or enemy.stats == null or damage <= 0:
 		return 0
-	var final_damage := enemy.get_cursed_damage(damage)
-	var before_total := _remaining_effective_health(enemy)
-	var lethal_threshold := _remaining_damage_to_kill(enemy, ignore_shield)
+	var final_damage: int = int(enemy.get_cursed_damage(damage))
+	var before_total: int = _remaining_effective_health(enemy)
+	var lethal_threshold: int = _remaining_damage_to_kill(enemy, ignore_shield)
 	if ignore_shield:
 		enemy._recieve_piercing_attack(final_damage)
 	else:
 		enemy._recieve_attack(final_damage)
 	_apply_grave_execute_if_needed(enemy, grave_execute_threshold)
-	var after_total := _remaining_effective_health(enemy)
+	var after_total: int = _remaining_effective_health(enemy)
 	if before_total > 0 and enemy.stats.current_healt <= 0:
-		BookEventBus.enemy_killed.emit(enemy, max(0, final_damage - lethal_threshold))
+		var overkill: int = int(max(0, final_damage - lethal_threshold))
+		if enemy.is_in_group("enemy"):
+			_record_damage_overkill(overkill)
+		BookEventBus.enemy_killed.emit(enemy, overkill)
 	return max(0, before_total - after_total)
 
 func _apply_grave_execute_if_needed(enemy: Unit, grave_execute_threshold: float) -> void:
@@ -211,6 +229,54 @@ func _remaining_damage_to_kill(unit: Unit, ignore_shield := false) -> int:
 		return max(0, unit.stats.current_healt)
 	return _remaining_effective_health(unit)
 
+func _record_combat_damage(attack_info: AttackInfo, actual_damage: int) -> void:
+	if attack_info == null or attack_info.attacker == null:
+		return
+	if attack_info.attacker.is_in_group("player"):
+		_record_damage_dealt(actual_damage)
+	elif attack_info.attacker.is_in_group("enemy"):
+		_record_damage_received(actual_damage)
+
+func _reset_combat_stats() -> void:
+	combat_final_overkill = 0
+	combat_turns_taken = 0
+	combat_damage_dealt = 0
+	combat_damage_received = 0
+
+func _record_player_turn() -> void:
+	combat_turns_taken += 1
+
+func _record_damage_dealt(amount: int) -> void:
+	combat_damage_dealt += max(0, amount)
+
+func _record_damage_received(amount: int) -> void:
+	combat_damage_received += max(0, amount)
+
+func _record_damage_overkill(overkill: int) -> void:
+	combat_final_overkill = max(combat_final_overkill, max(0, overkill))
+
+func _build_combat_stats() -> Dictionary:
+	return {
+		"turns_taken": combat_turns_taken,
+		"damage_dealt": combat_damage_dealt,
+		"damage_received": combat_damage_received,
+		"player_health": _player_health_snapshot(),
+		"rerolls_remaining": GameState.current_reroll,
+		"max_rerolls": GameState.max_reroll,
+		"overkill": combat_final_overkill,
+	}
+
+func _player_health_snapshot() -> Dictionary:
+	if GameState.player_stats == null:
+		return {
+			"current": 0,
+			"max": 0,
+		}
+	return {
+		"current": GameState.player_stats.current_healt,
+		"max": GameState.player_stats.max_healt,
+	}
+
 func _victory()->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
@@ -218,10 +284,15 @@ func _victory()->void:
 		"action": func():
 			combat_finished = true
 			EnemyGroup.turn_complete.emit()
+			if boss:
+				GameState.clear_combat_snapshot()
+				boss_defeated.emit()
+				return true
 			#es mejor que esto sea un estado con una secuencia de sucesos particular
 			UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.BookCaseState)
 			UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.CASE)
 			GameState.clear_combat_snapshot()
+			GameState.economy_component.grant_combat_victory_gold(_build_combat_stats())
 			BookEventBus.victory.emit()
 			return true
 	}))

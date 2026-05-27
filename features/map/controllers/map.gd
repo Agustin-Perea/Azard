@@ -24,6 +24,8 @@ var min_camera_x := 0.0
 var max_camera_x := 0.0
 
 func _ready() -> void:
+	UiEventBus.selection_button_visible.emit(false)
+	UiEventBus.book_button_visible.emit(false)
 	var music_manager := get_node_or_null("/root/MusicManager")
 	if music_manager != null:
 		music_manager.call("play_menu_music")

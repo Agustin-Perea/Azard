@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BattlePool" format=3 uid="uid://pvt4qehwriyn"]
+
+[ext_resource type="Script" uid="uid://b4maixbgowy3i" path="res://features/map/node_pool/node_scene.gd" id="1_0q5sn"]
+[ext_resource type="Script" uid="uid://ikfk27agu57s" path="res://features/map/node_pool/battle_pool.gd" id="2_b13wf"]
+[ext_resource type="Resource" uid="uid://bo6g5qvjmhdve" path="res://features/map/node_pool/reward_instances/reward_tier_1.tres" id="2_pyurc"]
+
+[resource]
+script = ExtResource("2_b13wf")
+all_battles_pool = Array[ExtResource("1_0q5sn")]([ExtResource("2_pyurc")])
+metadata/_custom_type_script = "uid://ikfk27agu57s"

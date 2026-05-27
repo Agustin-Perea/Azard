@@ -1,0 +1,628 @@
+[gd_scene format=3 uid="uid://d20s0g7r2peq4"]
+
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_63ntn"]
+[ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_oju7k"]
+[ext_resource type="Script" uid="uid://bkkwhauk12crs" path="res://features/camera/virtual_camera.gd" id="3_hvcr8"]
+[ext_resource type="Script" uid="uid://dc4hhb145qb45" path="res://scenes/reward/reward_scene_controller.gd" id="4_jotwu"]
+[ext_resource type="Material" uid="uid://cg5xvxt06rwwx" path="res://resources/environment/test/escenario.tres" id="7_2ew2o"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="8_3uxgq"]
+[ext_resource type="Script" uid="uid://b82ivoeru5iay" path="res://core/utils/3d_button.gd" id="9_m01iw"]
+[ext_resource type="ArrayMesh" uid="uid://ldjcvfn45tjl" path="res://resources/chest/lower_chest.res" id="10_1th7b"]
+[ext_resource type="Script" uid="uid://boor88jdqe04t" path="res://features/items/passive_items/views/passive_item_element.gd" id="11_h6um2"]
+[ext_resource type="ArrayMesh" uid="uid://dum7bvojb5stk" path="res://resources/chest/upper_chest.res" id="11_m01iw"]
+[ext_resource type="Script" uid="uid://bkmc54fpv8hq0" path="res://features/items/passive_items/views/passive_item_description.gd" id="11_mqrrs"]
+[ext_resource type="Material" uid="uid://cubiw0r7c8fll" path="res://resources/materials/bet_field_shader_material.tres" id="11_q80xu"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="12_1th7b"]
+[ext_resource type="ArrayMesh" uid="uid://4bqascxvfmr" path="res://resources/3d_UI/ball_shop_tooltip.res" id="12_8dfyn"]
+[ext_resource type="Animation" uid="uid://k25u8eg57hf0" path="res://resources/chest/chest_animations/chest_animation.res" id="12_q80xu"]
+[ext_resource type="Texture2D" uid="uid://c41pryqguo8ha" path="res://resources/passive items/images/base.tres" id="13_8dfyn"]
+[ext_resource type="AnimationLibrary" uid="uid://ww35fttjgcb" path="res://resources/chest/reward_camera_animations/chest_animations.res" id="13_m01iw"]
+[ext_resource type="PackedScene" uid="uid://c8r7dx86trj3w" path="res://resources/particles/chest_shine.tscn" id="16_8ou2e"]
+[ext_resource type="PackedScene" uid="uid://vcsa5d2tf3c0" path="res://resources/particles/item_shine.tscn" id="16_37njy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_8ibt7")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_njiuf"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(0.8089983, 0.8089983, 0.80899835, 1)
+reflected_light_source = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isoin"]
+albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_jnej0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Chest_Shine:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uq2xt"]
+_data = {
+&"Camera_Init_001": ExtResource("12_q80xu"),
+&"RESET": SubResource("Animation_jnej0")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8dfyn"]
+size = Vector3(1, 0.8498535, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mqrrs"]
+size = Vector3(0.37298584, 0.14801025, 0.17303467)
+
+[sub_resource type="Animation" id="Animation_h6um2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.65770125, 0.08603072, 0.3280698)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PassiveItemDescription:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PassiveItemDescription:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_8ou2e"]
+resource_name = "passive_item_animation"
+length = 2.5333369
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.37, 1.5000001, 2.5333369),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.65770125, 0.08603096, 1.5523272), Vector3(0.65770125, 0.0860312, 1.2344725), Vector3(0.65770125, 0.0860312, 1.2344725), Vector3(0.65770125, 0.0860312, 0.32942772)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PassiveItemDescription:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.4666667, 2.5333333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -1.385), Vector3(0, 0, -1.385), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PassiveItemDescription:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_37njy"]
+_data = {
+&"RESET": SubResource("Animation_h6um2"),
+&"passive_item_animation": SubResource("Animation_8ou2e")
+}
+
+[sub_resource type="Animation" id="Animation_lm5st"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ColorRect:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.6784314, 0.27058825, 0.5019608, 0.92941177)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("RichTextLabel:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("RichTextLabel:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("RichTextLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_37njy"]
+resource_name = "pop_up_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.7853981633974483, 7.0685834705770345]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ColorRect:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.33333334, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.6784314, 0.27058825, 0.5019608, 0.92941177), Color(0.68, 0.27199998, 0.5032, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -35)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("RichTextLabel:scale")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.23333333, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("RichTextLabel:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.33333334, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -35)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("RichTextLabel:modulate")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.33333334, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lm5st"]
+_data = {
+&"RESET": SubResource("Animation_lm5st"),
+&"pop_up_animation": SubResource("Animation_37njy")
+}
+
+[node name="BattleScene1" type="Node3D" unique_id=536595362]
+
+[node name="Environment" type="Node" parent="." unique_id=1416635751]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1431979176]
+environment = SubResource("Environment_njiuf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
+transform = Transform3D(0.8737722, -0.213958, 0.4367426, 0, 0.8980276, 0.43993917, -0.4863354, -0.38440663, 0.78467155, 0, 5.866068, 0)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment" unique_id=1950242176]
+visible = false
+material_override = SubResource("StandardMaterial3D_isoin")
+mesh = SubResource("PlaneMesh_b6bnk")
+
+[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_63ntn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
+
+[node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407 node_paths=PackedStringArray("selected_camera")]
+script = ExtResource("2_oju7k")
+selected_camera = NodePath("../RewardSceneController/Player/BookCamera")
+
+[node name="VirtualCamera" type="Camera3D" parent="CameraContainer" unique_id=1107707823]
+physics_interpolation_mode = 2
+transform = Transform3D(-0.95731944, 0, -0.2890319, 0, 1, 0, 0.2890319, 0, -0.95731944, -1.5797986, 1.6798961, -1.6191579)
+current = true
+fov = 45.0
+script = ExtResource("3_hvcr8")
+max_angle = 1.0
+
+[node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
+
+[node name="RouletteCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1655470664]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.26101086, 1.3490415, 0.45209107)
+fov = 45.0
+
+[node name="EnemySelectCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1450840542]
+transform = Transform3D(-0.9573195, 0, -0.28903192, 0, 1, 0, 0.28903192, 0, -0.9573195, -1.5797986, 1.6798961, -1.6191579)
+fov = 45.0
+
+[node name="DefeatCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1892104669]
+transform = Transform3D(0.24512559, 0.078623, -0.96629804, 0.061418407, 0.99344486, 0.09641211, 0.967544, -0.08298156, 0.23868985, -1.7503628, 0.6074704, 0.8997381)
+fov = 30.0
+
+[node name="RewardSceneController" type="Node" parent="." unique_id=1603717315 node_paths=PackedStringArray("chest", "player", "chest_button", "add_passive_item_button", "book_camera")]
+script = ExtResource("4_jotwu")
+chest = NodePath("Chest")
+player = NodePath("Player")
+chest_button = NodePath("Chest")
+add_passive_item_button = NodePath("Chest/PassiveItemChart/PassiveItemDescription/SB_Button3D")
+book_camera = NodePath("Player/BookCamera")
+
+[node name="Player" parent="RewardSceneController" unique_id=136977887 instance=ExtResource("8_3uxgq")]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.24)
+
+[node name="BookCamera" type="Camera3D" parent="RewardSceneController/Player" unique_id=233727052]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.6068975, 0.32839847)
+fov = 45.0
+
+[node name="Chest" type="StaticBody3D" parent="RewardSceneController" unique_id=753759453]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.17337906, 8.778356)
+script = ExtResource("9_m01iw")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="lower_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=2129971611]
+transform = Transform3D(1, 0, 0, 0, 0.99797845, 0, 0, 0, 1, 0, 0, 4.3235173)
+material_override = ExtResource("7_2ew2o")
+mesh = ExtResource("10_1th7b")
+
+[node name="upper_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=953716762]
+transform = Transform3D(1, 1.3201836e-16, 2.3032136e-16, -1.3228578e-16, 0.99797845, 0, -2.3032136e-16, -3.0406648e-32, 1, -7.57765e-18, 0.3337541, 4.0213804)
+material_override = ExtResource("7_2ew2o")
+mesh = ExtResource("11_m01iw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RewardSceneController/Chest" unique_id=497817384]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_uq2xt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RewardSceneController/Chest" unique_id=227293611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46365458, 4.337003)
+shape = SubResource("BoxShape3D_8dfyn")
+
+[node name="PassiveItemChart" type="StaticBody3D" parent="RewardSceneController/Chest" unique_id=339696796 node_paths=PackedStringArray("add_collision", "item_collision")]
+physics_interpolation_mode = 1
+transform = Transform3D(1.4, 0, 0, 0, -6.119594e-08, -1.4, 0, 1.4, -6.119594e-08, -0.89209074, 2.4539933, 4.279169)
+script = ExtResource("11_h6um2")
+add_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
+item_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
+
+[node name="PassiveItemDescription" type="Node3D" parent="RewardSceneController/Chest/PassiveItemChart" unique_id=1828498580]
+visible = false
+script = ExtResource("11_mqrrs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription" unique_id=338760026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 4.2351647e-22, 0, 1, 0, 0, 0)
+material_override = ExtResource("11_q80xu")
+mesh = ExtResource("12_8dfyn")
+
+[node name="addLabel" type="Label3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription" unique_id=1710255905]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 4.2351647e-22, -1, -4.371139e-08, 0, 0, 0.28060699)
+text = "Add
+"
+font_size = 22
+
+[node name="ItemName" type="Label3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription" unique_id=131127898]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 4.2351647e-22, -1, -4.371139e-08, 0.32062143, 0.08088493, -0.14932847)
+modulate = Color(0.13319641, 0.13319641, 0.13319638, 1)
+text = "Name
+"
+font_size = 20
+horizontal_alignment = 0
+
+[node name="Description" type="Label3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription" unique_id=1225548066]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 4.2351647e-22, -1, -4.371139e-08, 0.32062143, 0.08088493, -0.05260682)
+modulate = Color(0.13319641, 0.13319641, 0.13319638, 1)
+text = "Descripcion del item en no mas de 20 palabras
+"
+font_size = 12
+horizontal_alignment = 0
+vertical_alignment = 0
+autowrap_mode = 3
+width = 140.0
+
+[node name="SB_Button3D" type="StaticBody3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription" unique_id=657042732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 4.2351647e-22, 0, 1, 0, 0, 0)
+script = ExtResource("9_m01iw")
+metadata/_custom_type_script = "uid://b82ivoeru5iay"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription/SB_Button3D" unique_id=818279705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 1.6855956e-19, 0, 1, 0.00039672852, -0.025054216, 0.26150537)
+shape = SubResource("BoxShape3D_mqrrs")
+
+[node name="Sprite3D" type="Sprite3D" parent="RewardSceneController/Chest/PassiveItemChart" unique_id=298156761]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 2.5410988e-21, -1, -4.371139e-08, 0.65770125, 0.08603072, 0.3280698)
+visible = false
+pixel_size = 0.001
+texture = ExtResource("13_8dfyn")
+
+[node name="Item_Shine" parent="RewardSceneController/Chest/PassiveItemChart/Sprite3D" unique_id=1155516708 instance=ExtResource("16_37njy")]
+transform = Transform3D(1, 0, 0, -2.0194837e-28, 1, 0, 0, 0, 1, 0, 0, -0.0065062046)
+transform_align = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RewardSceneController/Chest/PassiveItemChart" unique_id=199090755]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_37njy")
+
+[node name="Chest_Shine" parent="RewardSceneController/Chest" unique_id=10342743 instance=ExtResource("16_8ou2e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7626853e-07, 0.19500268, 4.3040104)
+emitting = false
+
+[node name="reward_camera" type="Node3D" parent="RewardSceneController" unique_id=1387946120]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 9.244)
+
+[node name="Camera" type="Camera3D" parent="RewardSceneController/reward_camera" unique_id=726927106]
+transform = Transform3D(0.8878151, -0.11444735, 0.44574225, 7.264316e-07, 0.9685834, 0.24868892, -0.46020034, -0.22078946, 0.85992306, 2.3199186, 2.391728, 10.560406)
+fov = 31.785154
+near = 0.1
+far = 100.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RewardSceneController/reward_camera" unique_id=700167915]
+libraries/chest_animations = ExtResource("13_m01iw")
+
+[node name="AnimableCanvas" type="Control" parent="." unique_id=591628303]
+visible = false
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -129.0
+offset_top = -127.0
+offset_right = -129.0
+offset_bottom = -127.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="AnimableCanvas" unique_id=2024894466]
+layout_mode = 0
+offset_right = 196.0
+offset_bottom = 196.0
+pivot_offset = Vector2(98, 98)
+color = Color(0.6784314, 0.27058825, 0.5019608, 0.92941177)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AnimableCanvas" unique_id=990056351]
+layout_mode = 0
+offset_right = 184.0
+offset_bottom = 196.0
+pivot_offset = Vector2(98, 98)
+theme_override_colors/default_color = Color(0.20010002, 0.87, 0.44572994, 1)
+theme_override_colors/font_outline_color = Color(0.20010002, 0.87, 0.44572994, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 48
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/outline_size = 24
+theme_override_fonts/normal_font = ExtResource("12_1th7b")
+theme_override_font_sizes/normal_font_size = 184
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]![/wave]
+"
+scroll_active = false
+shortcut_keys_enabled = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimableCanvas" unique_id=1485019954]
+libraries/ = SubResource("AnimationLibrary_lm5st")
+
+[connection signal="input_event" from="RewardSceneController/Chest" to="RewardSceneController/Chest" method="_on_input_event"]
+[connection signal="input_event" from="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription/SB_Button3D" to="RewardSceneController/Chest/PassiveItemChart/PassiveItemDescription/SB_Button3D" method="_on_input_event"]
+
+[editable path="Environment/EntornoArena"]

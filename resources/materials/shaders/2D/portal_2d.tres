@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bvqgr2sa8flk2"]
+
+[ext_resource type="Shader" uid="uid://dkmwn1hkvdevc" path="res://resources/materials/shaders/2D/portal_2d.gdshader" id="1_ispex"]
+[ext_resource type="Texture2D" uid="uid://cxfkxbh3ml0k4" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/light_03.png" id="2_468g6"]
+
+[resource]
+shader = ExtResource("1_ispex")
+shader_parameter/haloColor1 = Color(0, 0.5, 1, 1)
+shader_parameter/haloColor2 = Color(0.33333302, 0, 1, 1)
+shader_parameter/spiralColor = Color(1, 1, 1, 1)
+shader_parameter/holeColorInner = Color(0, 0, 0, 1)
+shader_parameter/holeColorOuter = Color(0.1, 0, 0.2, 1)
+shader_parameter/holeSize = 0.12999999709424
+shader_parameter/image = ExtResource("2_468g6")
+shader_parameter/rotations = 2.0
+shader_parameter/depth = 0.0
+shader_parameter/spiralIntensity = 1.0
+shader_parameter/shrinkSpeed = 0.2
+shader_parameter/roationSpeed = 0.1

@@ -4,18 +4,12 @@ class_name EconomyComponent
 var run_gold : int 
 var initial_run_gold : int = 5000
 var last_combat_gold_reward : int 
+var last_combat_gold_breakdown: Dictionary = {}
 
 var combat_max_multiplier
 
 
 signal gold_changed(run_gold : int)
-
-
-
-#raro
-var combat_final_overkill: int = 0
-var combat_turns_taken : int
-
 
 
 const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
@@ -27,18 +21,17 @@ const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
 var current_encounter_type: String = "normal"
 var	current_act = 1
 
-signal combat_gold_reward_granted(amount: int, breakdown: Dictionary)
+signal combat_gold_reward_granted(amount: int, breakdown: Dictionary, combat_stats: Dictionary)
 
 
 
 func _init()->void:
-	BookEventBus.victory.connect(grant_combat_victory_gold)	
 	reload()
 
 func reload()->void:
 	run_gold = initial_run_gold
 	last_combat_gold_reward = 0
-	combat_turns_taken = 0
+	last_combat_gold_breakdown.clear()
 	combat_max_multiplier = 1.0
 
 	
@@ -67,21 +60,27 @@ func _combat_base_gold() -> int:
 	var by_act: Dictionary = COMBAT_BASE_GOLD_BY_ENCOUNTER.get(current_encounter_type, COMBAT_BASE_GOLD_BY_ENCOUNTER["normal"])
 	return int(by_act.get(current_act, by_act.get(1, 5)))
 
-func _turn_gold_bonus() -> int:
-	return max(0, 5 - combat_turns_taken)
+func _turn_gold_bonus(turns_taken: int) -> int:
+	return max(0, 5 - turns_taken)
 
-func _remaining_reroll_gold_bonus() -> int:
-	return max(0, GameState.current_reroll)
+func _remaining_reroll_gold_bonus(rerolls_remaining: int) -> int:
+	return max(0, rerolls_remaining)
 	
-func calculate_combat_gold_reward() -> Dictionary:
+func calculate_combat_gold_reward(combat_stats: Dictionary = {}) -> Dictionary:
+	var turns_taken := int(combat_stats.get("turns_taken", 0))
+	var rerolls_remaining := int(combat_stats.get("rerolls_remaining", GameState.current_reroll))
 	var base_gold := _combat_base_gold()
-	var turn_bonus := _turn_gold_bonus()
-	var reroll_bonus := _remaining_reroll_gold_bonus()
+	var turn_bonus := _turn_gold_bonus(turns_taken)
+	var reroll_bonus := _remaining_reroll_gold_bonus(rerolls_remaining)
 	var total := base_gold + turn_bonus + reroll_bonus
 	return {
 		"base": base_gold,
+		"encounter_type": current_encounter_type,
+		"encounter_label": _encounter_label(),
+		"turns_taken": turns_taken,
 		"turns": turn_bonus,
 		"speed": turn_bonus,
+		"rerolls_remaining": rerolls_remaining,
 		"rerolls": reroll_bonus,
 		"health": 0,
 		"multiplier": 0,
@@ -90,12 +89,15 @@ func calculate_combat_gold_reward() -> Dictionary:
 		"total": total,
 	}
 	
-func grant_combat_victory_gold() -> int:
-	var breakdown := calculate_combat_gold_reward()
+func grant_combat_victory_gold(combat_stats: Dictionary = {}) -> int:
+	var breakdown := calculate_combat_gold_reward(combat_stats)
 	var total := int(breakdown.get("total", 0))
+	breakdown["gold_before"] = run_gold
 	last_combat_gold_reward = total
 	add_run_gold(total)
-	combat_gold_reward_granted.emit(total, breakdown)
+	breakdown["gold_after"] = run_gold
+	last_combat_gold_breakdown = breakdown.duplicate(true)
+	combat_gold_reward_granted.emit(total, breakdown, combat_stats)
 	return total
 
 func grant_passive_combat_gold(amount: int, _source_name: String) -> void:
@@ -133,12 +135,13 @@ func _multiplier_gold_bonus() -> int:
 	return 0
 	
 func _overkill_gold_bonus() -> int:
-	if combat_final_overkill >= 20:
-		return 10
-	if combat_final_overkill >= 10:
-		return 6
-	if combat_final_overkill >= 5:
-		return 3
-	if combat_final_overkill >= 1:
-		return 1
 	return 0
+
+func _encounter_label() -> String:
+	match current_encounter_type:
+		"boss":
+			return "Boss"
+		"miniboss", "elite":
+			return "Miniboss"
+		_:
+			return "Enemigo comun"
