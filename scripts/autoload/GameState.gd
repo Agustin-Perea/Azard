@@ -5,7 +5,7 @@ const MAIN_MENU_SCENE_PATH := "res://features/main_menu/views/main_menu.tscn"
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 const DEFAULT_PASSIVE_ITEM_DEFINITIONS := [
-	preload("res://features/items/passive_items/definition/crown_of_odds_item_definition.tres"),
+	preload("res://features/items/passive_items/definition/royal_treasury_item_definition.tres"),
 ]
 const BALLS_UNLOCKED_DATABASE := preload("res://features/balls/database/balls_unlocked_database.tres")
 
@@ -313,6 +313,15 @@ func get_ball_slot_count() -> int:
 
 func notify_ball_slots_changed() -> void:
 	UiEventBus.ball_slots_changed.emit(max_ball_slots)
+
+func add_reroll_capacity_bonus(amount: int, persist := true) -> void:
+	if amount == 0:
+		return
+	max_reroll = max(0, max_reroll + amount)
+	current_reroll = clamp(current_reroll + amount, 0, max_reroll)
+	UiEventBus.rerolls_changed.emit(current_reroll, max_reroll)
+	if persist:
+		_on_persistent_state_changed()
 
 func ensure_random_balls_for_active_slots(persist := true) -> void:
 	if balls_deck == null:

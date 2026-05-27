@@ -1,9 +1,9 @@
 extends PassiveItemEffect
 class_name CrownOfOddsItemEffect
 
-const MULT_BONUS_PER_DISTINCT_BALL_TYPE := 0.25
+const MULT_BONUS_PER_DISTINCT_BALL_TYPE := 0.5
 const GOLD_BONUS := 15
-const REQUIRED_DISTINCT_BALL_TYPES_FOR_GOLD := 6
+const REQUIRED_DISTINCT_BALL_TYPES_FOR_GOLD := 4
 
 func on_item_added() -> void:
 	_connect_signal_safe(BookEventBus.bet_post_resolved, _on_bet_post_resolved)

@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="PassiveItemDefinition" format=3]
 
-[ext_resource type="Script" path="res://features/items/passive_items/effects/crown_of_odds_item_effect.gd" id="1_effect"]
+[ext_resource type="Script" path="res://features/items/passive_items/effects/royal_treasury_item_effect.gd" id="1_effect"]
 [ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_image"]
 [ext_resource type="Script" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="3_definition"]
 
-[sub_resource type="Resource" id="Resource_crown_of_odds_effect"]
+[sub_resource type="Resource" id="Resource_royal_treasury_effect"]
 script = ExtResource("1_effect")
-name = "CrownOfOdds"
-description = "Por cada tipo de bola distinto usado en el combate, ganas +0.5 mult. Si ganaste usando 4 o mas tipos, ganas +15 Gold al final."
+name = "RoyalTreasury"
+description = "Cada vez que una resolucion supera x6 mult, ganas +15 Gold y +1 reroll maximo."
 
 [resource]
 script = ExtResource("3_definition")
 image_texture = ExtResource("2_image")
-passive_item_effect = SubResource("Resource_crown_of_odds_effect")
+passive_item_effect = SubResource("Resource_royal_treasury_effect")
 cumulative = false
-weight = 6
+weight = 5

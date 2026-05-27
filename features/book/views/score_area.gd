@@ -66,6 +66,7 @@ func _ready() -> void:
 	BookEventBus.turn_log_close_requested.connect(_close_turn_log)
 	BookEventBus.lethal_preview_changed.connect(set_lethal_preview)
 	BookEventBus.pending_attack_restored.connect(_on_pending_attack_restored)
+	UiEventBus.rerolls_changed.connect(_on_rerolls_changed)
 	for label in Labels:
 		# Guardamos la posición local original de cada label
 		posiciones_iniciales[label] = label.position
@@ -83,8 +84,7 @@ func _ready() -> void:
 	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
 	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
-	rerolls_count = clamp(GameState.current_reroll, 0, GameState.max_reroll)
-	rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
+	_on_rerolls_changed(GameState.current_reroll, GameState.max_reroll)
 	
 	player_stats = GameState.player_stats
 	player_stats.health_changed.connect(_on_health_changed)
@@ -407,6 +407,14 @@ func _on_reroll_pressed()->void:
 		roulette_controller.reroll()
 		
 	if rerolls_count <= 0:
+		disable_reroll()
+
+func _on_rerolls_changed(current_rerolls: int, max_rerolls: int) -> void:
+	rerolls_count = clamp(current_rerolls, 0, max_rerolls)
+	rerolls_count_label.text = str(rerolls_count) + "/" + str(max_rerolls)
+	if roulette_controller.can_reroll():
+		enable_reroll()
+	else:
 		disable_reroll()
 
 func disable_reroll()->void:
