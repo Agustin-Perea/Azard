@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/items/passive_items/effects/perfect_crime_item_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_image"]
+[ext_resource type="Script" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="3_definition"]
+
+[sub_resource type="Resource" id="Resource_perfect_crime_effect"]
+script = ExtResource("1_effect")
+name = "PerfectCrime"
+description = "La primera vez por combate que una ficha de numero, docena o columna gana, el ataque ignora shield y gana +26 base."
+
+[resource]
+script = ExtResource("3_definition")
+image_texture = ExtResource("2_image")
+passive_item_effect = SubResource("Resource_perfect_crime_effect")
+cumulative = false
+weight = 5
