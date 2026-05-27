@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3]
+
+[ext_resource type="Script" path="res://features/items/passive_items/effects/casino_crown_item_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" path="res://resources/passive items/images/base.tres" id="2_image"]
+[ext_resource type="Script" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="3_definition"]
+
+[sub_resource type="Resource" id="Resource_casino_crown_effect"]
+script = ExtResource("1_effect")
+name = "CasinoCrown"
+description = "Si una resolucion activa 3 o mas fichas, duplica el dano final y gana +10 Gold al confirmar."
+
+[resource]
+script = ExtResource("3_definition")
+image_texture = ExtResource("2_image")
+passive_item_effect = SubResource("Resource_casino_crown_effect")
+cumulative = false
+weight = 5
