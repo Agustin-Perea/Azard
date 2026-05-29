@@ -1,0 +1,518 @@
+[gd_scene format=3 uid="uid://chr3voicimmpr"]
+
+[ext_resource type="Script" uid="uid://com032lxy5dlb" path="res://resources/main_menu/controllers/main_menu_controller.gd" id="1_isoef"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="2_qgo02"]
+[ext_resource type="FontFile" uid="uid://dk8qd4ll5xlvx" path="res://resources/fonts/FuzzyBubbles-Bold.ttf" id="3_vovv2"]
+[ext_resource type="AudioStream" uid="uid://t5w7kqusfyuv" path="res://resources/sounds/click menu.wav" id="4_1k4da"]
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="5_bbqo6"]
+[ext_resource type="Material" uid="uid://cg5xvxt06rwwx" path="res://resources/environment/test/escenario.tres" id="6_d4hu8"]
+[ext_resource type="Script" uid="uid://bbrp1q78cfth1" path="res://resources/main_menu/views/camera_3d.gd" id="7_p1nwe"]
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.247059, 0.117647, 0.223529, 1, 0.431373, 0.207843, 0.345098, 1, 0.913725, 0.356863, 0.360784, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill = 1
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bg"]
+texture = SubResource("GradientTexture2D_bg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.16)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.09)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+content_margin_left = 28.0
+content_margin_top = 8.0
+content_margin_right = 28.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_help_panel"]
+content_margin_left = 30.0
+content_margin_top = 28.0
+content_margin_right = 30.0
+content_margin_bottom = 28.0
+bg_color = Color(0.0627451, 0.027451, 0.0705882, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.913725, 0.929412, 0.733333, 0.28)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_confirm"]
+content_margin_left = 38.0
+content_margin_top = 34.0
+content_margin_right = 38.0
+content_margin_bottom = 34.0
+bg_color = Color(0.0627451, 0.027451, 0.0705882, 0.76)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.913725, 0.929412, 0.733333, 0.32)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7g3qg"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_7g3qg")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_2u6di"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.5
+reflected_light_source = 1
+
+[node name="MainMenu" type="Control" unique_id=359583470]
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_isoef")
+
+[node name="Background" type="Panel" parent="." unique_id=545184633]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_bg")
+
+[node name="TextureRect" type="TextureRect" parent="Background" unique_id=700883327]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Moon" type="ColorRect" parent="Background" unique_id=799888966]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.11
+anchor_right = 0.87
+anchor_bottom = 0.37
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.18
+color = Color(0.937255, 0.929412, 0.733333, 0.18)
+
+[node name="Horizon" type="ColorRect" parent="Background" unique_id=1259146066]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -202.0
+grow_horizontal = 2
+grow_vertical = 0
+rotation = -0.06
+color = Color(0.913725, 0.929412, 0.733333, 0.22)
+
+[node name="Title" type="RichTextLabel" parent="." unique_id=770756657]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -290.0
+offset_top = 169.0
+offset_right = 290.0
+offset_bottom = 282.0
+grow_horizontal = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.45)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 27
+theme_override_fonts/normal_font = ExtResource("2_qgo02")
+theme_override_font_sizes/normal_font_size = 268
+bbcode_enabled = true
+text = "[wave amp=50.0]AZARD[/wave]"
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuContent" type="VBoxContainer" parent="." unique_id=7134171]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -152.0
+offset_right = 290.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Subtitle" type="Label" parent="MenuContent" unique_id=877427476]
+self_modulate = Color(1, 1, 1, 0.7)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="MenuContent" unique_id=1923703209]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="MenuContent" unique_id=1564345146]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="ContinueButton" type="Button" parent="MenuContent/Buttons" unique_id=1706257543]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0.38)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Continuar"
+flat = true
+
+[node name="PlayButton" type="Button" parent="MenuContent/Buttons" unique_id=1486138013]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Play"
+flat = true
+
+[node name="HelpButton" type="Button" parent="MenuContent/Buttons" unique_id=1841138384]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.86)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Ayuda"
+flat = true
+
+[node name="QuitButton" type="Button" parent="MenuContent/Buttons" unique_id=1410834982]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.72)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Salir"
+flat = true
+
+[node name="VersionLabel" type="Label" parent="." unique_id=2130182087]
+self_modulate = Color(1, 1, 1, 0.3)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -42.0
+offset_right = 240.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 15
+text = "Azard prototype"
+horizontal_alignment = 1
+
+[node name="HelpOverlay" type="Control" parent="." unique_id=905770239]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="HelpOverlay" unique_id=393161864]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0156863, 0.0117647, 0.0235294, 0.46)
+
+[node name="Panel" type="PanelContainer" parent="HelpOverlay" unique_id=241924245]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.075
+anchor_right = 0.925
+anchor_bottom = 0.925
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_help_panel")
+
+[node name="Margin" type="MarginContainer" parent="HelpOverlay/Panel" unique_id=1058135140]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="Content" type="VBoxContainer" parent="HelpOverlay/Panel/Margin" unique_id=515048535]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Header" type="HBoxContainer" parent="HelpOverlay/Panel/Margin/Content" unique_id=1442504030]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="HelpOverlay/Panel/Margin/Content/Header" unique_id=882438952]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 44
+text = "Como jugar"
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="HelpOverlay/Panel/Margin/Content/Header" unique_id=1511563176]
+custom_minimum_size = Vector2(145, 54)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.88)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Volver"
+flat = true
+
+[node name="Body" type="HBoxContainer" parent="HelpOverlay/Panel/Margin/Content" unique_id=1962827390]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 34
+
+[node name="Sections" type="VBoxContainer" parent="HelpOverlay/Panel/Margin/Content/Body" unique_id=624887274]
+custom_minimum_size = Vector2(310, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Scroll" type="ScrollContainer" parent="HelpOverlay/Panel/Margin/Content/Body" unique_id=1836408439]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HelpBody" type="VBoxContainer" parent="HelpOverlay/Panel/Margin/Content/Body/Scroll" unique_id=1229810124]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="ConfirmOverlay" type="Control" parent="." unique_id=358455677]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="ConfirmOverlay" unique_id=1501389472]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0156863, 0.0117647, 0.0235294, 0.48)
+
+[node name="Panel" type="PanelContainer" parent="ConfirmOverlay" unique_id=1260878082]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -168.0
+offset_right = 340.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_confirm")
+
+[node name="Content" type="VBoxContainer" parent="ConfirmOverlay/Panel" unique_id=1242861095]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Title" type="Label" parent="ConfirmOverlay/Panel/Content" unique_id=2090178253]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 34
+text = "Empezar nueva partida"
+horizontal_alignment = 1
+
+[node name="Body" type="Label" parent="ConfirmOverlay/Panel/Content" unique_id=1915603690]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.78)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 24
+text = "Esto borra la partida que podes continuar."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Buttons" type="HBoxContainer" parent="ConfirmOverlay/Panel/Content" unique_id=1210977643]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="CancelNewRunButton" type="Button" parent="ConfirmOverlay/Panel/Content/Buttons" unique_id=209021025]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.78)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Cancelar"
+flat = true
+
+[node name="ConfirmNewRunButton" type="Button" parent="ConfirmOverlay/Panel/Content/Buttons" unique_id=1016279158]
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.96)
+theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_vovv2")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Empezar"
+flat = true
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="." unique_id=398642997]
+stream = ExtResource("4_1k4da")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=878754541]
+
+[node name="EntornoArena" parent="Node3D" unique_id=1168665643 instance=ExtResource("5_bbqo6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05552146, 0, 0.61894584)
+
+[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2126568144]
+material_override = ExtResource("6_d4hu8")
+
+[node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]
+transform = Transform3D(1, 0, 0, 0, 0.9808533, 0.19474795, 0, -0.19474795, 0.9808533, 0, 4.237, 14.522)
+fov = 45.0
+script = ExtResource("7_p1nwe")
+amplitud_rotacion = Vector3(0, 0, 0)
+velocidad = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D" unique_id=860281570]
+environment = SubResource("Environment_2u6di")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D" unique_id=240624610]
+transform = Transform3D(-0.9868331, 0.0711565, -0.14524856, -1.30202205e-08, 0.8980276, 0.43993917, 0.16174173, 0.43414652, -0.8862034, 0, 5.866068, 0)
+light_energy = 0.5
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
+[connection signal="pressed" from="MenuContent/Buttons/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="pressed" from="MenuContent/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="HelpOverlay/Panel/Margin/Content/Header/BackButton" to="." method="_on_help_back_button_pressed"]
+[connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/CancelNewRunButton" to="." method="_on_cancel_new_run_button_pressed"]
+[connection signal="pressed" from="ConfirmOverlay/Panel/Content/Buttons/ConfirmNewRunButton" to="." method="_on_confirm_new_run_button_pressed"]
+
+[editable path="Node3D/EntornoArena"]

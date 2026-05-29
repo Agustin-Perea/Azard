@@ -78,4 +78,5 @@ enum BET_FIELD_ROW {
 }
 #scene routes
 const TEST_SCENE = "res://RouletteCombat.tscn"
-const MAP_SCENE = "res://MapGeneration/map_scene.tscn"
+const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"
+const MAIN_MENU_SCENE_PATH := "res://scenes/menu/main_menu.tscn"

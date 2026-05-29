@@ -42,5 +42,9 @@ func _animate() -> void:
 	}))
 
 func update_view():
-	
-	cant.text = "x" + str(dataModel.quantity)
+	if dataModel.quantity > 1:
+		cant.visible = true
+		cant.text = "x" + str(dataModel.quantity)
+	else:
+		cant.visible = false
+		

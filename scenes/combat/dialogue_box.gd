@@ -14,7 +14,7 @@ signal dialogue_finished
 
 var dialogue_lines: Array[String] = [
 	"Hola intruso!",
-	"Veo que buscas la [wave]asencion[/wave], es un camino muy peligroso que no todos puedan alcanzar, sabes?",
+	"Veo que buscas la [wave]ascencion[/wave], es un camino muy peligroso que no todos puedan alcanzar, sabes?",
 	"Realmente crees estar listo para continuar?",
 	"Bien, tu entusiasmo me dice que estas listo",
 	"[wave]EN GUARDIA!![/wave]"

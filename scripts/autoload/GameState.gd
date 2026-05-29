@@ -1,11 +1,18 @@
 extends Node
 
-var object_pool_database : ObjectPoolDatabase
-var map_generator : MapGenerator
 
+
+
+var GamePersistence : Persitence = Persitence.new()
 
 
 var master_seed: int = 627357
+var current_scene_path: String = Constants.MAP_SCENE_PATH
+
+
+
+var object_pool_database : ObjectPoolDatabase
+var map_generator : MapGenerator
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
@@ -50,6 +57,7 @@ func _ready():
 	economy_component = EconomyComponent.new()
 	object_pool_database = ObjectPoolDatabase.new()
 	map_generator = MapGenerator.new()
+	#economy_component.gold_changed.connect(_on_persistent_state_changed)
 	
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
@@ -63,8 +71,12 @@ func reload():
 	#BookEventBus.reload.emit()
 	temp_scene_changed_value = 0
 	master_seed = randi() % 999999999 + 1
-	
-	
+	_rebuild_run_from_current_seed()
+
+func _rebuild_run_from_current_seed() -> void:
+	if economy_component != null:
+		economy_component.reload()
+
 	map_generator.on_reload()
 	
 	object_pool_database.set_seed(master_seed)
@@ -81,6 +93,10 @@ func reload():
 	Bets.clear()
 	
 	field_by_chip.clear()
+	#last_resolved_roulette_score = 0.0
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
 	
@@ -187,7 +203,7 @@ func remove_bet(chip_id: int) -> void:
 	field_by_chip.erase(chip_id)
 
 func add_passive_item(new_passive : PassiveItemDefinition)->void:
-	var existing_item : PassiveItemRuntimeState = null 
+	var existing_item = null
 	
 	for item in passiveItems_collection:
 		if (item.passive_item_definition == new_passive): 
@@ -196,9 +212,8 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	
 	if existing_item:
 		existing_item.quantity += 1
-		UiEventBus.add_passive_item.emit(existing_item)
 		#existing_item.animate.emit()
-
+		#existing_item.on_item_added() 
 	else:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
@@ -207,7 +222,42 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		existing_item.on_item_added()
 		
 		UiEventBus.add_passive_item.emit(existing_item)
+		#PassiveItemLayer.add_passive_item_panel(new_passive)
+		#existing_item.animate.emit()
+		#agregar el panel al control
 
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
 	
+
+func new_run() -> void:
+	GamePersistence.delete_save()
+	current_scene_path = Constants.MAP_SCENE_PATH
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	reload()
+	save_run(Constants.MAP_SCENE_PATH)
+
+func end_run() -> void:
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	current_scene_path = Constants.MAP_SCENE_PATH
+	GamePersistence.delete_save()
+
+func set_current_scene_path(scene_path: String, persist := true) -> void:
+	if scene_path == "" or scene_path == Constants.MAIN_MENU_SCENE_PATH:
+		return
+	current_scene_path = scene_path
+	if persist:
+		save_run(scene_path)
+
+func get_current_scene_path() -> String:
+	if current_scene_path == "":
+		return Constants.MAP_SCENE_PATH
+	return current_scene_path
+
+func save_run(scene_path: String = "") -> bool:
+	return GamePersistence.save_run(self,scene_path)
+	 
+func load_run() -> bool:
+	return GamePersistence.load_run(self)

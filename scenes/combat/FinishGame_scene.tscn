@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://chpk0gnpsdfef"]
 
+[ext_resource type="Script" uid="uid://cu0ox16vyo7ng" path="res://scenes/combat/finish_canvas.gd" id="1_g87ol"]
 [ext_resource type="Shader" uid="uid://d1qvvj1lp2tm7" path="res://resources/materials/starfield.tres" id="1_yjbpl"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="7_6qi3r"]
 [ext_resource type="Material" uid="uid://bvqgr2sa8flk2" path="res://resources/materials/shaders/2D/portal_2d.tres" id="7_bi4i0"]
@@ -65,6 +66,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_g87ol")
 
 [node name="ColorRect" type="ColorRect" parent="DefeatCanvas" unique_id=2090501872]
 material = SubResource("ShaderMaterial_yjbpl")

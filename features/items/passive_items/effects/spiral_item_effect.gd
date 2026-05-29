@@ -7,7 +7,8 @@ func on_item_use(roulette_controller : RouletteController)->void:
 
 	
 func on_item_added()->void:
-	BookEventBus.bet_resolved.connect(on_signal_triggered)
+	if not BookEventBus.bet_resolved.is_connected(on_signal_triggered):
+			BookEventBus.bet_resolved.connect(on_signal_triggered)
 
 func on_item_removed()->void:
 	BookEventBus.bet_resolved.disconnect(on_signal_triggered)

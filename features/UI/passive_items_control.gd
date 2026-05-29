@@ -14,7 +14,8 @@ class_name PassiveItemsUI
 var panels_by_item: Dictionary = {}
 
 func _ready() -> void:
-	BookEventBus.reload.connect(clear_panel)
+	BookEventBus.reload.connect(clear_panels)
+	UiEventBus.clear_passive_items_panels.connect(clear_panels)
 	UiEventBus.add_passive_item.connect(add_passive_item_panel)
 
 func add_passive_item_panel(data_model: PassiveItemRuntimeState) -> void:
@@ -36,13 +37,17 @@ func add_passive_item_panel(data_model: PassiveItemRuntimeState) -> void:
 	nuevo_panel.pressed.connect(show_description.bind(nuevo_panel))
 	# guardar referencia
 	panels_by_item[data_model] = nuevo_panel
+	nuevo_panel.update_view()
 
+func clear_panels() -> void:
+	var children = item_container.get_children()
 
-func clear_panel() -> void:
-	for child in item_container.get_children():
-		child.queue_free()
+	for i in range(1, children.size()):
+		children[i].queue_free()
 
 	panels_by_item.clear()
+
+
 
 func show_description(panel : PassiveItemPanel)->void: 
 

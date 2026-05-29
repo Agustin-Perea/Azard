@@ -176,6 +176,16 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
 text = "book
 "
 
+[node name="MenuButton" type="Button" parent="Control" unique_id=879028870]
+texture_filter = 2
+layout_mode = 1
+offset_right = 150.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_jsid0")
+text = "Menu
+"
+
 [node name="GoldHUD" type="PanelContainer" parent="Control" unique_id=1773533231]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -307,10 +317,10 @@ script = ExtResource("8_jvpr3")
 [node name="FPS" type="Label" parent="FPS_Control" unique_id=1327704655]
 texture_filter = 2
 layout_mode = 0
-offset_left = 67.0
+offset_left = 238.0
 offset_top = 49.0
-offset_right = 107.0
-offset_bottom = 70.0
+offset_right = 302.0
+offset_bottom = 96.25
 theme_override_font_sizes/font_size = 36
 text = "FPS"
 horizontal_alignment = 1
@@ -318,3 +328,4 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]
+[connection signal="pressed" from="Control/MenuButton" to="Control" method="_on_menu_button_pressed"]
