@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EvenCondition" format=3 uid="uid://1qok6jhdma0c"]
+
+[ext_resource type="Script" uid="uid://btcu1bej7351v" path="res://features/book/bet_fields/systems/BetConditionStrategy/EvenCondition.gd" id="1_raom8"]
+
+[resource]
+script = ExtResource("1_raom8")
+multiplier_base = 2.0
+multiplier_by_level_added = 1.0
+metadata/_custom_type_script = "uid://btcu1bej7351v"

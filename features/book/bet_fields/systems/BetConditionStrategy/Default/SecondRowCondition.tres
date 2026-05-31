@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SecondRowCondition" format=3 uid="uid://bmxlt4x4rhpiu"]
+
+[ext_resource type="Script" uid="uid://cq3csb3e3hddu" path="res://features/book/bet_fields/systems/BetConditionStrategy/SecondRowCondition.gd" id="1_b0jaj"]
+
+[resource]
+script = ExtResource("1_b0jaj")
+multiplier_base = 3.0
+multiplier_by_level_added = 2.0
+metadata/_custom_type_script = "uid://cq3csb3e3hddu"

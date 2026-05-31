@@ -29,11 +29,11 @@ func _rebuild_run_from_current_seed(game_state : GameState) -> void:
 	game_state.Bets.clear()
 	
 	game_state.field_by_chip.clear()
-	#game_state.last_resolved_roulette_score = 0.0
-	#game_state.combat_used_ball_types.clear()
-	#game_state.combat_ball_history.clear()
+
 	game_state.passiveItems_collection.clear()
 	#limpieza a default
+	game_state.max_reroll = 3
+	
 	#el object pool tambien deberia persistirse
 	game_state.load_from_definition()
 	
@@ -114,8 +114,7 @@ func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
 	
 	# OJO: Esto genera las fichas por defecto desde el .tres
 	_rebuild_run_from_current_seed(game_state)
-	
-	_apply_rerolls_save_data(game_state,data.get("rerolls", {}))
+	#_apply_rerolls_save_data(game_state,data.get("rerolls", {})) se agrega por items pasivos
 	_apply_economy_save_data(game_state,data.get("economy", {}))
 	_apply_player_stats_save_data(game_state,data.get("player_stats", {}))
 	_apply_map_save_data(game_state,data.get("map", {}))
@@ -273,7 +272,8 @@ func _apply_passive_items_save_data(game_state : GameState,data: Array) -> void:
 		item.quantity = int(item_data.get("quantity", 1))
 
 		game_state.passiveItems_collection.append(item)
-		item.on_item_added()
+		for i in range(item.quantity):
+			item.on_item_added()
 		UiEventBus.add_passive_item.emit(item)
 
 func _build_bet_fields_save_data(game_state : GameState) -> Array:

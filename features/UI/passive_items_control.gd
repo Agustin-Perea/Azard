@@ -5,8 +5,8 @@ class_name PassiveItemsUI
 @onready var panel_scene = preload("res://features/items/passive_items/views/passive_item_panel.tscn")
 
 @onready var passive_item_control : Control = $PassiveItemDescritpion
-@onready var passive_item_description_name : Label = $PassiveItemDescritpion/Panel/Name
-@onready var passive_item_description : Label = $PassiveItemDescritpion/Panel/Desctiption
+@onready var passive_item_description_name : Label = $PassiveItemDescritpion/Panel/VBoxContainer/Name
+@onready var passive_item_description : Label = $PassiveItemDescritpion/Panel/VBoxContainer/Desctiption
 
 
 
@@ -47,10 +47,9 @@ func clear_panels() -> void:
 
 	panels_by_item.clear()
 
-
-
 func show_description(panel : PassiveItemPanel)->void: 
 
 	passive_item_control.visible = true
 	passive_item_description_name.text = panel.dataModel.passive_item_definition.passive_item_effect.name
 	passive_item_description.text = panel.dataModel.passive_item_definition.passive_item_effect.description
+	passive_item_control.global_position = panel.global_position

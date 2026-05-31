@@ -17,7 +17,46 @@ var map_generator : MapGenerator
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
 
+var bet_field_groups: Dictionary[Constants.BET_FIELD_CONDITION, BetCondition] = {
+	Constants.BET_FIELD_CONDITION.STRAIGHT_UP:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/StraightUpCondition.tres").duplicate(),
 
+	Constants.BET_FIELD_CONDITION.FIRST_HALF:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstHalfCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.EVEN:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/EvenCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.RED:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/RedCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.BLACK:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/BlackCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ODD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/OddCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.SECOND_HALF:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondHalfCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_1ST:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_2ND:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_3RD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_1ST:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstColumnCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_2ND:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondColumnCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_3RD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdColumnCondition.tres").duplicate(),
+}
 var economy_component : EconomyComponent
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
@@ -111,6 +150,7 @@ func load_from_definition():
 	#balls = null
 	for f in bet_field_definition.fields:
 		bet_field_models.append(f.duplicate(true)) # deep copy
+		f.ConditionStrategy = bet_field_groups[f.ConditionType]
 	
 	
 	for f in chipDefinition.fields:
@@ -213,7 +253,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	if existing_item:
 		existing_item.quantity += 1
 		#existing_item.animate.emit()
-		#existing_item.on_item_added() 
+		existing_item.on_item_added() 
 	else:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
@@ -221,7 +261,7 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		passiveItems_collection.append(existing_item)
 		existing_item.on_item_added()
 		
-		UiEventBus.add_passive_item.emit(existing_item)
+	UiEventBus.add_passive_item.emit(existing_item)
 		#PassiveItemLayer.add_passive_item_panel(new_passive)
 		#existing_item.animate.emit()
 		#agregar el panel al control
@@ -229,6 +269,20 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
 	
+	
+func add_extra_chip()->int:
+	var chip := ChipModel.new()
+	chip.chipID = chips.size()
+	chips.append(chip)
+	return chip.chipID
+	
+func remove_extra_chip(chip_id: int) -> void:
+	if chip_id < 0 or chip_id >= chips.size():
+		return
+	remove_bet(chip_id)
+	if chip_id != chips.size() - 1:
+		return
+	chips.remove_at(chip_id)
 
 func new_run() -> void:
 	GamePersistence.delete_save()

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BlackCondition" format=3 uid="uid://5di5qlo2q7ag"]
+
+[ext_resource type="Script" uid="uid://ciqcre1lq6c7h" path="res://features/book/bet_fields/systems/BetConditionStrategy/BlackCondition.gd" id="1_qh5qu"]
+
+[resource]
+script = ExtResource("1_qh5qu")
+multiplier_base = 2.0
+multiplier_by_level_added = 1.0
+metadata/_custom_type_script = "uid://ciqcre1lq6c7h"

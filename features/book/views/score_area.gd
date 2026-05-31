@@ -30,12 +30,21 @@ var posiciones_iniciales = {}
 var player_stats : StatsComponent
 @onready var Life_bar : Sprite3D = $"../LifeView"
 @onready var health_progress_bar : ProgressBar = $"../SubViewport/ProgressBar"
+@onready var shield_rect : ColorRect = $"../SubViewport/ColorRect"
+@onready var shield_icon : Sprite3D = $"../ShieldIcon"
+@onready var shield_text : Label3D = $"../ShieldText"
 @onready var info : Label3D = $"../LifeText"
+
+#deberia agregar los onadd y onmult aca con popup y sus valores visuales particulares
 
 func _ready() -> void:
 
-	roulette_controller.baseChanged.connect(_on_change_base)
-	roulette_controller.multiplicatorChanged.connect(_on_change_mult)
+	roulette_controller.updateBase.connect(_on_change_base)
+	roulette_controller.updateMult.connect(_on_change_mult)
+	
+	roulette_controller.base_added.connect(_on_add_base)
+	roulette_controller.multiplicator_added.connect(_on_add_mult)
+	roulette_controller.x_multiplicator.connect(_on_x_multiplier)
 	
 	roulette_controller.totalChanged.connect(_on_change_total)
 	roulette_controller.betResolved.connect(_on_bet_resolved)
@@ -52,16 +61,15 @@ func _ready() -> void:
 	BookEventBus.spin_started.connect(enable_finish_button)
 	
 	
-	
-	#PlayerUiEvents.disable_camera_buttons.connect(_on_spin_started)
-	#PlayerUiEvents.bet_procesed.connect(_on_bet_completed)
 	reroll_button.pressed.connect(_on_reroll_pressed)
 	GameState.current_reroll = rerolls_count
 	
 	rerolls_count = GameState.max_reroll
+	rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 	
 	player_stats = GameState.player_stats
 	player_stats.health_changed.connect(_on_health_changed)
+	
 	_on_health_changed()
 	
 func _on_health_changed()->void:
@@ -69,18 +77,66 @@ func _on_health_changed()->void:
 	health_progress_bar.max_value = player_stats.max_healt
 	health_progress_bar.value = player_stats.current_healt
 	
+	if player_stats.shield > 0:
+		shield_rect.visible = true
+		shield_icon.visible = true
+		shield_text.visible = true
+		shield_text.text = str(player_stats.shield)
+	else:
+		shield_rect.visible = false
+		shield_icon.visible = false
+		shield_text.visible = false
+
+
+var local_base : float = 0
+var local_mult : float = 0
+func _on_add_base(base_added : float) -> void:
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_base += base_added
+			base_damage.text = str(int(round(local_base)))
+			return true
+	}))
+	BookEventBus.popuptext.emit(base_damage.position,str("+",int(round(base_added))))
+
+func _on_add_mult(mult_added : float, popup :bool = true) -> void:
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_mult += mult_added
+			multiplicator.text = str(int(round(local_mult)))
+			return true
+	}))	
+	if popup:
+		BookEventBus.popuptext.emit(multiplicator.position,str("+",int(round(mult_added))))
+	
+	
 func _on_change_base() -> void:
+	local_base = roulette_controller.base
 	base_damage.text = str(int(round(roulette_controller.base)))
-	
+
 #esto deberia tener anim
-func _on_change_mult(mult : float) -> void:
-	#esto debe ser un evento
+func _on_change_mult() -> void:
+	local_mult = roulette_controller.multiplier
 	multiplicator.text = str(int(round(roulette_controller.multiplier)))
-	#callear un popupmult a multiplicator.globalpos
-	if mult > 0:
-		var text := str("x",mult)
-		BookEventBus.popuptext.emit(multiplicator.position,text)
-	
+
+
+
+func _on_x_multiplier(x_mult : float)->void:
+	var text := str("x",x_mult)
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_mult *= x_mult
+			multiplicator.text = str(int(round(local_mult)))
+			return true
+	}))	
+	BookEventBus.popuptext.emit(multiplicator.position,text)
+
 
 func _on_change_total() -> void:
 	total_damage.text = str(int(round(roulette_controller.score)))

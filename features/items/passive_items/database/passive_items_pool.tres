@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="1_nov2o"]
 [ext_resource type="Resource" uid="uid://6uejekodgixx" path="res://features/items/passive_items/definition/spiral_item_definition.tres" id="2_f08rv"]
 [ext_resource type="Script" uid="uid://cgtluppvfk3ac" path="res://features/items/passive_items/database/passive_item_database.gd" id="3_art03"]
+[ext_resource type="Resource" uid="uid://mwq14btx6ntk" path="res://features/items/passive_items/definition/copper_lens_item_definition.tres" id="3_f08rv"]
+[ext_resource type="Resource" uid="uid://cdklvb54id4th" path="res://features/items/passive_items/definition/house_key_item_definition.tres" id="4_art03"]
 
 [resource]
 script = ExtResource("3_art03")
-all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv")])
+all_items = Array[ExtResource("1_nov2o")]([ExtResource("2_f08rv"), ExtResource("3_f08rv"), ExtResource("4_art03")])
 metadata/_custom_type_script = "uid://cgtluppvfk3ac"

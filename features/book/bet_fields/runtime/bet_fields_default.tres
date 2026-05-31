@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ej3m6sdc86mf" path="res://features/book/bet_fields/BetFieldModel.gd" id="1_xqw4t"]
 [ext_resource type="Script" uid="uid://4pdksbd8xnr6" path="res://features/book/bet_fields/systems/BetConditionStrategy/StraightUpCondition.gd" id="2_fc66s"]
+[ext_resource type="Resource" uid="uid://cgklqxlkhs4s6" path="res://features/book/bet_fields/systems/BetConditionStrategy/Default/StraightUpCondition.tres" id="2_rgi7o"]
 [ext_resource type="Script" uid="uid://btrob141bevp7" path="res://features/book/bet_fields/BetFieldDefinition.gd" id="2_w372k"]
 [ext_resource type="Script" uid="uid://1j5l5si7724g" path="res://features/book/bet_fields/systems/BetConditionStrategy/FirstHalfCondition.gd" id="3_1iqnk"]
 [ext_resource type="Script" uid="uid://btcu1bej7351v" path="res://features/book/bet_fields/systems/BetConditionStrategy/EvenCondition.gd" id="4_hriox"]
@@ -16,13 +17,9 @@
 [ext_resource type="Script" uid="uid://qdlnrlgi58yx" path="res://features/book/bet_fields/systems/BetConditionStrategy/SecondColumnCondition.gd" id="13_4gak7"]
 [ext_resource type="Script" uid="uid://8v56moxh5w0l" path="res://features/book/bet_fields/systems/BetConditionStrategy/ThirdColumnCondition.gd" id="14_clmoq"]
 
-[sub_resource type="Resource" id="Resource_605dc"]
-script = ExtResource("2_fc66s")
-metadata/_custom_type_script = "uid://4pdksbd8xnr6"
-
 [sub_resource type="Resource" id="Resource_pg2p8"]
 script = ExtResource("1_xqw4t")
-ConditionStrategy = SubResource("Resource_605dc")
+ConditionStrategy = ExtResource("2_rgi7o")
 color = 0
 parity = 2
 half_table = 2
@@ -30,37 +27,25 @@ column = 3
 row = 3
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
-[sub_resource type="Resource" id="Resource_fc66s"]
-script = ExtResource("2_fc66s")
-metadata/_custom_type_script = "uid://4pdksbd8xnr6"
-
 [sub_resource type="Resource" id="Resource_w372k"]
 script = ExtResource("1_xqw4t")
 number = 1
-ConditionStrategy = SubResource("Resource_fc66s")
+ConditionStrategy = ExtResource("2_rgi7o")
 parity = 1
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
-
-[sub_resource type="Resource" id="Resource_tiebt"]
-script = ExtResource("2_fc66s")
-metadata/_custom_type_script = "uid://4pdksbd8xnr6"
 
 [sub_resource type="Resource" id="Resource_ewopv"]
 script = ExtResource("1_xqw4t")
 number = 2
-ConditionStrategy = SubResource("Resource_tiebt")
+ConditionStrategy = ExtResource("2_rgi7o")
 color = 2
 column = 1
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
-[sub_resource type="Resource" id="Resource_nkn33"]
-script = ExtResource("2_fc66s")
-metadata/_custom_type_script = "uid://4pdksbd8xnr6"
-
 [sub_resource type="Resource" id="Resource_yxb7a"]
 script = ExtResource("1_xqw4t")
 number = 3
-ConditionStrategy = SubResource("Resource_nkn33")
+ConditionStrategy = ExtResource("2_rgi7o")
 parity = 1
 column = 2
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
@@ -500,6 +485,7 @@ metadata/_custom_type_script = "uid://1j5l5si7724g"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 1
 ConditionStrategy = SubResource("Resource_71me5")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -511,6 +497,7 @@ metadata/_custom_type_script = "uid://btcu1bej7351v"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 2
 ConditionStrategy = SubResource("Resource_smpti")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -522,6 +509,7 @@ metadata/_custom_type_script = "uid://byagevwotmb2c"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 3
 ConditionStrategy = SubResource("Resource_rcrxc")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -533,6 +521,7 @@ metadata/_custom_type_script = "uid://ciqcre1lq6c7h"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 4
 ConditionStrategy = SubResource("Resource_fqwt1")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -544,6 +533,7 @@ metadata/_custom_type_script = "uid://boikp6jy46dau"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 5
 ConditionStrategy = SubResource("Resource_uvylb")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -555,6 +545,7 @@ metadata/_custom_type_script = "uid://doxukc0munk1r"
 script = ExtResource("1_xqw4t")
 multiplier = 2.0
 multiplier_by_level = 1.0
+ConditionType = 6
 ConditionStrategy = SubResource("Resource_hd2h3")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -566,6 +557,7 @@ metadata/_custom_type_script = "uid://bex5rlh8e6jyk"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 7
 ConditionStrategy = SubResource("Resource_kileh")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -577,6 +569,7 @@ metadata/_custom_type_script = "uid://cq3csb3e3hddu"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 8
 ConditionStrategy = SubResource("Resource_ogk4f")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -588,6 +581,7 @@ metadata/_custom_type_script = "uid://whi82pfuaiac"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 9
 ConditionStrategy = SubResource("Resource_mvdo5")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -599,6 +593,7 @@ metadata/_custom_type_script = "uid://y7wgo0wjbw75"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 10
 ConditionStrategy = SubResource("Resource_bqanu")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -610,6 +605,7 @@ metadata/_custom_type_script = "uid://qdlnrlgi58yx"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 11
 ConditionStrategy = SubResource("Resource_mluyi")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 
@@ -621,6 +617,7 @@ metadata/_custom_type_script = "uid://8v56moxh5w0l"
 script = ExtResource("1_xqw4t")
 multiplier = 3.0
 multiplier_by_level = 2.0
+ConditionType = 12
 ConditionStrategy = SubResource("Resource_6h4e0")
 metadata/_custom_type_script = "uid://ej3m6sdc86mf"
 

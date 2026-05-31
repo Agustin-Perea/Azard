@@ -24,10 +24,14 @@ signal call_betfield_animation
 		number = value
 		fieldChanged.emit()
 
-		
+
+#esto es calculado por base + lvl group * group_icrement + extra
+
 @export var multiplier: float = 36
 @export var multiplier_by_level: float = 18 #la mitad pero en realidad hay que ver
 
+
+@export var ConditionType : Constants.BET_FIELD_CONDITION = Constants.BET_FIELD_CONDITION.STRAIGHT_UP
 @export var ConditionStrategy: BetCondition 
 
 

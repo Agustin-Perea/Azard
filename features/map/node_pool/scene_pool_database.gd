@@ -37,7 +37,7 @@ func reload()->void:
 	event_pool = load("res://features/map/node_pool/event_instances/event_pool.tres").duplicate()
 	event_pool.setup()
 	
-	mini_boss_pool = load("res://features/map/node_pool/reward_instances/reward_pool.tres").duplicate()
+	mini_boss_pool = load("res://features/map/node_pool/mini_boss_instances/mini_boss_pool.tres").duplicate()
 	mini_boss_pool.setup()
 	
 	boss_pool = load("res://features/map/node_pool/boss_intances/boss_pool.tres").duplicate()

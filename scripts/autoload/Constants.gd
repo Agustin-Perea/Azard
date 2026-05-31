@@ -76,6 +76,24 @@ enum BET_FIELD_ROW {
 	ROW_3RD,
 	NONE
 }
+
+enum BET_FIELD_CONDITION {
+	STRAIGHT_UP,
+	FIRST_HALF,
+	EVEN,
+	RED,
+	BLACK,
+	ODD,
+	SECOND_HALF,
+	ROW_1ST,
+	ROW_2ND,
+	ROW_3RD,
+	COLUMN_1ST,
+	COLUMN_2ND,
+	COLUMN_3RD,
+	NONE,
+	ALL
+}
 #scene routes
 const TEST_SCENE = "res://RouletteCombat.tscn"
 const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"

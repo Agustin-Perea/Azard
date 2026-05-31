@@ -8,8 +8,8 @@ class_name PlayerActionController
 func _ready() -> void:
 	super()
 	roulette_controller.finish_button.pressed.connect(_do_attacK)
-	actual_attacK_Info = AttackInfo.new()
-	actual_attacK_Info.attacker = $".."
+	next_attacK_Info = AttackInfo.new()
+	next_attacK_Info.attacker = $".."
 	
 	
 	UiEventBus.change_target.connect(on_change_target)
@@ -58,10 +58,10 @@ func _do_attacK()->void:
 				# Opcional: Bloquear la rotación en el eje X para que no se incline hacia arriba/abajo
 				attacker.rotation.x = 0 
 				attacker.rotation.z = 0
-				actual_attacK_Info.target = target
-				actual_attacK_Info.damage = roulette_controller.score
+				next_attacK_Info.target = target
+				next_attacK_Info.damage = roulette_controller.score
 				
-				actual_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
+				next_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
 			
 			attack_beginning.emit()
 			return true
@@ -107,4 +107,4 @@ func _do_attacK()->void:
 func _perform_attack()->void:
 	#pasa el atkInfo actual hacia el manager que le da a los enemigos
 	#podria ser una señal emitida, y el combat controller se suscribe a esta señal de las units
-	perform_attack.emit(actual_attacK_Info)
+	perform_attack.emit(next_attacK_Info)

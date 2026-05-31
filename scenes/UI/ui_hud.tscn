@@ -10,6 +10,22 @@
 [ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="8_jvpr3"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dbbq"]
+content_margin_left = 22.0
+content_margin_top = 16.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(0.21960784, 0.101960786, 0.18039216, 0.92941177)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82400006, 0.120000005, 0.67058825)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsid0"]
 bg_color = Color(0, 0, 0, 0.27450982)
 corner_radius_top_left = 180
@@ -100,32 +116,32 @@ offset_bottom = 438.0
 mouse_filter = 2
 script = ExtResource("3_6dbbq")
 
-[node name="Panel" type="Panel" parent="PassiveItemsControl/PassiveItemDescritpion" unique_id=775033461]
+[node name="Panel" type="PanelContainer" parent="PassiveItemsControl/PassiveItemDescritpion" unique_id=1099883326]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 143.0
 offset_top = -46.0
-offset_right = 143.0
-offset_bottom = -46.0
+offset_right = 290.0
+offset_bottom = -162.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6dbbq")
 
-[node name="Name" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel" unique_id=346602011]
-layout_mode = 0
-offset_top = 2.0
-offset_right = 44.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 32
+[node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl/PassiveItemDescritpion/Panel" unique_id=1136814307]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel/VBoxContainer" unique_id=346602011]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_font_sizes/font_size = 45
 text = "Name"
+autowrap_mode = 3
 
-[node name="Desctiption" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel" unique_id=1354041584]
-layout_mode = 0
-offset_top = 59.0
-offset_right = 360.0
-offset_bottom = 191.0
+[node name="Desctiption" type="Label" parent="PassiveItemsControl/PassiveItemDescritpion/Panel/VBoxContainer" unique_id=1354041584]
+layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Descripcion"
 autowrap_mode = 3

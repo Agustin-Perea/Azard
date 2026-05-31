@@ -2,8 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cu0ox16vyo7ng" path="res://scenes/combat/finish_canvas.gd" id="1_g87ol"]
 [ext_resource type="Shader" uid="uid://d1qvvj1lp2tm7" path="res://resources/materials/starfield.tres" id="1_yjbpl"]
+[ext_resource type="StyleBox" uid="uid://dc461irh72xg" path="res://resources/UI_Buttons/button_box_flat.tres" id="5_bi4i0"]
+[ext_resource type="StyleBox" uid="uid://cls8k5wgeaejq" path="res://resources/UI_Buttons/button_box_flat_pressed.tres" id="6_lxxo3"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="7_6qi3r"]
 [ext_resource type="Material" uid="uid://bvqgr2sa8flk2" path="res://resources/materials/shaders/2D/portal_2d.tres" id="7_bi4i0"]
+[ext_resource type="StyleBox" uid="uid://d0ghab2nni1u7" path="res://resources/UI_Buttons/button_box_flat_hover.tres" id="7_ekr2e"]
+[ext_resource type="StyleBox" uid="uid://cceorkpnwp0" path="res://resources/UI_Buttons/button_box_flat_focus.tres" id="8_gabfn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yjbpl"]
 shader = ExtResource("1_yjbpl")
@@ -25,36 +29,6 @@ fill_to = Vector2(0, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gabfn"]
 texture = SubResource("GradientTexture2D_ygcga")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cc8oo"]
-bg_color = Color(0.3882353, 0.8, 0.3529412, 1)
-border_width_bottom = 20
-border_color = Color(0.2508333, 0.7, 0.21000001, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dry85"]
-bg_color = Color(0.2509804, 0.7019608, 0.21176471, 1)
-border_width_top = 20
-border_color = Color(0.8, 0.8, 0.8, 0)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mfjg"]
-bg_color = Color(0.47206664, 0.97, 0.4268, 1)
-border_width_bottom = 20
-border_color = Color(0.39281663, 0.91, 0.3458, 1)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjrv1"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
@@ -150,8 +124,8 @@ offset_bottom = -86.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 70
-theme_override_styles/normal = SubResource("StyleBoxFlat_cc8oo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_dry85")
-theme_override_styles/hover = SubResource("StyleBoxFlat_1mfjg")
-theme_override_styles/focus = SubResource("StyleBoxFlat_kjrv1")
+theme_override_styles/normal = ExtResource("5_bi4i0")
+theme_override_styles/pressed = ExtResource("6_lxxo3")
+theme_override_styles/hover = ExtResource("7_ekr2e")
+theme_override_styles/focus = ExtResource("8_gabfn")
 text = "Menu"

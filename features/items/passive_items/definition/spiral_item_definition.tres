@@ -13,4 +13,5 @@ metadata/_custom_type_script = "uid://bleacornpclic"
 [resource]
 script = ExtResource("2_mmu07")
 passive_item_effect = SubResource("Resource_n8f6b")
+weight = 67
 metadata/_custom_type_script = "uid://b3k5jwgh2o65v"
