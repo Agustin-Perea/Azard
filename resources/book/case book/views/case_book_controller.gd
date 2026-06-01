@@ -17,6 +17,12 @@ extends Node3D
 @onready var price_chart_chip_2 : Label3D = $left_cover/price_chart_bet_chip2/Label3D
 @onready var price_chart_chip_3 : Label3D = $left_cover/price_chart_bet_chip3/Label3D
 
+@onready var bet_group_item_element : BetGroupItemElement = $left_cover/bet_group_item
+@onready var bet_group_item_element_2 : BetGroupItemElement = $left_cover/bet_group_item2
+@onready var bet_group_item_element_3 : BetGroupItemElement = $left_cover/bet_group_item3
+
+
+
 @onready var reroll_price_chart : Label3D = $left_cover/price_chart_reroll/Label3D
 
 @onready var reroll_button : SB_Button3D = $left_cover/SB_Button3D
@@ -91,6 +97,15 @@ func reroll() -> void:
 	bingo_chip_created = GameState.object_pool_database.bingo_chips_constructor.get_random_bet_field_model()
 	bingo_chip_spot_3.assign_data_model(bingo_chip_created) 
 	price_chart_chip_3.text = str(SHOP_BASE_CHIP_MOD_PRICE)
+	
+	var bet_group_item_created : BetGroupItemDefinition = GameState.object_pool_database.bet_group_item_pool_definition.get_random_item()
+	bet_group_item_element.assign_bet_group_item(bet_group_item_created)
+	
+	bet_group_item_created = GameState.object_pool_database.bet_group_item_pool_definition.get_random_item()
+	bet_group_item_element_2.assign_bet_group_item(bet_group_item_created)
+	
+	bet_group_item_created = GameState.object_pool_database.bet_group_item_pool_definition.get_random_item()
+	bet_group_item_element_3.assign_bet_group_item(bet_group_item_created)
 	
 	UiEventBus.deactivate_descriptions.emit()
 

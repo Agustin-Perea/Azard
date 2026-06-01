@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://m1nsw4gw0s67"]
+
+[ext_resource type="Texture2D" uid="uid://bfwpp1e2uq8ax" path="res://resources/zodiac/icons/taurus.svg" id="1_4ktjx"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_u2477"]
+
+[resource]
+script = ExtResource("2_u2477")
+image_texture = ExtResource("1_4ktjx")
+group_upgrade = 8
+name = "Taurus"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

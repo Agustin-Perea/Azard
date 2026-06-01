@@ -224,8 +224,8 @@ func _resolve_bets(result_field_id: int) -> float:
 				GameEvent.new({
 					"paralel": false,
 					"action": func():
-						multiplier += field.multiplier
-						multiplicator_added.emit(field.multiplier,false)#esto modifica globalmente el mult sin animacion
+						multiplier += field.get_multiplier()
+						multiplicator_added.emit(field.get_multiplier(),false)#esto modifica globalmente el mult sin animacion
 						
 						table_meshes.call_mult_anim(field_id)
 						field.call_betfield_animation.emit() #eso especificamente pone una anim en el campo

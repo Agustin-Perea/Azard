@@ -1,9 +1,9 @@
 extends Control
-class_name PassiveItemShopChart
+class_name BetGroupItemChart
 
 #data 
 #target to follow
-@export var passive_item_shop_element: PassiveItemShopElement
+@export var bet_group_item_shop_element: BetGroupItemElement
 
 #name
 @onready var panel_description : PanelContainer = $Panel
@@ -31,35 +31,35 @@ func update_position() -> void:
 	var screen_pos = cam.unproject_position(target.global_position)
 	position = screen_pos
 
-func change_bet_group_item_data(new_passive_item_shop_element: PassiveItemShopElement) -> void:
-	if passive_item_shop_element != new_passive_item_shop_element:
-		passive_item_shop_element = new_passive_item_shop_element
-		item_name.text = passive_item_shop_element.passive_item_data.passive_item_effect.name
-		item_description.text =  passive_item_shop_element.passive_item_data.passive_item_effect.description
-		target = passive_item_shop_element
-		if target:
-			var screen_pos = cam.unproject_position(target.global_position)
-			if screen_pos.x > get_viewport_rect().size.x / 2.0:
-				panel_description.position.x = -649
-			else:
-				panel_description.position.x = 143
+func change_passive_item_data(new_bet_group_item_shop_element: BetGroupItemElement) -> void:
+	if bet_group_item_shop_element != new_bet_group_item_shop_element:
+		bet_group_item_shop_element = new_bet_group_item_shop_element
+		item_name.text = bet_group_item_shop_element.bet_group_item_data.name
+		item_description.text =  bet_group_item_shop_element.bet_group_item_data.get_description()
+		target = bet_group_item_shop_element
+		#if target:
+			#var screen_pos = cam.unproject_position(target.global_position)
+			#if screen_pos.x > get_viewport_rect().size.x / 2.0:
+				#panel_description.position.x = -649
+			#else:
+				#panel_description.position.x = 143
 		activate()
 	
 func deactivate() ->void:
 	self.visible = false
 	if buy_button:
 		buy_button.disabled = true
-	passive_item_shop_element = null
+	bet_group_item_shop_element = null
 
 func activate() ->void:
 	if buy_button:
-		if GameState.economy_component.can_afford(passive_item_shop_element.passive_item_data.base_price):
+		if GameState.economy_component.can_afford(bet_group_item_shop_element.bet_group_item_data.base_price):
 			buy_button.disabled = false
 		else:
 			buy_button.disabled = true
 	self.visible = true
 
 func on_button_buy_pressed()->void:
-	passive_item_shop_element._on_button_buy_pressed()
+	bet_group_item_shop_element._on_button_buy_pressed()
 	deactivate()
 	

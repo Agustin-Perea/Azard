@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://cwrnwgm88xi5m"]
+
+[ext_resource type="Texture2D" uid="uid://croarul7jkm30" path="res://resources/zodiac/icons/aries.svg" id="1_wi18b"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_874lw"]
+
+[resource]
+script = ExtResource("2_874lw")
+image_texture = ExtResource("1_wi18b")
+group_upgrade = 2
+name = "Aries"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

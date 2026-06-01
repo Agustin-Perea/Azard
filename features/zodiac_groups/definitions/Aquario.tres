@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://crnx0hs3qhgca"]
+
+[ext_resource type="Texture2D" uid="uid://ddaay6v8lquk0" path="res://resources/zodiac/icons/aquarius.svg" id="1_d12bj"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_d62bj"]
+
+[resource]
+script = ExtResource("2_d62bj")
+image_texture = ExtResource("1_d12bj")
+group_upgrade = 1
+name = "Aquario"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

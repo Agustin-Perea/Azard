@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://cnp6jkp05h0fe"]
+
+[ext_resource type="Texture2D" uid="uid://clefb8j47njv7" path="res://resources/zodiac/icons/gemini.svg" id="1_h4ou5"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_otdx5"]
+
+[resource]
+script = ExtResource("2_otdx5")
+image_texture = ExtResource("1_h4ou5")
+group_upgrade = 9
+name = "Gemini"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

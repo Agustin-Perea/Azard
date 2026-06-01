@@ -1,23 +1,31 @@
 extends StaticBody3D
-class_name PassiveItemShopElement
+class_name BetGroupItemElement
 
-@export var passive_item_data: PassiveItemDefinition
+@export var bet_group_item_data: BetGroupItemDefinition
 
-@onready var sprite3d : Sprite3D = $Sprite3D
-@onready var item_chart : MeshInstance3D = $item_chart
-@onready var description_canvas :  = $"../PassiveItemShopDescritpion"
+@onready var sprite3d : Sprite3D = $Sprite3D #obj
+
+
+
+@onready var description_canvas : BetGroupItemChart = $"../BetGroupItemDescritpion"
 @onready var price_label : Label3D = $PriceLabel
 
 @onready var self_collision : CollisionShape3D = $CollisionShape3D
 
+var price : int = 4
+
 func _ready() -> void:
-	passive_item_data = GameState.object_pool_database.passive_item_pool_definition.get_random_item()
-	price_label.text = "$" + str(passive_item_data.base_price)
-	activate()
+	#crear random por rng 
 	
+	activate()
+
+func assign_bet_group_item(new_bet_group_item_data: BetGroupItemDefinition)->void:
+	bet_group_item_data = new_bet_group_item_data
+	price_label.text = str(bet_group_item_data.base_price)
+	activate()
 
 func on_press() -> void:
-	description_canvas.change_bet_group_item_data(self)
+	description_canvas.change_passive_item_data(self)
 	
 
 @warning_ignore("unused_parameter")
@@ -34,9 +42,9 @@ func on_enter() -> void:
 
 @warning_ignore("unused_parameter")
 func _on_button_buy_pressed()->void:
-	if GameState.economy_component.can_afford(passive_item_data.base_price):
-		GameState.economy_component.spend_run_gold(passive_item_data.base_price)
-		GameState.add_passive_item(passive_item_data)
+	if GameState.economy_component.can_afford(bet_group_item_data.base_price):
+		GameState.economy_component.spend_run_gold(bet_group_item_data.base_price)
+		GameState.add_bet_group_level_up(bet_group_item_data.group_upgrade)
 
 	deactivate()
 	
@@ -44,13 +52,12 @@ func _on_button_buy_pressed()->void:
 func activate()->void:
 	self.visible = true
 	self_collision.disabled = false
-	sprite3d.texture = passive_item_data.image_texture
-
+	sprite3d.texture = bet_group_item_data.image_texture
 
 func deactivate()->void:
 	self.visible = false
 	self_collision.disabled = true
-	#description_canvas.deactivate()
+
 
 func _on_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:

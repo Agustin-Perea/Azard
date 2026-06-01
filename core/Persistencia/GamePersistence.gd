@@ -103,8 +103,9 @@ func _build_save_data(game_state : GameState) -> Dictionary:
 		"map": _build_map_save_data(game_state),
 		"balls_deck": _build_balls_save_data(game_state),
 		"passive_items": _build_passive_items_save_data(game_state),
+		"bet_field_groups": _build_bet_field_groups_save_data(game_state),
 		"bet_fields": _build_bet_fields_save_data(game_state),
-		"chips": _build_chips_save_data(game_state), # <-- Usará tu array real
+		"chips": _build_chips_save_data(game_state), 
 		"bets": _build_bets_save_data(game_state),
 	}
 
@@ -120,6 +121,7 @@ func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
 	_apply_map_save_data(game_state,data.get("map", {}))
 	_apply_balls_save_data(game_state,data.get("balls_deck", []))
 	_apply_passive_items_save_data(game_state,data.get("passive_items", []))
+	_apply_bet_field_groups_save_data(game_state, data.get("bet_field_groups", {}))
 	_apply_bet_fields_save_data(game_state,data.get("bet_fields", []))
 	
 	# Sobrescribimos los estados de esas fichas con los datos guardados antes de armar las apuestas
@@ -276,44 +278,86 @@ func _apply_passive_items_save_data(game_state : GameState,data: Array) -> void:
 			item.on_item_added()
 		UiEventBus.add_passive_item.emit(item)
 
-func _build_bet_fields_save_data(game_state : GameState) -> Array:
+func _build_bet_field_groups_save_data(game_state: GameState) -> Dictionary:
+	var result: Dictionary = {}
+	
+	for condition_enum in game_state.bet_field_groups:
+		var condition_strategy: BetCondition = game_state.bet_field_groups[condition_enum]
+		
+		# Guardamos las variables internas del recurso usando el enum como string/key
+		result[str(int(condition_enum))] = {
+			"multiplier_base": condition_strategy.multiplier_base,
+			"multiplier_by_level_added": condition_strategy.multiplier_by_level_added,
+			"level": condition_strategy.level
+		}
+		
+	return result
+
+func _apply_bet_field_groups_save_data(game_state: GameState, data: Dictionary) -> void:
+	for condition_str_key in data:
+		var condition_enum = int(condition_str_key) as Constants.BET_FIELD_CONDITION
+		
+		# Seguridad: Verificamos que el enum exista en nuestro diccionario base inicializado
+		if not game_state.bet_field_groups.has(condition_enum):
+			continue
+			
+		var condition_data: Dictionary = data[condition_str_key]
+		var condition_strategy: BetCondition = game_state.bet_field_groups[condition_enum]
+		
+		# Reasignamos los valores modificados al recurso duplicado en memoria
+		condition_strategy.multiplier_base = float(condition_data.get("multiplier_base", condition_strategy.multiplier_base))
+		condition_strategy.multiplier_by_level_added = float(condition_data.get("multiplier_by_level_added", condition_strategy.multiplier_by_level_added))
+		condition_strategy.level = int(condition_data.get("level", condition_strategy.level))
+
+func _build_bet_fields_save_data(game_state: GameState) -> Array:
 	var result: Array = []
 	for i in game_state.bet_field_models.size():
-		var field := game_state.bet_field_models[i]
+		var field: BetFieldModel = game_state.bet_field_models[i]
 		result.append({
 			"index": i,
 			"number": field.number,
-			"multiplier": field.multiplier,
-			"multiplier_by_level": field.multiplier_by_level,
 			"color": int(field.color),
 			"parity": int(field.parity),
 			"half_table": int(field.half_table),
 			"column": int(field.column),
 			"row": int(field.row),
 			"modifiable": field.modifiable,
-			"condition": _condition_to_name(field.ConditionStrategy),
+			"condition_type": int(field.ConditionType), # Guardamos el enum directamente
+			"extra_multiplier": field.extra_multiplier  # Añadido por si necesitas persistir este estado
 		})
 	return result
 
-func _apply_bet_fields_save_data(game_state : GameState,data: Array) -> void:
+func _apply_bet_fields_save_data(game_state: GameState, data: Array) -> void:
 	for field_data in data:
 		if typeof(field_data) != TYPE_DICTIONARY:
 			continue
+			
 		var index := int(field_data.get("index", -1))
 		if index < 0 or index >= game_state.bet_field_models.size():
 			continue
-		var field := game_state.bet_field_models[index]
-		field.number = int(field_data.get("number", field.number))
-		field.multiplier = float(field_data.get("multiplier", field.multiplier))
-		field.multiplier_by_level = float(field_data.get("multiplier_by_level", field.multiplier_by_level))
-		field.color = int(field_data.get("color", field.color)) as Constants.BET_FIELD_COLOR
-		field.parity = int(field_data.get("parity", field.parity)) as Constants.BET_FIELD_PARITY
-		field.half_table = int(field_data.get("half_table", field.half_table)) as Constants.BET_FIELD_HALF_TABLE
-		field.column = int(field_data.get("column", field.column)) as Constants.BET_FIELD_COLUMN
-		field.row = int(field_data.get("row", field.row)) as Constants.BET_FIELD_ROW
+			
+		var field: BetFieldModel = game_state.bet_field_models[index]
+		
+		field.color = field_data.get("color", field.color) as Constants.BET_FIELD_COLOR
+		field.parity = field_data.get("parity", field.parity) as Constants.BET_FIELD_PARITY
+		field.half_table = field_data.get("half_table", field.half_table) as Constants.BET_FIELD_HALF_TABLE
+		field.column = field_data.get("column", field.column) as Constants.BET_FIELD_COLUMN
+		field.row = field_data.get("row", field.row) as Constants.BET_FIELD_ROW
 		field.modifiable = bool(field_data.get("modifiable", field.modifiable))
-		field.ConditionStrategy = _condition_from_name(str(field_data.get("condition", _condition_to_name(field.ConditionStrategy))))
-		field.fieldChanged.emit()
+		field.extra_multiplier = int(field_data.get("extra_multiplier", field.extra_multiplier))
+		
+		# 1. Cargamos el tipo de condición
+		var condition_type = field_data.get("condition_type", field.ConditionType) as Constants.BET_FIELD_CONDITION
+		field.ConditionType = condition_type
+		
+		# 2. ¡ENLACE ESENCIAL!: Asignamos la estrategia real extraída desde el diccionario global ya cargado
+		if game_state.bet_field_groups.has(condition_type):
+			field.ConditionStrategy = game_state.bet_field_groups[condition_type]
+		
+		# Modificar 'number' al final dispara su setter y emite fieldChanged de forma limpia
+		field.number = int(field_data.get("number", field.number))
+
+
 
 func _build_bets_save_data(game_state : GameState) -> Array:
 	var result: Array = []
@@ -350,31 +394,31 @@ func _condition_to_name(condition: BetCondition) -> String:
 func _condition_from_name(condition_name: String) -> BetCondition:
 	match condition_name:
 		"BlackCondition":
-			return BlackCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/BlackCondition.tres").duplicate()
 		"EvenCondition":
-			return EvenCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/EvenCondition.tres").duplicate()
 		"FirstColumnCondition":
-			return FirstColumnCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstColumnCondition.tres").duplicate()
 		"FirstHalfCondition":
-			return FirstHalfCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstHalfCondition.tres").duplicate()
 		"FirstRowCondition":
-			return FirstRowCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstRowCondition.tres").duplicate()
 		"OddCondition":
-			return OddCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/OddCondition.tres").duplicate()
 		"RedCondition":
-			return RedCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/RedCondition.tres").duplicate()
 		"SecondColumnCondition":
-			return SecondColumnCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondColumnCondition.tres").duplicate()
 		"SecondHalfCondition":
-			return SecondHalfCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondHalfCondition.tres").duplicate()
 		"SecondRowCondition":
-			return SecondRowCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondRowCondition.tres").duplicate()
 		"ThirdColumnCondition":
-			return ThirdColumnCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdColumnCondition.tres").duplicate()
 		"ThirdRowCondition":
-			return ThirdRowCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdRowCondition.tres").duplicate()
 		_:
-			return StraightUpCondition.new()
+			return preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/StraightUpCondition.tres").duplicate()
 	
 
 

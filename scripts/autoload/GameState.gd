@@ -1,7 +1,7 @@
 extends Node
 
 
-
+var object_pool_database : ObjectPoolDatabase
 
 var GamePersistence : Persitence = Persitence.new()
 
@@ -11,7 +11,7 @@ var current_scene_path: String = Constants.MAP_SCENE_PATH
 
 
 
-var object_pool_database : ObjectPoolDatabase
+
 var map_generator : MapGenerator
 
 var bet_field_definition: BetFieldsDefinition
@@ -150,7 +150,7 @@ func load_from_definition():
 	#balls = null
 	for f in bet_field_definition.fields:
 		bet_field_models.append(f.duplicate(true)) # deep copy
-		f.ConditionStrategy = bet_field_groups[f.ConditionType]
+		bet_field_models[bet_field_models.size() - 1].ConditionStrategy = bet_field_groups[f.ConditionType]
 	
 	
 	for f in chipDefinition.fields:
@@ -269,7 +269,13 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
 	
-	
+func add_bet_group_level_up(bet_group : Constants.BET_FIELD_CONDITION)->void:
+	if bet_group == Constants.BET_FIELD_CONDITION.ALL:
+		for group in bet_field_groups:
+			bet_field_groups[group].level += 1
+	else:
+		bet_field_groups[bet_group].level += 1
+
 func add_extra_chip()->int:
 	var chip := ChipModel.new()
 	chip.chipID = chips.size()

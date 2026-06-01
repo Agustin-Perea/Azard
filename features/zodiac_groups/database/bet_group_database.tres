@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BetGroupItemDatabase" format=3 uid="uid://csmjmbv6njtgk"]
+
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="1_cb1wb"]
+[ext_resource type="Resource" uid="uid://crnx0hs3qhgca" path="res://features/zodiac_groups/definitions/Aquario.tres" id="2_2qy0t"]
+[ext_resource type="Script" uid="uid://vjjoh8c5e1an" path="res://features/zodiac_groups/database/bet_groups_database.gd" id="2_vidr1"]
+[ext_resource type="Resource" uid="uid://cwrnwgm88xi5m" path="res://features/zodiac_groups/definitions/Aries.tres" id="3_fdfx3"]
+[ext_resource type="Resource" uid="uid://br8ljev3mjw71" path="res://features/zodiac_groups/definitions/Cancer.tres" id="4_e0cme"]
+[ext_resource type="Resource" uid="uid://eh1rblerwdt2" path="res://features/zodiac_groups/definitions/Capricorn.tres" id="5_u6ixc"]
+[ext_resource type="Resource" uid="uid://cnp6jkp05h0fe" path="res://features/zodiac_groups/definitions/Gemini.tres" id="6_leuru"]
+[ext_resource type="Resource" uid="uid://b3brip32xt1xh" path="res://features/zodiac_groups/definitions/Leo.tres" id="7_hr7nk"]
+[ext_resource type="Resource" uid="uid://ymfjftiteu7c" path="res://features/zodiac_groups/definitions/Libra.tres" id="8_mcrcr"]
+[ext_resource type="Resource" uid="uid://86ohyhcicvqj" path="res://features/zodiac_groups/definitions/Moon.tres" id="9_6ivbs"]
+[ext_resource type="Resource" uid="uid://buk8thqdpyfo5" path="res://features/zodiac_groups/definitions/Pisces.tres" id="10_wle7n"]
+[ext_resource type="Resource" uid="uid://fppeumyrmgpj" path="res://features/zodiac_groups/definitions/Sagittarius.tres" id="11_anji4"]
+[ext_resource type="Resource" uid="uid://c522n7i05n4ar" path="res://features/zodiac_groups/definitions/Scorpio.tres" id="12_183e6"]
+[ext_resource type="Resource" uid="uid://dpl2qnrglpn2y" path="res://features/zodiac_groups/definitions/Sun.tres" id="13_mnmpf"]
+[ext_resource type="Resource" uid="uid://m1nsw4gw0s67" path="res://features/zodiac_groups/definitions/Tauro.tres" id="14_r4upg"]
+[ext_resource type="Resource" uid="uid://cpblo05bii7xx" path="res://features/zodiac_groups/definitions/Virgo.tres" id="15_i7733"]
+
+[resource]
+script = ExtResource("2_vidr1")
+all_items = Array[ExtResource("1_cb1wb")]([ExtResource("2_2qy0t"), ExtResource("3_fdfx3"), ExtResource("4_e0cme"), ExtResource("5_u6ixc"), ExtResource("6_leuru"), ExtResource("7_hr7nk"), ExtResource("8_mcrcr"), ExtResource("9_6ivbs"), ExtResource("10_wle7n"), ExtResource("11_anji4"), ExtResource("12_183e6"), ExtResource("13_mnmpf"), ExtResource("14_r4upg"), ExtResource("15_i7733")])
+metadata/_custom_type_script = "uid://vjjoh8c5e1an"
