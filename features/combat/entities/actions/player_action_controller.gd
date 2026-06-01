@@ -10,11 +10,10 @@ func _ready() -> void:
 	roulette_controller.finish_button.pressed.connect(_do_attacK)
 	next_attacK_Info = AttackInfo.new()
 	next_attacK_Info.attacker = $".."
-	
-	
-	UiEventBus.change_target.connect(on_change_target)
+
 	#CombatEventBus.unit_death.connect(get_target)
 	
+	BookEventBus.change_target.connect(on_change_target)
 	
 func perform_movement() -> void:
 	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.EnemySelection)
@@ -33,18 +32,19 @@ func perform_movement() -> void:
 
 
 func on_change_target(new_target : Unit):
-	#if target:
-		#target.shaders._deactivate_selection_aura()
+	if target:
+		target.model_visual_component.toggle_mi_stand(false)
 
 	target = new_target
-	#if new_target:
-		#target.shaders._activate_selection_aura()
+	if new_target:
+		target.model_visual_component.toggle_mi_stand(true)
 
 func _do_attacK()->void:
 	#cambiar de estado
 	#cerrar libro y cambiarlo a placeholder(quitar visibilidad)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
-
+	target.model_visual_component.toggle_mi_stand(false)
+	
 	#espera a que termine la animacion
 	var ev = GameEvent.new({
 		"paralel": false,

@@ -5,5 +5,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_cf3iy")
-shader_parameter/outline_width = 0.05
-shader_parameter/outline_color = Vector3(1, 1, 1)
+shader_parameter/active = false
+shader_parameter/weight = 0.02
+shader_parameter/color = Color(1, 1, 1, 0.5882353)
+shader_parameter/offset = Vector3(0, 0.08, -0.04)

@@ -86,6 +86,7 @@ func _perform_attack() -> void:
 	next_attacK_Info.target = target
 	perform_attack.emit(next_attacK_Info)
 
+#
 func get_target() -> void:
 	if attacker:
 		var groups = attacker.get_groups()

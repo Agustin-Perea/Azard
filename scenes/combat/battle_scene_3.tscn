@@ -8,7 +8,9 @@
 [ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="6_h46tf"]
 [ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_2tack"]
 [ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="8_phb0n"]
+[ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="9_qva4v"]
 [ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="9_w3bl7"]
+[ext_resource type="Texture2D" uid="uid://c8w2ler1wcenx" path="res://resources/player/mage/mage_Mage_texture.png" id="10_s8pgx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
 sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
@@ -32,6 +34,34 @@ albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
 size = Vector2(100, 100)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qva4v"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s8pgx"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
+noise = SubResource("FastNoiseLite_lfkuk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhypj"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("9_qva4v")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/main_texture = ExtResource("10_s8pgx")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
 
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
@@ -143,6 +173,38 @@ script = ExtResource("7_2tack")
 
 [node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("8_phb0n")]
 
+[node name="LifeView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="2" unique_id=1436878656]
+texture = SubResource("ViewportTexture_qva4v")
+
+[node name="DamageView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="4" unique_id=2027840614]
+texture = SubResource("ViewportTexture_s8pgx")
+
+[node name="Skeleton3D" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig" parent_id_path=PackedInt32Array(136977887, 1913276100) index="0" unique_id=1297471484]
+bones/2/position = Vector3(-0.0069565456, 0.87559026, 0.06589897)
+bones/2/rotation = Quaternion(0.020181136, -0.13935484, 0.0054693036, 0.99002177)
+bones/4/rotation = Quaternion(0.0007567333, 0.02307321, -5.446467e-05, 0.99973357)
+bones/5/rotation = Quaternion(-0.03548932, 0.07615183, 0.0033087307, 0.996459)
+bones/6/rotation = Quaternion(-0.5865252, -0.3890834, -0.44885972, 0.55057)
+bones/7/rotation = Quaternion(-0.41977128, 0.6005518, -0.5087801, 0.45196506)
+bones/8/rotation = Quaternion(0.08110825, 0.0003871125, -3.1567823e-05, 0.9967053)
+bones/9/rotation = Quaternion(-0.027317902, 0.00010952605, 0.0024537907, 0.9996238)
+bones/25/rotation = Quaternion(-0.58643794, 0.38943422, 0.44862032, 0.55060995)
+bones/26/rotation = Quaternion(0.33861622, 0.6465528, -0.44976023, -0.514805)
+bones/27/rotation = Quaternion(0.73096126, 0.042134758, -0.045318566, 0.6796076)
+bones/28/rotation = Quaternion(0.12453667, 0.764238, -0.15161897, 0.61436355)
+bones/44/rotation = Quaternion(0.1372296, -0.049592428, 0.0027113666, 0.98929334)
+bones/46/rotation = Quaternion(0.052755475, 0.025466917, -0.004556101, 0.99827236)
+bones/47/rotation = Quaternion(0.97392696, 0.035234146, -0.19160505, 0.11624298)
+bones/48/rotation = Quaternion(0.18240994, 0.004238105, -0.0007862482, 0.9832132)
+bones/49/rotation = Quaternion(-0.5136877, -0.26518592, -0.09071406, 0.81090844)
+bones/51/rotation = Quaternion(0.97646, -0.04886512, 0.19250557, 0.08414109)
+bones/52/rotation = Quaternion(0.17613502, -0.0062926677, 0.0011260334, 0.9843453)
+bones/53/position = Vector3(7.396852e-09, 0.43187046, -3.945134e-08)
+bones/53/rotation = Quaternion(-0.5606844, 0.018222487, -0.033304304, 0.8271589)
+
+[node name="cuerpoModificado_001" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig/Skeleton3D" index="1" unique_id=1979456466]
+material_override = SubResource("ShaderMaterial_fhypj")
+
 [node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
 script = ExtResource("7_2tack")
 
@@ -156,3 +218,5 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.2, 0, 4.521)
 
 [editable path="Environment/EntornoArena"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/CameraPlayer"]

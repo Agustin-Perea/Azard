@@ -16,18 +16,13 @@ signal attack_complete
 @onready var animation_tree: AnimationTree = $AnimationTree
 var animation_state_machine : AnimationNodeStateMachinePlayback
 
-
-#esto no deberia estar aqui, es algo de al accion
-#@export var attack_camera : Camera3D 
-#@onready var attack_camera_player : AnimationPlayer = $CameraAttack/AnimationPlayer
-
-##shaders, es algo del modelo
-#@onready var shaders : EntityShader = $Shaders
 #damage canvas
 @onready var status_view_component : StatusViewComponent = $StatusViewComponent
 
 #movement manager
 @onready var action_controller : ActionController = $ActionController
+
+@onready var model_visual_component : ModelVisualComponent = $ModelVisualComponent
 
 #como obtengo al target?
 @export var target : Node3D
@@ -133,17 +128,6 @@ func _death()-> void:
 			queue_free()
 			return true
 	}))
-#area para ser seleccionado por inputs como target
-#@warning_ignore("unused_parameter")
-#func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	#
-	#if event is InputEventMouseButton and event.pressed:
-		#PlayerUiEvents.change_target.emit(self)
-#
-#
-#func _on_target_area_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
-	#if event is InputEventMouseButton and event.pressed:
-		#PlayerUiEvents.change_target.emit(self)
 
 
 ##llamada hacia el UI, podria hacerlo el mismo 
@@ -152,3 +136,8 @@ func apply_camera_shake(strength: float, duration: float, frequency: float)->voi
 	
 func frame_freeze(timescale: float, duration: float)->void:
 	UiEventBus.frame_freeze.emit(timescale,duration)
+
+
+func _on_target_area_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		BookEventBus.change_target.emit(self)
