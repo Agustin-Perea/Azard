@@ -399,7 +399,7 @@ region = Rect2(0, 0, 256, 256)
 size = Vector3(0.2722168, 0.2630005, 0.033569336)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_onuhe"]
-size = Vector3(0.3782959, 0.25256348, 0.1182251)
+size = Vector3(0.79265594, 0.6016922, 0.1182251)
 
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
@@ -690,16 +690,17 @@ script = ExtResource("6_31hve")
 metadata/_custom_type_script = "uid://b82ivoeru5iay"
 
 [node name="nextLevelButton" type="MeshInstance3D" parent="ShopSceneController/SB_Button3D" unique_id=1657689075]
-transform = Transform3D(1.315, 0, 0, 0, -5.7480477e-08, 1.315, 0, -1.315, -5.7480477e-08, 0, 0, 0)
+transform = Transform3D(1.635, 0, 0, 0, -7.146812e-08, 1.635, 0, -1.635, -7.146812e-08, 0, 0, 0)
 material_override = ExtResource("8_8i8uj")
 mesh = ExtResource("9_keevi")
 
 [node name="Label3D" type="Label3D" parent="ShopSceneController/SB_Button3D" unique_id=712008770]
-transform = Transform3D(-1.3149999, 1.1496094e-07, 0, 1.1496094e-07, 1.3149999, -1.1496094e-07, -1.0050205e-14, -1.1496094e-07, -1.3149999, 0, 0, -0.021520138)
-text = "Map"
-font_size = 25
+transform = Transform3D(-1.3149999, 1.1496094e-07, 0, 1.1496094e-07, 1.3149999, -1.1496094e-07, -1.0050205e-14, -1.1496094e-07, -1.3149999, 0, 0, -0.034740925)
+text = "Mapa"
+font_size = 24
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ShopSceneController/SB_Button3D" unique_id=441493578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0136909485, 0.00019454956, 0)
 shape = SubResource("BoxShape3D_onuhe")
 
 [connection signal="input_event" from="ShopSceneController/Shop/PassiveItemChart" to="ShopSceneController/Shop/PassiveItemChart" method="_on_input_event"]
