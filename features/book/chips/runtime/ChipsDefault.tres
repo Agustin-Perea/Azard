@@ -14,6 +14,7 @@ metadata/_custom_type_script = "uid://e7ndm73jhkab"
 
 [sub_resource type="Resource" id="Resource_n3d21"]
 script = ExtResource("1_lfiqk")
+chipID = 2
 metadata/_custom_type_script = "uid://e7ndm73jhkab"
 
 [resource]

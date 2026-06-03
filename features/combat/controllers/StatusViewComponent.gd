@@ -43,8 +43,13 @@ func set_up(view_stats : StatsComponent)->void:
 
 	health_progress_bar.max_value = stats.max_healt
 	health_progress_bar.value = stats.current_healt
+	
+	
 	health_label_text.text = str(int(round(stats.current_healt)))
 	shield_label.text = str(int(round(stats.shield)))
+	if stats.shield <= 0:
+		deactivate_shield_hud()
+	
 	update_action()
 
 func _show_health() -> void:

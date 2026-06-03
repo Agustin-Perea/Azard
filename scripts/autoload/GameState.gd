@@ -278,7 +278,7 @@ func add_bet_group_level_up(bet_group : Constants.BET_FIELD_CONDITION)->void:
 
 func add_extra_chip()->int:
 	var chip := ChipModel.new()
-	chip.chipID = chips.size()
+	chip.chipID = chips.size()+1
 	chips.append(chip)
 	return chip.chipID
 	

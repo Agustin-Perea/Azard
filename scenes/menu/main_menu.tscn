@@ -485,7 +485,7 @@ stream = ExtResource("4_1k4da")
 [node name="EntornoArena" parent="Node3D" unique_id=1168665643 instance=ExtResource("5_bbqo6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05552146, 0, 0.61894584)
 
-[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2126568144]
+[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2080962684]
 material_override = ExtResource("6_d4hu8")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]
