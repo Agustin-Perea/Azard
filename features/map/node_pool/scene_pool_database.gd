@@ -7,18 +7,13 @@ var battle_pool : BattlePool
 
 #event pool
 var event_pool : BattlePool
-var event_pool : BattlePool
 #shop pool
-var shop_pool : BattlePool
 var shop_pool : BattlePool
 #reward pool
 var reward_pool : BattlePool
 #miniboss pool
 var mini_boss_pool : BattlePool
-var mini_boss_pool : BattlePool
 #boss pool
-var boss_pool : BattlePool
-
 var boss_pool : BattlePool
 
 
@@ -32,7 +27,6 @@ func _init() -> void:
 func reload()->void:
 	battle_pool = load("res://features/map/node_pool/battle_pool.tres").duplicate()
 	battle_pool.setup()
-
 
 	reward_pool = load("res://features/map/node_pool/reward_instances/reward_pool.tres").duplicate()
 	reward_pool.setup()
@@ -54,10 +48,6 @@ func set_seed(rng_seed : int)->void:
 	master_seed = rng_seed
 	battle_pool.set_seed(master_seed)
 	reward_pool.set_seed(master_seed)
-	shop_pool.set_seed(master_seed)
-	event_pool.set_seed(master_seed)
-	mini_boss_pool.set_seed(master_seed)
-	boss_pool.set_seed(master_seed)
 	shop_pool.set_seed(master_seed)
 	event_pool.set_seed(master_seed)
 	mini_boss_pool.set_seed(master_seed)

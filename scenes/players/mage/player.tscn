@@ -530,7 +530,6 @@ mesh = NodePath("mage/bro_rig/Skeleton3D/cuerpoModificado_001")
 
 [node name="LifeHudControl" parent="ModelVisualComponent/StatsView" unique_id=1383549522 instance=ExtResource("7_006nv")]
 visible = false
-visible = false
 
 [node name="SubViewport" type="SubViewport" parent="ModelVisualComponent/StatsView" unique_id=951734249]
 transparent_bg = true

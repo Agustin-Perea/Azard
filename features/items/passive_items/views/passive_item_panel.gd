@@ -1,11 +1,7 @@
 extends Button
-extends Button
 class_name PassiveItemPanel
 @onready var sprite : Sprite2D = $PassiveItemSprite
 @onready var cant : Label = $Label
-
-#debe ser un runtime
-var dataModel : PassiveItemRuntimeState #esto va a ser agregado por el tableState
 
 #debe ser un runtime
 var dataModel : PassiveItemRuntimeState #esto va a ser agregado por el tableState
@@ -18,7 +14,6 @@ var active_tween : Tween
 func _ready() -> void:
 	if dataModel:
 		#dataModel.animate.connect(_animate) quiza agregarlo en el runtime
-		sprite.texture = dataModel.passive_item_definition.image_texture
 		sprite.texture = dataModel.passive_item_definition.image_texture
 
 func _animate() -> void:
