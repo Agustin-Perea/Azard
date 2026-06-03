@@ -52,7 +52,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	BookEventBus.spin_started.emit()
 	
 	#agregar el base de la bola
-	base = ball.ball_definition.base_damage
+	base = ball.get_base_damage()
 	updateBase.emit()
 	#cambiar el material de la bola de la ruleta
 	ball_mesh.material_override = ball.ball_definition.ball_material
@@ -98,14 +98,10 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	await get_tree().create_timer(1).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
+	var delta_score := _resolve_bets(result_field_id,ball)
 	score = delta_score#bad
 	
-	#eventos finales post resolve, bolas y pasivos
-	ball.ball_definition.ball_effect.on_post_resolved(self)
-	
 	#cambio de score
-	changeScore()
 	
 	await get_tree().create_timer(1).timeout
 	#habilita los clicks al completar
@@ -113,17 +109,12 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
+			changeScore()
 			table_meshes.deactivate_highlight_field()
 			UiEventBus.change_collision_detection_buttons.emit(false)
 			return true
 	}))
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##PlayerUiEvents.bet_procesed.emit()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
+
 	
 	
 func spin() -> void:
@@ -202,7 +193,7 @@ func changeScore()->void:
 	}))
 
 @warning_ignore("shadowed_variable")
-func _resolve_bets(result_field_id: int) -> float:
+func _resolve_bets(result_field_id: int, ball : BallRuntimeState = null) -> float:
 	# Obtenemos el BetFieldModel ganador
 	var winner_model = GameState.bet_field_models[result_field_id] as BetFieldModel
 	
@@ -212,6 +203,8 @@ func _resolve_bets(result_field_id: int) -> float:
 	#mmmm
 	winner_model.activateHighlight.emit()
 	BookEventBus.bet_pre_resolve.emit(self)
+	if ball:
+		ball.ball_definition.ball_effect.on_pre_resolve(self)
 	
 	var count : int = 0
 	for field_id in active_bets:
@@ -236,12 +229,14 @@ func _resolve_bets(result_field_id: int) -> float:
 				pass
 			
 			BookEventBus.bet_resolved.emit(self)
-			
+			if ball:
+				ball.ball_definition.ball_effect.on_bet_resolved(self)
 			count+=1
 			delta = multiplier
 	
 	BookEventBus.bet_post_resolved.emit(self)
-	#m
+	if ball:
+		ball.ball_definition.ball_effect.on_post_resolved(self)
 	return delta
 	
 	

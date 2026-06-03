@@ -38,7 +38,7 @@ func update_labels()->void:
 	deactivate_button.collision_shape.disabled = false
 
 	ball_name.text = ball_element.ball_data.ball_definition.ball_effect.name
-	base_damage_text.text = str(ball_element.ball_data.ball_definition.base_damage)
+	base_damage_text.text = str(ball_element.ball_data.get_base_damage())
 	description.text = ball_element.ball_data.ball_definition.ball_effect.description
 
 @warning_ignore("unused_parameter")

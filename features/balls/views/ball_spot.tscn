@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://wat314uoi0bg"]
 
 [ext_resource type="Script" uid="uid://bldoj5bn0ua4m" path="res://features/balls/views/ball_element.gd" id="1_nx6r2"]
-[ext_resource type="Material" uid="uid://b8jm48e5yg867" path="res://resources/balls/materials/shield_ball_material.tres" id="2_8lm48"]
-[ext_resource type="ArrayMesh" uid="uid://nfeersyg1bd2" path="res://resources/book/model/roulette_ball.tres" id="3_8lm48"]
 [ext_resource type="Material" uid="uid://dcyu5hv0xs4ih" path="res://resources/materials/auras/legendary_aura_material.tres" id="3_l35wy"]
 [ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="4_l35wy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_q6jwi"]
 radius = 0.115460515
+
+[sub_resource type="SphereMesh" id="SphereMesh_l35wy"]
+radius = 0.05
+height = 0.1
 
 [node name="Ball_Spot" type="StaticBody3D" unique_id=1548367600]
 physics_interpolation_mode = 1
@@ -19,9 +21,8 @@ offset_description_canvas = Vector3(0.631, 0.092, 0.802)
 shape = SubResource("SphereShape3D_q6jwi")
 
 [node name="ball_mesh" type="MeshInstance3D" parent="." unique_id=440408662]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-material_override = ExtResource("2_8lm48")
-mesh = ExtResource("3_8lm48")
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("SphereMesh_l35wy")
 
 [node name="Sprite3D_aura" type="Sprite3D" parent="." unique_id=993775335]
 transform = Transform3D(0.035, 0, 0, 0, -1.5298985e-09, 0.035, 0, -0.035, -1.5298985e-09, 0, 0, 0)

@@ -28,6 +28,10 @@
 [ext_resource type="StyleBox" uid="uid://4gti6y8vdg41" path="res://resources/UI_Buttons/small_button_box_flat_pressed.tres" id="16_bn06s"]
 [ext_resource type="Resource" uid="uid://dpl2qnrglpn2y" path="res://features/zodiac_groups/definitions/Sun.tres" id="16_f3bd5"]
 [ext_resource type="StyleBox" uid="uid://b3psta2s7wsw8" path="res://resources/UI_Buttons/small_button_box_flat_hover.tres" id="17_vrjq5"]
+[ext_resource type="Script" uid="uid://bgwqkgi6cd15p" path="res://resources/book/case book/views/life_canvas_listener.gd" id="28_7p26f"]
+[ext_resource type="PackedScene" uid="uid://cr828ygsutwmb" path="res://resources/potion/potion.glb" id="28_kuc72"]
+[ext_resource type="Script" uid="uid://bcpvv6ximypu" path="res://resources/book/case book/views/potion_control.gd" id="29_7p26f"]
+[ext_resource type="PackedScene" uid="uid://b3qrix0g5hy2y" path="res://resources/potion/potion_button.glb" id="29_ycyw8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i7d7l"]
 size = Vector3(0.32332993, 0.16040039, 0.11782837)
@@ -66,6 +70,21 @@ use_colors = true
 instance_count = 36
 mesh = ExtResource("8_qvpcn")
 buffer = PackedFloat32Array(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.135, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.27, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.405, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.54, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.675, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.81, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.945, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.08, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.215, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.35, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.485, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kuc72"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+border_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycyw8"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+anti_aliasing = false
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7p26f"]
+viewport_path = NodePath("right_cover/SubViewport")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7p26f"]
+size = Vector3(0.448761, 0.04449463, 0.19891357)
 
 [node name="CaseBook" type="Node3D" unique_id=523368687]
 physics_interpolation_mode = 2
@@ -609,6 +628,70 @@ transform = Transform3D(1.005, 0, 0, 0, 1.005, 0, 0, 0, 1.005, 0.006229222, -0.0
 material_override = ExtResource("10_hbfy0")
 mesh = ExtResource("11_hm2pu")
 
+[node name="SubViewport" type="SubViewport" parent="right_cover" unique_id=1313015861]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(32, 4)
+
+[node name="ProgressBar" type="ProgressBar" parent="right_cover/SubViewport" unique_id=919082104]
+texture_filter = 1
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 31.0
+offset_bottom = 3.0
+theme_override_styles/background = SubResource("StyleBoxFlat_kuc72")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ycyw8")
+value = 50.0
+show_percentage = false
+
+[node name="LifeView" type="Sprite3D" parent="right_cover" unique_id=2084736584]
+transform = Transform3D(0.845, 0, 0, 0, -3.6936125e-08, 0.845, 0, -0.845, -3.6936125e-08, 1.3777713, 0.028684318, -1.0967237)
+pixel_size = 0.02
+double_sided = false
+texture_filter = 0
+texture = SubResource("ViewportTexture_7p26f")
+script = ExtResource("28_7p26f")
+
+[node name="LifeText" type="Label3D" parent="right_cover/LifeView" unique_id=1811168431]
+transform = Transform3D(1.1834319, 0, 0, 0, 1.1834319, -3.5527137e-15, 0, 3.5527137e-15, 1.1834319, -0.00017786026, 0.10212731, -0.02507602)
+text = "100/100"
+font_size = 18
+
+[node name="potion" parent="right_cover" unique_id=1040324771 instance=ExtResource("28_kuc72")]
+
+[node name="Potion" type="Node3D" parent="right_cover" unique_id=1428575050]
+script = ExtResource("29_7p26f")
+
+[node name="potion_button" parent="right_cover/Potion" unique_id=171188153 instance=ExtResource("29_ycyw8")]
+
+[node name="Button" type="StaticBody3D" parent="right_cover/Potion" unique_id=300306209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3925158, 0, -0.92902565)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="right_cover/Potion/Button" unique_id=288838318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.021652222, 0.016937256, -0.0063171387)
+shape = SubResource("BoxShape3D_7p26f")
+
+[node name="Message" type="Label3D" parent="right_cover/Potion" unique_id=578115839]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.4428717, 0.03725204, -0.92412955)
+text = "Curar"
+font_size = 15
+
+[node name="FeedBack_Message" type="Label3D" parent="right_cover/Potion" unique_id=343716755]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.3776209, 0.0074950755, -0.73457783)
+text = "20% (0 PV)"
+font_size = 18
+
+[node name="Sprite3D2" type="Sprite3D" parent="right_cover/Potion" unique_id=1362840023]
+transform = Transform3D(1.0000002, -7.450587e-09, -9.770257e-16, 6.513504e-16, -4.371139e-08, 1, -7.450589e-09, -1, -4.371139e-08, 1.2312562, 0.051733375, -0.92907727)
+pixel_size = 0.0005
+texture = ExtResource("11_r7qgw")
+
+[node name="PriceLabel" type="Label3D" parent="right_cover/Potion" unique_id=1016756306]
+transform = Transform3D(1.0000002, -7.4505815e-09, -9.770255e-16, 6.513504e-16, -4.371139e-08, 1, -7.450583e-09, -1, -4.371139e-08, 1.2708468, 0.04016471, -0.92907727)
+text = "5"
+font_size = 16
+horizontal_alignment = 0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1364728007]
 libraries/book_animations = ExtResource("4_skb3x")
 
@@ -635,3 +718,4 @@ fov = 45.0
 [connection signal="input_event" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_exited"]
+[connection signal="input_event" from="right_cover/Potion/Button" to="right_cover/Potion" method="_on_button_input_event"]

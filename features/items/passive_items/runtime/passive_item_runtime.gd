@@ -7,7 +7,7 @@ class_name PassiveItemRuntimeState
 @export var passive_item_definition : PassiveItemDefinition
 
 
-#deberia llamar quantity veces al onballuse()
+#deberia hacerlo una sola vez y el efecto decidir que hacer con la cantidad
 func on_signal_used(roulette_controller : RouletteController)->void:
 	for i in range(quantity):
 		passive_item_definition.passive_item_effect.on_item_use(roulette_controller)

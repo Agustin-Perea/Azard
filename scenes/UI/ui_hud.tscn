@@ -213,13 +213,16 @@ offset_top = 39.0
 offset_right = -49.0
 offset_bottom = 79.0
 grow_horizontal = 0
+mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/GoldHUD" unique_id=1636587063]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control/GoldHUD/HBoxContainer" unique_id=856324499]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_31jtf")
 expand_mode = 2
 

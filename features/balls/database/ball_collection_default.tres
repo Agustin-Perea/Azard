@@ -1,21 +1,21 @@
 [gd_resource type="Resource" script_class="BallsRuntimeCollection" format=3 uid="uid://07tu5oy5nwny"]
 
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_7ik2x"]
-[ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="2_ghtjb"]
+[ext_resource type="Resource" uid="uid://djobnr1pselbx" path="res://features/balls/definition/legendary/ascend_ball_definition.tres" id="2_ghtjb"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
-[ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="3_373ir"]
+[ext_resource type="Resource" uid="uid://dmtko1h2nma2e" path="res://features/balls/definition/epic/fortune_ball_definition.tres" id="4_373ir"]
 
-[sub_resource type="Resource" id="Resource_fagvn"]
+[sub_resource type="Resource" id="Resource_rc2d2"]
 script = ExtResource("1_7ik2x")
 ball_definition = ExtResource("2_ghtjb")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
-[sub_resource type="Resource" id="Resource_rc2d2"]
+[sub_resource type="Resource" id="Resource_w4yp4"]
 script = ExtResource("1_7ik2x")
-ball_definition = ExtResource("3_373ir")
+ball_definition = ExtResource("4_373ir")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
 [resource]
 script = ExtResource("2_ioi2j")
-all_balls = Array[ExtResource("1_7ik2x")]([SubResource("Resource_fagvn"), SubResource("Resource_rc2d2")])
+all_balls = Array[ExtResource("1_7ik2x")]([SubResource("Resource_rc2d2"), SubResource("Resource_w4yp4")])
 metadata/_custom_type_script = "uid://dmwaoftujv38"

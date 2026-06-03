@@ -2,22 +2,23 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uvj73cqkbrx5"
-path.s3tc="res://.godot/imported/flare_01.png-99ea8df668f222f640abb84fec972b37.s3tc.ctex"
-path.etc2="res://.godot/imported/flare_01.png-99ea8df668f222f640abb84fec972b37.etc2.ctex"
+uid="uid://4r6s3qh24ot2"
+path="res://.godot/imported/potion_PaletaColoresRuleta.png-863e0dc74aa20a24892122273cc8a8b3.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
+}
+generator_parameters={
+"md5": "894dbf5f664f054ff979add9966c6339"
 }
 
 [deps]
 
-source_file="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/flare_01.png"
-dest_files=["res://.godot/imported/flare_01.png-99ea8df668f222f640abb84fec972b37.s3tc.ctex", "res://.godot/imported/flare_01.png-99ea8df668f222f640abb84fec972b37.etc2.ctex"]
+source_file="res://resources/potion/potion_PaletaColoresRuleta.png"
+dest_files=["res://.godot/imported/potion_PaletaColoresRuleta.png-863e0dc74aa20a24892122273cc8a8b3.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://bsbs7frecqiwi"]
+
+[ext_resource type="Material" uid="uid://dw2thmobsa8mx" path="res://resources/balls/materials/gold_ball_material.tres" id="1_68xdj"]
+[ext_resource type="Script" uid="uid://cx6sf3a7f1rxt" path="res://features/balls/effects/goldball_effect.gd" id="1_qn4dh"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="2_qn4dh"]
+
+[sub_resource type="Resource" id="Resource_kranq"]
+script = ExtResource("1_qn4dh")
+name = "GoldBall"
+description = "Añade +1 oro por cada ficha activada en un campo distinto"
+metadata/_custom_type_script = "uid://cx6sf3a7f1rxt"
+
+[resource]
+script = ExtResource("2_qn4dh")
+base_damage = 3
+ball_material = ExtResource("1_68xdj")
+weight = 25
+base_price = 8
+rarity = 1
+ball_effect = SubResource("Resource_kranq")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"
