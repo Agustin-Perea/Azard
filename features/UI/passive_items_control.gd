@@ -2,6 +2,7 @@ extends Control
 class_name PassiveItemsUI
 
 @onready var item_container: VBoxContainer = $VBoxContainer
+@onready var item_container: VBoxContainer = $VBoxContainer
 @onready var panel_scene = preload("res://features/items/passive_items/views/passive_item_panel.tscn")
 
 @onready var passive_item_control : Control = $PassiveItemDescritpion
@@ -30,7 +31,20 @@ func add_passive_item_panel(data_model: PassiveItemRuntimeState) -> void:
 	# Si no existe, crea uno nuevo
 	var nuevo_panel: PassiveItemPanel = panel_scene.instantiate()
 
+func add_passive_item_panel(data_model: PassiveItemRuntimeState) -> void:
+	# Si ya existe el panel, solo refresca datos
+	if panels_by_item.has(data_model):
+		var existing_panel: PassiveItemPanel = panels_by_item[data_model]
+		
+		# llamá al método que actualiza la UI
+		existing_panel.update_view()
+		return
+
+	# Si no existe, crea uno nuevo
+	var nuevo_panel: PassiveItemPanel = panel_scene.instantiate()
+
 	nuevo_panel.dataModel = data_model
+
 
 	item_container.add_child(nuevo_panel)
 	

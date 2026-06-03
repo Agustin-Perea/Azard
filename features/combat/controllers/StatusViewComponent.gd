@@ -38,6 +38,7 @@ func set_up(view_stats : StatsComponent)->void:
 	
 	stats.health_changed.connect(_update_health)
 
+
 	UiEventBus.deactivate_status_view_component.connect(deactivate)
 	UiEventBus.activate_status_view_component.connect(activate)
 

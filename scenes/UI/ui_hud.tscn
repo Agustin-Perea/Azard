@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="2_31jtf"]
 [ext_resource type="Script" uid="uid://cbuhan4nyq3m5" path="res://features/UI/defeat_canvas_ui_controller.gd" id="2_e3xy8"]
 [ext_resource type="Script" uid="uid://c5oc3w8c31xik" path="res://features/UI/2d_shop_description_chart.gd" id="3_6dbbq"]
+[ext_resource type="Script" uid="uid://c5oc3w8c31xik" path="res://features/UI/2d_shop_description_chart.gd" id="3_6dbbq"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="3_topx2"]
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
@@ -37,12 +38,14 @@ corner_radius_bottom_left = 180
 colors = PackedColorArray(0.1764706, 0.06666667, 0.06666667, 0.1882353, 0.9411765, 0.35686275, 0.35686275, 0.6431373)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_6dbbq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6dbbq"]
 gradient = SubResource("Gradient_6jlm3")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cfu6f"]
+texture = SubResource("GradientTexture2D_6dbbq")
 texture = SubResource("GradientTexture2D_6dbbq")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r1ju"]
@@ -90,15 +93,20 @@ script = ExtResource("5_topx2")
 [node name="VBoxContainer" type="VBoxContainer" parent="PassiveItemsControl" unique_id=783840754]
 layout_mode = 0
 offset_left = 7.0
+offset_left = 7.0
 offset_top = 1.0
 offset_right = 135.0
+offset_right = 135.0
 offset_bottom = 1197.0
+mouse_filter = 2
 mouse_filter = 2
 
 [node name="PanelOffset" type="Panel" parent="PassiveItemsControl/VBoxContainer" unique_id=1881803015]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(128, 134.4)
+custom_minimum_size = Vector2(128, 134.4)
 layout_mode = 2
+mouse_filter = 1
 mouse_filter = 1
 
 [node name="PassiveItemPanel" parent="PassiveItemsControl/VBoxContainer" unique_id=1912728531 instance=ExtResource("6_31jtf")]
@@ -159,6 +167,7 @@ script = ExtResource("1_kdbiy")
 
 [node name="SelectionButton" type="Button" parent="Control" unique_id=1151124999]
 visible = false
+visible = false
 texture_filter = 2
 layout_mode = 1
 anchors_preset = 2
@@ -173,6 +182,7 @@ theme_override_font_sizes/font_size = 32
 text = "selection"
 
 [node name="BookButton" type="Button" parent="Control" unique_id=1334060315]
+visible = false
 visible = false
 texture_filter = 2
 layout_mode = 1

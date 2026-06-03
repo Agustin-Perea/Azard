@@ -243,7 +243,7 @@ func remove_bet(chip_id: int) -> void:
 	field_by_chip.erase(chip_id)
 
 func add_passive_item(new_passive : PassiveItemDefinition)->void:
-	var existing_item = null
+	var existing_item : PassiveItemRuntimeState = null 
 	
 	for item in passiveItems_collection:
 		if (item.passive_item_definition == new_passive): 

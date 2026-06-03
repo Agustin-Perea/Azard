@@ -577,6 +577,8 @@ far = 100.0
 physics_interpolation_mode = 2
 libraries/chest_animations = ExtResource("13_m01iw")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RewardSceneController/reward_camera" unique_id=1170039397]
+
 [node name="AnimableCanvas" type="Control" parent="." unique_id=591628303]
 visible = false
 texture_filter = 2
