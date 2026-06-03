@@ -33,7 +33,7 @@ func _ready() -> void:
 	stats = stats.duplicate(true)
 		
 	#temporal
-	stats.max_healt = int(stats.max_healt * pow(1.5, GameState.temp_scene_changed_value))
+	stats.max_healt = int(stats.max_healt * pow(1.2, GameState.temp_scene_changed_value))
 	
 	stats.set_up()
 	

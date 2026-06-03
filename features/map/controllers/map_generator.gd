@@ -205,7 +205,10 @@ func _set_room_randomly(node :MapNode)->void:
 func _set_node_scene(map_node : MapNode)->void:
 	match map_node.type:
 		MapNode.Type.ENEMY:
-			map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
+			if last_node == null:
+				map_node.node_scene = load("res://features/map/node_pool/battle_intances/battle_tier_1.tres")
+			else:
+				map_node.node_scene = scene_pool_database.battle_pool._get_random_battle_for_tier(0)
 		MapNode.Type.MINIBOSS:
 			map_node.node_scene = scene_pool_database.mini_boss_pool._get_random_battle_for_tier(0)
 		MapNode.Type.BOSS:

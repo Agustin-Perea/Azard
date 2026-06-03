@@ -114,7 +114,6 @@ func reroll() -> void:
 func on_map_button_pressed()->void:
 	#PlayerUiEvents.change_book_page.emit(Constants.BOOK_PAGE.MAP)
 	#preload()
-	GameState.temp_scene_changed_value +=1
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.MAP)
 	#UiEventBus.change_scene_to.emit("res://scenes/combat/battle_scene_1.tscn")
 	

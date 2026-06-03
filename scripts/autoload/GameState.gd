@@ -108,7 +108,7 @@ func _ready():
 
 func reload():
 	#BookEventBus.reload.emit()
-	temp_scene_changed_value = 0
+	temp_scene_changed_value = -1
 	master_seed = randi() % 999999999 + 1
 	_rebuild_run_from_current_seed()
 

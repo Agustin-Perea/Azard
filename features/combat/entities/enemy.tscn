@@ -29,7 +29,7 @@ cellular_return_type = 5
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
 noise = SubResource("FastNoiseLite_lfkuk")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2kjj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b34tf"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_fo5sc")
@@ -124,14 +124,13 @@ mesh = NodePath("bat/Bat")
 physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
-[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0191566, 0, 0, 0, 0.9693494, 0, 0, 0, 1, 0, 1.7190881, 0)
-material_override = SubResource("ShaderMaterial_d2kjj")
+[node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=1352704274]
+transform = Transform3D(1.0401518, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8733865, 0)
+material_override = SubResource("ShaderMaterial_b34tf")
 material_overlay = SubResource("ShaderMaterial_206xx")
-"blend_shapes/Key 2" = 0.4929937
-"blend_shapes/Key 4" = 0.5070063
+"blend_shapes/Key 2" = 1.0
 
-[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
+[node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=501119537]
 active = false
 libraries/bat_animations = ExtResource("4_iy404")
 playback_default_blend_time = 0.2
