@@ -1,0 +1,222 @@
+[gd_scene format=3 uid="uid://ce2d2yhfgp0oc"]
+
+[ext_resource type="PackedScene" uid="uid://di66ngq5c2ox2" path="res://resources/environment/test/EntornoArena.glb" id="1_srh1g"]
+[ext_resource type="Script" uid="uid://d132v2qp2fqu7" path="res://features/camera/camera_container.gd" id="2_7ovah"]
+[ext_resource type="Script" uid="uid://bkkwhauk12crs" path="res://features/camera/virtual_camera.gd" id="3_qva4v"]
+[ext_resource type="Script" uid="uid://drht1ab2f5obc" path="res://features/combat/controllers/turn_based_combat/combat_manager.gd" id="4_s8pgx"]
+[ext_resource type="Script" uid="uid://cigvuflhblnyd" path="res://features/combat/controllers/combat state machine/combat_state_machine.gd" id="5_fhypj"]
+[ext_resource type="Script" uid="uid://co0yjyb6ah110" path="res://features/combat/controllers/combat state machine/combat_state.gd" id="6_h46tf"]
+[ext_resource type="Script" uid="uid://qbivnun0epoi" path="res://features/combat/controllers/turn_based_combat/unit_group.gd" id="7_2tack"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="8_phb0n"]
+[ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="9_qva4v"]
+[ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="9_w3bl7"]
+[ext_resource type="Texture2D" uid="uid://c8w2ler1wcenx" path="res://resources/player/mage/mage_Mage_texture.png" id="10_s8pgx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
+sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+sky_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+ground_bottom_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
+ground_horizon_color = Color(0.61960787, 0.85882354, 0.9372549, 1)
+
+[sub_resource type="Sky" id="Sky_vt4cp"]
+sky_material = SubResource("ProceduralSkyMaterial_8ibt7")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_njiuf"]
+background_mode = 2
+sky = SubResource("Sky_vt4cp")
+ambient_light_source = 2
+ambient_light_color = Color(0.8089983, 0.8089983, 0.80899835, 1)
+reflected_light_source = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isoin"]
+albedo_color = Color(0.40275747, 0.69517034, 0.19359463, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b6bnk"]
+size = Vector2(100, 100)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qva4v"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s8pgx"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
+noise = SubResource("FastNoiseLite_lfkuk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhypj"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("9_qva4v")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/main_texture = ExtResource("10_s8pgx")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
+
+[node name="BattleScene1" type="Node3D" unique_id=536595362]
+
+[node name="Environment" type="Node" parent="." unique_id=1416635751]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1431979176]
+environment = SubResource("Environment_njiuf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1896513646]
+transform = Transform3D(0.8737722, -0.213958, 0.4367426, 0, 0.8980276, 0.43993917, -0.4863354, -0.38440663, 0.78467155, 0, 5.866068, 0)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_bake_mode = 1
+sky_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment" unique_id=1950242176]
+visible = false
+material_override = SubResource("StandardMaterial3D_isoin")
+mesh = SubResource("PlaneMesh_b6bnk")
+
+[node name="EntornoArena" parent="Environment" unique_id=1168665643 instance=ExtResource("1_srh1g")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.1361115, 8.76)
+
+[node name="CameraContainer" type="Node3D" parent="." unique_id=1252865407 node_paths=PackedStringArray("selected_camera")]
+script = ExtResource("2_7ovah")
+selected_camera = NodePath("CombatCameras/BookCamera")
+
+[node name="VirtualCamera" type="Camera3D" parent="CameraContainer" unique_id=1107707823]
+physics_interpolation_mode = 2
+transform = Transform3D(-0.95731944, 0, -0.2890319, 0, 1, 0, 0.2890319, 0, -0.95731944, -1.5797986, 1.6798961, -1.6191579)
+current = true
+fov = 45.0
+script = ExtResource("3_qva4v")
+max_angle = 1.0
+
+[node name="CombatCameras" type="Node" parent="CameraContainer" unique_id=1752700216]
+
+[node name="BookCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=233727052]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.57823, 0.32839847)
+fov = 45.0
+
+[node name="RouletteCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1655470664]
+transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.26101086, 1.3490415, 0.45209107)
+fov = 45.0
+
+[node name="EnemySelectCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1450840542]
+transform = Transform3D(-0.9573195, 0, -0.28903192, 0, 1, 0, 0.28903192, 0, -0.9573195, -1.5797986, 1.6798961, -1.6191579)
+fov = 45.0
+
+[node name="DefeatCamera" type="Camera3D" parent="CameraContainer/CombatCameras" unique_id=1892104669]
+transform = Transform3D(0.24512559, 0.078623, -0.96629804, 0.061418407, 0.99344486, 0.09641211, 0.967544, -0.08298156, 0.23868985, -1.7503628, 0.6074704, 0.8997381)
+fov = 30.0
+
+[node name="Extra" type="Node" parent="." unique_id=1603717315]
+
+[node name="BattleManager" type="Node" parent="." unique_id=669596202]
+
+[node name="CombatGroups" type="Node" parent="BattleManager" unique_id=370919649 node_paths=PackedStringArray("Player", "EnemyGroup")]
+script = ExtResource("4_s8pgx")
+Player = NodePath("PlayerGroup")
+EnemyGroup = NodePath("EnemyGroup")
+
+[node name="CombatStateMachine" type="Node" parent="BattleManager/CombatGroups" unique_id=569869291 node_paths=PackedStringArray("default_state")]
+script = ExtResource("5_fhypj")
+default_state = NodePath("SelectionState")
+
+[node name="SelectionState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1470090554 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
+ui_book_button = true
+
+[node name="BookState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=715524440 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_book_inputs = false
+ui_selection_button = true
+
+[node name="RouletteState" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2082908531 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/RouletteCamera")
+disable_moveable_collisions = true
+
+[node name="BetResolve" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1208368497 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_moveable_collisions = true
+
+[node name="StandBy" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=32333335 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+change_camera = false
+camera = NodePath("../../../../CameraContainer/CombatCameras/EnemySelectCamera")
+disable_moveable_collisions = true
+
+[node name="BookCase" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=2025596019 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/BookCamera")
+disable_book_inputs = false
+
+[node name="Defeat" type="Node" parent="BattleManager/CombatGroups/CombatStateMachine" unique_id=1188575509 node_paths=PackedStringArray("camera")]
+script = ExtResource("6_h46tf")
+camera = NodePath("../../../../CameraContainer/CombatCameras/DefeatCamera")
+fixed_time = 2.0
+disable_moveable_collisions = true
+
+[node name="PlayerGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1709527586]
+script = ExtResource("7_2tack")
+
+[node name="Player" parent="BattleManager/CombatGroups/PlayerGroup" unique_id=136977887 instance=ExtResource("8_phb0n")]
+
+[node name="LifeView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="2" unique_id=1436878656]
+texture = SubResource("ViewportTexture_qva4v")
+
+[node name="DamageView" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="4" unique_id=2027840614]
+texture = SubResource("ViewportTexture_s8pgx")
+
+[node name="Skeleton3D" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig" parent_id_path=PackedInt32Array(136977887, 1913276100) index="0" unique_id=1297471484]
+bones/2/position = Vector3(-0.0069570835, 0.8803077, 0.061964337)
+bones/2/rotation = Quaternion(0.055040173, -0.13944386, 0.0005564991, 0.9886991)
+bones/4/rotation = Quaternion(-0.04285356, 0.018721374, 0.00897888, 0.99886566)
+bones/5/rotation = Quaternion(-0.07907423, 0.06256157, 0.011748366, 0.9948343)
+bones/6/rotation = Quaternion(-0.5700668, -0.40928754, -0.434838, 0.56429017)
+bones/7/rotation = Quaternion(-0.4228228, 0.6164716, -0.49008405, 0.44833177)
+bones/8/rotation = Quaternion(0.081107214, 0.0010118642, -8.236614e-05, 0.9967049)
+bones/9/rotation = Quaternion(-0.027316008, 0.0005667637, 0.0024290823, 0.99962384)
+bones/25/rotation = Quaternion(-0.5665243, 0.42185488, 0.42531133, 0.56586117)
+bones/26/rotation = Quaternion(0.38504115, 0.64662486, -0.45326886, -0.4776685)
+bones/27/rotation = Quaternion(0.703549, 0.026210839, -0.025984097, 0.70968777)
+bones/28/rotation = Quaternion(0.13882123, 0.76061976, -0.13232043, 0.6202239)
+bones/44/rotation = Quaternion(0.18053229, -0.04126673, -0.005809262, 0.98268586)
+bones/46/rotation = Quaternion(0.09705376, 0.034556586, -0.0028925275, 0.9946749)
+bones/47/rotation = Quaternion(0.97031224, 0.036507197, -0.19133866, 0.14335679)
+bones/48/rotation = Quaternion(0.1631986, 0.0035169271, -0.00058181107, 0.9865868)
+bones/49/rotation = Quaternion(-0.5036519, -0.26410964, -0.094457015, 0.8171039)
+bones/51/rotation = Quaternion(0.97590667, -0.028163444, 0.19135371, 0.10098001)
+bones/52/rotation = Quaternion(0.14341459, -0.0031796216, 0.00046082737, 0.98965746)
+bones/53/position = Vector3(1.7175536e-08, 0.4328124, 2.9714045e-09)
+bones/53/rotation = Quaternion(-0.5458311, 0.018259872, -0.03094247, 0.83712465)
+
+[node name="cuerpoModificado_001" parent="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/mage/bro_rig/Skeleton3D" index="1" unique_id=1979456466]
+material_override = SubResource("ShaderMaterial_fhypj")
+
+[node name="EnemyGroup" type="Node" parent="BattleManager/CombatGroups" unique_id=1434491143]
+script = ExtResource("7_2tack")
+
+[node name="Enemy" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=986372475 instance=ExtResource("9_w3bl7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.2, 0, 4.521)
+
+[node name="Enemy2" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=704330891 instance=ExtResource("9_w3bl7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 4.521)
+
+[node name="Enemy3" parent="BattleManager/CombatGroups/EnemyGroup" unique_id=2096523871 instance=ExtResource("9_w3bl7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.2, 0, 4.521)
+
+[editable path="Environment/EntornoArena"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player"]
+[editable path="BattleManager/CombatGroups/PlayerGroup/Player/ModelVisualComponent/CameraPlayer"]

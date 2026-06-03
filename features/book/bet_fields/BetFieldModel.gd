@@ -24,12 +24,9 @@ signal call_betfield_animation
 		number = value
 		fieldChanged.emit()
 
-		
-@export var multiplier: float = 36
-@export var multiplier_by_level: float = 18 #la mitad pero en realidad hay que ver
-
-@export var ConditionStrategy: BetCondition 
-
+@export var ConditionType : Constants.BET_FIELD_CONDITION = Constants.BET_FIELD_CONDITION.STRAIGHT_UP
+var ConditionStrategy: BetCondition 
+var extra_multiplier = 0
 
 @export var color: Constants.BET_FIELD_COLOR = Constants.BET_FIELD_COLOR.RED
 @export var parity: Constants.BET_FIELD_PARITY = Constants.BET_FIELD_PARITY.EVEN
@@ -41,6 +38,8 @@ signal call_betfield_animation
 @export var modifiable: bool = true
 
 
+func get_multiplier()->float:
+	return ConditionStrategy.get_multiplier() + extra_multiplier
 
 func copy_metadata(new_model:BetFieldModel)->void:
 	if modifiable:

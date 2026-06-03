@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cso2lpv6nc7lx" path="res://features/combat/entities/model_visual_component.gd" id="3_4ehg1"]
 [ext_resource type="ArrayMesh" uid="uid://bv8ldl6w83dju" path="res://resources/enemies/golem/golem_mesh.res" id="4_hutyt"]
 [ext_resource type="Material" uid="uid://dardmc6navfcp" path="res://resources/enemies/golem/golem_dissolve_material.tres" id="4_tvopq"]
+[ext_resource type="Shader" uid="uid://psrjp2pytv5o" path="res://resources/materials/shaders/outline_shader.gdshader" id="5_2lpq5"]
 [ext_resource type="AnimationLibrary" uid="uid://ddbe7cecthh1a" path="res://resources/enemies/golem/animations/golem_animatons.res" id="5_sbpk5"]
 [ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="8_p34j0"]
 [ext_resource type="PackedScene" uid="uid://r1b7s32mtkp2" path="res://scenes/UI/life_hud_control.tscn" id="9_qo1wv"]
@@ -15,8 +16,18 @@
 [ext_resource type="Script" uid="uid://ckbbwythqg1w6" path="res://features/combat/entities/shout_shader.gd" id="13_gev1l"]
 [ext_resource type="Script" uid="uid://dw0pxbqiq52da" path="res://features/combat/controllers/StatusViewComponent.gd" id="13_n0avh"]
 [ext_resource type="Script" uid="uid://d3y71vaw8trb2" path="res://features/combat/entities/actions/action_controller.gd" id="14_7kfv1"]
+[ext_resource type="Texture2D" uid="uid://bfcx4dfbpqtwd" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/magic_03.png" id="15_ms5cd"]
+[ext_resource type="Script" uid="uid://b24ytod48x5vx" path="res://features/UI/2d_follow_3d_object.gd" id="16_2lpq5"]
 [ext_resource type="PackedScene" uid="uid://tsnu6kw1hkky" path="res://resources/enemies/golem/CameraAttack.glb" id="16_4ehg1"]
 [ext_resource type="AnimationLibrary" uid="uid://bjx5e6k8opjqo" path="res://resources/enemies/golem/animations/slash/slash_animations.res" id="17_klhr3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p34j0"]
+render_priority = 0
+shader = ExtResource("5_2lpq5")
+shader_parameter/active = true
+shader_parameter/weight = 0.02
+shader_parameter/color = Color(1, 1, 1, 0.5882353)
+shader_parameter/offset = Vector3(0, 0.08, -0.04)
 
 [sub_resource type="Skin" id="Skin_e8g2x"]
 resource_name = "Skin"
@@ -645,7 +656,7 @@ bones/43/parent = -1
 bones/43/rest = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 3.9058485e-09, 1.4998786, 0.02676987)
 bones/43/enabled = true
 bones/43/position = Vector3(-0.86337805, 0.46648347, 1.7855328)
-bones/43/rotation = Quaternion(0, -0.9890159, 0, 0.14780945)
+bones/43/rotation = Quaternion(0, 0.65435934, 0, 0.75618386)
 bones/43/scale = Vector3(0.99999994, 0.99999994, 0.99999994)
 bones/44/name = "DEF-thigh.L"
 bones/44/parent = -1
@@ -720,6 +731,7 @@ bones/53/scale = Vector3(0.99999994, 0.99999994, 0.99999994)
 
 [node name="Golem" type="MeshInstance3D" parent="ModelVisualComponent/StatsView/Golem/rig_001/Skeleton3D" unique_id=1718013635]
 material_override = ExtResource("4_tvopq")
+material_overlay = SubResource("ShaderMaterial_p34j0")
 mesh = ExtResource("4_hutyt")
 skin = SubResource("Skin_e8g2x")
 skeleton = NodePath("..")
@@ -785,10 +797,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LifeHudControl" parent="ModelVisualComponent/StatsView" unique_id=1383549522 instance=ExtResource("9_qo1wv")]
-visible = false
 
 [node name="GPUParticles3D" parent="ModelVisualComponent" unique_id=829231785 instance=ExtResource("10_ecywp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9877169, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8101068, 0)
 
 [node name="Camera-camera" type="Camera3D" parent="ModelVisualComponent" unique_id=1764889419]
 transform = Transform3D(0.8290376, -0.058451537, 0.5561296, 3.7252903e-09, 0.9945219, 0.10452839, -0.5591929, -0.08665796, 0.8244961, 1.3199999, 1.6768206, 5.0144734)
@@ -811,6 +822,25 @@ script = ExtResource("13_gev1l")
 
 [node name="shout_spot" type="Node3D" parent="ModelVisualComponent" unique_id=1009398367]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15407, 0)
+
+[node name="Control" type="Control" parent="ModelVisualComponent" unique_id=513166012 node_paths=PackedStringArray("target")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("16_2lpq5")
+target = NodePath("../GPUParticles3D")
+girar = true
+
+[node name="TextureRect" type="TextureRect" parent="ModelVisualComponent/Control" unique_id=150288345]
+layout_mode = 0
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+scale = Vector2(0.33, 0.33)
+pivot_offset = Vector2(256, 256)
+texture = ExtResource("15_ms5cd")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=621545040]
 root_node = NodePath("../ModelVisualComponent/StatsView/Golem")
@@ -847,12 +877,14 @@ physics_interpolation_mode = 2
 transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, 0, 0, 0)
 
 [node name="Circle" type="MeshInstance3D" parent="slash" unique_id=2141041110]
-transform = Transform3D(1, 1.5390799e-17, 3.3109902e-19, -1.4806303e-17, 0.9909307, -0.013437404, -5.349084e-18, 0.13437401, 0.099093094, -1.0075299e-16, 2.7148092, 1.6320201)
+transform = Transform3D(1, 1.5390865e-17, 3.3109967e-19, -1.480637e-17, 0.9909307, -0.013437425, -5.349103e-18, 0.13437422, 0.099093094, -1.0075299e-16, 2.7148092, 1.6320201)
 rotation_edit_mode = 2
 mesh = SubResource("ArrayMesh_1ojw0")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="slash" unique_id=449703492]
 libraries/ = SubResource("AnimationLibrary_ms5cd")
 libraries/slash_animations = ExtResource("17_klhr3")
+
+[connection signal="input_event" from="target_area" to="." method="_on_target_area_input_event"]
 
 [editable path="CameraAttack"]

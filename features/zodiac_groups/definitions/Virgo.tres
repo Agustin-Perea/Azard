@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://cpblo05bii7xx"]
+
+[ext_resource type="Texture2D" uid="uid://ct53uqaxe5sbq" path="res://resources/zodiac/icons/virgo.svg" id="1_ssvg8"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_kcq1k"]
+
+[resource]
+script = ExtResource("2_kcq1k")
+image_texture = ExtResource("1_ssvg8")
+group_upgrade = 11
+name = "Virgo"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

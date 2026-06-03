@@ -25,13 +25,22 @@ var max_camera_x := 0.0
 
 func _ready() -> void:
 	map_generator = GameState.map_generator
-	camera_edge_x = map_generator.layer_distance * (map_generator.layers) - get_viewport_rect().size.x
+	
+	# Usamos el tamaño base del proyecto para que la matemática sea consistente
+	var base_screen_width = float(ProjectSettings.get_setting("display/window/size/viewport_width"))
+	
+	# El límite de la cámara debe restar el ancho de la pantalla base
+	camera_edge_x = map_generator.layer_distance * (map_generator.layers) - base_screen_width
+	# Evitamos que sea un valor negativo si el mapa es más chico que la pantalla
+	camera_edge_x = max(0.0, camera_edge_x) 
+	
 	geerate_new_map()
-	#unlock_layer(0)
 	unlock_next_layers()
+	
 	# Configurar límites de cámara
 	min_camera_x = 0.0
 	max_camera_x = camera_edge_x
+	
 	if map_generator.last_node:
 		layers_completed = map_generator.last_node.row
 		var node_camera_pos_x := (map_generator.last_node.row) * map_generator.layer_distance

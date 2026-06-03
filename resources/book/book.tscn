@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://dwk0uil3sfst5" path="res://features/balls/views/balls_container.gd" id="15_4a5wc"]
 [ext_resource type="Texture2D" uid="uid://hj6ym7q4nvpl" path="res://resources/book/table_groups_PaletaColoresRuleta.png" id="15_28cwr"]
 [ext_resource type="PackedScene" uid="uid://wat314uoi0bg" path="res://features/balls/views/ball_spot.tscn" id="15_vh2hp"]
+[ext_resource type="Texture2D" uid="uid://d2x3dibo04wjw" path="res://resources/hud_icons/shield_icon.svg" id="16_n0767"]
 [ext_resource type="Script" uid="uid://bqt412pv6i4lk" path="res://features/book/table/view/table_fields_controller.gd" id="17_6tqyr"]
 [ext_resource type="ArrayMesh" uid="uid://o2ott3v2yxl6" path="res://resources/book/model/bet_field_zero.tres" id="17_h1llp"]
 [ext_resource type="Material" uid="uid://yers7tswll0g" path="res://resources/materials/bet_field_shader_material_multimesh.tres" id="17_mpnxt"]
@@ -527,7 +528,7 @@ choosed_field = 15
 finish_y_level = -0.1
 
 [node name="base_mesh" type="MeshInstance3D" parent="left_cover" unique_id=1442219343]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8492213, -0.041860536, -1.6421878)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84849876, -0.040545866, -1.6430191)
 mesh = ExtResource("2_ykbav")
 
 [node name="Score Area" type="Node3D" parent="left_cover" unique_id=1858201168 node_paths=PackedStringArray("Labels")]
@@ -564,14 +565,16 @@ text = "Turno"
 font_size = 20
 
 [node name="BaseLabel" type="Label3D" parent="left_cover/Score Area" unique_id=1758804665]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.0016531, 0.0038767457, -0.9705792)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.9347546, 0.0038767457, -0.9705792)
 modulate = Color(0.9884754, 0.99183387, 0.94533116, 1)
 text = "1"
+horizontal_alignment = 2
 
 [node name="MultLabel" type="Label3D" parent="left_cover/Score Area" unique_id=2120168629]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.7210264, 0.0038767457, -0.9705792)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.7840972, 0.0038767457, -0.9705792)
 modulate = Color(0.9882353, 0.99215686, 0.94509804, 1)
 text = "1"
+horizontal_alignment = 0
 
 [node name="XLabel" type="Label3D" parent="left_cover/Score Area" unique_id=935635680]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.8526306, 0.0038767457, -0.9705792)
@@ -584,7 +587,7 @@ modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 text = "0"
 
 [node name="NumberLabel" type="Label3D" parent="left_cover/Score Area" unique_id=361538702]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.8487266, -0.0991697, -1.6195717)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.8487266, -0.0991697, -1.62012)
 modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 text = "-"
 
@@ -837,29 +840,50 @@ shape = SubResource("BoxShape3D_nq47p")
 [node name="SubViewport" type="SubViewport" parent="left_cover" unique_id=2109446995]
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(30, 2)
+size = Vector2i(32, 4)
+
+[node name="ColorRect" type="ColorRect" parent="left_cover/SubViewport" unique_id=1006721480]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.47699997, 0.53, 0.53, 1)
 
 [node name="ProgressBar" type="ProgressBar" parent="left_cover/SubViewport" unique_id=294875285]
 texture_filter = 1
-offset_right = 30.0
-offset_bottom = 2.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 31.0
+offset_bottom = 3.0
 theme_override_styles/background = SubResource("StyleBoxFlat_f2bku")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ac6gq")
 value = 50.0
 show_percentage = false
 
 [node name="LifeView" type="Sprite3D" parent="left_cover" unique_id=1996390829]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85367143, 0.112562895, -0.32125103)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85367143, 0.0073685944, -0.32125103)
 pixel_size = 0.02
 double_sided = false
 texture_filter = 0
 texture = SubResource("ViewportTexture_4a5wc")
 
+[node name="ShieldIcon" type="Sprite3D" parent="left_cover" unique_id=1392829120]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.2382544, 0.0073685944, -0.32800514)
+pixel_size = 0.0009
+double_sided = false
+texture_filter = 0
+texture = ExtResource("16_n0767")
+
 [node name="LifeText" type="Label3D" parent="left_cover" unique_id=125935465]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85884213, 0.08875367, -0.4164775)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.85884213, 0.0048571825, -0.4164775)
 pixel_size = 0.003
 double_sided = false
 text = "80"
+
+[node name="ShieldText" type="Label3D" parent="left_cover" unique_id=941751028]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.2369722, 0.013725877, -0.31047153)
+pixel_size = 0.003
+double_sided = false
+text = "10"
+font_size = 27
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=305352410]
 mesh = ExtResource("2_vb2ae")

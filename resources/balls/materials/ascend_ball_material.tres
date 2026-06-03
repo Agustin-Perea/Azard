@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c3jhn3ihe7kv"]
+
+[ext_resource type="Texture2D" uid="uid://uvj73cqkbrx5" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/flare_01.png" id="1_2ucmo"]
+
+[resource]
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+albedo_color = Color(0.873703, 0.3826029, 1, 1)
+albedo_texture = ExtResource("1_2ucmo")

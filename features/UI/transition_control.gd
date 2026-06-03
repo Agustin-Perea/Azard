@@ -16,7 +16,8 @@ func _change_scene_to(scene : String)->void:
 		color_rect_tween.kill()
 	
 	scene_to_load = scene
-	
+	if scene_to_load != Constants.MAIN_MENU_SCENE_PATH:
+		GameState.save_run(scene_to_load)
 	color_rect_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	color_rect_tween.tween_property(color_rect,"modulate:a", 1.0,0.5).connect("finished",_load_new_scene)
 	color_rect_tween.chain().tween_property(color_rect,"modulate:a", 0.0,2)

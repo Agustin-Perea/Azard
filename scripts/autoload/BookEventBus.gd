@@ -21,6 +21,8 @@ signal reroll(RouletteController)
 
 signal battle_init
 
+signal change_target(unit : Unit)
+
 signal player_turn
 
 signal enemy_turn

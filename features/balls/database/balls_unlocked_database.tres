@@ -4,8 +4,12 @@
 [ext_resource type="Script" uid="uid://cvuh12b4ukh7w" path="res://features/balls/database/balls_database.gd" id="2_04sma"]
 [ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="2_i0oqi"]
 [ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="2_refb4"]
+[ext_resource type="Resource" uid="uid://b8lepd5fqo3nd" path="res://features/balls/definition/common/fire_ball_definition.tres" id="4_rvqkr"]
+[ext_resource type="Resource" uid="uid://dmtko1h2nma2e" path="res://features/balls/definition/epic/fortune_ball_definition.tres" id="5_75hmk"]
+[ext_resource type="Resource" uid="uid://bsbs7frecqiwi" path="res://features/balls/definition/common/gold_ball_definition.tres" id="6_k4ton"]
+[ext_resource type="Resource" uid="uid://djobnr1pselbx" path="res://features/balls/definition/legendary/ascend_ball_definition.tres" id="7_k4ton"]
 
 [resource]
 script = ExtResource("2_04sma")
-all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4")])
+all_balls = Array[ExtResource("1_im5jw")]([ExtResource("2_i0oqi"), ExtResource("2_refb4"), ExtResource("4_rvqkr"), ExtResource("5_75hmk"), ExtResource("6_k4ton"), ExtResource("7_k4ton")])
 metadata/_custom_type_script = "uid://cvuh12b4ukh7w"

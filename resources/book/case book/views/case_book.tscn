@@ -19,6 +19,19 @@
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="10_hbfy0"]
 [ext_resource type="ArrayMesh" uid="uid://baeoiakx8vtop" path="res://resources/book/model/outline.tres" id="11_hm2pu"]
 [ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="11_r7qgw"]
+[ext_resource type="Texture2D" uid="uid://dk1o54y51qsij" path="res://resources/zodiac/icons/sagittarius.svg" id="12_ckgmk"]
+[ext_resource type="Script" uid="uid://dhjiu6vguf5vl" path="res://features/zodiac_groups/bet_group_level_up.gd" id="12_r7qgw"]
+[ext_resource type="Resource" uid="uid://cwrnwgm88xi5m" path="res://features/zodiac_groups/definitions/Aries.tres" id="13_r8kwq"]
+[ext_resource type="Script" uid="uid://7idv4sr33gvq" path="res://features/zodiac_groups/bet_group_item_chart.gd" id="14_j2gin"]
+[ext_resource type="StyleBox" uid="uid://d36opfdw4o5v7" path="res://resources/UI_Buttons/small_button_box_flat_focus.tres" id="15_r8kwq"]
+[ext_resource type="Resource" uid="uid://86ohyhcicvqj" path="res://features/zodiac_groups/definitions/Moon.tres" id="15_vrjq5"]
+[ext_resource type="StyleBox" uid="uid://4gti6y8vdg41" path="res://resources/UI_Buttons/small_button_box_flat_pressed.tres" id="16_bn06s"]
+[ext_resource type="Resource" uid="uid://dpl2qnrglpn2y" path="res://features/zodiac_groups/definitions/Sun.tres" id="16_f3bd5"]
+[ext_resource type="StyleBox" uid="uid://b3psta2s7wsw8" path="res://resources/UI_Buttons/small_button_box_flat_hover.tres" id="17_vrjq5"]
+[ext_resource type="Script" uid="uid://bgwqkgi6cd15p" path="res://resources/book/case book/views/life_canvas_listener.gd" id="28_7p26f"]
+[ext_resource type="PackedScene" uid="uid://cr828ygsutwmb" path="res://resources/potion/potion.glb" id="28_kuc72"]
+[ext_resource type="Script" uid="uid://bcpvv6ximypu" path="res://resources/book/case book/views/potion_control.gd" id="29_7p26f"]
+[ext_resource type="PackedScene" uid="uid://b3qrix0g5hy2y" path="res://resources/potion/potion_button.glb" id="29_ycyw8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_i7d7l"]
 size = Vector3(0.32332993, 0.16040039, 0.11782837)
@@ -29,6 +42,25 @@ size = Vector3(0.39627075, 0.06652832, 0.30029297)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ckgmk"]
 size = Vector3(0.38619995, 0.16973877, 0.2869873)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_r7qgw"]
+size = Vector3(0.19622803, 0.20727539, 0.05340576)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f3bd5"]
+content_margin_left = 22.0
+content_margin_top = 16.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(0.21960784, 0.101960786, 0.18039216, 0.92941177)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82400006, 0.120000005, 0.67058825)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_qstwr"]
 size = Vector3(0.668, 0.1, 1.626)
 
@@ -38,6 +70,21 @@ use_colors = true
 instance_count = 36
 mesh = ExtResource("8_qvpcn")
 buffer = PackedFloat32Array(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.135, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.135, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.27, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.27, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.405, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.405, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.54, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.54, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.675, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.675, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.81, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.81, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 0.945, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 0.945, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.08, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.08, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.215, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.215, 0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.35, 0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.35, -0.25, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1, 1, 0, 0, 0.222, 0, 1, 0, 0, 0, 0, 1, 1.485, -0.25, 0, 0, 1, 1, 0, 0, 0.444, 0, 1, 0, 0, 0, 0, 1, 1.485, 0.25, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kuc72"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+border_color = Color(0.21568628, 0.21568628, 0.21568628, 0.56078434)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycyw8"]
+bg_color = Color(0.9411765, 0.35686275, 0.35686275, 1)
+anti_aliasing = false
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7p26f"]
+viewport_path = NodePath("right_cover/SubViewport")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7p26f"]
+size = Vector3(0.448761, 0.04449463, 0.19891357)
 
 [node name="CaseBook" type="Node3D" unique_id=523368687]
 physics_interpolation_mode = 2
@@ -243,6 +290,132 @@ transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -3.552713
 text = "50
 "
 font_size = 16
+
+[node name="bet_group_item" type="StaticBody3D" parent="left_cover" unique_id=1171857994]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.69363385, -0.06448646, -1.1622365)
+script = ExtResource("12_r7qgw")
+bet_group_item_data = ExtResource("13_r8kwq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/bet_group_item" unique_id=422346504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.03195192)
+shape = SubResource("BoxShape3D_r7qgw")
+
+[node name="Sprite3D" type="Sprite3D" parent="left_cover/bet_group_item" unique_id=75389565]
+pixel_size = 0.0008
+texture = ExtResource("12_ckgmk")
+
+[node name="Sprite3D2" type="Sprite3D" parent="left_cover/bet_group_item" unique_id=795437526]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -1.4210855e-14, -2.2351749e-08, 0, 1, -0.023254097, 0.15423381, 7.450581e-09)
+pixel_size = 0.0005
+texture = ExtResource("11_r7qgw")
+
+[node name="PriceLabel" type="Label3D" parent="left_cover/bet_group_item" unique_id=1344936260]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -3.5527137e-15, -2.2351744e-08, 0, 1, 0.016336381, 0.14266515, 7.450581e-09)
+text = "5"
+font_size = 16
+horizontal_alignment = 0
+
+[node name="bet_group_item2" type="StaticBody3D" parent="left_cover" unique_id=1283052759]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.46374306, -0.06448646, -1.1622365)
+script = ExtResource("12_r7qgw")
+bet_group_item_data = ExtResource("15_vrjq5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/bet_group_item2" unique_id=8541053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.03195192)
+shape = SubResource("BoxShape3D_r7qgw")
+
+[node name="Sprite3D" type="Sprite3D" parent="left_cover/bet_group_item2" unique_id=1231432774]
+pixel_size = 0.0008
+texture = ExtResource("12_ckgmk")
+
+[node name="Sprite3D2" type="Sprite3D" parent="left_cover/bet_group_item2" unique_id=968275651]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -1.4210855e-14, -2.2351749e-08, 0, 1, -0.023254097, 0.15423381, 7.450581e-09)
+pixel_size = 0.0005
+texture = ExtResource("11_r7qgw")
+
+[node name="PriceLabel" type="Label3D" parent="left_cover/bet_group_item2" unique_id=1659292297]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -3.5527137e-15, -2.2351744e-08, 0, 1, 0.016336381, 0.14266515, 7.450581e-09)
+text = "5"
+font_size = 16
+horizontal_alignment = 0
+
+[node name="bet_group_item3" type="StaticBody3D" parent="left_cover" unique_id=1203579367]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.23626465, -0.06448646, -1.1622365)
+script = ExtResource("12_r7qgw")
+bet_group_item_data = ExtResource("16_f3bd5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/bet_group_item3" unique_id=2070280946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.03195192)
+shape = SubResource("BoxShape3D_r7qgw")
+
+[node name="Sprite3D" type="Sprite3D" parent="left_cover/bet_group_item3" unique_id=1852476973]
+pixel_size = 0.0008
+texture = ExtResource("12_ckgmk")
+
+[node name="Sprite3D2" type="Sprite3D" parent="left_cover/bet_group_item3" unique_id=235694599]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -1.4210855e-14, -2.2351749e-08, 0, 1, -0.023254097, 0.15423381, 7.450581e-09)
+pixel_size = 0.0005
+texture = ExtResource("11_r7qgw")
+
+[node name="PriceLabel" type="Label3D" parent="left_cover/bet_group_item3" unique_id=1555886514]
+transform = Transform3D(1.0000002, 0, 2.9802322e-08, -1.490116e-08, 1, -3.5527137e-15, -2.2351744e-08, 0, 1, 0.016336381, 0.14266515, 7.450581e-09)
+text = "5"
+font_size = 16
+horizontal_alignment = 0
+
+[node name="BetGroupItemDescritpion" type="Control" parent="left_cover" unique_id=1381232347]
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = -525.0
+offset_right = 360.0
+offset_bottom = -225.0
+mouse_filter = 2
+script = ExtResource("14_j2gin")
+
+[node name="Panel" type="PanelContainer" parent="left_cover/BetGroupItemDescritpion" unique_id=1720735573]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 143.0
+offset_top = -46.0
+offset_right = 182.0
+offset_bottom = -162.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f3bd5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="left_cover/BetGroupItemDescritpion/Panel" unique_id=888003193]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="left_cover/BetGroupItemDescritpion/Panel/VBoxContainer" unique_id=1601389000]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_font_sizes/font_size = 45
+text = "Name"
+autowrap_mode = 3
+
+[node name="Desctiption" type="Label" parent="left_cover/BetGroupItemDescritpion/Panel/VBoxContainer" unique_id=1583799848]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Descripcion"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Button" type="Button" parent="left_cover/BetGroupItemDescritpion" unique_id=1515759642]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 77.0
+offset_right = 36.0
+offset_bottom = 135.0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = ExtResource("15_r8kwq")
+theme_override_styles/pressed = ExtResource("16_bn06s")
+theme_override_styles/hover = ExtResource("17_vrjq5")
+text = "buy"
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=1793716634]
 mesh = ExtResource("2_skb3x")
@@ -455,6 +628,70 @@ transform = Transform3D(1.005, 0, 0, 0, 1.005, 0, 0, 0, 1.005, 0.006229222, -0.0
 material_override = ExtResource("10_hbfy0")
 mesh = ExtResource("11_hm2pu")
 
+[node name="SubViewport" type="SubViewport" parent="right_cover" unique_id=1313015861]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(32, 4)
+
+[node name="ProgressBar" type="ProgressBar" parent="right_cover/SubViewport" unique_id=919082104]
+texture_filter = 1
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 31.0
+offset_bottom = 3.0
+theme_override_styles/background = SubResource("StyleBoxFlat_kuc72")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ycyw8")
+value = 50.0
+show_percentage = false
+
+[node name="LifeView" type="Sprite3D" parent="right_cover" unique_id=2084736584]
+transform = Transform3D(0.845, 0, 0, 0, -3.6936125e-08, 0.845, 0, -0.845, -3.6936125e-08, 1.3777713, 0.028684318, -1.0967237)
+pixel_size = 0.02
+double_sided = false
+texture_filter = 0
+texture = SubResource("ViewportTexture_7p26f")
+script = ExtResource("28_7p26f")
+
+[node name="LifeText" type="Label3D" parent="right_cover/LifeView" unique_id=1811168431]
+transform = Transform3D(1.1834319, 0, 0, 0, 1.1834319, -3.5527137e-15, 0, 3.5527137e-15, 1.1834319, -0.00017786026, 0.10212731, -0.02507602)
+text = "100/100"
+font_size = 18
+
+[node name="potion" parent="right_cover" unique_id=1040324771 instance=ExtResource("28_kuc72")]
+
+[node name="Potion" type="Node3D" parent="right_cover" unique_id=1428575050]
+script = ExtResource("29_7p26f")
+
+[node name="potion_button" parent="right_cover/Potion" unique_id=171188153 instance=ExtResource("29_ycyw8")]
+
+[node name="Button" type="StaticBody3D" parent="right_cover/Potion" unique_id=300306209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3925158, 0, -0.92902565)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="right_cover/Potion/Button" unique_id=288838318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.021652222, 0.016937256, -0.0063171387)
+shape = SubResource("BoxShape3D_7p26f")
+
+[node name="Message" type="Label3D" parent="right_cover/Potion" unique_id=578115839]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.4428717, 0.03725204, -0.92412955)
+text = "Curar"
+font_size = 15
+
+[node name="FeedBack_Message" type="Label3D" parent="right_cover/Potion" unique_id=343716755]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.3776209, 0.0074950755, -0.73457783)
+text = "20% (0 PV)"
+font_size = 18
+
+[node name="Sprite3D2" type="Sprite3D" parent="right_cover/Potion" unique_id=1362840023]
+transform = Transform3D(1.0000002, -7.450587e-09, -9.770257e-16, 6.513504e-16, -4.371139e-08, 1, -7.450589e-09, -1, -4.371139e-08, 1.2312562, 0.051733375, -0.92907727)
+pixel_size = 0.0005
+texture = ExtResource("11_r7qgw")
+
+[node name="PriceLabel" type="Label3D" parent="right_cover/Potion" unique_id=1016756306]
+transform = Transform3D(1.0000002, -7.4505815e-09, -9.770255e-16, 6.513504e-16, -4.371139e-08, 1, -7.450583e-09, -1, -4.371139e-08, 1.2708468, 0.04016471, -0.92907727)
+text = "5"
+font_size = 16
+horizontal_alignment = 0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1364728007]
 libraries/book_animations = ExtResource("4_skb3x")
 
@@ -475,6 +712,10 @@ fov = 45.0
 [connection signal="input_event" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/Next_SB_Button3D" to="left_cover/Next_SB_Button3D" method="_on_mouse_exited"]
+[connection signal="input_event" from="left_cover/bet_group_item" to="left_cover/bet_group_item" method="_on_input_event"]
+[connection signal="input_event" from="left_cover/bet_group_item2" to="left_cover/bet_group_item2" method="_on_input_event"]
+[connection signal="input_event" from="left_cover/bet_group_item3" to="left_cover/bet_group_item3" method="_on_input_event"]
 [connection signal="input_event" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_input_event"]
 [connection signal="mouse_entered" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="right_cover/SBTable" to="right_cover/SBTable" method="_on_mouse_exited"]
+[connection signal="input_event" from="right_cover/Potion/Button" to="right_cover/Potion" method="_on_button_input_event"]

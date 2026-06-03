@@ -5,14 +5,21 @@ var rng := RandomNumberGenerator.new()
 var score: float = 0
 
 signal numberChanged
-signal baseChanged
-signal multiplicatorChanged(float)
+
+signal base_added(float)
+signal multiplicator_added(float,bool)
+signal x_multiplicator(float)
+
+signal updateBase
+signal updateMult
 signal totalChanged
 @warning_ignore("unused_signal")
 signal betResolved
 
 var base: float = 0
-var multiplier: float = 1 
+var multiplier: float = 0 
+
+
 var number_winner: int 
 var winner_betfield_model : BetFieldModel
 var result_field_id : int = 0
@@ -33,37 +40,10 @@ var last_ball_used : BallRuntimeState = null
 func _ready() -> void:
 	BookEventBus.start_spin.connect(on_start_spin)
 	
-
 	#rng.seed = ObjectPoolsDataBase.master_seed
 	rng.randomize()
-	#spin()
-	#CombatEventBus.update_base_score.connect(update_base_score)
-	#
-	#CombatEventBus.add_multiplier.connect(add_multiplier)
-	#CombatEventBus.add_base.connect(add_base)
-	#CombatEventBus.apply_mult.connect(multiply_mult_score)
-	#CombatEventBus.reset_score.connect(reset_score)
 
-func update_base_score(new_base : int)->void:
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			base = new_base
-			baseChanged.emit()
-			return true
-	}))
 
-func multiply_mult_score(add_mult : float)->void:
-	#agrega un evento que multiplica el mult
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			multiplier *= add_mult
-			multiplicatorChanged.emit(add_mult)
-			return true
-	}))
 	
 
 func on_start_spin(ball : BallRuntimeState) -> void:
@@ -72,7 +52,8 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	BookEventBus.spin_started.emit()
 	
 	#agregar el base de la bola
-	add_base(ball.ball_definition.base_damage)
+	base = ball.get_base_damage()
+	updateBase.emit()
 	#cambiar el material de la bola de la ruleta
 	ball_mesh.material_override = ball.ball_definition.ball_material
 	#desactivar colisiones
@@ -117,14 +98,10 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	await get_tree().create_timer(1).timeout
 
 	# Resolvemos apuestas, en la funcion se agregan eventos de animacion
-	var delta_score := _resolve_bets(result_field_id)
+	var delta_score := _resolve_bets(result_field_id,ball)
 	score = delta_score#bad
 	
-	#eventos finales post resolve, bolas y pasivos
-	ball.ball_definition.ball_effect.on_post_resolved(self)
-	
 	#cambio de score
-	changeScore()
 	
 	await get_tree().create_timer(1).timeout
 	#habilita los clicks al completar
@@ -132,17 +109,12 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
+			changeScore()
 			table_meshes.deactivate_highlight_field()
 			UiEventBus.change_collision_detection_buttons.emit(false)
 			return true
 	}))
-	EventManager.add_event(EventManager.QueueType.GAME, 
-	GameEvent.new({
-		"paralel": false,
-		"action": func():
-			##PlayerUiEvents.bet_procesed.emit()
-			return true#Deberia esperar el tween, osea el finish del spin
-	}))
+
 	
 	
 func spin() -> void:
@@ -221,18 +193,19 @@ func changeScore()->void:
 	}))
 
 @warning_ignore("shadowed_variable")
-func _resolve_bets(result_field_id: int) -> float:
+func _resolve_bets(result_field_id: int, ball : BallRuntimeState = null) -> float:
 	# Obtenemos el BetFieldModel ganador
 	var winner_model = GameState.bet_field_models[result_field_id] as BetFieldModel
 	
 	var delta := 0.0
-	##CombatEventBus.pre_resolve.emit()
 	var active_bets = GameState.get_Bets() as Dictionary[int, Array]
 
 	#mmmm
 	winner_model.activateHighlight.emit()
-	#table_meshes.table_fields.highlight_field(result_field_id-1)
 	BookEventBus.bet_pre_resolve.emit(self)
+	if ball:
+		ball.ball_definition.ball_effect.on_pre_resolve(self)
+	
 	var count : int = 0
 	for field_id in active_bets:
 		var field := GameState.get_bet_field_model(field_id) as BetFieldModel
@@ -244,42 +217,67 @@ func _resolve_bets(result_field_id: int) -> float:
 				GameEvent.new({
 					"paralel": false,
 					"action": func():
-						multiplier += field.multiplier
-						multiplicatorChanged.emit(0)#esto modifica globalmente el mult
+						multiplier += field.get_multiplier()
+						multiplicator_added.emit(field.get_multiplier(),false)#esto modifica globalmente el mult sin animacion
+						
+						table_meshes.call_mult_anim(field_id)
+						field.call_betfield_animation.emit() #eso especificamente pone una anim en el campo
 						return true
 				}))
-				table_meshes.call_mult_anim(field_id)
-				field.call_betfield_animation.emit() #eso especificamente pone una anim en el campo
-				#aca se llama muchas veces sin razon
-			
+		
 			if count > 0:
 				pass
 			
 			BookEventBus.bet_resolved.emit(self)
-			
-			count+=1#tambien deberia aumentar la velocidad de enimacion
+			if ball:
+				ball.ball_definition.ball_effect.on_bet_resolved(self)
+			count+=1
 			delta = multiplier
 	
 	BookEventBus.bet_post_resolved.emit(self)
-	#m
+	if ball:
+		ball.ball_definition.ball_effect.on_post_resolved(self)
 	return delta
+	
+	
+func update_base_score(new_base : int)->void:
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			base = new_base
+			updateBase.emit()#esto cambia el base sin popup
+			return true
+	}))
 
+func multiply_mult_score(add_mult : float)->void:
+	#agrega un evento que multiplica el mult
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			multiplier *= add_mult
+			x_multiplicator.emit(add_mult)#esto causa un popup en mult
+			return true
+	}))
+	
 func add_multiplier(mult: float)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
 			multiplier += mult
-			multiplicatorChanged.emit(mult)#esto modifica globalmente el mult
+			multiplicator_added.emit(mult)#esto causa un popup en mult
 			return true
 	}))
-func add_base(base_added: float)->void:
+	
+func add_base(base_to_add: float)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
 		"action": func():
-			base += base_added
-			baseChanged.emit()#esto modifica globalmente el mult
+			base += base_to_add
+			base_added.emit(base_to_add)#esto causa un popup en base
 			return true
 	}))
 
@@ -288,16 +286,14 @@ func reset_score()->void:
 	score = 0
 	multiplier = 0
 	base = 0
-	baseChanged.emit()
-	multiplicatorChanged.emit(0)
+	updateMult.emit()
+	updateBase.emit()
 	totalChanged.emit() 
 
 #reroll
 func reroll()->void:
 	if last_ball_used:
-		##CombatEventBus.reroll.emit(self)
 		reset_score()
 		#cambio de visuals o animacion
-		
 		#llama al estado de Spin de Ruleta
 		on_start_spin(last_ball_used)

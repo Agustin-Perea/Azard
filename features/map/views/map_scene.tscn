@@ -7,6 +7,7 @@
 
 [node name="Map" type="Node2D" unique_id=1399185867]
 texture_filter = 2
+position = Vector2(0, 5)
 script = ExtResource("1_447bu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1821426899]

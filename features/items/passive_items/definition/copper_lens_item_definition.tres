@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PassiveItemDefinition" format=3 uid="uid://mwq14btx6ntk"]
+
+[ext_resource type="Script" uid="uid://yys3nbkpm3y2" path="res://features/items/passive_items/effects/copper_lens_item_effect.gd" id="1_effect"]
+[ext_resource type="Texture2D" uid="uid://dq3da3rb0brn1" path="res://resources/passive items/images/passive_item_atlas.tres" id="1_sfos5"]
+[ext_resource type="Script" uid="uid://b3k5jwgh2o65v" path="res://features/items/passive_items/definition/passive_item_definition.gd" id="3_definition"]
+
+[sub_resource type="Resource" id="Resource_copper_lens_effect"]
+script = ExtResource("1_effect")
+name = "CopperLens"
+description = "Obtiene +2 base al resolver"
+
+[resource]
+script = ExtResource("3_definition")
+image_texture = ExtResource("1_sfos5")
+passive_item_effect = SubResource("Resource_copper_lens_effect")
+weight = 135

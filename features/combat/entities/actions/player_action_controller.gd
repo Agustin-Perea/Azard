@@ -8,13 +8,12 @@ class_name PlayerActionController
 func _ready() -> void:
 	super()
 	roulette_controller.finish_button.pressed.connect(_do_attacK)
-	actual_attacK_Info = AttackInfo.new()
-	actual_attacK_Info.attacker = $".."
-	
-	
-	UiEventBus.change_target.connect(on_change_target)
+	next_attacK_Info = AttackInfo.new()
+	next_attacK_Info.attacker = $".."
+
 	#CombatEventBus.unit_death.connect(get_target)
 	
+	BookEventBus.change_target.connect(on_change_target)
 	
 func perform_movement() -> void:
 	UiEventBus.changeToState.emit(Constants.COMBAT_STATE_NAMES.EnemySelection)
@@ -33,18 +32,19 @@ func perform_movement() -> void:
 
 
 func on_change_target(new_target : Unit):
-	#if target:
-		#target.shaders._deactivate_selection_aura()
+	if target:
+		target.model_visual_component.toggle_mi_stand(false)
 
 	target = new_target
-	#if new_target:
-		#target.shaders._activate_selection_aura()
+	if new_target:
+		target.model_visual_component.toggle_mi_stand(true)
 
 func _do_attacK()->void:
 	#cambiar de estado
 	#cerrar libro y cambiarlo a placeholder(quitar visibilidad)
 	UiEventBus.change_book_page.emit(Constants.BOOK_PAGE.NONE)
-
+	target.model_visual_component.toggle_mi_stand(false)
+	
 	#espera a que termine la animacion
 	var ev = GameEvent.new({
 		"paralel": false,
@@ -58,10 +58,10 @@ func _do_attacK()->void:
 				# Opcional: Bloquear la rotación en el eje X para que no se incline hacia arriba/abajo
 				attacker.rotation.x = 0 
 				attacker.rotation.z = 0
-				actual_attacK_Info.target = target
-				actual_attacK_Info.damage = roulette_controller.score
+				next_attacK_Info.target = target
+				next_attacK_Info.damage = roulette_controller.score
 				
-				actual_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
+				next_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
 			
 			attack_beginning.emit()
 			return true
@@ -107,4 +107,4 @@ func _do_attacK()->void:
 func _perform_attack()->void:
 	#pasa el atkInfo actual hacia el manager que le da a los enemigos
 	#podria ser una señal emitida, y el combat controller se suscribe a esta señal de las units
-	perform_attack.emit(actual_attacK_Info)
+	perform_attack.emit(next_attacK_Info)

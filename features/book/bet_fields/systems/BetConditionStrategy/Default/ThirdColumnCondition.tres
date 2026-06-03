@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ThirdColumnCondition" format=3 uid="uid://bdddl7w5y643"]
+
+[ext_resource type="Script" uid="uid://8v56moxh5w0l" path="res://features/book/bet_fields/systems/BetConditionStrategy/ThirdColumnCondition.gd" id="1_68qdl"]
+
+[resource]
+script = ExtResource("1_68qdl")
+multiplier_base = 3.0
+multiplier_by_level_added = 2.0
+metadata/_custom_type_script = "uid://8v56moxh5w0l"

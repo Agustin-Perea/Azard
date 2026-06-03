@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://dpl2qnrglpn2y"]
+
+[ext_resource type="Texture2D" uid="uid://de26oc327oe24" path="res://resources/zodiac/icons/sun.svg" id="1_l4pag"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_1iosh"]
+
+[resource]
+script = ExtResource("2_1iosh")
+image_texture = ExtResource("1_l4pag")
+group_upgrade = 14
+name = "Sun"
+base_price = 8
+weight = 2
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

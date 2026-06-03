@@ -5,7 +5,7 @@ class_name PassiveItemShopElement
 
 @onready var sprite3d : Sprite3D = $Sprite3D
 @onready var item_chart : MeshInstance3D = $item_chart
-@onready var description_canvas : PassiveItemShopChart = $"../PassiveItemShopDescritpion"
+@onready var description_canvas :  = $"../PassiveItemShopDescritpion"
 @onready var price_label : Label3D = $PriceLabel
 
 @onready var self_collision : CollisionShape3D = $CollisionShape3D
@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 
 func on_press() -> void:
-	description_canvas.change_passive_item_data(self)
+	description_canvas.change_bet_group_item_data(self)
 	
 
 @warning_ignore("unused_parameter")

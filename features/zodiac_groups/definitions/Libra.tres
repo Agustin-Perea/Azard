@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://ymfjftiteu7c"]
+
+[ext_resource type="Texture2D" uid="uid://c2byn25me2yen" path="res://resources/zodiac/icons/libra.svg" id="1_5odry"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_cy6pa"]
+
+[resource]
+script = ExtResource("2_cy6pa")
+image_texture = ExtResource("1_5odry")
+group_upgrade = 12
+name = "Libra"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

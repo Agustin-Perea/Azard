@@ -5,8 +5,8 @@
 
 [sub_resource type="Resource" id="Resource_bptg0"]
 script = ExtResource("1_xrgg3")
-name = "nada"
-description = "we"
+name = "BaseBall"
+description = "Mucho Daño Base"
 metadata/_custom_type_script = "uid://c0htc8c8ym6vl"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2the2"]

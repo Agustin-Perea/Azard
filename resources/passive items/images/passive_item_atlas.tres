@@ -1,0 +1,6 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://dq3da3rb0brn1"]
+
+[ext_resource type="Texture2D" uid="uid://vy34lwf6wwk4" path="res://resources/passive items/images/copper_lens.svg" id="1_5i0vo"]
+
+[resource]
+atlas = ExtResource("1_5i0vo")

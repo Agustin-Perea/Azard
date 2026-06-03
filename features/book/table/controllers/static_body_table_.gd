@@ -122,7 +122,7 @@ func call_mult_anim(index: int) -> void:
 		#pos.y += 0.1 * 0.15
 		print("pos global enviada: ", pos)
 
-		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(GameState.bet_field_models[index].multiplier)), true)
+		multiplicator_indicator.animate_in_pos(pos, "+" + str(int(GameState.bet_field_models[index].get_multiplier())), true)
 
 func _on_mouse_entered() -> void:
 	pass # Replace with function body.

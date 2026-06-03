@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FirstHalfCondition" format=3 uid="uid://c3yvp8lukb1wf"]
+
+[ext_resource type="Script" uid="uid://1j5l5si7724g" path="res://features/book/bet_fields/systems/BetConditionStrategy/FirstHalfCondition.gd" id="1_aol12"]
+
+[resource]
+script = ExtResource("1_aol12")
+multiplier_base = 2.0
+multiplier_by_level_added = 1.0
+metadata/_custom_type_script = "uid://1j5l5si7724g"

@@ -16,15 +16,18 @@ class_name StatusViewComponent
 @onready var shield_bar : ColorRect = $"../ModelVisualComponent/StatsView/LifeHudControl/ColorRect"
 @onready var shield_label : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/ShieldLabel"
 
-@onready var attack_icon : TextureRect = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackTextureRect"
-@onready var attack_label : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackLabel"
-
+#deberia haber distintos tipos de iconos para cada siguiente ataque y es dado en atkInfo
+@onready var action_icon : TextureRect = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackTextureRect"
+@onready var action_label : Label = $"../ModelVisualComponent/StatsView/LifeHudControl/AttackLabel"
 
 var stats : StatsComponent
 
 var health_tween : Tween
 var displayed_health : float = 0.0
 var displayed_shield : float = 0.0
+
+@onready var action_controller : ActionController = $"../ActionController"
+
 
 func set_up(view_stats : StatsComponent)->void:
 	stats = view_stats
@@ -35,21 +38,21 @@ func set_up(view_stats : StatsComponent)->void:
 	
 	stats.health_changed.connect(_update_health)
 
+
 	UiEventBus.deactivate_status_view_component.connect(deactivate)
 	UiEventBus.activate_status_view_component.connect(activate)
-
 
 	health_progress_bar.max_value = stats.max_healt
 	health_progress_bar.value = stats.current_healt
 	health_label_text.text = str(int(round(stats.current_healt)))
 	shield_label.text = str(int(round(stats.shield)))
+	update_action()
 
 func _show_health() -> void:
 	health_sprite_viewport.visible = true
 	
 func _update_health() -> void:
 	health_progress_bar.max_value = stats.max_healt
-	
 	
 	show_life_drop_animation()
 	
@@ -97,13 +100,11 @@ func activate()->void:
 		deactivate_shield_hud()
 		
 	if show_next_attack_icon:
-		attack_icon.visible = true
-		attack_label.visible = true
+		action_icon.visible = true
+		action_label.visible = true
 	else:
-		attack_icon.visible = false
-		attack_label.visible = false
-	
-
+		action_icon.visible = false
+		action_label.visible = false
 	
 
 func deactivate()->void:
@@ -112,8 +113,8 @@ func deactivate()->void:
 
 	deactivate_shield_hud()
 		
-	attack_icon.visible = false
-	attack_label.visible = false
+	action_icon.visible = false
+	action_label.visible = false
 
 func deactivate_shield_hud()->void:
 	shield_icon.visible = false
@@ -177,4 +178,9 @@ func show_life_drop_animation() -> void:
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
 
+#debe elegir la representacion visual del siguiente ataque
+func update_action() ->void:
+	if action_controller.next_attacK_Info:
+		action_icon.visible = true
+		action_label.text = str(action_controller.next_attacK_Info.damage)
 	

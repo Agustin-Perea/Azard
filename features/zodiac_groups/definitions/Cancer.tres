@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://br8ljev3mjw71"]
+
+[ext_resource type="Texture2D" uid="uid://bv0rew5cqkcyi" path="res://resources/zodiac/icons/cancer.svg" id="1_bwwkx"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_hwtyi"]
+
+[resource]
+script = ExtResource("2_hwtyi")
+image_texture = ExtResource("1_bwwkx")
+group_upgrade = 4
+name = "Cancer"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

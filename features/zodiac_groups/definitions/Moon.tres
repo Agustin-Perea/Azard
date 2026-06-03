@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://86ohyhcicvqj"]
+
+[ext_resource type="Texture2D" uid="uid://ci2dc3wwptgus" path="res://resources/zodiac/icons/moon.svg" id="1_f7yv6"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_ohct8"]
+
+[resource]
+script = ExtResource("2_ohct8")
+image_texture = ExtResource("1_f7yv6")
+name = "Moon"
+weight = 5
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

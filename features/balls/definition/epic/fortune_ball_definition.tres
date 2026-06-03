@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dmtko1h2nma2e"]
+
+[ext_resource type="Script" uid="uid://4tmhmr0ogadm" path="res://features/balls/effects/fortuneball_effect.gd" id="1_or83o"]
+[ext_resource type="Material" uid="uid://s2wq5bonao3a" path="res://resources/balls/materials/fortune_ball_material.tres" id="1_rknlp"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="3_tw2oa"]
+
+[sub_resource type="Resource" id="Resource_wjq7o"]
+script = ExtResource("1_or83o")
+name = "FortuneBall"
+description = "Añande el oro de la partida como base"
+metadata/_custom_type_script = "uid://4tmhmr0ogadm"
+
+[resource]
+script = ExtResource("3_tw2oa")
+ball_material = ExtResource("1_rknlp")
+weight = 10
+base_price = 8
+rarity = 2
+ball_effect = SubResource("Resource_wjq7o")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

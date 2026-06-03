@@ -1,16 +1,62 @@
 extends Node
 
-var object_pool_database : ObjectPoolDatabase
-var map_generator : MapGenerator
 
+var object_pool_database : ObjectPoolDatabase
+
+var GamePersistence : Persitence = Persitence.new()
 
 
 var master_seed: int = 627357
+var current_scene_path: String = Constants.MAP_SCENE_PATH
+
+
+
+
+var map_generator : MapGenerator
 
 var bet_field_definition: BetFieldsDefinition
 var bet_field_models: Array[BetFieldModel] = []
 
+var bet_field_groups: Dictionary[Constants.BET_FIELD_CONDITION, BetCondition] = {
+	Constants.BET_FIELD_CONDITION.STRAIGHT_UP:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/StraightUpCondition.tres").duplicate(),
 
+	Constants.BET_FIELD_CONDITION.FIRST_HALF:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstHalfCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.EVEN:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/EvenCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.RED:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/RedCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.BLACK:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/BlackCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ODD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/OddCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.SECOND_HALF:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondHalfCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_1ST:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_2ND:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.ROW_3RD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdRowCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_1ST:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/FirstColumnCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_2ND:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/SecondColumnCondition.tres").duplicate(),
+
+	Constants.BET_FIELD_CONDITION.COLUMN_3RD:
+		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdColumnCondition.tres").duplicate(),
+}
 var economy_component : EconomyComponent
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
@@ -50,6 +96,7 @@ func _ready():
 	economy_component = EconomyComponent.new()
 	object_pool_database = ObjectPoolDatabase.new()
 	map_generator = MapGenerator.new()
+	#economy_component.gold_changed.connect(_on_persistent_state_changed)
 	
 	bet_field_definition = preload("res://features/book/bet_fields/runtime/bet_fields_default.tres")	
 	chipDefinition = preload("res://features/book/chips/runtime/ChipsDefault.tres")
@@ -63,8 +110,12 @@ func reload():
 	#BookEventBus.reload.emit()
 	temp_scene_changed_value = 0
 	master_seed = randi() % 999999999 + 1
-	
-	
+	_rebuild_run_from_current_seed()
+
+func _rebuild_run_from_current_seed() -> void:
+	if economy_component != null:
+		economy_component.reload()
+
 	map_generator.on_reload()
 	
 	object_pool_database.set_seed(master_seed)
@@ -81,6 +132,10 @@ func reload():
 	Bets.clear()
 	
 	field_by_chip.clear()
+	#last_resolved_roulette_score = 0.0
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	passiveItems_collection.clear()
 	#limpieza a default
 	load_from_definition()
 	
@@ -95,6 +150,7 @@ func load_from_definition():
 	#balls = null
 	for f in bet_field_definition.fields:
 		bet_field_models.append(f.duplicate(true)) # deep copy
+		bet_field_models[bet_field_models.size() - 1].ConditionStrategy = bet_field_groups[f.ConditionType]
 	
 	
 	for f in chipDefinition.fields:
@@ -196,9 +252,8 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 	
 	if existing_item:
 		existing_item.quantity += 1
-		UiEventBus.add_passive_item.emit(existing_item)
 		#existing_item.animate.emit()
-
+		existing_item.on_item_added() 
 	else:
 		existing_item = PassiveItemRuntimeState.new()
 		existing_item.passive_item_definition = new_passive
@@ -206,8 +261,63 @@ func add_passive_item(new_passive : PassiveItemDefinition)->void:
 		passiveItems_collection.append(existing_item)
 		existing_item.on_item_added()
 		
-		UiEventBus.add_passive_item.emit(existing_item)
+	UiEventBus.add_passive_item.emit(existing_item)
+		#PassiveItemLayer.add_passive_item_panel(new_passive)
+		#existing_item.animate.emit()
+		#agregar el panel al control
 
 func add_ball(new_ball : BallRuntimeState)->void:
 	balls_deck.all_balls.push_back(new_ball)
 	
+func add_bet_group_level_up(bet_group : Constants.BET_FIELD_CONDITION)->void:
+	if bet_group == Constants.BET_FIELD_CONDITION.ALL:
+		for group in bet_field_groups:
+			bet_field_groups[group].level += 1
+	else:
+		bet_field_groups[bet_group].level += 1
+
+func add_extra_chip()->int:
+	var chip := ChipModel.new()
+	chip.chipID = chips.size()
+	chips.append(chip)
+	return chip.chipID
+	
+func remove_extra_chip(chip_id: int) -> void:
+	if chip_id < 0 or chip_id >= chips.size():
+		return
+	remove_bet(chip_id)
+	if chip_id != chips.size() - 1:
+		return
+	chips.remove_at(chip_id)
+
+func new_run() -> void:
+	GamePersistence.delete_save()
+	current_scene_path = Constants.MAP_SCENE_PATH
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	reload()
+	save_run(Constants.MAP_SCENE_PATH)
+
+func end_run() -> void:
+	#combat_used_ball_types.clear()
+	#combat_ball_history.clear()
+	current_scene_path = Constants.MAP_SCENE_PATH
+	GamePersistence.delete_save()
+
+func set_current_scene_path(scene_path: String, persist := true) -> void:
+	if scene_path == "" or scene_path == Constants.MAIN_MENU_SCENE_PATH:
+		return
+	current_scene_path = scene_path
+	if persist:
+		save_run(scene_path)
+
+func get_current_scene_path() -> String:
+	if current_scene_path == "":
+		return Constants.MAP_SCENE_PATH
+	return current_scene_path
+
+func save_run(scene_path: String = "") -> bool:
+	return GamePersistence.save_run(self,scene_path)
+	 
+func load_run() -> bool:
+	return GamePersistence.load_run(self)

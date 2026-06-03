@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BetGroupItemDefinition" format=3 uid="uid://b3brip32xt1xh"]
+
+[ext_resource type="Texture2D" uid="uid://j15tleyq7aqa" path="res://resources/zodiac/icons/leo.svg" id="1_ns1vu"]
+[ext_resource type="Script" uid="uid://cq5qxpt505g4c" path="res://features/zodiac_groups/definitions/bet_group_item_definition.gd" id="2_sal0n"]
+
+[resource]
+script = ExtResource("2_sal0n")
+image_texture = ExtResource("1_ns1vu")
+group_upgrade = 7
+name = "Leo"
+metadata/_custom_type_script = "uid://cq5qxpt505g4c"

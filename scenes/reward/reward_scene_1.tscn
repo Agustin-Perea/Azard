@@ -82,7 +82,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.65770125, 0.08603072, 0.3280698)]
+"values": [Vector3(0.658, 0.086, 2)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -106,7 +106,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, -1)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -466,7 +466,7 @@ book_camera = NodePath("Player/BookCamera")
 
 [node name="Player" parent="RewardSceneController" unique_id=136977887 instance=ExtResource("8_3uxgq")]
 physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.069, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.067068, 0.00037899998)
 
 [node name="BookCamera" type="Camera3D" parent="RewardSceneController/Player" unique_id=233727052]
 transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.6068975, 0.32839847)
@@ -478,12 +478,12 @@ script = ExtResource("9_m01iw")
 metadata/_custom_type_script = "uid://b82ivoeru5iay"
 
 [node name="lower_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=2129971611]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.3235173)
+transform = Transform3D(1, 0, 0, 0, 0.99797845, 0, 0, 0, 1, 0, 0, 4.3235173)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("10_1th7b")
 
 [node name="upper_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=953716762]
-transform = Transform3D(1, 1.3228578e-16, 2.3032136e-16, -1.3228578e-16, 1, 0, -2.3032136e-16, -3.046824e-32, 1, -7.57765e-18, 0.33426863, 4.0213804)
+transform = Transform3D(1, 1.3201836e-16, 2.3032136e-16, -1.3228578e-16, 0.99797845, 0, -2.3032136e-16, -3.0406648e-32, 1, -7.57765e-18, 0.3337541, 4.0213804)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("11_m01iw")
 
@@ -503,6 +503,7 @@ add_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
 item_collision = NodePath("PassiveItemDescription/SB_Button3D/CollisionShape3D")
 
 [node name="PassiveItemDescription" type="Node3D" parent="RewardSceneController/Chest/PassiveItemChart" unique_id=1828498580]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 visible = false
 script = ExtResource("11_mqrrs")
 
@@ -546,7 +547,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 1.6855956e-19, 0, 1, 0.00039672852, -0
 shape = SubResource("BoxShape3D_mqrrs")
 
 [node name="Sprite3D" type="Sprite3D" parent="RewardSceneController/Chest/PassiveItemChart" unique_id=298156761]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 2.5410988e-21, -1, -4.371139e-08, 0.65770125, 0.08603072, 0.3280698)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 2.5410988e-21, -1, -4.371139e-08, 0.658, 0.086, 2)
 visible = false
 pixel_size = 0.001
 texture = ExtResource("13_8dfyn")
@@ -567,12 +568,13 @@ emitting = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 9.244)
 
 [node name="Camera" type="Camera3D" parent="RewardSceneController/reward_camera" unique_id=726927106]
-transform = Transform3D(-0.338738, 1.15156716e-07, 0.9408808, -1.39868845e-08, 1, -1.2742805e-07, -0.9408808, -5.6324712e-08, -0.338738, 1.1221316, 1.5858417, 8.317983)
+transform = Transform3D(-0.338738, 1.1515672e-07, 0.9408808, -1.3986881e-08, 1, -1.2742805e-07, -0.9408808, -5.632471e-08, -0.338738, 1.1221316, 1.5858417, 8.316998)
 fov = 31.785154
 near = 0.1
 far = 100.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="RewardSceneController/reward_camera" unique_id=700167915]
+physics_interpolation_mode = 2
 libraries/chest_animations = ExtResource("13_m01iw")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RewardSceneController/reward_camera" unique_id=1170039397]
