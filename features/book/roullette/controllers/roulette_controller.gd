@@ -70,7 +70,7 @@ func on_start_spin(ball : BallRuntimeState) -> void:
 	number_winner = winner_betfield_model.number
 	
 	
-	roulette_control.spin(number_winner)
+	roulette_control.spin(result_field_id)
 	#Este mesnsaje hara que la ruleta gire
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
