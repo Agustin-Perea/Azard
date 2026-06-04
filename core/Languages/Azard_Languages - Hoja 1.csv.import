@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bonf7os4hljfm"
+
+[deps]
+
+files=["res://core/Languages/Azard_Languages - Hoja 1.es.translation", "res://core/Languages/Azard_Languages - Hoja 1.en.translation"]
+
+source_file="res://core/Languages/Azard_Languages - Hoja 1.csv"
+dest_files=["res://core/Languages/Azard_Languages - Hoja 1.es.translation", "res://core/Languages/Azard_Languages - Hoja 1.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

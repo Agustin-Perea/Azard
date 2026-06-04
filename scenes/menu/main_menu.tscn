@@ -212,7 +212,7 @@ theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="MenuContent" unique_id=1923703209]
-custom_minimum_size = Vector2(0, 42)
+custom_minimum_size = Vector2(0, 186.47)
 layout_mode = 2
 
 [node name="Buttons" type="VBoxContainer" parent="MenuContent" unique_id=1564345146]
@@ -228,12 +228,12 @@ theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0.38)
 theme_override_fonts/font = ExtResource("3_vovv2")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
-text = "Continuar"
+text = "menu_btn_continue"
 flat = true
 
 [node name="PlayButton" type="Button" parent="MenuContent/Buttons" unique_id=1486138013]
@@ -243,12 +243,12 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.96)
 theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_vovv2")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
-text = "Play"
+text = "menu_btn_play"
 flat = true
 
 [node name="HelpButton" type="Button" parent="MenuContent/Buttons" unique_id=1841138384]
@@ -258,12 +258,12 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.86)
 theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_vovv2")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
-text = "Ayuda"
+text = "menu_btn_help"
 flat = true
 
 [node name="QuitButton" type="Button" parent="MenuContent/Buttons" unique_id=1410834982]
@@ -273,12 +273,12 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.72)
 theme_override_colors/font_pressed_color = Color(0.913725, 0.929412, 0.733333, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_vovv2")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
-text = "Salir"
+text = "menu_btn_exit"
 flat = true
 
 [node name="VersionLabel" type="Label" parent="." unique_id=2130182087]
@@ -297,7 +297,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("3_vovv2")
 theme_override_font_sizes/font_size = 15
-text = "Azard prototype"
+text = "Azard prototipo"
 horizontal_alignment = 1
 
 [node name="HelpOverlay" type="Control" parent="." unique_id=905770239]
@@ -485,7 +485,7 @@ stream = ExtResource("4_1k4da")
 [node name="EntornoArena" parent="Node3D" unique_id=1168665643 instance=ExtResource("5_bbqo6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05552146, 0, 0.61894584)
 
-[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2080962684]
+[node name="Suelo" parent="Node3D/EntornoArena" index="0" unique_id=2126568144]
 material_override = ExtResource("6_d4hu8")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]

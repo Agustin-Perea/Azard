@@ -177,8 +177,9 @@ font_size = 24
 
 [node name="next" type="Label3D" parent="left_cover" unique_id=682238484]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.50139725, -0.01811704, -0.33016306)
-text = "Next"
-font_size = 24
+text = "Siguiente
+Nivel"
+font_size = 15
 
 [node name="price_chart" type="MeshInstance3D" parent="left_cover" unique_id=1988890857]
 transform = Transform3D(0.9706787, 0, 0.2403805, 0, 1, 0, -0.2403805, 0, 0.9706787, -1.4741162, 0.083574, -1.8911015)

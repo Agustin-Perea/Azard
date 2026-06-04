@@ -55,6 +55,10 @@ theme/custom_font="uid://dk8qd4ll5xlvx"
 
 pointing/emulate_touch_from_mouse=true
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://core/Languages/Azard_Languages - Hoja 1.en.translation", "res://core/Languages/Azard_Languages - Hoja 1.es.translation")
+
 [physics]
 
 common/physics_ticks_per_second=30

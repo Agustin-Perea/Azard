@@ -466,7 +466,7 @@ book_camera = NodePath("Player/BookCamera")
 
 [node name="Player" parent="RewardSceneController" unique_id=136977887 instance=ExtResource("8_3uxgq")]
 physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.067068, 0.00037899998)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.24)
 
 [node name="BookCamera" type="Camera3D" parent="RewardSceneController/Player" unique_id=233727052]
 transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.6068975, 0.32839847)
@@ -478,12 +478,12 @@ script = ExtResource("9_m01iw")
 metadata/_custom_type_script = "uid://b82ivoeru5iay"
 
 [node name="lower_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=2129971611]
-transform = Transform3D(1, 0, 0, 0, 0.99797845, 0, 0, 0, 1, 0, 0, 4.3235173)
+transform = Transform3D(1, 0, 0, 0, 0.99865234, 0, 0, 0, 1, 0, 0, 4.3235173)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("10_1th7b")
 
 [node name="upper_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=953716762]
-transform = Transform3D(1, 1.3201836e-16, 2.3032136e-16, -1.3228578e-16, 0.99797845, 0, -2.3032136e-16, -3.0406648e-32, 1, -7.57765e-18, 0.3337541, 4.0213804)
+transform = Transform3D(1, 1.3210751e-16, 2.3032136e-16, -1.3228578e-16, 0.99865234, 0, -2.3032136e-16, -3.042718e-32, 1, -7.57765e-18, 0.3339256, 4.0213804)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("11_m01iw")
 
@@ -568,7 +568,7 @@ emitting = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 9.244)
 
 [node name="Camera" type="Camera3D" parent="RewardSceneController/reward_camera" unique_id=726927106]
-transform = Transform3D(-0.338738, 1.1515672e-07, 0.9408808, -1.3986881e-08, 1, -1.2742805e-07, -0.9408808, -5.632471e-08, -0.338738, 1.1221316, 1.5858417, 8.316998)
+transform = Transform3D(0.8878151, -0.11444735, 0.44574225, 7.264316e-07, 0.9685834, 0.24868892, -0.46020034, -0.22078946, 0.85992306, 2.3199186, 2.391728, 10.560406)
 fov = 31.785154
 near = 0.1
 far = 100.0

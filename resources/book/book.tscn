@@ -561,7 +561,7 @@ font_size = 20
 [node name="TurnLabel" type="Label3D" parent="left_cover/Score Area" unique_id=1902259147]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.3053943, 0.0038767457, -1.8504446)
 modulate = Color(0.3529412, 0.1764706, 0.2784314, 1)
-text = "Turno"
+text = "book_btn_Turn"
 font_size = 20
 
 [node name="BaseLabel" type="Label3D" parent="left_cover/Score Area" unique_id=1758804665]
@@ -830,8 +830,7 @@ mesh = ExtResource("11_nq47p")
 
 [node name="Label3D" type="Label3D" parent="left_cover/FinishMoveButton/MeshInstance3D" unique_id=1443492601]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.004503131, 0.016467407, 0.012253761)
-text = "Finish 
-Move"
+text = "book_btn_Attack"
 font_size = 15
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="left_cover/FinishMoveButton" unique_id=11273679]
