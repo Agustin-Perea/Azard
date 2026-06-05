@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d3rdamoy2ku3a"]
+
+[ext_resource type="Shader" uid="uid://clbskvlmjbahu" path="res://resources/materials/shaders/2D/ball_2d.gdshader" id="1_k5186"]
+
+[resource]
+shader = ExtResource("1_k5186")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/usar_textura = false
+shader_parameter/radio = 1.0
+shader_parameter/rotacion = Vector2(0, 0)

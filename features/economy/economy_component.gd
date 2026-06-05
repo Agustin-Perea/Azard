@@ -2,7 +2,7 @@ class_name EconomyComponent
 
 
 var run_gold : int 
-var initial_run_gold : int = 0 #5000
+var initial_run_gold : int = 5000
 var last_combat_gold_reward : int 
 
 var combat_max_multiplier
@@ -13,13 +13,12 @@ signal gold_changed(run_gold : int)
 
 
 #raro
-var combat_final_overkill: int = 0
 var combat_turns_taken : int
-
+var enemies_slayed_on_battle : int
 
 
 const COMBAT_BASE_GOLD_BY_ENCOUNTER := {
-	"normal": {1: 5, 2: 5, 3: 5},
+	"normal": {1: 4, 2: 5, 3: 5},
 	"elite": {1: 7, 2: 7, 3: 7},
 	"miniboss": {1: 7, 2: 7, 3: 7},
 	"boss": {1: 10, 2: 10, 3: 10},
@@ -32,23 +31,33 @@ signal combat_gold_reward_granted(amount: int, breakdown: Dictionary)
 
 
 func _init()->void:
-	BookEventBus.victory.connect(grant_combat_victory_gold)	
+	#BookEventBus.victory.connect(grant_combat_victory_gold)	
+	BookEventBus.unit_death.connect(on_unit_death)
+	BookEventBus.player_turn.connect(on_player_turn)
 	reload()
 
+func on_unit_death(unit : Unit)->void:
+	enemies_slayed_on_battle+=1
+	
+func on_player_turn()->void:
+	combat_turns_taken += 1
+	
 func reload()->void:
 	run_gold = initial_run_gold
 	last_combat_gold_reward = 0
-	combat_turns_taken = 0
 	combat_max_multiplier = 1.0
-
+	reset_coombat_values()
 	
-
+func reset_coombat_values()->void: 
+	combat_turns_taken = -1
+	enemies_slayed_on_battle = 0
 
 func add_run_gold(amount: int) -> void:
 	if amount <= 0:
 		return
 	run_gold += amount
 	gold_changed.emit(run_gold)
+	BookEventBus.earn_gold.emit(amount)
 
 func spend_run_gold(amount: int) -> bool:
 	if amount <= 0:
@@ -57,6 +66,7 @@ func spend_run_gold(amount: int) -> bool:
 		return false
 	run_gold -= amount
 	gold_changed.emit(run_gold)
+	BookEventBus.spent_gold.emit(amount)
 	return true
 
 func can_afford(amount: int) -> bool:
@@ -65,7 +75,7 @@ func can_afford(amount: int) -> bool:
 
 func _combat_base_gold() -> int:
 	var by_act: Dictionary = COMBAT_BASE_GOLD_BY_ENCOUNTER.get(current_encounter_type, COMBAT_BASE_GOLD_BY_ENCOUNTER["normal"])
-	return int(by_act.get(current_act, by_act.get(1, 5)))
+	return int(by_act.get(current_act, by_act.get(1, 5)) * enemies_slayed_on_battle)
 
 func _turn_gold_bonus() -> int:
 	return max(0, 5 - combat_turns_taken)
@@ -74,29 +84,31 @@ func _remaining_reroll_gold_bonus() -> int:
 	return max(0, GameState.current_reroll)
 	
 func calculate_combat_gold_reward() -> Dictionary:
-	var base_gold := _combat_base_gold()
-	var turn_bonus := _turn_gold_bonus()
-	var reroll_bonus := _remaining_reroll_gold_bonus()
-	var total := base_gold + turn_bonus + reroll_bonus
+	var base_gold :int = _combat_base_gold()
+	print(base_gold)
+	var turn_bonus : int = _turn_gold_bonus()
+	print(turn_bonus)
+	var reroll_bonus : int = _remaining_reroll_gold_bonus()
+	print(reroll_bonus)
+	var interests : int =  floor(run_gold / 5)
+	var total : int = base_gold + turn_bonus + reroll_bonus + interests
 	return {
 		"base": base_gold,
 		"turns": turn_bonus,
-		"speed": turn_bonus,
 		"rerolls": reroll_bonus,
-		"health": 0,
-		"multiplier": 0,
-		"overkill": 0,
-		"comeback": 0,
+		"interests": interests,
 		"total": total,
 	}
 	
 func grant_combat_victory_gold() -> int:
-	print("queso")
 	var breakdown := calculate_combat_gold_reward()
-	var total := int(breakdown.get("total", 0))
+	var total : int = breakdown.get("total", 0)
+	
 	last_combat_gold_reward = total
 	add_run_gold(total)
+
 	combat_gold_reward_granted.emit(total, breakdown)
+	reset_coombat_values()
 	return total
 	
 func _health_gold_bonus() -> int:
@@ -127,13 +139,3 @@ func _multiplier_gold_bonus() -> int:
 		return 2
 	return 0
 	
-func _overkill_gold_bonus() -> int:
-	if combat_final_overkill >= 20:
-		return 10
-	if combat_final_overkill >= 10:
-		return 6
-	if combat_final_overkill >= 5:
-		return 3
-	if combat_final_overkill >= 1:
-		return 1
-	return 0

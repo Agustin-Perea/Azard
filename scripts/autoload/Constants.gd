@@ -35,6 +35,12 @@ const RARITY_MATERIAL_ROUTES : Dictionary = {
 	RARITY.EPIC: "res://resources/materials/auras/epic_aura_material.tres",
 	RARITY.LEGENDARY: "res://resources/materials/auras/legendary_aura_material.tres"
 }
+const RARITY_MATERIAL_2D_ROUTES : Dictionary = {
+	RARITY.COMMON: "res://resources/materials/auras/2d/common_aura_material_2d.tres",
+	RARITY.RARE: "res://resources/materials/auras/2d/rare_aura_material_2d.tres",
+	RARITY.EPIC: "res://resources/materials/auras/2d/epic_aura_material_2d.tres",
+	RARITY.LEGENDARY: "res://resources/materials/auras/2d/legendary_aura_material_2d.tres"
+}
 enum ATTACK_TYPE {
 	SINGLE,
 	HALF,

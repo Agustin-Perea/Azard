@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cr8stp6spgjpd"]
+
+[ext_resource type="Material" uid="uid://d3rdamoy2ku3a" path="res://resources/materials/auras/2d/ball_2d.tres" id="1_sdalh"]
+[ext_resource type="Shader" uid="uid://clbskvlmjbahu" path="res://resources/materials/shaders/2D/ball_2d.gdshader" id="2_e2r0e"]
+[ext_resource type="Texture2D" uid="uid://l3aansavh1a4" path="res://resources/economy/coin.png" id="3_jglat"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3s5vv"]
+shader = ExtResource("2_e2r0e")
+shader_parameter/albedo = Color(0.3882353, 0.99607843, 0.5568628, 1)
+shader_parameter/usar_textura = false
+shader_parameter/textura_esfera = ExtResource("3_jglat")
+shader_parameter/radio = 0.40000001574012
+shader_parameter/rotacion = Vector2(0, 0)
+
+[node name="ball_aura" type="ColorRect" unique_id=398587774]
+material = ExtResource("1_sdalh")
+custom_minimum_size = Vector2(100, 100)
+
+[node name="ball_texture" type="ColorRect" parent="." unique_id=1253055724]
+material = SubResource("ShaderMaterial_3s5vv")
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0

@@ -407,16 +407,17 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Button" type="Button" parent="left_cover/BetGroupItemDescritpion" unique_id=1515759642]
+custom_minimum_size = Vector2(150, 75)
 layout_mode = 0
-offset_left = -40.0
-offset_top = 77.0
-offset_right = 36.0
+offset_left = -78.0
+offset_top = 60.0
+offset_right = 72.0
 offset_bottom = 135.0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("15_r8kwq")
 theme_override_styles/pressed = ExtResource("16_bn06s")
 theme_override_styles/hover = ExtResource("17_vrjq5")
-text = "buy"
+text = "Buy"
 
 [node name="bottom_cover" type="MeshInstance3D" parent="." unique_id=1793716634]
 mesh = ExtResource("2_skb3x")

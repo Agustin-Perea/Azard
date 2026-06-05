@@ -16,10 +16,17 @@ signal bet_post_resolved(RouletteController)
 signal popuptext(spot_global_postion :Vector3, text : String)
 
 signal unit_death(unit : Unit)
+signal boss_defeated
 @warning_ignore("unused_signal")
 signal reroll(RouletteController)
 
 signal battle_init
+
+signal attack_damage(damage : float)
+
+signal earn_gold(gold : int)
+
+signal spent_gold(gold : int)
 
 signal change_target(unit : Unit)
 

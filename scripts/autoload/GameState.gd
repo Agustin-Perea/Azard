@@ -5,6 +5,9 @@ var object_pool_database : ObjectPoolDatabase
 
 var GamePersistence : Persitence = Persitence.new()
 
+var economy_component : EconomyComponent
+
+var stadistics_component : StadisticsComponent = StadisticsComponent.new()
 
 var master_seed: int = 627357
 var current_scene_path: String = Constants.MAP_SCENE_PATH
@@ -57,7 +60,7 @@ var bet_field_groups: Dictionary[Constants.BET_FIELD_CONDITION, BetCondition] = 
 	Constants.BET_FIELD_CONDITION.COLUMN_3RD:
 		preload("res://features/book/bet_fields/systems/BetConditionStrategy/Default/ThirdColumnCondition.tres").duplicate(),
 }
-var economy_component : EconomyComponent
+
 #var ballsDefinition : BallsDefinition # bolas por defecto
 
 #heuristica de campos iguales

@@ -7,6 +7,7 @@ render_priority = 0
 shader = ExtResource("1_omg2d")
 shader_parameter/color_aura = Color(0.1835761, 0.5111517, 0.9999903, 1)
 shader_parameter/radio_base = 0.15500000410262
+shader_parameter/radio_interno = 0.08
 shader_parameter/velocidad_giro = 0.8000005130000005
 shader_parameter/intensidad_lava = 0.030000001425
 shader_parameter/suavizado = 0.00999999977648

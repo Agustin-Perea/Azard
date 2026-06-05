@@ -26,7 +26,7 @@ func _ready() -> void:
 	Constants.BOOK_PAGE.NONE : book_none
 	}
 	UiEventBus.change_book_page.connect(change_book)
-	BookEventBus.victory.connect(on_victory)
+	#BookEventBus.victory.connect(on_victory)
 
 
 func on_victory()->void:

@@ -71,6 +71,7 @@ func _victory()->void:
 	
 			if boss:
 				boss_defeated.emit()
+				BookEventBus.boss_defeated.emit()
 			else:
 				BookEventBus.victory.emit()
 			print("victory")

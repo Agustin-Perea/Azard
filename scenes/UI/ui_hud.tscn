@@ -9,6 +9,11 @@
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
 [ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="8_jvpr3"]
+[ext_resource type="Script" uid="uid://cj12v0vm6gvku" path="res://features/UI/resume_battle_control.gd" id="10_fv2b1"]
+[ext_resource type="StyleBox" uid="uid://dc461irh72xg" path="res://resources/UI_Buttons/button_box_flat.tres" id="11_xnsdj"]
+[ext_resource type="StyleBox" uid="uid://cls8k5wgeaejq" path="res://resources/UI_Buttons/button_box_flat_pressed.tres" id="12_wox0k"]
+[ext_resource type="StyleBox" uid="uid://d0ghab2nni1u7" path="res://resources/UI_Buttons/button_box_flat_hover.tres" id="13_1rx2y"]
+[ext_resource type="StyleBox" uid="uid://cceorkpnwp0" path="res://resources/UI_Buttons/button_box_flat_focus.tres" id="14_wyyad"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dbbq"]
 content_margin_left = 22.0
@@ -74,6 +79,36 @@ corner_radius_bottom_left = 40
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnyru"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xbgt"]
+content_margin_left = 22.0
+content_margin_top = 16.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(0.21960784, 0.101960786, 0.18039216, 0.92941177)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82400006, 0.120000005, 0.67058825)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8krgj"]
+content_margin_left = 22.0
+content_margin_top = 16.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(0.19419637, 0.08631805, 0.16099715, 0.92941177)
+border_color = Color(1, 0.82400006, 0.120000005, 0.67058825)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gu88q"]
 
 [node name="UI" type="CanvasLayer" unique_id=153793616]
 
@@ -346,6 +381,147 @@ theme_override_font_sizes/font_size = 36
 text = "FPS"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Resume" type="Control" parent="." unique_id=823542424]
+visible = false
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("10_fv2b1")
+
+[node name="Panel2" type="Panel" parent="Resume" unique_id=1025408579]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Resume" unique_id=301009991]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -348.5
+offset_top = -368.0
+offset_right = 348.5
+offset_bottom = 368.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1xbgt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Resume/Panel" unique_id=2109152258]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Resume/Panel/VBoxContainer" unique_id=1691502350]
+custom_minimum_size = Vector2(0, 109.93)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 74
+text = "Resume"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Lines" type="Label" parent="Resume/Panel/VBoxContainer" unique_id=2088796095]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_font_sizes/font_size = 48
+text = "-----------------------------"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Panel2" type="PanelContainer" parent="Resume/Panel/VBoxContainer" unique_id=1602310675]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8krgj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Resume/Panel/VBoxContainer/Panel2" unique_id=2144360526]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer" unique_id=1010687270]
+layout_mode = 2
+
+[node name="Resume_Labels" type="Label" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1227665403]
+custom_minimum_size = Vector2(450, 250)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/line_spacing = 20
+theme_override_font_sizes/font_size = 40
+text = "Enemies x1 
+Rerolls Remain x1 
+Turns 5 
+interests(each $5) "
+autowrap_mode = 3
+
+[node name="Resume_Money" type="Label" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1007749676]
+custom_minimum_size = Vector2(200, 250)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/line_spacing = 20
+theme_override_font_sizes/font_size = 40
+text = "$5
+$1
+$1
+$1"
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer" unique_id=1282924367]
+layout_mode = 2
+
+[node name="Desctiption" type="Label" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer/HBoxContainer2" unique_id=30867776]
+custom_minimum_size = Vector2(450, 118.515)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_constants/line_spacing = 20
+theme_override_font_sizes/font_size = 50
+text = "TOTAL "
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="Desctiption2" type="Label" parent="Resume/Panel/VBoxContainer/Panel2/VBoxContainer/HBoxContainer2" unique_id=34669254]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_constants/line_spacing = 20
+theme_override_font_sizes/font_size = 50
+text = "+ $8"
+horizontal_alignment = 2
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="Resume/Panel/VBoxContainer" unique_id=889698624]
+custom_minimum_size = Vector2(0, 44.5)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gu88q")
+
+[node name="Button" type="Button" parent="Resume/Panel/VBoxContainer" unique_id=700136019]
+custom_minimum_size = Vector2(400, 130)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = ExtResource("11_xnsdj")
+theme_override_styles/pressed = ExtResource("12_wox0k")
+theme_override_styles/hover = ExtResource("13_1rx2y")
+theme_override_styles/focus = ExtResource("14_wyyad")
+text = "Continue"
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

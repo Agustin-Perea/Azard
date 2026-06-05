@@ -4,6 +4,10 @@
 [ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="2_ghtjb"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
 [ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="3_373ir"]
+[ext_resource type="Resource" uid="uid://b8lepd5fqo3nd" path="res://features/balls/definition/common/fire_ball_definition.tres" id="4_w4yp4"]
+[ext_resource type="Resource" uid="uid://bsbs7frecqiwi" path="res://features/balls/definition/common/gold_ball_definition.tres" id="5_yua04"]
+[ext_resource type="Resource" uid="uid://dmtko1h2nma2e" path="res://features/balls/definition/epic/fortune_ball_definition.tres" id="6_n8yy4"]
+[ext_resource type="Resource" uid="uid://djobnr1pselbx" path="res://features/balls/definition/legendary/ascend_ball_definition.tres" id="7_pu056"]
 
 [sub_resource type="Resource" id="Resource_rc2d2"]
 script = ExtResource("1_7ik2x")
@@ -15,7 +19,27 @@ script = ExtResource("1_7ik2x")
 ball_definition = ExtResource("3_373ir")
 metadata/_custom_type_script = "uid://vou3yvmfswvf"
 
+[sub_resource type="Resource" id="Resource_rl6t1"]
+script = ExtResource("1_7ik2x")
+ball_definition = ExtResource("4_w4yp4")
+metadata/_custom_type_script = "uid://vou3yvmfswvf"
+
+[sub_resource type="Resource" id="Resource_18wq7"]
+script = ExtResource("1_7ik2x")
+ball_definition = ExtResource("5_yua04")
+metadata/_custom_type_script = "uid://vou3yvmfswvf"
+
+[sub_resource type="Resource" id="Resource_cmnp8"]
+script = ExtResource("1_7ik2x")
+ball_definition = ExtResource("6_n8yy4")
+metadata/_custom_type_script = "uid://vou3yvmfswvf"
+
+[sub_resource type="Resource" id="Resource_i3f6d"]
+script = ExtResource("1_7ik2x")
+ball_definition = ExtResource("7_pu056")
+metadata/_custom_type_script = "uid://vou3yvmfswvf"
+
 [resource]
 script = ExtResource("2_ioi2j")
-all_balls = Array[ExtResource("1_7ik2x")]([SubResource("Resource_rc2d2"), SubResource("Resource_w4yp4")])
+all_balls = Array[ExtResource("1_7ik2x")]([SubResource("Resource_rc2d2"), SubResource("Resource_w4yp4"), SubResource("Resource_rl6t1"), SubResource("Resource_18wq7"), SubResource("Resource_cmnp8"), SubResource("Resource_i3f6d")])
 metadata/_custom_type_script = "uid://dmwaoftujv38"

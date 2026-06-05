@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://brkc57bp6ruh0"]
+
+[ext_resource type="Shader" uid="uid://3ttmwtmpqsuw" path="res://resources/materials/shaders/2D/aura_lava_2d.gdshader" id="1_u4brb"]
+
+[resource]
+shader = ExtResource("1_u4brb")
+shader_parameter/color_aura = Color(0.9411765, 0.89411765, 0, 1)
+shader_parameter/radio_base = 0.30000001099011997
+shader_parameter/radio_interno = 0.0
+shader_parameter/velocidad_giro = 1.3000005367499998
+shader_parameter/intensidad_lava = 0.0800000038
+shader_parameter/suavizado = 0.00999999977648

@@ -35,6 +35,10 @@ var player_stats : StatsComponent
 @onready var shield_text : Label3D = $"../ShieldText"
 @onready var info : Label3D = $"../LifeText"
 
+@onready var turn_count : Label3D =$TurnCount
+
+var player_turns : int = -1
+
 #deberia agregar los onadd y onmult aca con popup y sus valores visuales particulares
 
 func _ready() -> void:
@@ -60,11 +64,13 @@ func _ready() -> void:
 	BookEventBus.spin_started.connect(enable_reroll)
 	BookEventBus.spin_started.connect(enable_finish_button)
 	
+	BookEventBus.player_turn.connect(on_player_turn)
 	
 	reroll_button.pressed.connect(_on_reroll_pressed)
 	GameState.current_reroll = rerolls_count
 	
 	rerolls_count = GameState.max_reroll
+	GameState.current_reroll = rerolls_count
 	rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 	
 	player_stats = GameState.player_stats
@@ -72,6 +78,10 @@ func _ready() -> void:
 	
 	_on_health_changed()
 	
+func on_player_turn()->void:
+	player_turns += 1
+	turn_count.text = str(player_turns)
+
 func _on_health_changed()->void:
 	info.text = str(player_stats.current_healt) + "/" + str(player_stats.max_healt)
 	health_progress_bar.max_value = player_stats.max_healt

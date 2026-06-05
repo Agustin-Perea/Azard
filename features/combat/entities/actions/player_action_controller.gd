@@ -60,6 +60,7 @@ func _do_attacK()->void:
 				attacker.rotation.z = 0
 				next_attacK_Info.target = target
 				next_attacK_Info.damage = roulette_controller.score
+				BookEventBus.attack_damage.emit(roulette_controller.score)
 				
 				next_attacK_Info.type = roulette_controller.last_ball_used.ball_definition.attack_type
 			

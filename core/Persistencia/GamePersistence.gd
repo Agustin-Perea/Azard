@@ -107,6 +107,7 @@ func _build_save_data(game_state : GameState) -> Dictionary:
 		"bet_fields": _build_bet_fields_save_data(game_state),
 		"chips": _build_chips_save_data(game_state), 
 		"bets": _build_bets_save_data(game_state),
+		"stadistics": _build_stadistics_save_data(game_state),
 	}
 
 func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
@@ -128,8 +129,38 @@ func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
 	_apply_chips_save_data(game_state, data.get("chips", [])) 
 	
 	_apply_bets_save_data(game_state,data.get("bets", []))
+	_apply_stadistics_save_data(game_state,data.get("stadistics", []))
 	game_state.initialized.emit()
 	game_state.table_ready.emit()
+	
+#constructores particulares
+func _build_stadistics_save_data(game_state : GameState) -> Dictionary:
+	
+	var stats = game_state.stadistics_component 
+	if not stats:
+		return {} # Por si las dudas el componente no está inicializado
+
+	return {
+		"max_damage": stats.max_damage,
+		"enemies_slain": stats.enemies_slain,
+		"bosses_slain": stats.bosses_slain,
+		"floors": stats.floors,
+		"gold_earned": stats.gold_earned,
+		"gold_spent": stats.gold_spent
+	}
+func _apply_stadistics_save_data(game_state : GameState, data: Dictionary) -> void:
+	var stats = game_state.stadistics_component
+	
+	if not stats or data.is_empty():
+		return
+		
+	# El segundo parámetro de .get() es el valor por defecto si no encuentra la clave
+	stats.max_damage = int(data.get("max_damage", stats.max_damage))
+	stats.enemies_slain = int(data.get("enemies_slain", stats.enemies_slain))
+	stats.bosses_slain = int(data.get("bosses_slain", stats.bosses_slain))
+	stats.floors = int(data.get("floors", stats.floors))
+	stats.gold_earned = int(data.get("gold_earned", stats.gold_earned))
+	stats.gold_spent = int(data.get("gold_spent", stats.gold_spent))
 	
 #constructores particulares
 func _build_economy_save_data(game_state : GameState) -> Dictionary:
