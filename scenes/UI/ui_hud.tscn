@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
 [ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
+[ext_resource type="AudioStream" uid="uid://bsngnl0dmdpcm" path="res://resources/sounds/purchase_1.wav" id="6_xnsdj"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="8_jvpr3"]
 [ext_resource type="Script" uid="uid://cj12v0vm6gvku" path="res://features/UI/resume_battle_control.gd" id="10_fv2b1"]
 [ext_resource type="StyleBox" uid="uid://dc461irh72xg" path="res://resources/UI_Buttons/button_box_flat.tres" id="11_xnsdj"]
@@ -79,6 +80,10 @@ corner_radius_bottom_left = 40
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnyru"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xnsdj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wox0k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xbgt"]
 content_margin_left = 22.0
@@ -270,6 +275,9 @@ text = " 0 "
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control" unique_id=1241199685]
+stream = ExtResource("6_xnsdj")
+
 [node name="DefeatCanvas" type="Control" parent="." unique_id=1210028539]
 visible = false
 layout_mode = 3
@@ -364,6 +372,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="FPS_Control" type="Control" parent="." unique_id=1786962755]
+texture_filter = 2
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -373,14 +382,39 @@ script = ExtResource("8_jvpr3")
 [node name="FPS" type="Label" parent="FPS_Control" unique_id=1327704655]
 texture_filter = 2
 layout_mode = 0
-offset_left = 238.0
-offset_top = 49.0
-offset_right = 302.0
-offset_bottom = 96.25
+offset_left = 225.0
+offset_top = 47.0
+offset_right = 289.0
+offset_bottom = 94.25
 theme_override_font_sizes/font_size = 36
 text = "FPS"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FPS_Control" unique_id=539868669]
+layout_mode = 0
+offset_left = 315.0
+offset_top = 48.0
+offset_right = 911.0
+offset_bottom = 95.0
+
+[node name="DoubleVelocityCheck" type="CheckButton" parent="FPS_Control/HBoxContainer" unique_id=20384010]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xnsdj")
+
+[node name="DoubleVelocity" type="Label" parent="FPS_Control/HBoxContainer" unique_id=384150527]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "X2 Speed"
+
+[node name="Limit30Check" type="CheckButton" parent="FPS_Control/HBoxContainer" unique_id=1170928981]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wox0k")
+
+[node name="Limit30" type="Label" parent="FPS_Control/HBoxContainer" unique_id=2031842167]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "30 FPS"
 
 [node name="Resume" type="Control" parent="." unique_id=823542424]
 visible = false

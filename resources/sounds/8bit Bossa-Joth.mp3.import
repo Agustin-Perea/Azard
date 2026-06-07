@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ck058qeolihlu"
+path="res://.godot/imported/8bit Bossa-Joth.mp3-1e5563cc3aabb55ac9d46d46ad9b9423.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/8bit Bossa-Joth.mp3"
+dest_files=["res://.godot/imported/8bit Bossa-Joth.mp3-1e5563cc3aabb55ac9d46d46ad9b9423.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

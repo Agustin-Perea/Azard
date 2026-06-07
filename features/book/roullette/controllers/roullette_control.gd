@@ -77,6 +77,7 @@ var _angle_rad: float = 0.0
 
 var _original_parent: Node
 
+var _target_local_pos: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	assert(roulette, "Falta asignar la ruleta")
@@ -187,39 +188,24 @@ func _process_dropping(delta: float) -> void:
 	if radius_reached and angle_reached and _phase_time > 0.5:
 		_transition_to(Phase.ADJUST)
 
-
 func _process_adjust(delta: float) -> void:
-	var finish_radius_reached = abs(_current_radius - _finish_radius_s) < 0.01 * parent.scale.x
-	var radius_speed = (_initial_radius - _inner_radius_s) / drop_duration
-	_current_radius = move_toward(_current_radius, _finish_radius_s, radius_speed * delta)
-
-	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
-	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * _finish_radius_s
-	var finish_pos = get_position_from_angle(
-		atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
-		_finish_radius_s,
-		roulette.global_position
-	)
-
-	var target_ball_angle = atan2(finish_pos.z - _center.z, finish_pos.x - _center.x)
-	_move_ball_smooth(_current_radius, target_ball_angle, _omega_final, _finish_y_s)
-
-	var ball_xz = Vector2(ball.global_position.x, ball.global_position.z)
-	var target_xz = Vector2(finish_pos.x, finish_pos.z)
-	var dist_to_target = ball_xz.distance_to(target_xz)
-	var position_reached = dist_to_target < 0.005 * parent.scale.x
-
-	if finish_radius_reached and position_reached:
+	# Escalamos la velocidad de interpolación para que se mueva rápido y seguro
+	var interpolation_speed := 1.0 * parent.scale.x
+	
+	# Movemos la posición local de la bola hacia el target local calculado
+	ball.position = ball.position.move_toward(_target_local_pos, interpolation_speed * delta)
+	
+	# Condición de llegada definitiva (funciona perfecto en x2)
+	if ball.position.distance_to(_target_local_pos) < 0.001 * parent.scale.x:
+		ball.position = _target_local_pos # Asegurar posición final exacta
+		
 		spin_finished.emit()
-		print("Han finalizado, dist: ", dist_to_target)
-		ball.global_position.x = finish_pos.x
-		ball.global_position.z = finish_pos.z
-		ball.global_position.y = self.global_position.y + _finish_y_s
 		_transition_to(Phase.FINISHED)
 		
-		
+		# Sonido final
 		stream_player.stream = sounds["spin_finish"]
-		sound_tween.kill()
+		if sound_tween and sound_tween.is_valid():
+			sound_tween.kill()
 		stream_player.pitch_scale = 1.0
 		stream_player.volume_db = 0
 		stream_player.play()
@@ -261,18 +247,39 @@ func _transition_to(new_phase: Phase) -> void:
 
 	if new_phase == Phase.DROPPING:
 		print("Iniciando fase de encaje en campo: ", choosed_field)
+		
+	elif new_phase == Phase.ADJUST:
+		print("Entrando a ADJUST: Calculando destino local y reparentando")
+		
+		# 1. Calculamos la posición GLOBAL exacta (tal cual lo hacía tu código original)
+		var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
+		var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * _finish_radius_s
+		
+		var finish_pos_global = get_position_from_angle(
+			atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
+			_finish_radius_s,
+			roulette.global_position
+		)
+		# Aplicamos la altura global exacta que usabas antes
+		finish_pos_global.y = self.global_position.y + _finish_y_s
+		
+		# 2. Convertimos esa posición global exacta a la coordenada LOCAL de la ruleta
+		_target_local_pos = roulette.to_local(finish_pos_global)
+		
+		# 3. Hacemos el cambio de padre (la bola mantiene su posición en el mundo)
+		if ball.get_parent() != roulette:
+			var global_pos = ball.global_position
+			ball.get_parent().remove_child(ball)
+			roulette.add_child(ball)
+			ball.global_position = global_pos
+			
 	elif new_phase == Phase.FINISHED:
 		_finish_movement()
 
 
 func _finish_movement() -> void:
 	set_physics_process(false)
-
-	var global_pos = ball.global_position
-	ball.get_parent().remove_child(ball)
-	roulette.add_child(ball)
-	ball.global_position = global_pos
-
+	# Ya no removemos ni añadimos el hijo aquí porque ya se hizo en el paso a Phase.ADJUST
 
 func reset_simulation() -> void:
 	_time = 0.0
@@ -330,3 +337,49 @@ func set_target_field(field: int) -> void:
 	assert(field >= 0 and field < FIELD_COUNT, "Campo fuera de rango")
 	choosed_field = field
 	_calculate_target()
+
+
+func _on_roulette_collision_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	# Verificamos si el evento es un click principal (izquierdo) y si la ruleta no ha terminado ya
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _current_phase != Phase.FINISHED:
+			_instant_skip_to_finished()
+			
+			
+func _instant_skip_to_finished() -> void:
+	print("Skipeando animación... Forzando posición final en casillero: ", choosed_field)
+	
+	# 1. Calcular la posición XZ exacta del casillero objetivo en este frame
+	var spot_angle = -roulette.global_rotation.y + (choosed_field * FIELD_ANGLE) + BASE_OFFSET
+	var spot_pos_global = roulette.global_transform.origin + Vector3(sin(spot_angle), 0, cos(spot_angle)) * _finish_radius_s
+	
+	var finish_pos = get_position_from_angle(
+		atan2(spot_pos_global.x - _center.x, spot_pos_global.z - _center.z) - 1.5708,
+		_finish_radius_s,
+		roulette.global_position
+	)
+	
+	# 2. Posicionar la bola de forma directa y absoluta
+	ball.global_position.x = finish_pos.x
+	ball.global_position.z = finish_pos.z
+	ball.global_position.y = self.global_position.y + _finish_y_s
+	
+	if ball.get_parent() != roulette:
+			var global_pos = ball.global_position
+			ball.get_parent().remove_child(ball)
+			roulette.add_child(ball)
+			ball.global_position = global_pos
+	
+	# 3. Detener Tweens y sonidos de giro, y reproducir el sonido de impacto final
+	if sound_tween and sound_tween.is_valid():
+		sound_tween.kill()
+		
+	stream_player.stop()
+	stream_player.stream = sounds["spin_finish"]
+	stream_player.pitch_scale = 1.0
+	stream_player.volume_db = 0
+	stream_player.play()
+	
+	# 4. Emitir señal de finalización y transicionar el estado (esto reparenta la bola a la ruleta)
+	spin_finished.emit()
+	_transition_to(Phase.FINISHED)

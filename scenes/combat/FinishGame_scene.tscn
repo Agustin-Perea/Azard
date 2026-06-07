@@ -83,7 +83,7 @@ shader_parameter/rotacion = Vector2(0, 0)
 
 [node name="BattleScene1" type="Node3D" unique_id=536595362]
 
-[node name="DefeatCanvas" type="Control" parent="." unique_id=709134555]
+[node name="FinishCanvas" type="Control" parent="." unique_id=709134555]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -93,7 +93,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_g87ol")
 
-[node name="ColorRect" type="ColorRect" parent="DefeatCanvas" unique_id=2090501872]
+[node name="ColorRect" type="ColorRect" parent="FinishCanvas" unique_id=2090501872]
 material = SubResource("ShaderMaterial_yjbpl")
 layout_mode = 1
 anchors_preset = 15
@@ -102,7 +102,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect2" type="ColorRect" parent="DefeatCanvas" unique_id=1151819672]
+[node name="ColorRect2" type="ColorRect" parent="FinishCanvas" unique_id=1151819672]
 material = ExtResource("7_bi4i0")
 layout_mode = 1
 anchors_preset = 7
@@ -117,7 +117,7 @@ offset_bottom = 109.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Panel" type="Panel" parent="DefeatCanvas" unique_id=957345577]
+[node name="Panel" type="Panel" parent="FinishCanvas" unique_id=957345577]
 texture_filter = 2
 layout_mode = 1
 anchors_preset = 15
@@ -130,7 +130,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_gabfn")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="DefeatCanvas" unique_id=541034031]
+[node name="RichTextLabel" type="RichTextLabel" parent="FinishCanvas" unique_id=541034031]
 texture_filter = 2
 clip_contents = false
 layout_mode = 1
@@ -160,7 +160,7 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="DefeatCanvas" unique_id=1733742052]
+[node name="Button" type="Button" parent="FinishCanvas" unique_id=1733742052]
 texture_filter = 2
 layout_mode = 1
 anchors_preset = 7

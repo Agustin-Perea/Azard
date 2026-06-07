@@ -58,9 +58,7 @@ var sfx_value_label: Label
 var fullscreen_button: Button
 
 func _ready() -> void:
-	var music_manager := get_node_or_null("/root/MusicManager")
-	if music_manager != null:
-		music_manager.call("play_menu_music")
+	MusicManager.play_music(Constants.MUSIC_MENU)
 	_apply_click_volume()
 	if has_node("/root/SettingsManager"):
 		SettingsManager.sfx_volume_changed.connect(_on_sfx_volume_changed)
@@ -148,11 +146,11 @@ func _apply_click_volume() -> void:
 
 func _setup_options() -> void:
 	options_button = Button.new()
-	options_button.text = "Opciones"
+	options_button.text = "menu_btn_options"
 	options_button.focus_mode = Control.FOCUS_NONE
 	options_button.flat = true
 	options_button.add_theme_font_override("font", HELP_FONT)
-	options_button.add_theme_font_size_override("font_size", 34)
+	options_button.add_theme_font_size_override("font_size", 50)
 	options_button.add_theme_color_override("font_color", Color(1, 1, 1, 0.80))
 	options_button.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
 	options_button.add_theme_color_override("font_pressed_color", Color(0.913725, 0.929412, 0.733333, 1))

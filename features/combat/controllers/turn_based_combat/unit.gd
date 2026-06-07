@@ -106,7 +106,7 @@ func _death()-> void:
 	print("death")
 	print(animation_state_machine)
 	status_view_component.health_sprite_viewport.visible = false
-	status_view_component.damage_text.visible = false
+	#status_view_component.damage_text.visible = false
 	animation_state_machine.start("death")
 	anim_finished = false
 	

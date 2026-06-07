@@ -71,8 +71,11 @@ func start_dialogue(lines: Array[String]) -> void:
 func next_line() -> void:
 	current_line += 1
 
+	if current_line == dialogue_lines.size()-2:
+		MusicManager.stop_music()
 	if current_line >= dialogue_lines.size():
 		end_dialogue()
+		MusicManager.play_music(Constants.MUSIC_BOSS)
 		return
 
 	_show_line()

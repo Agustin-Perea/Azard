@@ -478,12 +478,12 @@ script = ExtResource("9_m01iw")
 metadata/_custom_type_script = "uid://b82ivoeru5iay"
 
 [node name="lower_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=2129971611]
-transform = Transform3D(1, 0, 0, 0, 0.99865234, 0, 0, 0, 1, 0, 0, 4.3235173)
+transform = Transform3D(1, 0, 0, 0, 0.9445262, 0, 0, 0, 1, 0, 0, 4.3235173)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("10_1th7b")
 
 [node name="upper_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=953716762]
-transform = Transform3D(1, 1.3210751e-16, 2.3032136e-16, -1.3228578e-16, 0.99865234, 0, -2.3032136e-16, -3.042718e-32, 1, -7.57765e-18, 0.3339256, 4.0213804)
+transform = Transform3D(1, 1.2494739e-16, 2.3032136e-16, -1.3228578e-16, 0.9445262, 0, -2.3032136e-16, -2.877805e-32, 1, -7.57765e-18, 0.32014877, 4.0213804)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("11_m01iw")
 
@@ -576,6 +576,8 @@ far = 100.0
 [node name="AnimationPlayer" type="AnimationPlayer" parent="RewardSceneController/reward_camera" unique_id=700167915]
 physics_interpolation_mode = 2
 libraries/chest_animations = ExtResource("13_m01iw")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RewardSceneController" unique_id=687501872]
 
 [node name="AnimableCanvas" type="Control" parent="." unique_id=591628303]
 visible = false

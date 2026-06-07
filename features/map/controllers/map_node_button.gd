@@ -73,9 +73,7 @@ func _on_button_up() -> void:
 	#TransitionLayer._change_scene_to(node.node_scene.get_battle_scene())
 	UiEventBus.change_scene_to.emit(node.node_scene.battle_scene_path)
 	GameState.temp_scene_changed_value += 1
-
 	
-
 func deactivate():
 	if animation_tween:
 		animation_tween.kill()

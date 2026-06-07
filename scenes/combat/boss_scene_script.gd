@@ -9,6 +9,7 @@ extends Node
 @export var camera :  Camera3D 
 
 func _ready() -> void:
+	MusicManager.play_music(Constants.MUSIC_EVENT)
 	dialogue_box.dialogue_finished.connect(on_dialogue_finished)
 	UiEventBus.deactivate_descriptions.emit()
 	combat_manager.boss_defeated.connect(on_boss_defeated)

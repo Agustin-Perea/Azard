@@ -2,9 +2,6 @@ extends Node
 
 
 
-
-
-
 @onready var shop_camera : Camera3D = $shop_camera
 
 
@@ -18,6 +15,8 @@ func _ready() -> void:
 	UiEventBus.deactivate_status_view_component.emit()
 	UiEventBus.changeCamera.emit(shop_camera,0.0)
 	map_button.pressed.connect(change_to_map)
+	
+	MusicManager.play_music(Constants.MUSIC_SHOP)
 
 
 func change_to_map() -> void:

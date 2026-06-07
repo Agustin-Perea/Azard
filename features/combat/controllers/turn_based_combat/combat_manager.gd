@@ -9,12 +9,14 @@ var combat_finished : bool = false
 
 @export var paused : bool = false
 @export var boss : bool = false
+@export var play_music : bool = true
 
 signal boss_defeated
 
 func _ready() -> void:
 	##iniciar nivel
-	
+	if play_music:
+		MusicManager.play_music(Constants.MUSIC_COMBAT)
 	combat_finished = false
 	for player in Player.group:
 		player.action_controller.perform_attack.connect(_on_perform_attack)

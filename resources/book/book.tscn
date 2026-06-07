@@ -1332,6 +1332,7 @@ libraries/book_animations = ExtResource("42_0bnx2")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1400391308]
 
+[connection signal="input_event" from="roulette_collision" to="left_cover" method="_on_roulette_collision_input_event"]
 [connection signal="input_event" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="left_cover/RerollButton" to="left_cover/RerollButton" method="_on_mouse_exited"]

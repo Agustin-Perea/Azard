@@ -121,3 +121,37 @@ const BET_FIELD_CONDITION_NAMES := {
 const TEST_SCENE = "res://RouletteCombat.tscn"
 const MAP_SCENE_PATH := "res://features/map/views/map_scene.tscn"
 const MAIN_MENU_SCENE_PATH := "res://scenes/menu/main_menu.tscn"
+
+
+const MUSIC_MENU := {
+	"path": "res://resources/sounds/2010_June_HypnoticChill_17-Eric Matyas.mp3",
+	"volume": -14.0,
+	"offset": 0
+}
+
+const MUSIC_COMBAT := {
+	"path": "res://resources/sounds/2010_June_HypnoticChill_17-Eric Matyas.mp3",
+	"volume": -12.0,
+	"offset": 0.0
+}
+
+const MUSIC_SHOP := {
+	"path": "res://resources/sounds/along_the_way-congus bongus.wav",
+	"volume": -12.0, # Ajusta el volumen base que necesites para la tienda
+	"offset": 0
+}
+const MUSIC_EVENT := {
+	"path": "res://resources/sounds/Puzzle Game 3-Eric Matyas.mp3",
+	"volume": -12.0, # Ajusta el volumen base que necesites para la tienda
+	"offset": 1.5
+}
+const MUSIC_FINISH := {
+	"path": "res://resources/sounds/The Stream in Our Hollow-Eric Matyas.mp3",
+	"volume": -12.0, # Ajusta el volumen base que necesites para la tienda
+	"offset": 0.0
+}
+const MUSIC_BOSS := {
+	"path": "res://resources/sounds/redlightdistrict-JSKNYC.ogg",
+	"volume": 0.0, # Ajusta el volumen base que necesites para la tienda
+	"offset": 0.0
+}

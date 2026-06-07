@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://wwhpi2f7gfec"
+path="res://.godot/imported/Chillin&#039; with My Puzzles-Eric Matyas.mp3-afafe15cdfaa69f6428da9ae2a185f8f.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/Chillin&#039; with My Puzzles-Eric Matyas.mp3"
+dest_files=["res://.godot/imported/Chillin&#039; with My Puzzles-Eric Matyas.mp3-afafe15cdfaa69f6428da9ae2a185f8f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

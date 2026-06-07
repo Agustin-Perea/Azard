@@ -506,11 +506,11 @@ autowrap_mode = 3
 
 [node name="Button" type="Button" parent="ShopSceneController/Shop/PassiveItemShopDescritpion" unique_id=1755977590]
 layout_mode = 0
-offset_left = -40.0
-offset_top = 77.0
-offset_right = 36.0
+offset_left = -77.0
+offset_top = 58.0
+offset_right = 78.0
 offset_bottom = 135.0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("7_og0gd")
 theme_override_styles/pressed = ExtResource("8_5nplp")
 theme_override_styles/hover = ExtResource("9_w84a0")

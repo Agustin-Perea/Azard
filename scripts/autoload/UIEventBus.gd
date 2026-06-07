@@ -1,7 +1,7 @@
 extends Node
 
 
-const TIME_SCALE = 1.0
+var TIME_SCALE = 1.0
 
 signal change_collision_detection
 

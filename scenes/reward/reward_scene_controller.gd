@@ -12,6 +12,7 @@ extends Node
 
 @export var book_camera : Camera3D 
 func _ready() -> void:
+	MusicManager.play_music(Constants.MUSIC_EVENT)
 	#PlayerUiEvents.disable_camera_buttons.emit()
 	UiEventBus.book_button_visible.emit(false)
 	UiEventBus.selection_button_visible.emit(false)

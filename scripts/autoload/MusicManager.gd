@@ -1,79 +1,124 @@
 extends Node
 
-const MENU_MUSIC_PATH := "res://resources/music/Ghosts of Void.mp3" #"res://resources/music/frontier-home.mp3"
-const COMBAT_MUSIC_PATH :="res://resources/music/Balatro.mp3" #"res://resources/music/sunshire-theme.mp3"#
-
-const MENU_VOLUME_DB := -14.0
-const COMBAT_VOLUME_DB := -20.0
-const FADE_SECONDS := 0.75
+const FADE_SECONDS := 0.5
 
 var _player: AudioStreamPlayer
+var _sfx_player: AudioStreamPlayer # <--- Nuevo reproductor para SFX
 var _fade_tween: Tween
-var _current_track := ""
-var _menu_music: AudioStream
-var _combat_music: AudioStream
+var _current_track_path := ""
 var _music_volume_multiplier := 1.0
-var _current_base_volume_db := MENU_VOLUME_DB
+var _current_base_volume_db := -14.0
 
 func _ready() -> void:
+	# --- Configuración del Reproductor de Música ---
 	_player = AudioStreamPlayer.new()
 	_player.name = "MusicPlayer"
 	_player.bus = "Master"
-	_player.volume_db = MENU_VOLUME_DB
+	_player.volume_db = -14.0
 	add_child(_player)
 	_player.finished.connect(_on_music_finished)
-	_menu_music = load(MENU_MUSIC_PATH)
-	_combat_music = load(COMBAT_MUSIC_PATH)
-	_configure_loop(_menu_music)
-	_configure_loop(_combat_music)
+	
+	# --- Configuración del Reproductor de SFX (Polifónico) ---
+	_sfx_player = AudioStreamPlayer.new()
+	_sfx_player.name = "SFXPlayer"
+	_sfx_player.bus = "Master" # O un bus "SFX" si lo creas en el futuro
+	
+	# Creamos y asignamos el recurso polifónico para permitir sonidos simultáneos
+	var poly_stream := AudioStreamPolyphonic.new()
+	poly_stream.polyphony = 16 # Permite hasta 16 sonidos superpuestos a la vez
+	_sfx_player.stream = poly_stream
+	
+	add_child(_sfx_player)
+	_sfx_player.play() # Debe estar "reproduciendo" el poly_stream para poder usarlo
+	
+	# --- Settings ---
 	var settings_manager := get_node_or_null("/root/SettingsManager")
 	if settings_manager != null:
 		_music_volume_multiplier = float(settings_manager.get("music_volume"))
 		settings_manager.music_volume_changed.connect(set_music_volume_multiplier)
 
-func play_menu_music() -> void:
-	_play_music(_menu_music, "menu", MENU_VOLUME_DB,55)
 
-func play_combat_music() -> void:
-	_play_music(_combat_music, "combat", COMBAT_VOLUME_DB,18)
+# =============================================================================
+# MÉTODOS DE MÚSICA (Con Fades)
+# =============================================================================
 
-func stop_music() -> void:
-	if _fade_tween:
-		_fade_tween.kill()
-	_fade_tween = create_tween()
-	_fade_tween.tween_property(_player, "volume_db", -80.0, FADE_SECONDS)
-	_fade_tween.finished.connect(func():
-		_player.stop()
-		_current_track = ""
-	)
-
-func _play_music(stream: AudioStream, track_name: String, target_volume_db: float, offset: float = 0) -> void:
-	if _player == null or stream == null:
+func play_music(track_data: Dictionary) -> void:
+	var path: String = track_data.get("path", "")
+	var target_volume: float = track_data.get("volume", 0.0)
+	var offset: float = track_data.get("offset", 0.0)
+	
+	if _player == null or path == "":
 		return
-	if _current_track == track_name and _player.playing:
+		
+	# Corrección de seguridad: Evita crasheos si _fade_tween es null inicialmente
+	if _current_track_path == path and (_fade_tween == null or !_fade_tween.is_running()):
 		return
-	if _fade_tween:
+		
+	if _fade_tween and _fade_tween.is_running():
 		_fade_tween.kill()
 
 	if _player.playing:
 		_fade_tween = create_tween()
-		_fade_tween.tween_property(_player, "volume_db", -80.0, FADE_SECONDS * 0.5)
+		_fade_tween.tween_property(_player, "volume_db", -80.0, FADE_SECONDS * 0.5 / UiEventBus.TIME_SCALE)
 		_fade_tween.finished.connect(func():
-			_start_track(stream, track_name, target_volume_db, offset)
+			_start_track(path, target_volume, offset)
 		)
 		return
 
-	_start_track(stream, track_name, target_volume_db, offset)
+	_start_track(path, target_volume, offset)
 
-func _start_track(stream: AudioStream, track_name: String, target_volume_db: float, offset: float = 0) -> void:
+func _start_track(path: String, target_volume_db: float, offset: float) -> void:
+	var stream: AudioStream = load(path)
+	if stream == null:
+		push_error("No se pudo cargar el archivo de audio en: " + path)
+		return
+		
 	_configure_loop(stream)
 	_player.stream = stream
 	_player.volume_db = -80.0
 	_player.play(offset)
-	_current_track = track_name
+	
+	_current_track_path = path
 	_current_base_volume_db = target_volume_db
+	
 	_fade_tween = create_tween()
-	_fade_tween.tween_property(_player, "volume_db", _scaled_volume_db(target_volume_db), FADE_SECONDS)
+	_fade_tween.tween_property(_player, "volume_db", _scaled_volume_db(target_volume_db), FADE_SECONDS / UiEventBus.TIME_SCALE)
+
+func stop_music() -> void:
+	if _fade_tween and _fade_tween.is_running():
+		_fade_tween.kill()
+	_fade_tween = create_tween()
+	_fade_tween.tween_property(_player, "volume_db", -80.0, FADE_SECONDS / UiEventBus.TIME_SCALE)
+	_fade_tween.finished.connect(func():
+		_player.stop()
+		_current_track_path = ""
+	)
+
+
+# =============================================================================
+# MÉTODOS DE EFECTOS DE SONIDO (SFX - Sin Fades, Polifónicos)
+# =============================================================================
+
+## Reproduce un efecto de sonido instantáneamente de fondo usando su Path de Constants o String directo
+func play_sfx(sfx_path: String) -> void:
+	if sfx_path == "":
+		return
+		
+	var stream: AudioStream = load(sfx_path)
+	if stream == null:
+		push_error("No se pudo cargar el SFX en el path: " + sfx_path)
+		return
+		
+	# Obtenemos el controlador de reproducción polifónica
+	var playback: AudioStreamPlaybackPolyphonic = _sfx_player.get_stream_playback()
+	if playback:
+		# Esto reproduce el sonido inmediatamente en su propia "voz" sin cortar los demás
+		playback.play_stream(stream)
+
+
+# =============================================================================
+# UTILIDADES Y CONFIGURACIÓN
+# =============================================================================
 
 func set_music_volume_multiplier(value: float) -> void:
 	_music_volume_multiplier = clampf(value, 0.0, 1.0)
@@ -96,8 +141,10 @@ func _configure_loop(stream: AudioStream) -> void:
 		stream.loop = true
 	elif stream is AudioStreamWAV:
 		stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	elif stream is AudioStreamOggVorbis:
+		stream.loop = true 
 
 func _on_music_finished() -> void:
-	if _current_track == "" or _player == null or _player.stream == null:
+	if _current_track_path == "" or _player == null or _player.stream == null:
 		return
 	_player.play()

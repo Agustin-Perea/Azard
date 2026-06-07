@@ -233,6 +233,7 @@ Player = NodePath("PlayerGroup")
 EnemyGroup = NodePath("EnemyGroup")
 paused = true
 boss = true
+play_music = false
 
 [node name="CombatStateMachine" type="Node" parent="BattleManager/CombatGroups" unique_id=569869291 node_paths=PackedStringArray("default_state")]
 script = ExtResource("5_0yb2g")

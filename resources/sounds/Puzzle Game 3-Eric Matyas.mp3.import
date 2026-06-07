@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://1a23o4gmbbis"
+path="res://.godot/imported/Puzzle Game 3-Eric Matyas.mp3-6ace2853ba573230d5140d6d5ff0c97e.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/Puzzle Game 3-Eric Matyas.mp3"
+dest_files=["res://.godot/imported/Puzzle Game 3-Eric Matyas.mp3-6ace2853ba573230d5140d6d5ff0c97e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

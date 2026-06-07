@@ -2,7 +2,7 @@ class_name EconomyComponent
 
 
 var run_gold : int 
-var initial_run_gold : int = 5000
+var initial_run_gold : int = 0#5000
 var last_combat_gold_reward : int 
 
 var combat_max_multiplier
@@ -58,6 +58,7 @@ func add_run_gold(amount: int) -> void:
 	run_gold += amount
 	gold_changed.emit(run_gold)
 	BookEventBus.earn_gold.emit(amount)
+	MusicManager.play_sfx("res://resources/sounds/purchase_1.wav")
 
 func spend_run_gold(amount: int) -> bool:
 	if amount <= 0:
@@ -67,6 +68,7 @@ func spend_run_gold(amount: int) -> bool:
 	run_gold -= amount
 	gold_changed.emit(run_gold)
 	BookEventBus.spent_gold.emit(amount)
+	MusicManager.play_sfx("res://resources/sounds/purchase_2.wav")
 	return true
 
 func can_afford(amount: int) -> bool:
