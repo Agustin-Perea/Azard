@@ -13,7 +13,7 @@ uniform vec4 holeColorOuter : source_color = vec4(0.1, 0.0, 0.2, 1.0);
 uniform float holeSize : hint_range(0.0, 0.5, 0.01) = 0.2;
 
 // --- POLAR UNIFORMS (MÁXIMA SUAVIDAD) ---
-uniform sampler2D image : repeat_enable, filter_linear_mipmap; 
+uniform sampler2D image : repeat_enable, filter_linear;
 uniform float rotations : hint_range(0.0, 10.0, 0.5) = 1.0; 
 uniform float depth : hint_range(0.0, 10.0, 0.1) = 0.5; 
 uniform float spiralIntensity : hint_range(-10.0, 10.0, 0.1) = 1.0; 

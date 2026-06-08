@@ -228,9 +228,10 @@ func _resolve_bets(result_field_id: int, ball : BallRuntimeState = null) -> floa
 			if count > 0:
 				pass
 			
-			BookEventBus.bet_resolved.emit(self)
+			
 			if ball:
 				ball.ball_definition.ball_effect.on_bet_resolved(self)
+			BookEventBus.bet_resolved.emit(self)
 			count+=1
 			delta = multiplier
 	

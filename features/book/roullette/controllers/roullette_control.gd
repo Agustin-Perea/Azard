@@ -293,11 +293,11 @@ func reset_simulation() -> void:
 		ball.get_parent().remove_child(ball)
 		_original_parent.add_child(ball)
 		ball.global_position = global_pos
-	print(ball.global_position)
-	print(ball_origin_transform.global_position)
+	#print(ball.global_position)
+	#print(ball_origin_transform.global_position)
 	ball.position = ball_origin_transform.position
-	print(ball_origin_transform)
-	print(ball.global_position)
+	#print(ball_origin_transform)
+	#print(ball.global_position)
 	
 	
 	_original_parent = ball.get_parent()

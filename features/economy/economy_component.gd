@@ -53,12 +53,19 @@ func reset_coombat_values()->void:
 	enemies_slayed_on_battle = 0
 
 func add_run_gold(amount: int) -> void:
-	if amount <= 0:
-		return
-	run_gold += amount
-	gold_changed.emit(run_gold)
-	BookEventBus.earn_gold.emit(amount)
-	MusicManager.play_sfx("res://resources/sounds/purchase_1.wav")
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			if amount <= 0:
+				return
+			run_gold += amount
+			gold_changed.emit(run_gold)
+			BookEventBus.earn_gold.emit(amount)
+			MusicManager.play_sfx("res://resources/sounds/purchase_1.wav")
+			return true
+	}))
+
 
 func spend_run_gold(amount: int) -> bool:
 	if amount <= 0:

@@ -12,10 +12,12 @@ var size_z_collider = 1.626
 
 
 var last_field_entered : int = -1
+var input_enabled = true
 
 func _ready() -> void:
 	UiEventBus.change_collision_detection.connect(_on_change_collision_detection)
-
+	
+#aqui tambien se puede mostrar inforamcion de cada campo, tambien deberia ignorar un staticbody de ficha arriba
 func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	# Solo procesamos si el mouse está entrando o moviéndose DENTRO
 	if event is InputEventMouseMotion or (event is InputEventMouseButton and event.pressed):
@@ -29,7 +31,7 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 # Esta función detecta eventos en CUALQUIER parte de la pantalla
 func _input(event: InputEvent) -> void:
 	# Si el usuario suelta el click izquierdo en cualquier lugar del juego
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+	if input_enabled and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if not event.pressed:
 			_limpiar_highlight()
 
@@ -129,3 +131,4 @@ func _on_mouse_entered() -> void:
 
 func _on_change_collision_detection(value : bool):
 	$CollisionShape3D.disabled = value
+	input_enabled = !value

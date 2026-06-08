@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://blt5nunjgqmjj" path="res://features/UI/transition_control.gd" id="4_31jtf"]
 [ext_resource type="Script" uid="uid://dowooiad00ncy" path="res://features/UI/passive_items_control.gd" id="5_topx2"]
 [ext_resource type="PackedScene" uid="uid://c6oq1rhmydd1m" path="res://features/items/passive_items/views/passive_item_panel.tscn" id="6_31jtf"]
-[ext_resource type="AudioStream" uid="uid://bsngnl0dmdpcm" path="res://resources/sounds/purchase_1.wav" id="6_xnsdj"]
 [ext_resource type="Script" uid="uid://c4ygisdvk40xj" path="res://features/UI/showFPS.gd" id="8_jvpr3"]
 [ext_resource type="Script" uid="uid://cj12v0vm6gvku" path="res://features/UI/resume_battle_control.gd" id="10_fv2b1"]
 [ext_resource type="StyleBox" uid="uid://dc461irh72xg" path="res://resources/UI_Buttons/button_box_flat.tres" id="11_xnsdj"]
@@ -275,9 +274,6 @@ text = " 0 "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control" unique_id=1241199685]
-stream = ExtResource("6_xnsdj")
-
 [node name="DefeatCanvas" type="Control" parent="." unique_id=1210028539]
 visible = false
 layout_mode = 3
@@ -322,10 +318,11 @@ theme_override_constants/outline_size = 25
 theme_override_fonts/normal_font = ExtResource("3_topx2")
 theme_override_font_sizes/normal_font_size = 150
 bbcode_enabled = true
-text = "[wave amp=150 freq=2]Defeat[/wave]
+text = "[wave amp=150 freq=2]Derrota[/wave]
 
 "
 scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -348,7 +345,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_7r1ju")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_guf56")
 theme_override_styles/hover = SubResource("StyleBoxFlat_sae1u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_lnyru")
-text = "Restart"
+text = "Menu"
 
 [node name="TransitionControl" type="Control" parent="." unique_id=588496759]
 visible = false

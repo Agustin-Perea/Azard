@@ -6,8 +6,6 @@ extends Control
 
 @onready var gold_label: Label = $GoldHUD/HBoxContainer/Label
 
-@onready var audio_stream: AudioStreamPlayer = $AudioStreamPlayer
-
 
 
 func _ready() -> void:

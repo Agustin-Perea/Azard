@@ -56,14 +56,6 @@ func animate_in_pos(spot_global_postion :Vector3, text : String, global : bool =
 		"paralel": false,
 		"action": func():
 			reset_state()
-			#audio_stream_player.stream = preload("res://resources/sounds/mult1.wav")
-			#audio_stream_player.pitch_scale = 2
-			#audio_stream_player.play()
-			#var player = AudioStreamPlayer.new()
-			#add_child(player)
-			#player.stream = preload("res://resources/sounds/Rise05.wav")
-			#player.pitch_scale = 2
-			#player.play()
 			
 			audio_stream_player.stream = preload("res://resources/sounds/Rise07.wav")
 			# El pitch sube, pero se estanca en el TECHO máximo (min elige el menor)

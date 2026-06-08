@@ -22,7 +22,7 @@ func _ready() -> void:
 	_sfx_player = AudioStreamPlayer.new()
 	_sfx_player.name = "SFXPlayer"
 	_sfx_player.bus = "Master" # O un bus "SFX" si lo creas en el futuro
-	
+	_sfx_player.volume_db = -14.0
 	# Creamos y asignamos el recurso polifónico para permitir sonidos simultáneos
 	var poly_stream := AudioStreamPolyphonic.new()
 	poly_stream.polyphony = 16 # Permite hasta 16 sonidos superpuestos a la vez

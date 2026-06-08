@@ -29,7 +29,7 @@ void fragment() {
 	vec3 color_base = texture(tex_palette, UV + offset).rgb;
 
 	// Pulso estable (sin sin)
-	float t = fract(TIME * 0.5);
+	float t = fract(TIME * 0.8);
 	float pulse = t * (1.0 - t) * 4.0;
 	pulse = clamp(pulse, 0.0, 1.0);
 
@@ -40,7 +40,7 @@ void fragment() {
 	pulse *= highlight_flag;
 
 	// Mezcla final (controlada)
-	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.4);
+	vec3 final_color = mix(color_base, vec3(1.0), pulse * 0.8);
 
 	ALBEDO = final_color;
 }
