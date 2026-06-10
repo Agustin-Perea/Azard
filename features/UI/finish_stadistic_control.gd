@@ -39,7 +39,7 @@ func aparecer() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	
 	# 4. Animamos la propiedad 'global_position:y' hasta 0 en 0.8 segundos
-	tween.tween_property(self, "global_position:y", 0.0, 0.8)
+	tween.tween_property(self, "global_position:y", 0.0, 1)
 
 
 func add_passive_items() -> void:

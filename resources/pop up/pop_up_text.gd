@@ -19,7 +19,7 @@ var finished : bool = false
 
 var count : int = 0
 var step_increase : float = 1.1
-var limit_velocity : float = 2.5
+var limit_velocity : float = 5
 var base_pitch  : float = 2
 
 func _ready():

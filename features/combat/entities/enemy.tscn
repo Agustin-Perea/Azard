@@ -125,11 +125,10 @@ physics_interpolation_mode = 2
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="Bat" parent="ModelVisualComponent/bat" index="0" unique_id=832293639]
-transform = Transform3D(1.0100435, 0, 0, 0, 0.9839304, 0, 0, 0, 1, 0, 1.7496283, 0)
+transform = Transform3D(1.0132279, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8403031, 0)
 material_override = SubResource("ShaderMaterial_b34tf")
 material_overlay = SubResource("ShaderMaterial_206xx")
-"blend_shapes/Key 2" = 0.82248604
-"blend_shapes/Key 4" = 0.17751396
+"blend_shapes/Key 2" = 1.0
 
 [node name="AnimationPlayer" parent="ModelVisualComponent/bat" index="1" unique_id=884223044]
 active = false
