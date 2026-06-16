@@ -32,7 +32,8 @@
 [ext_resource type="ArrayMesh" uid="uid://baeoiakx8vtop" path="res://resources/book/model/outline.tres" id="19_5lkav"]
 [ext_resource type="PackedScene" uid="uid://bisvvkie0uri" path="res://features/balls/views/ball_description.tscn" id="19_8qbf8"]
 [ext_resource type="Material" uid="uid://b3ne55hnycjy" path="res://resources/book/materials/book_material_.tres" id="19_khsg3"]
-[ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="21_eev62"]
+[ext_resource type="Script" uid="uid://bpnpxn7guvk3l" path="res://resources/book/pop_up_indicator.gd" id="34_ac6gq"]
+[ext_resource type="FontFile" uid="uid://ci3t3g0s2yxli" path="res://resources/fonts/FuzzyBubbles-Regular.ttf" id="34_f2bku"]
 [ext_resource type="Animation" uid="uid://da2vuocd4vrog" path="res://resources/book/animations/RESET.res" id="39_vh2hp"]
 [ext_resource type="Animation" uid="uid://ugkukrqx7tr" path="res://resources/book/animations/book_close.res" id="40_2w6kk"]
 [ext_resource type="Animation" uid="uid://csb3peqf73yhh" path="res://resources/book/animations/book_open.res" id="41_eh1d0"]
@@ -490,6 +491,9 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_aledu")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f2bku"]
+viewport_path = NodePath("Temp/DamagePopUp/SubViewport")
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8qbf8"]
 _data = {
@@ -1318,13 +1322,260 @@ transform = Transform3D(1.005, 0, 0, 0, 1.005, 0, 0, 0, 1.005, 0.552558, 0.01014
 material_override = ExtResource("19_khsg3")
 mesh = ExtResource("19_5lkav")
 
-[node name="PopUpText" parent="." unique_id=877394085 instance=ExtResource("21_eev62")]
-
 [node name="Temp" type="Node" parent="." unique_id=427208635]
 
 [node name="Camera3D" type="Camera3D" parent="Temp" unique_id=2058904043]
 transform = Transform3D(1, 0, 0, 0, 0.028759047, 0.9995864, 0, -0.9995864, 0.028759047, 0, 4.361888, -0.93015957)
 fov = 30.0
+
+[node name="DamagePopUp" type="Control" parent="Temp" unique_id=368461813]
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(128, 128)
+script = ExtResource("34_ac6gq")
+
+[node name="ColorRect" type="ColorRect" parent="Temp/DamagePopUp" unique_id=867239387]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.8
+offset_top = -76.8
+offset_right = 76.8
+offset_bottom = 76.8
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+pivot_offset = Vector2(76.8, 76.8)
+color = Color(0.6784314, 0.27058825, 0.5019608, 0.92941177)
+
+[node name="TextureRect" type="TextureRect" parent="Temp/DamagePopUp" unique_id=346233669]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(128, 128)
+texture = SubResource("ViewportTexture_f2bku")
+
+[node name="SubViewport" type="SubViewport" parent="Temp/DamagePopUp" unique_id=175758003]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Temp/DamagePopUp/SubViewport" unique_id=2006405462]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -108.8
+offset_top = -108.8
+offset_right = 108.8
+offset_bottom = 108.8
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.20010002, 0.87, 0.44572994, 1)
+theme_override_colors/font_outline_color = Color(0.20010002, 0.87, 0.44572994, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 38
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 20
+theme_override_fonts/normal_font = ExtResource("34_f2bku")
+theme_override_font_sizes/normal_font_size = 82
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]+3.0[/wave]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Temp/DamagePopUp" unique_id=682148998]
+
+[node name="LifePopUp2" type="Control" parent="Temp" unique_id=1199515862]
+visible = false
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Temp/LifePopUp2" unique_id=1341511863]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+pivot_offset = Vector2(64, 64)
+color = Color(0.27199998, 0.68, 0.38759995, 0.92941177)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Temp/LifePopUp2" unique_id=101038781]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
+theme_override_constants/outline_size = 16
+theme_override_fonts/normal_font = ExtResource("34_f2bku")
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]+3.0[/wave]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShieldPopUp" type="Control" parent="Temp" unique_id=366421812]
+visible = false
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Temp/ShieldPopUp" unique_id=1181327474]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+pivot_offset = Vector2(64, 64)
+color = Color(0.35960004, 0.50716, 0.62, 0.92941177)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Temp/ShieldPopUp" unique_id=1770756714]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.8745098, 0.4509804, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
+theme_override_constants/outline_size = 16
+theme_override_fonts/normal_font = ExtResource("34_f2bku")
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]+3.0[/wave]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AgainPopUp" type="Control" parent="Temp" unique_id=518704192]
+visible = false
+texture_filter = 2
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Temp/AgainPopUp" unique_id=22177428]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+pivot_offset = Vector2(64, 64)
+color = Color(0.74, 0.25900003, 0.25900003, 0.92941177)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Temp/AgainPopUp" unique_id=368685038]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.972549, 0.4117647, 0.3764706, 1)
+theme_override_colors/font_outline_color = Color(0.9727333, 0.41329777, 0.37747538, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 32
+theme_override_constants/outline_size = 14
+theme_override_fonts/normal_font = ExtResource("34_f2bku")
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[wave amp=50 freq=5]Again![/wave]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=917025914]
 libraries/ = SubResource("AnimationLibrary_8qbf8")

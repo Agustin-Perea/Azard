@@ -38,5 +38,5 @@ func _on_button_input_event(camera: Node, event: InputEvent, event_position: Vec
 	if event is InputEventMouseButton and event.pressed:
 		if GameState.economy_component.can_afford(5):
 			GameState.economy_component.spend_run_gold(5)
-			listens.add_life(pv_to_add)
+			listens.add_life(pv_to_add,false)
 		deactivate()

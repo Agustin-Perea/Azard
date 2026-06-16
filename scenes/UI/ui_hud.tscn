@@ -14,6 +14,7 @@
 [ext_resource type="StyleBox" uid="uid://cls8k5wgeaejq" path="res://resources/UI_Buttons/button_box_flat_pressed.tres" id="12_wox0k"]
 [ext_resource type="StyleBox" uid="uid://d0ghab2nni1u7" path="res://resources/UI_Buttons/button_box_flat_hover.tres" id="13_1rx2y"]
 [ext_resource type="StyleBox" uid="uid://cceorkpnwp0" path="res://resources/UI_Buttons/button_box_flat_focus.tres" id="14_wyyad"]
+[ext_resource type="Script" uid="uid://b8gh6g7sxgv2k" path="res://scenes/UI/loading_screen.gd" id="15_xnsdj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dbbq"]
 content_margin_left = 22.0
@@ -553,6 +554,49 @@ theme_override_styles/pressed = ExtResource("12_wox0k")
 theme_override_styles/hover = ExtResource("13_1rx2y")
 theme_override_styles/focus = ExtResource("14_wyyad")
 text = "Continue"
+
+[node name="LoadingScreen" type="Control" parent="." unique_id=1597346990]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_xnsdj")
+
+[node name="ColorRect" type="ColorRect" parent="LoadingScreen" unique_id=1748814617]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="LoadingScreen" unique_id=1541308297]
+process_mode = 3
+texture_filter = 2
+custom_minimum_size = Vector2(391.425, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -520.0
+offset_top = -200.0
+offset_right = -128.57495
+offset_bottom = -101.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 75
+bbcode_enabled = true
+text = "[wave]Loading...[/wave]"
+fit_content = true
+
+[node name="Camera3D" type="Camera3D" parent="LoadingScreen" unique_id=438987946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.649)
 
 [connection signal="pressed" from="Control/SelectionButton" to="Control" method="_on_selection_button_pressed"]
 [connection signal="pressed" from="Control/BookButton" to="Control" method="_on_book_button_pressed"]

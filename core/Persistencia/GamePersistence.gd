@@ -7,12 +7,10 @@ const SAVE_VERSION := 1
 var auto_save_enabled := false
 var _is_loading_run := false
 
-
-
 func _rebuild_run_from_current_seed(game_state : GameState) -> void:
 	if game_state.economy_component != null:
 		game_state.economy_component.reload()
-
+	
 	game_state.map_generator.on_reload()
 	
 	game_state.object_pool_database.set_seed(game_state.master_seed)
@@ -108,6 +106,7 @@ func _build_save_data(game_state : GameState) -> Dictionary:
 		"chips": _build_chips_save_data(game_state), 
 		"bets": _build_bets_save_data(game_state),
 		"stadistics": _build_stadistics_save_data(game_state),
+		"scence_changed_value": {"temp_scene_changed_value": game_state.temp_scene_changed_value}
 	}
 
 func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
@@ -130,6 +129,7 @@ func _apply_save_data(game_state : GameState, data: Dictionary) -> void:
 	
 	_apply_bets_save_data(game_state,data.get("bets", []))
 	_apply_stadistics_save_data(game_state,data.get("stadistics", []))
+	GameState.temp_scene_changed_value = int(data.get("scence_changed_value", []).get("temp_scene_changed_value", 0))
 	game_state.initialized.emit()
 	game_state.table_ready.emit()
 	

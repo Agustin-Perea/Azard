@@ -13,11 +13,11 @@ func on_item_removed() -> void:
 	_disconnect_signal_safe(BookEventBus.bet_pre_resolve, _on_bet_pre_resolve)
 	_disconnect_signal_safe(BookEventBus.bet_resolved, _on_bet_resolved)
 
-func on_item_use(roulette_controller: RouletteController) -> void:
+func on_item_use(roulette_controller: RouletteController, quantity : int = 1) -> void:
 	if roulette_controller == null:
 		return
 	animate.emit()
-	roulette_controller.add_base(BASE_BONUS)
+	roulette_controller.add_base(BASE_BONUS*quantity)
 
 func _on_bet_pre_resolve(_roulette_controller: RouletteController) -> void:
 	applied_this_resolution = false

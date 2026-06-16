@@ -2,7 +2,7 @@ class_name EconomyComponent
 
 
 var run_gold : int 
-var initial_run_gold : int = 0#5000
+var initial_run_gold : int = 5000
 var last_combat_gold_reward : int 
 
 var combat_max_multiplier

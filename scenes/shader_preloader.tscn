@@ -1,0 +1,420 @@
+[gd_scene format=3 uid="uid://yl7vrbecsit2"]
+
+[ext_resource type="Script" uid="uid://dbvi6nf2dme7q" path="res://core/shader_preloader.gd" id="1_1xdth"]
+[ext_resource type="PackedScene" uid="uid://yr01earu6jnl" path="res://scenes/players/mage/player.tscn" id="1_icp23"]
+[ext_resource type="Shader" uid="uid://bugjobkjx7h2n" path="res://resources/materials/shaders/dissolve_shader.gdshader" id="2_5ll4h"]
+[ext_resource type="Texture2D" uid="uid://c8w2ler1wcenx" path="res://resources/player/mage/mage_Mage_texture.png" id="3_1xdth"]
+[ext_resource type="PackedScene" uid="uid://cm3xb3yn5ff2r" path="res://features/combat/entities/boss.tscn" id="4_53o3n"]
+[ext_resource type="Texture2D" uid="uid://00jry3l24lef" path="res://resources/enemies/golem/golem_Escenario.png" id="5_au4l6"]
+[ext_resource type="PackedScene" uid="uid://ckjjsqq6r5ljr" path="res://resources/book/book.tscn" id="6_iphv2"]
+[ext_resource type="PackedScene" uid="uid://bv433xmxi0fuo" path="res://resources/book/case book/views/case_book.tscn" id="7_byi5d"]
+[ext_resource type="PackedScene" uid="uid://vdb8px14xh4b" path="res://scenes/map/map_book.tscn" id="8_j7xvn"]
+[ext_resource type="PackedScene" uid="uid://cdracx5srv0l" path="res://resources/pop up/pop_up_text.tscn" id="9_t56ed"]
+[ext_resource type="PackedScene" uid="uid://4biv6muw0kdx" path="res://features/combat/entities/enemy.tscn" id="10_5ll4h"]
+[ext_resource type="PackedScene" uid="uid://0xpa0e35mojk" path="res://resources/particles/gpu_particles_3d.tscn" id="10_ahqik"]
+[ext_resource type="PackedScene" uid="uid://c8r7dx86trj3w" path="res://resources/particles/chest_shine.tscn" id="11_frd7r"]
+[ext_resource type="PackedScene" uid="uid://vcsa5d2tf3c0" path="res://resources/particles/item_shine.tscn" id="12_8n750"]
+[ext_resource type="Material" uid="uid://byfutrut70f64" path="res://resources/materials/shaders/2D/portal.tres" id="15_iphv2"]
+[ext_resource type="Material" uid="uid://bl0dsy27qg5wh" path="res://resources/materials/outline.tres" id="16_byi5d"]
+[ext_resource type="Material" uid="uid://cc2jg8s4fnn3m" path="res://resources/materials/hit_flash.tres" id="17_j7xvn"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_53o3n"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_au4l6"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lfkuk"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ocks5"]
+noise = SubResource("FastNoiseLite_lfkuk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iphv2"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_5ll4h")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/main_texture = ExtResource("3_1xdth")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_ocks5")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jjt6l"]
+noise_type = 2
+seed = 1
+fractal_lacunarity = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6kga6"]
+noise = SubResource("FastNoiseLite_jjt6l")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_byi5d"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_5ll4h")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/main_texture = ExtResource("5_au4l6")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_6kga6")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_color = Color(1, 1, 1, 1)
+shader_parameter/burn_size = 0.0
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_j7xvn"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t56ed"]
+viewport_path = NodePath("ModelVisualComponent/StatsView/DamageSubViewport")
+
+[sub_resource type="SphereMesh" id="SphereMesh_t56ed"]
+
+[node name="ShaderPreloader" type="Node3D" unique_id=1564576848]
+script = ExtResource("1_1xdth")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1242829087]
+layer = 0
+
+[node name="LoadingScreen" type="Control" parent="CanvasLayer" unique_id=1683381408]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/LoadingScreen" unique_id=809163020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/LoadingScreen" unique_id=1991463343]
+texture_filter = 2
+custom_minimum_size = Vector2(391.425, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -520.0
+offset_top = -200.0
+offset_right = -128.57495
+offset_bottom = -101.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 75
+bbcode_enabled = true
+text = "[wave]Loading...[/wave]"
+fit_content = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1404851754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7156298, 3.497725)
+
+[node name="GpuParticles" type="Node3D" parent="." unique_id=584860494]
+
+[node name="GPUParticles3D" parent="GpuParticles" unique_id=829231785 instance=ExtResource("10_ahqik")]
+visible = false
+
+[node name="Chest_Shine" parent="GpuParticles" unique_id=956313110 instance=ExtResource("11_frd7r")]
+visible = false
+
+[node name="GPUParticles3D2" parent="GpuParticles" unique_id=47354991 instance=ExtResource("10_ahqik")]
+visible = false
+
+[node name="Item_Shine" parent="GpuParticles" unique_id=527518781 instance=ExtResource("12_8n750")]
+visible = false
+
+[node name="Enemies" type="Node3D" parent="." unique_id=734818889]
+
+[node name="Player" parent="Enemies" unique_id=136977887 instance=ExtResource("1_icp23")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47308075, 0, -0.10402155)
+visible = false
+
+[node name="Book" parent="Enemies/Player/Books" parent_id_path=PackedInt32Array(136977887, 1137582354) index="0" unique_id=1676174387]
+visible = true
+
+[node name="CaseBook" parent="Enemies/Player/Books" parent_id_path=PackedInt32Array(136977887, 1137582354) index="1" unique_id=523368687]
+visible = true
+
+[node name="MapBook" parent="Enemies/Player/Books" parent_id_path=PackedInt32Array(136977887, 1137582354) index="2" unique_id=2052312531]
+visible = true
+
+[node name="LifeHudControl" parent="Enemies/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="0" unique_id=1383549522]
+visible = true
+
+[node name="LifeView" parent="Enemies/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="2" unique_id=1436878656]
+visible = true
+texture = SubResource("ViewportTexture_53o3n")
+
+[node name="LifeText" parent="Enemies/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="3" unique_id=988854430]
+visible = true
+
+[node name="DamageView" parent="Enemies/Player/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(136977887, 1038761412) index="4" unique_id=2027840614]
+visible = true
+texture = SubResource("ViewportTexture_au4l6")
+
+[node name="Skeleton3D" parent="Enemies/Player/ModelVisualComponent/mage/bro_rig" parent_id_path=PackedInt32Array(136977887, 1913276100) index="0" unique_id=1297471484]
+bones/0/rotation = Quaternion(-0.011406741, 0.044248644, 0.99889153, -0.011303348)
+bones/1/rotation = Quaternion(-0.5753082, 0.575308, 0.41112122, -0.41112125)
+bones/2/position = Vector3(-0.0069571445, 0.88032776, 0.06210996)
+bones/2/rotation = Quaternion(0.052293606, -0.13941944, 0.0009434295, 0.98885125)
+bones/3/rotation = Quaternion(-0.018046888, 7.6413285e-09, 4.345655e-09, 0.99983716)
+bones/4/rotation = Quaternion(-0.0393862, 0.019083561, 0.008332267, 0.99900705)
+bones/5/rotation = Quaternion(-0.07561169, 0.06368974, 0.01115124, 0.99503887)
+bones/6/position = Vector3(0.037929762, 0.15042987, 0.030401103)
+bones/6/rotation = Quaternion(-0.57137793, -0.40771085, -0.43597648, 0.5632261)
+bones/7/rotation = Quaternion(-0.42451718, 0.61819214, -0.48794538, 0.44669116)
+bones/8/position = Vector3(-1.0826666e-08, 0.25736415, 2.3366937e-08)
+bones/8/rotation = Quaternion(0.08110733, 0.0013078594, -0.00010644241, 0.9967046)
+bones/9/position = Vector3(3.0375737e-09, 0.25647002, 3.394696e-09)
+bones/9/rotation = Quaternion(-0.027316255, 0.00050662743, 0.0024323333, 0.9996238)
+bones/10/position = Vector3(-0.0004997272, 0.0906765, 0.036388494)
+bones/10/rotation = Quaternion(-0.017172229, 0.7269746, -0.012373072, 0.6863381)
+bones/11/rotation = Quaternion(0.0023569278, 0.00010069911, -4.787689e-07, 0.99999726)
+bones/12/rotation = Quaternion(0.0033523499, -0.0002071012, -3.094335e-07, 0.9999944)
+bones/19/position = Vector3(-0.0027187448, 0.08697871, -0.011640191)
+bones/19/rotation = Quaternion(-0.017153215, 0.7270386, -0.01239353, 0.6862704)
+bones/20/rotation = Quaternion(0.0023301248, 7.954664e-06, -8.6681564e-07, 0.99999726)
+bones/21/rotation = Quaternion(0.0032462415, -8.068576e-06, 1.0621117e-06, 0.9999948)
+bones/22/position = Vector3(0.012657707, 0.022167046, 0.017135125)
+bones/22/rotation = Quaternion(0.11230209, 0.9491348, 0.29267967, -0.02949488)
+bones/23/rotation = Quaternion(0.16022632, 5.2142423e-06, 1.4301986e-06, 0.98708034)
+bones/24/rotation = Quaternion(-0.0006802829, -1.5201513e-06, -9.0340643e-07, 0.99999976)
+bones/25/position = Vector3(-0.037929717, 0.15042976, 0.03040111)
+bones/25/rotation = Quaternion(-0.56811273, 0.41934046, 0.42723295, 0.56468886)
+bones/26/rotation = Quaternion(0.38157836, 0.64686143, -0.45285237, -0.48051327)
+bones/27/position = Vector3(3.2557274e-08, 0.24770457, 3.3759626e-09)
+bones/27/rotation = Quaternion(0.7056059, 0.027476411, -0.02740148, 0.7075411)
+bones/28/position = Vector3(3.144714e-08, 0.24628751, 9.6033126e-08)
+bones/28/rotation = Quaternion(0.13833559, 0.7608764, -0.13347071, 0.6197709)
+bones/29/position = Vector3(0.0004995577, 0.09067649, 0.036388576)
+bones/29/rotation = Quaternion(-0.017171588, -0.7269747, 0.012373101, 0.686338)
+bones/30/rotation = Quaternion(0.0023573379, -0.00010048153, 7.578336e-07, 0.99999726)
+bones/31/rotation = Quaternion(0.003351143, 0.00020716529, 1.7598495e-07, 0.9999944)
+bones/32/position = Vector3(0.0050197635, 0.09128243, 0.013297638)
+bones/33/rotation = Quaternion(-0.0021382573, -5.1314364e-06, -4.884161e-07, 0.9999978)
+bones/34/rotation = Quaternion(0.056613207, 4.0954046e-06, -1.9903553e-07, 0.9983962)
+bones/38/position = Vector3(0.002718849, 0.08697886, -0.0116400905)
+bones/38/rotation = Quaternion(-0.01715334, -0.72703856, 0.012392976, 0.6862704)
+bones/39/rotation = Quaternion(0.0023304368, -7.87994e-06, 1.0955146e-06, 0.9999973)
+bones/40/rotation = Quaternion(0.0032459951, 8.162145e-06, -1.2215884e-06, 0.9999948)
+bones/41/position = Vector3(-0.012657689, 0.022166988, 0.017135112)
+bones/41/rotation = Quaternion(-0.6976952, 0.703881, 0.07862685, -0.10766041)
+bones/42/rotation = Quaternion(0.16022612, -5.2219257e-06, -1.2309974e-06, 0.98708034)
+bones/43/rotation = Quaternion(-0.00068030023, 1.5569385e-06, 8.037633e-07, 0.99999976)
+bones/44/rotation = Quaternion(0.17710382, -0.041965213, -0.0051868632, 0.98328346)
+bones/45/rotation = Quaternion(-0.11433156, 0.07435184, -0.008581372, 0.99061924)
+bones/46/rotation = Quaternion(0.093552835, 0.033804547, -0.0030787603, 0.99503547)
+bones/47/rotation = Quaternion(0.97074366, 0.03625229, -0.19136819, 0.1404308)
+bones/48/position = Vector3(4.1515268e-08, 0.39567122, -2.5262114e-08)
+bones/48/rotation = Quaternion(0.1633753, 0.0035460999, -0.0005872819, 0.9865575)
+bones/49/position = Vector3(-1.169974e-08, 0.43147734, -5.820766e-11)
+bones/49/rotation = Quaternion(-0.5038302, -0.2641075, -0.0943706, 0.8170047)
+bones/50/rotation = Quaternion(-2.992092e-07, 0.95680606, -0.29072693, -7.548806e-07)
+bones/51/rotation = Quaternion(0.9760594, -0.029650932, 0.19144672, 0.09887911)
+bones/52/position = Vector3(-4.0570702e-09, 0.395842, 6.4028427e-10)
+bones/52/rotation = Quaternion(0.14395344, -0.0032853447, 0.00047794785, 0.9895789)
+bones/52/scale = Vector3(1, 1.000002, 0.999998)
+bones/53/position = Vector3(1.6198122e-08, 0.43271825, -1.2688979e-09)
+bones/53/rotation = Quaternion(-0.5460348, 0.01827926, -0.031009339, 0.8369889)
+bones/54/rotation = Quaternion(-9.370335e-05, 0.95680594, -0.2907274, -0.00030872508)
+
+[node name="cuerpoModificado_001" parent="Enemies/Player/ModelVisualComponent/mage/bro_rig/Skeleton3D" index="1" unique_id=1979456466]
+material_override = SubResource("ShaderMaterial_iphv2")
+
+[node name="BossEntity" parent="Enemies" unique_id=986372475 instance=ExtResource("4_53o3n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35702527, 0, -2.2503314)
+visible = false
+
+[node name="Skeleton3D" parent="Enemies/BossEntity/ModelVisualComponent/StatsView/Golem/rig_001" parent_id_path=PackedInt32Array(986372475, 975493686) index="0" unique_id=536054896]
+bones/0/position = Vector3(1.2822089, 0.23555493, -0.8933692)
+bones/0/rotation = Quaternion(-0.0004249549, 0.06323245, 0.997986, 0.005050255)
+bones/1/position = Vector3(-5.684049e-14, 1.0330421, 0.048178416)
+bones/1/rotation = Quaternion(0.03678091, -6.9339403e-06, 0.00018870032, 0.9993234)
+bones/2/position = Vector3(3.1209746e-17, 1.1402131, 0.05606635)
+bones/2/rotation = Quaternion(0.03348167, -8.006722e-06, 0.00024795774, 0.9994393)
+bones/3/position = Vector3(1.9202328, 0.53433144, 0.44706213)
+bones/3/rotation = Quaternion(-0.009847433, 4.0261115e-05, 0.004480746, 0.99994147)
+bones/4/position = Vector3(1.7181976, 0.6529406, -1.1344961)
+bones/4/rotation = Quaternion(0.60206985, -0.37682724, 0.6263718, 0.32120323)
+bones/5/position = Vector3(0.34193146, 0.5647148, -1.5309939)
+bones/5/rotation = Quaternion(0.079301134, 0.058797143, 0.71161455, -0.69559973)
+bones/6/position = Vector3(0.8693428, 0.27872694, 1.5383352)
+bones/6/rotation = Quaternion(0.09772963, 0.026478369, 0.99485713, 0.0026705228)
+bones/7/position = Vector3(0.884665, 0.86554265, -1.287707)
+bones/7/rotation = Quaternion(0.3089751, 0.12090446, 0.94301695, -0.025210336)
+bones/8/position = Vector3(-1.9107027, 0.71168756, 0.46247748)
+bones/8/rotation = Quaternion(-0.7069811, -0.009559674, 0.70710313, -0.00956133)
+bones/9/position = Vector3(-1.9095044, 0.66739386, 0.4624776)
+bones/9/rotation = Quaternion(0.707073, 0.007894444, -0.7070525, 0.007893537)
+bones/10/position = Vector3(-1.9088048, 0.63608915, 0.46247748)
+bones/10/rotation = Quaternion(-0.70694906, -0.0055224323, 0.7072214, -0.0055245897)
+bones/11/position = Vector3(-1.9074845, 0.71017283, 0.439211)
+bones/11/rotation = Quaternion(0.7070479, 0.009406488, -0.7070406, 0.009406426)
+bones/12/position = Vector3(-1.9061857, 0.66137815, 0.43921083)
+bones/12/rotation = Quaternion(0.7070698, 0.007894329, -0.7070557, 0.007893604)
+bones/13/position = Vector3(-1.9054211, 0.6270959, 0.439211)
+bones/13/rotation = Quaternion(0.70719635, -0.0035703238, -0.7069992, -0.0035693622)
+bones/14/position = Vector3(-1.9176477, 0.71868885, 0.39099655)
+bones/14/rotation = Quaternion(-0.70703316, -0.010202319, 0.7070333, -0.010201641)
+bones/15/position = Vector3(-1.9167241, 0.68667233, 0.3909965)
+bones/15/rotation = Quaternion(-0.70705765, -0.007885737, 0.70706797, -0.007885029)
+bones/16/position = Vector3(-1.9161232, 0.65974355, 0.39099622)
+bones/16/rotation = Quaternion(-0.7069293, -0.0051365774, 0.7072469, -0.005139675)
+bones/17/position = Vector3(-1.9112848, 0.71335274, 0.41428804)
+bones/17/rotation = Quaternion(0.7070476, 0.009542131, -0.7070372, 0.009542002)
+bones/18/position = Vector3(-1.9100759, 0.6685628, 0.4142881)
+bones/18/rotation = Quaternion(0.7070737, 0.007895336, -0.7070518, 0.007893825)
+bones/19/position = Vector3(-1.9093539, 0.6362468, 0.4142879)
+bones/19/rotation = Quaternion(0.7070899, 0.0055992696, -0.7070794, 0.0055992203)
+bones/20/position = Vector3(-1.8441291, 0.6883633, 0.4411549)
+bones/20/rotation = Quaternion(0.7057146, -0.6901411, -0.112029664, 0.11454947)
+bones/21/position = Vector3(-1.8891189, 0.68735915, 0.45615965)
+bones/21/rotation = Quaternion(0.7149505, -0.69917506, 3.061203e-08, -5.3082545e-07)
+bones/22/position = Vector3(-1.9263712, 0.6865281, 0.45615953)
+bones/22/rotation = Quaternion(0.7149509, -0.6991743, -0.00047661786, 0.00048479644)
+bones/23/position = Vector3(-1.6980491, 0.65043205, -1.1883743)
+bones/23/rotation = Quaternion(0.6113122, 0.361641, -0.6342145, 0.30542627)
+bones/24/position = Vector3(-0.29788947, 0.8488781, -1.4761759)
+bones/24/rotation = Quaternion(-0.09783917, -0.012929471, 0.9951007, -0.005904981)
+bones/25/position = Vector3(-0.85858357, 0.30026448, 1.5173712)
+bones/25/rotation = Quaternion(-0.09778944, 0.026718777, 0.994848, -0.0008980383)
+bones/26/position = Vector3(0.6045222, 0.86940914, -1.1571815)
+bones/26/rotation = Quaternion(0.116807945, 0.12027963, 0.9854453, -0.028040415)
+bones/27/position = Vector3(-1.9305052, 0.7010921, 0.41015655)
+bones/27/rotation = Quaternion(0.70698136, -0.009559678, 0.707103, 0.009561329)
+bones/28/position = Vector3(-1.9317031, 0.6567985, 0.41015667)
+bones/28/rotation = Quaternion(0.707073, -0.007894444, 0.7070525, 0.007893537)
+bones/29/position = Vector3(-1.9324023, 0.62549376, 0.41015655)
+bones/29/rotation = Quaternion(0.70694906, -0.0055224323, 0.7072214, 0.0055245887)
+bones/30/position = Vector3(-1.9337229, 0.69957745, 0.38689005)
+bones/30/rotation = Quaternion(0.7070479, -0.009406488, 0.7070406, 0.009406426)
+bones/31/position = Vector3(-1.9350209, 0.65078264, 0.3868898)
+bones/31/rotation = Quaternion(0.7070698, -0.007894329, 0.7070557, 0.007893604)
+bones/32/position = Vector3(-1.9235599, 0.70809346, 0.33867553)
+bones/32/rotation = Quaternion(0.70703316, -0.010202319, 0.7070333, 0.010201641)
+bones/33/position = Vector3(-1.9244843, 0.67607695, 0.33867544)
+bones/33/rotation = Quaternion(0.70705765, -0.007885737, 0.70706797, 0.007885029)
+bones/34/position = Vector3(-1.925085, 0.64914805, 0.33867535)
+bones/34/rotation = Quaternion(0.7069292, -0.0051365765, 0.707247, 0.0051396755)
+bones/35/position = Vector3(-1.9299225, 0.7027573, 0.36196694)
+bones/35/rotation = Quaternion(0.7070476, -0.009542131, 0.7070372, 0.009542002)
+bones/36/position = Vector3(-1.9311318, 0.6579674, 0.36196706)
+bones/36/rotation = Quaternion(0.7070737, -0.007895336, 0.7070518, 0.007893825)
+bones/37/position = Vector3(-1.9318533, 0.62565136, 0.361967)
+bones/37/rotation = Quaternion(0.7070899, -0.0055992696, 0.7070794, 0.0055992203)
+bones/38/position = Vector3(-1.9975133, 0.70500207, 0.44115505)
+bones/38/rotation = Quaternion(0.7057146, 0.6901411, 0.11202964, 0.114549465)
+bones/39/position = Vector3(-1.9525242, 0.70399797, 0.45615968)
+bones/39/rotation = Quaternion(0.7149505, 0.69917506, -3.0612068e-08, -5.308255e-07)
+bones/40/position = Vector3(-1.9152725, 0.7031668, 0.45615953)
+bones/40/rotation = Quaternion(0.7149509, 0.6991743, 0.0004766178, 0.0004847964)
+bones/41/position = Vector3(-2.8509418e-14, 1.4315546, 0.058771867)
+bones/41/rotation = Quaternion(0.14160573, 1.1800802e-07, 1.6880714e-08, 0.9899231)
+bones/42/position = Vector3(-3.0197938e-14, 1.4706199, 0.070181765)
+bones/42/rotation = Quaternion(0.02161605, 1.19181436e-07, 2.5768292e-09, 0.99976635)
+bones/43/position = Vector3(-0.86337805, 0.46648347, 1.7855328)
+bones/43/rotation = Quaternion(0, 0.20791176, 0, 0.97814757)
+bones/44/position = Vector3(1.0974172, 0.37519127, 1.5339692)
+bones/44/rotation = Quaternion(0.999024, 5.2656395e-09, 1.1909293e-07, 0.04417137)
+bones/45/position = Vector3(1.6500579, -0.0024971366, 0.4193779)
+bones/45/rotation = Quaternion(-0.0135889985, -0.04929372, 0.059320744, -0.99692863)
+bones/46/position = Vector3(0.066925295, 0.549317, -1.9647592)
+bones/46/rotation = Quaternion(0.87402517, -0.00035881184, 5.9304824e-05, 0.4858805)
+bones/47/position = Vector3(0.066925526, 0.49163932, -1.8724749)
+bones/47/rotation = Quaternion(0, 0.7071068, 0.7071068, 0)
+bones/48/position = Vector3(-1.8169856, 0.3751914, 0.6251302)
+bones/48/rotation = Quaternion(0.9991077, 0.006227574, -0.00027535035, 0.041772984)
+bones/49/position = Vector3(-1.3806591, -0.0022215843, -1.1125089)
+bones/49/rotation = Quaternion(0.011259356, -0.99916726, 0.039208993, -0.00088660023)
+bones/50/position = Vector3(-0.11533738, 0.549317, -1.9647592)
+bones/50/rotation = Quaternion(0.8740996, 0.00029353527, -0.0003022572, 0.4857464)
+bones/51/position = Vector3(-0.115336895, 0.49163932, -1.8724749)
+bones/51/rotation = Quaternion(0, 0.7071068, 0.7071068, 0)
+bones/52/position = Vector3(0.74064344, 0.9819104, -1.2275265)
+bones/52/rotation = Quaternion(0.8284883, -0.0072211334, 0.55974525, 0.015506567)
+bones/53/rotation = Quaternion(0, 0.7071068, 0.7071068, 0)
+
+[node name="Golem" parent="Enemies/BossEntity/ModelVisualComponent/StatsView/Golem/rig_001/Skeleton3D" index="0" unique_id=1718013635]
+material_override = SubResource("ShaderMaterial_byi5d")
+
+[node name="LifeView" parent="Enemies/BossEntity/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(986372475, 403448201) index="2" unique_id=1532637649]
+visible = true
+texture = SubResource("ViewportTexture_j7xvn")
+
+[node name="DamageView" parent="Enemies/BossEntity/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(986372475, 403448201) index="3" unique_id=873522915]
+visible = true
+texture = SubResource("ViewportTexture_t56ed")
+
+[node name="LifeHudControl" parent="Enemies/BossEntity/ModelVisualComponent/StatsView" parent_id_path=PackedInt32Array(986372475, 403448201) index="5" unique_id=1383549522]
+visible = true
+
+[node name="Control" parent="Enemies/BossEntity/ModelVisualComponent" parent_id_path=PackedInt32Array(986372475, 787457806) index="6" unique_id=513166012]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Circle" parent="Enemies/BossEntity/slash" parent_id_path=PackedInt32Array(986372475, 1728092077) index="0" unique_id=2141041110]
+transform = Transform3D(1, 1.5390886e-17, 3.3110057e-19, -1.4806389e-17, 0.99093056, -0.0134374425, -5.3491165e-18, 0.13437435, 0.09909311, -1.0075299e-16, 2.7148092, 1.6320201)
+
+[node name="EnemyEntity" parent="Enemies" unique_id=1189639042 instance=ExtResource("10_5ll4h")]
+visible = false
+
+[node name="Book" parent="Enemies" unique_id=425357330 instance=ExtResource("6_iphv2")]
+visible = false
+
+[node name="CaseBook" parent="Enemies" unique_id=1484051356 instance=ExtResource("7_byi5d")]
+visible = false
+
+[node name="MapBook" parent="Enemies" unique_id=863603518 instance=ExtResource("8_j7xvn")]
+visible = false
+
+[node name="Shaders" type="Node3D" parent="." unique_id=558692515]
+
+[node name="PopUpText" parent="Shaders" unique_id=877394085 instance=ExtResource("9_t56ed")]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaders" unique_id=561337429]
+visible = false
+material_override = ExtResource("15_iphv2")
+mesh = SubResource("SphereMesh_t56ed")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaders" unique_id=2081981237]
+visible = false
+material_override = ExtResource("16_byi5d")
+mesh = SubResource("SphereMesh_t56ed")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaders" unique_id=274178054]
+visible = false
+material_override = ExtResource("17_j7xvn")
+mesh = SubResource("SphereMesh_t56ed")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaders" unique_id=74394207]
+visible = false
+material_override = ExtResource("17_j7xvn")
+mesh = SubResource("SphereMesh_t56ed")
+
+[editable path="Enemies/Player"]
+[editable path="Enemies/Player/ModelVisualComponent/CameraPlayer"]
+[editable path="Enemies/BossEntity"]
+[editable path="Enemies/BossEntity/CameraAttack"]

@@ -39,6 +39,12 @@ var player_stats : StatsComponent
 
 var player_turns : int = -1
 
+
+var local_base : float = 0
+var local_mult : float = 0
+
+var local_pv : int = 0
+var local_shield : int = 0
 #deberia agregar los onadd y onmult aca con popup y sus valores visuales particulares
 
 func _ready() -> void:
@@ -74,32 +80,79 @@ func _ready() -> void:
 	rerolls_count_label.text = str(rerolls_count) + "/" + str(GameState.max_reroll)
 	
 	player_stats = GameState.player_stats
-	player_stats.health_changed.connect(_on_health_changed)
+	player_stats.health_changed.connect(refresh_stats)
+	player_stats.shield_added.connect(on_shield_added)
+	player_stats.health_added.connect(on_health_added)
+	player_stats.health_consumed.connect(on_healt_consumed)
 	
-	_on_health_changed()
+	
+	refresh_stats()
+
 	
 func on_player_turn()->void:
 	player_turns += 1
 	turn_count.text = str(player_turns)
 
+func refresh_stats()->void:
+	local_pv = player_stats.current_healt
+	local_shield = player_stats.shield
+	_on_health_changed()
+
 func _on_health_changed()->void:
-	info.text = str(player_stats.current_healt) + "/" + str(player_stats.max_healt)
+	info.text = str(local_pv) + "/" + str(player_stats.max_healt)
 	health_progress_bar.max_value = player_stats.max_healt
 	health_progress_bar.value = player_stats.current_healt
 	
-	if player_stats.shield > 0:
+	if local_shield > 0:
 		shield_rect.visible = true
 		shield_icon.visible = true
 		shield_text.visible = true
-		shield_text.text = str(player_stats.shield)
+		shield_text.text = str(local_shield)
 	else:
 		shield_rect.visible = false
 		shield_icon.visible = false
 		shield_text.visible = false
 
+func on_shield_added(shield_added : int)->void:
+	
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_shield += shield_added
+			_on_health_changed()
+			return true
+	}))
+	BookEventBus.popuptext.emit(shield_icon.global_position,str("+",shield_added))
 
-var local_base : float = 0
-var local_mult : float = 0
+
+func on_health_added(health_added : int)->void:
+	
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_pv += health_added
+			_on_health_changed()
+			return true
+	}))
+	BookEventBus.popuptext.emit(info.global_position,str("+",health_added))
+
+func on_healt_consumed(health_consumed : int)->void:
+	
+	EventManager.add_event(EventManager.QueueType.GAME, 
+	GameEvent.new({
+		"paralel": false,
+		"action": func():
+			local_pv += health_consumed
+			_on_health_changed()
+			return true
+	}))
+	BookEventBus.popuptext.emit(info.global_position,str("-",health_consumed))
+	
+
+
+
 func _on_add_base(base_added : float) -> void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
@@ -109,7 +162,7 @@ func _on_add_base(base_added : float) -> void:
 			base_damage.text = str(int(round(local_base)))
 			return true
 	}))
-	BookEventBus.popuptext.emit(base_damage.position,str("+",int(round(base_added))))
+	BookEventBus.popuptext.emit(base_damage.global_position,str("+",int(round(base_added))))
 
 func _on_add_mult(mult_added : float, popup :bool = true) -> void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
@@ -145,7 +198,7 @@ func _on_x_multiplier(x_mult : float)->void:
 			multiplicator.text = str(int(round(local_mult)))
 			return true
 	}))	
-	BookEventBus.popuptext.emit(multiplicator.position,text)
+	BookEventBus.popuptext.emit(multiplicator.global_position,text)
 
 
 func _on_change_total() -> void:

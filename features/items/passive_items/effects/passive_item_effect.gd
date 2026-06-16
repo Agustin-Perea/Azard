@@ -10,7 +10,7 @@ signal animate
 @warning_ignore("unused_signal")
 signal item_use(roulette_controller : RouletteController)
 
-func on_item_use(roulette_controller : RouletteController)->void:
+func on_item_use(roulette_controller : RouletteController, quantity : int = 1)->void:
 	pass
 	
 func on_signal_triggered(roulette_controller : RouletteController)->void:

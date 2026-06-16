@@ -490,6 +490,7 @@ material_override = ExtResource("6_d4hu8")
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1277044605]
 transform = Transform3D(1, 0, 0, 0, 0.9808533, 0.19474795, 0, -0.19474795, 0.9808533, 0, 4.237, 14.522)
+current = true
 fov = 45.0
 script = ExtResource("7_p1nwe")
 amplitud_rotacion = Vector3(0, 0, 0)

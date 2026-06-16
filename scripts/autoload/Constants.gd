@@ -136,7 +136,7 @@ const MUSIC_COMBAT := {
 }
 
 const MUSIC_SHOP := {
-	"path": "res://resources/sounds/along_the_way-congus bongus.wav",
+	"path": "res://resources/sounds/along_the_way-congus bongus.ogg",
 	"volume": -12.0, # Ajusta el volumen base que necesites para la tienda
 	"offset": 0
 }

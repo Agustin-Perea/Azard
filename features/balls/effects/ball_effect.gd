@@ -23,11 +23,11 @@ func on_ball_disabled()->void:
 #estas son callbacks de eventos, cada modelo tiene sus propios eventos y comportamiento
 #ante un evento de combtae,personaje o demas comun
 
-func on_pre_resolve(roullette_controller: RouletteController)->void:
+func on_pre_resolve(roullette_controller: RouletteController, quantity : int = 0)->void:
 	pass
-func on_bet_resolved(roullette_controller: RouletteController)->void:
+func on_bet_resolved(roullette_controller: RouletteController, quantity : int = 0)->void:
 	pass
-func on_post_resolved(roullette_controller : RouletteController)->void:
+func on_post_resolved(roullette_controller : RouletteController, quantity : int = 0)->void:
 	pass
 	
 func on_ball_use()->void:

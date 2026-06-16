@@ -7,6 +7,7 @@ render_priority = 0
 shader = ExtResource("1_6ra4r")
 shader_parameter/color_aura = Color(0.851642, 0.90833443, 1, 1)
 shader_parameter/radio_base = 0.15000000386512
+shader_parameter/radio_interno = 0.08
 shader_parameter/velocidad_giro = 0.5000004987499995
 shader_parameter/intensidad_lava = 0.02000000095
 shader_parameter/suavizado = 0.00999999977648

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BallsRuntimeCollection" format=3 uid="uid://07tu5oy5nwny"]
 
 [ext_resource type="Script" uid="uid://vou3yvmfswvf" path="res://features/balls/runtime/ball_runtime_state.gd" id="1_7ik2x"]
-[ext_resource type="Resource" uid="uid://b2bgfaxsxf4kq" path="res://features/balls/definition/test_ball_definition.tres" id="2_ghtjb"]
+[ext_resource type="Resource" uid="uid://dlknso2x2coo8" path="res://features/balls/definition/rare/shield_ball_definition.tres" id="2_ghtjb"]
 [ext_resource type="Script" uid="uid://dmwaoftujv38" path="res://features/balls/database/balls_runtime_collection.gd" id="2_ioi2j"]
 [ext_resource type="Resource" uid="uid://dbgom2cf5axxs" path="res://features/balls/definition/double_ball_definition.tres" id="3_373ir"]
 

@@ -466,7 +466,7 @@ book_camera = NodePath("Player/BookCamera")
 
 [node name="Player" parent="RewardSceneController" unique_id=136977887 instance=ExtResource("8_3uxgq")]
 physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.069, 0)
 
 [node name="BookCamera" type="Camera3D" parent="RewardSceneController/Player" unique_id=233727052]
 transform = Transform3D(-0.9486057, -0.31646043, -1.3832925e-08, 0, -4.371139e-08, 1, -0.31646043, 0.9486057, 4.1464872e-08, -0.35804647, 1.6068975, 0.32839847)
@@ -568,7 +568,7 @@ emitting = false
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 9.244)
 
 [node name="Camera" type="Camera3D" parent="RewardSceneController/reward_camera" unique_id=726927106]
-transform = Transform3D(0.8878151, -0.11444735, 0.44574225, 7.264316e-07, 0.9685834, 0.24868892, -0.46020034, -0.22078946, 0.85992306, 2.3199186, 2.391728, 10.560406)
+transform = Transform3D(-0.338738, 1.15156716e-07, 0.9408808, -1.39868845e-08, 1, -1.2742805e-07, -0.9408808, -5.6324712e-08, -0.338738, 1.1221316, 1.5858417, 8.317983)
 fov = 31.785154
 near = 0.1
 far = 100.0

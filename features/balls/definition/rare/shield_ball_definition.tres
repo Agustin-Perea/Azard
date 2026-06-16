@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BallDefinition" format=3 uid="uid://dlknso2x2coo8"]
+
+[ext_resource type="Script" uid="uid://ywxibhq6tves" path="res://features/balls/effects/shieldball_effect.gd" id="1_467wy"]
+[ext_resource type="Material" uid="uid://cicu75wtveg08" path="res://resources/balls/materials/shield_ball_material.tres" id="2_lmdmu"]
+[ext_resource type="Script" uid="uid://da1j3m3u31rvp" path="res://features/balls/definition/ball_definition.gd" id="3_v4ti5"]
+
+[sub_resource type="Resource" id="Resource_lmdmu"]
+script = ExtResource("1_467wy")
+name = "ShieldBall"
+description = "+4 de escudo y +1 por cada ficha activada en un campo distinto"
+metadata/_custom_type_script = "uid://ywxibhq6tves"
+
+[resource]
+script = ExtResource("3_v4ti5")
+base_damage = 1
+ball_material = ExtResource("2_lmdmu")
+weight = 20
+base_price = 7
+rarity = 1
+ball_effect = SubResource("Resource_lmdmu")
+metadata/_custom_type_script = "uid://da1j3m3u31rvp"

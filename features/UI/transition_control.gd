@@ -39,6 +39,7 @@ func _change_scene_to_packed(scene : PackedScene)->void:
 func _load_new_scene()->void:
 	
 	get_tree().call_deferred("change_scene_to_file",scene_to_load)
+	await get_tree().process_frame
 	UiEventBus.scene_changed.emit()
 	
 

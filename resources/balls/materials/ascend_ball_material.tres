@@ -1,6 +1,6 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://c3jhn3ihe7kv"]
 
-[ext_resource type="Texture2D" uid="uid://uvj73cqkbrx5" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/flare_01.png" id="1_2ucmo"]
+[ext_resource type="Texture2D" uid="uid://bugn2h6jrqhue" path="res://resources/materials/imported textures/kenney_particle-pack/PNG (Transparent)/star_08.png" id="1_2ucmo"]
 
 [resource]
 shading_mode = 0

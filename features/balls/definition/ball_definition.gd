@@ -6,7 +6,7 @@ class_name BallDefinition
 
 @export var base_damage: int
 
-@export var ball_material: StandardMaterial3D
+@export var ball_material: Material
 
 @export var weight: int = 50
 

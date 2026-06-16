@@ -2,10 +2,10 @@ extends BallEffect
 class_name GoldBallEffect
 
 
-func on_pre_resolve(roullette_controller: RouletteController)->void:
+func on_pre_resolve(roullette_controller: RouletteController, quantity : int = 0)->void:
 	pass
 
-func on_bet_resolved(roullette_controller: RouletteController)->void:
+func on_bet_resolved(roullette_controller: RouletteController, quantity : int = 0)->void:
 	EventManager.add_event(EventManager.QueueType.GAME, 
 	GameEvent.new({
 		"paralel": false,
@@ -17,7 +17,7 @@ func on_bet_resolved(roullette_controller: RouletteController)->void:
 
 
 	pass
-func on_post_resolved(roullette_controller: RouletteController)->void:
+func on_post_resolved(roullette_controller: RouletteController, quantity : int = 0)->void:
 	print("postresolve")
 	pass
 
