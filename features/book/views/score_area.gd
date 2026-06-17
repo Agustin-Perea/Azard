@@ -121,6 +121,7 @@ func on_shield_added(shield_added : int)->void:
 		"action": func():
 			local_shield += shield_added
 			_on_health_changed()
+			player_stats.health_changed.emit()
 			return true
 	}))
 	BookEventBus.popuptext.emit(shield_icon.global_position,str("+",shield_added))
@@ -134,6 +135,7 @@ func on_health_added(health_added : int)->void:
 		"action": func():
 			local_pv += health_added
 			_on_health_changed()
+			player_stats.health_changed.emit()
 			return true
 	}))
 	BookEventBus.popuptext.emit(info.global_position,str("+",health_added))

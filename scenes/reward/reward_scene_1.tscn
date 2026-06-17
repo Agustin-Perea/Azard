@@ -19,6 +19,8 @@
 [ext_resource type="AnimationLibrary" uid="uid://ww35fttjgcb" path="res://resources/chest/reward_camera_animations/chest_animations.res" id="13_m01iw"]
 [ext_resource type="PackedScene" uid="uid://c8r7dx86trj3w" path="res://resources/particles/chest_shine.tscn" id="16_8ou2e"]
 [ext_resource type="PackedScene" uid="uid://vcsa5d2tf3c0" path="res://resources/particles/item_shine.tscn" id="16_37njy"]
+[ext_resource type="Script" uid="uid://cdbltma4h4oj8" path="res://scenes/reward/audio_stream_player_cfg.gd" id="19_jnej0"]
+[ext_resource type="AudioStream" uid="uid://bqmhcdx3yymfl" path="res://resources/sounds/mult1.wav" id="20_lm5st"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8ibt7"]
 sky_top_color = Color(0.5803922, 0.7882353, 0.95686275, 1)
@@ -179,6 +181,9 @@ _data = {
 &"passive_item_animation": SubResource("Animation_8ou2e")
 }
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_37njy"]
+viewport_path = NodePath("AnimableCanvas/SubViewport")
+
 [sub_resource type="Animation" id="Animation_lm5st"]
 length = 0.001
 tracks/0/type = "value"
@@ -244,7 +249,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("RichTextLabel:scale")
+tracks/5/path = NodePath("SubViewport/RichTextLabel:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -256,19 +261,19 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("RichTextLabel:position")
+tracks/6/path = NodePath(".:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
+"update": 1,
+"values": [false]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("RichTextLabel:modulate")
+tracks/7/path = NodePath("TextureRect:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -280,18 +285,19 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath(".:visible")
+tracks/8/path = NodePath("TextureRect:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_37njy"]
 resource_name = "pop_up_animation"
+length = 3.2333333
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -355,7 +361,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("RichTextLabel:scale")
+tracks/5/path = NodePath("SubViewport/RichTextLabel:scale")
 tracks/5/interp = 2
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -367,23 +373,23 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("RichTextLabel:position")
+tracks/6/path = NodePath(".:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0.33333334, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -35)]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("RichTextLabel:modulate")
-tracks/7/interp = 2
+tracks/7/path = NodePath("TextureRect:modulate")
+tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0.33333334, 1),
+"times": PackedFloat32Array(0.3, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -391,15 +397,30 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath(".:visible")
+tracks/8/path = NodePath("TextureRect:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"times": PackedFloat32Array(0.3, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -36)]
 }
+tracks/9/type = "audio"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../RewardSceneController/AudioStreamPlayer")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"clips": [{
+"end_offset": 0.45999992,
+"start_offset": 0.1469,
+"stream": ExtResource("20_lm5st")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/9/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lm5st"]
 _data = {
@@ -483,7 +504,7 @@ material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("10_1th7b")
 
 [node name="upper_chest" type="MeshInstance3D" parent="RewardSceneController/Chest" unique_id=953716762]
-transform = Transform3D(1, 1.2494739e-16, 2.3032136e-16, -1.3228578e-16, 0.9445262, 0, -2.3032136e-16, -2.877805e-32, 1, -7.57765e-18, 0.32014877, 4.0213804)
+transform = Transform3D(1, 1.2494739e-16, 2.3032136e-16, -1.322858e-16, 0.9445262, -2.938736e-39, -2.3032136e-16, -2.877805e-32, 1, -7.57765e-18, 0.32014877, 4.0213804)
 material_override = ExtResource("7_2ew2o")
 mesh = ExtResource("11_m01iw")
 
@@ -578,6 +599,8 @@ physics_interpolation_mode = 2
 libraries/chest_animations = ExtResource("13_m01iw")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RewardSceneController" unique_id=687501872]
+pitch_scale = 4.1
+script = ExtResource("19_jnej0")
 
 [node name="AnimableCanvas" type="Control" parent="." unique_id=591628303]
 visible = false
@@ -602,8 +625,18 @@ offset_bottom = 196.0
 pivot_offset = Vector2(98, 98)
 color = Color(0.6784314, 0.27058825, 0.5019608, 0.92941177)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="AnimableCanvas" unique_id=990056351]
+[node name="TextureRect" type="TextureRect" parent="AnimableCanvas" unique_id=265849922]
 layout_mode = 0
+offset_right = 200.0
+offset_bottom = 198.0
+texture = SubResource("ViewportTexture_37njy")
+
+[node name="SubViewport" type="SubViewport" parent="AnimableCanvas" unique_id=1039051711]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(200, 198)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AnimableCanvas/SubViewport" unique_id=990056351]
 offset_right = 184.0
 offset_bottom = 196.0
 pivot_offset = Vector2(98, 98)

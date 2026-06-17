@@ -12,8 +12,12 @@ func on_signal_used(roulette_controller : RouletteController)->void:
 	passive_item_definition.passive_item_effect.on_item_use(roulette_controller,quantity)
 
 #deberia estar suscrito a señales del efecto del passive_item_definition
-func on_item_added()->void:
-	passive_item_definition.passive_item_effect.item_use.connect(on_signal_used)
+func on_item_added() -> void:
+	var item_signal = passive_item_definition.passive_item_effect.item_use
+	
+	if not item_signal.is_connected(on_signal_used):
+		item_signal.connect(on_signal_used)
+		
 	passive_item_definition.passive_item_effect.on_item_added()
 	
 func on_item_removed()->void:
